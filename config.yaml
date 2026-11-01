@@ -1,0 +1,34 @@
+# CẤU HÌNH CHUNG BTL XỬ LÝ ẢNH SỐ (FeatureJ vs Python)
+# Mọi script Python và ImageJ Macro đều tham chiếu các giá trị từ file này.
+# Được trích xuất và đo đạc thực nghiệm đối chuẩn 100% với FeatureJ / ImageScience.
+
+kernel_k:                 # Bán kính cắt kernel r = floor(k * sigma) + 1 theo FeatureJ Differentiator
+  gauss: 3.0             # Bậc 0 (Làm mịn): k = 3.0
+  lx: 4.0                # Bậc 1 (Đạo hàm riêng): k = 4.0
+  lxx: 4.0               # Bậc 2 (Hessian / Laplacian): k = 4.0
+
+border_mode: mirror     # Kiểu phản xạ biên theo SciPy: 'mirror' (không lặp pixel biên x[-1] = x[1], tương ứng mode='reflect' của NumPy)
+
+featurej_normalized:       # Cờ xác nhận FeatureJ có tự động nhân thêm sigma^n không
+  derivatives: false      # ĐÃ ĐO: value=0.9996 (~1.0) -> FeatureJ xuất đạo hàm thô, CHƯA nhân sigma
+  laplacian: false        # ĐÃ XÁC MINH: FeatureJ tính Lxx + Lyy trực tiếp, CHƯA nhân sigma^2
+  hessian: false          # ĐÃ ĐO: largest=1.9968 (~2.0), smallest=1.0 -> CHƯA nhân sigma^2
+  edges: false            # FeatureJ Edges = sqrt(Lx^2 + Ly^2) thô
+  structure: false        # Structure Tensor thô
+
+eigen_order: absolute      # ĐÃ ĐO: Khi tick 'Absolute eigenvalue comparison', FeatureJ xếp theo |l1| >= |l2|
+
+sigmas: [1.0, 2.0, 4.0, 8.0] # Dãy tỷ lệ chuẩn theo cấp số nhân cơ số 2
+
+sigmas_blob: [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0] # Lưới tỷ lệ dày bước căn bậc 2 cho Blob Detection
+
+structure_pairs:           # Các cặp tỷ lệ cho Structure Tensor: [[sigma_d (vi phân), sigma_i (tích phân)], ...]
+  - [1.0, 3.0]
+  - [2.0, 6.0]
+
+tier1_images:              # Danh sách 5 ảnh đại diện dùng để kiểm chứng số học Tầng 1
+  - bsds_01
+  - bsds_02
+  - drive_01
+  - blob_01
+  - blob_02
