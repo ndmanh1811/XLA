@@ -1,0 +1,184 @@
+{
+  "images": [
+    {
+      "name": "bsds_01",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/100075.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/100075.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_02",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/100080.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/100080.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_03",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/100098.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/100098.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_04",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/103041.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/103041.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_05",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/104022.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/104022.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_06",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/105019.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/105019.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_07",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/105053.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/105053.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_08",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/106020.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/106020.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_09",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/106025.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/106025.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "bsds_10",
+      "kind": "bsds",
+      "source": "sources/bsds500/images/train/108041.jpg",
+      "source_reference": "https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/resources.html | BSDS500 train/108041.jpg",
+      "characteristics": "Natural photograph; object boundaries and texture; original resolution; BT.601 grayscale"
+    },
+    {
+      "name": "drive_01",
+      "kind": "drive",
+      "source": "sources/drive/images/21_training.tif",
+      "source_reference": "DRIVE training image 21",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_02",
+      "kind": "drive",
+      "source": "sources/drive/images/22_training.tif",
+      "source_reference": "DRIVE training image 22",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_03",
+      "kind": "drive",
+      "source": "sources/drive/images/23_training.tif",
+      "source_reference": "DRIVE training image 23",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_04",
+      "kind": "drive",
+      "source": "sources/drive/images/24_training.tif",
+      "source_reference": "DRIVE training image 24",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_05",
+      "kind": "drive",
+      "source": "sources/drive/images/25_training.tif",
+      "source_reference": "DRIVE training image 25",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_06",
+      "kind": "drive",
+      "source": "sources/drive/images/26_training.tif",
+      "source_reference": "DRIVE training image 26",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_07",
+      "kind": "drive",
+      "source": "sources/drive/images/27_training.tif",
+      "source_reference": "DRIVE training image 27",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_08",
+      "kind": "drive",
+      "source": "sources/drive/images/28_training.tif",
+      "source_reference": "DRIVE training image 28",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_09",
+      "kind": "drive",
+      "source": "sources/drive/images/29_training.tif",
+      "source_reference": "DRIVE training image 29",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "drive_10",
+      "kind": "drive",
+      "source": "sources/drive/images/30_training.tif",
+      "source_reference": "DRIVE training image 30",
+      "characteristics": "Retinal fundus; dark branching vessels on brighter background; green channel; original resolution"
+    },
+    {
+      "name": "blob_01",
+      "kind": "synthetic_blob",
+      "polarity": "bright",
+      "model": "disk",
+      "source_reference": "Analytic synthetic image; src/eval/prepare_data.py",
+      "characteristics": "256x256; bright disk; radii 3, 5, 7, 8 px; generated with NumPy"
+    },
+    {
+      "name": "blob_02",
+      "kind": "synthetic_blob",
+      "polarity": "dark",
+      "model": "disk",
+      "source_reference": "Analytic synthetic image; src/eval/prepare_data.py",
+      "characteristics": "256x256; dark disk; radii 3, 5, 7, 8 px; generated with NumPy"
+    },
+    {
+      "name": "blob_03",
+      "kind": "synthetic_blob",
+      "polarity": "bright",
+      "model": "gaussian",
+      "source_reference": "Analytic synthetic image; src/eval/prepare_data.py",
+      "characteristics": "256x256; bright gaussian; Gaussian standard deviations 2, 2.8, 4, 5.7 px; generated with NumPy"
+    },
+    {
+      "name": "blob_04",
+      "kind": "synthetic_blob",
+      "polarity": "dark",
+      "model": "gaussian",
+      "source_reference": "Analytic synthetic image; src/eval/prepare_data.py",
+      "characteristics": "256x256; dark gaussian; Gaussian standard deviations 2, 2.8, 4, 5.7 px; generated with NumPy"
+    },
+    {
+      "name": "blob_05",
+      "kind": "blob",
+      "source": "sources/biological/mitosis.tif",
+      "polarity": "bright",
+      "source_reference": "https://scikit-image.org/docs/stable/api/skimage.data.html#skimage.data.human_mitosis | David Root; CC0; mitosis.tif",
+      "characteristics": "Human cell microscopy; bright nuclei/cells on dark background; 512x512 grayscale uint8; no rescaling"
+    }
+  ]
+}
