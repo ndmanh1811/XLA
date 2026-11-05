@@ -43,11 +43,14 @@ def evaluate_bsds_edges(sample_limit=3):
         
     for img_path in bsds_files:
         stem = img_path.stem
-        gt_npy = GT_DIR / f"{stem}_boundaries.npy"
-        if not gt_npy.exists():
+        # Ưu tiên đọc từ cấu trúc chuẩn data/gt/bsds/{stem}/annotator_*_boundaries.png của Đức
+        annotator_files = sorted(list((GT_DIR / "bsds" / stem).glob("annotator_*_boundaries.png")))
+        if annotator_files:
+            gt_boundaries = np.stack([np.array(Image.open(f)) > 0 for f in annotator_files], axis=0)
+        elif (GT_DIR / f"{stem}_boundaries.npy").exists():
+            gt_boundaries = np.load(GT_DIR / f"{stem}_boundaries.npy")
+        else:
             continue
-            
-        gt_boundaries = np.load(gt_npy) # shape (num_annotators, H, W)
         # Giữ nguyên dải float64 0-255 theo chuẩn quy ước INSTRUCTIONS
         img = np.array(Image.open(img_path), dtype=np.float64)
         
@@ -111,8 +114,14 @@ def evaluate_drive_vessels(sample_limit=3):
     
     for img_path in drive_files:
         stem = img_path.stem
-        vessel_gt_path = GT_DIR / f"{stem}_vessels.png"
-        fov_mask_path = GT_DIR / f"{stem}_fov.png"
+        # Ưu tiên đọc từ data/gt/drive/ theo cấu trúc mới của Đức
+        vessel_gt_path = GT_DIR / "drive" / f"{stem}_vessels.png"
+        if not vessel_gt_path.exists():
+            vessel_gt_path = GT_DIR / f"{stem}_vessels.png"
+            
+        fov_mask_path = GT_DIR / "drive" / f"{stem}_fov.png"
+        if not fov_mask_path.exists():
+            fov_mask_path = GT_DIR / f"{stem}_fov.png"
         
         if not vessel_gt_path.exists() or not fov_mask_path.exists():
             continue
@@ -182,15 +191,19 @@ def evaluate_blobs(sample_limit=3):
     
     for img_path in blob_files:
         stem = img_path.stem
-        gt_json_path = GT_DIR / f"{stem}_gt.json"
+        # Ưu tiên đọc từ data/gt/blob/ theo cấu trúc mới của Đức
+        gt_json_path = GT_DIR / "blob" / f"{stem}.json"
+        if not gt_json_path.exists():
+            gt_json_path = GT_DIR / f"{stem}_gt.json"
+            
         if not gt_json_path.exists():
             continue
             
         with open(gt_json_path, "r", encoding="utf-8") as f:
             gt_data = json.load(f)
             
-        gt_blobs = gt_data["blobs"]
-        polarity = gt_data["polarity"]
+        gt_blobs = gt_data.get("objects", gt_data.get("blobs", []))
+        polarity = gt_data.get("polarity", "bright")
         
         # Giữ nguyên dải float64 0-255 theo chuẩn quy ước INSTRUCTIONS
         img = np.array(Image.open(img_path), dtype=np.float64)
