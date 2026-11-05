@@ -69,3 +69,8 @@ Mở PowerShell tại gốc dự án:
 
 Trên máy khác, cài môi trường theo hướng dẫn trong tài liệu công việc 20.
 Thư mục `.venv` là môi trường của máy hiện tại, cần tạo lại khi chuyển máy.
+
+## Công việc tiếp theo ngày 05/11
+
+Tài liệu này giữ phạm vi bàn giao ngày 02/11. Phần ground truth (công việc 21)
+được triển khai riêng tại [README_DUC_05_11.md](README_DUC_05_11.md).
