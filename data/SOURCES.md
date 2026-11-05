@@ -63,3 +63,10 @@ Các đường dẫn ở tài liệu này tính từ thư mục `data`, trừ li
 Ảnh gốc có thể là RGB JPEG/TIFF theo định dạng nguồn; tất cả **input chạy thuật
 toán** trong `raw` đều là grayscale uint8 PNG lossless theo INSTRUCTIONS.
 Mở [bàn giao ngày 02/11](../README_DUC_02_11.md) để xem rõ hai công việc.
+
+## Bổ sung nhãn ngày 05/11
+
+Nhãn mạch máu/FOV gốc DRIVE đã được sao chép thêm vào `sources/drive/1st_manual`
+và `sources/drive/mask`, đúng 10 ID đang dùng, kiểm tra SHA-256 với nguồn có sẵn.
+Ground truth BSDS được trích đúng các ID trên từ archive, giữ mọi annotator.
+Đầu ra GT và trạng thái riêng xem [bàn giao ngày 05/11](../README_DUC_05_11.md).

@@ -1,0 +1,44 @@
+{
+  "image": "blob_02",
+  "image_sha256": "b0582688cd5d2b1db019e65bfdc5254225b2710637cc9387cfdbde526084bb55",
+  "shape": [
+    256,
+    256
+  ],
+  "coordinate_system": "zero-based; x=column; y=row; pixel units",
+  "origin": "analytic_generator",
+  "status": "READY",
+  "polarity": "dark",
+  "model": "disk",
+  "radius_definition": "disk radius; Gaussian equivalent LoG radius=sqrt(2)*sigma",
+  "objects": [
+    {
+      "id": 1,
+      "x": 52,
+      "y": 64,
+      "radius": 3.0,
+      "disk_radius": 3.0
+    },
+    {
+      "id": 2,
+      "x": 132,
+      "y": 70,
+      "radius": 5.0,
+      "disk_radius": 5.0
+    },
+    {
+      "id": 3,
+      "x": 80,
+      "y": 170,
+      "radius": 7.0,
+      "disk_radius": 7.0
+    },
+    {
+      "id": 4,
+      "x": 188,
+      "y": 180,
+      "radius": 8.0,
+      "disk_radius": 8.0
+    }
+  ]
+}

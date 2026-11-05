@@ -1,0 +1,5204 @@
+{
+  "image": "blob_05",
+  "image_sha256": "40b323f8d2b24a1723d71a545302a31627b460d3e25712e17d8e54b54dde3a92",
+  "shape": [
+    512,
+    512
+  ],
+  "coordinate_system": "zero-based; x=column; y=row; pixel units",
+  "origin": "manual_with_component_suggestions",
+  "status": "DRAFT",
+  "polarity": "bright",
+  "reviewed": false,
+  "reviewer": "Duc",
+  "objects": [
+    {
+      "id": 1,
+      "x": 213.0,
+      "y": 115.5,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        208.0,
+        109.5,
+        218.0,
+        121.5
+      ]
+    },
+    {
+      "id": 2,
+      "x": 31.0,
+      "y": 4.25,
+      "radius": 4.834769901453429,
+      "bbox_xyxy": [
+        25.5,
+        0.0,
+        36.5,
+        8.5
+      ]
+    },
+    {
+      "id": 3,
+      "x": 47.75,
+      "y": 7.0,
+      "radius": 4.873397172404482,
+      "bbox_xyxy": [
+        43.0,
+        2.0,
+        52.5,
+        12.0
+      ]
+    },
+    {
+      "id": 4,
+      "x": 32.75,
+      "y": 29.5,
+      "radius": 5.123475382979799,
+      "bbox_xyxy": [
+        27.5,
+        24.5,
+        38.0,
+        34.5
+      ]
+    },
+    {
+      "id": 5,
+      "x": 59.5,
+      "y": 16.0,
+      "radius": 3.968626966596886,
+      "bbox_xyxy": [
+        55.0,
+        12.5,
+        64.0,
+        19.5
+      ]
+    },
+    {
+      "id": 6,
+      "x": 51.0,
+      "y": 34.75,
+      "radius": 4.123105625617661,
+      "bbox_xyxy": [
+        47.0,
+        30.5,
+        55.0,
+        39.0
+      ]
+    },
+    {
+      "id": 7,
+      "x": 82.0,
+      "y": 12.0,
+      "radius": 4.387482193696061,
+      "bbox_xyxy": [
+        78.5,
+        6.5,
+        85.5,
+        17.5
+      ]
+    },
+    {
+      "id": 8,
+      "x": 66.25,
+      "y": 36.75,
+      "radius": 5.952940449895329,
+      "bbox_xyxy": [
+        61.0,
+        30.0,
+        71.5,
+        43.5
+      ]
+    },
+    {
+      "id": 9,
+      "x": 47.25,
+      "y": 47.25,
+      "radius": 4.493050188902857,
+      "bbox_xyxy": [
+        43.0,
+        42.5,
+        51.5,
+        52.0
+      ]
+    },
+    {
+      "id": 10,
+      "x": 104.0,
+      "y": 20.0,
+      "radius": 4.5,
+      "bbox_xyxy": [
+        99.5,
+        15.5,
+        108.5,
+        24.5
+      ]
+    },
+    {
+      "id": 11,
+      "x": 85.5,
+      "y": 32.75,
+      "radius": 3.856812155135378,
+      "bbox_xyxy": [
+        82.0,
+        28.5,
+        89.0,
+        37.0
+      ]
+    },
+    {
+      "id": 12,
+      "x": 132.25,
+      "y": 23.75,
+      "radius": 5.7282196186948,
+      "bbox_xyxy": [
+        127.0,
+        17.5,
+        137.5,
+        30.0
+      ]
+    },
+    {
+      "id": 13,
+      "x": 154.75,
+      "y": 27.0,
+      "radius": 5.612486080160912,
+      "bbox_xyxy": [
+        149.5,
+        21.0,
+        160.0,
+        33.0
+      ]
+    },
+    {
+      "id": 14,
+      "x": 179.0,
+      "y": 20.0,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        173.5,
+        13.5,
+        184.5,
+        26.5
+      ]
+    },
+    {
+      "id": 15,
+      "x": 196.0,
+      "y": 29.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        190.0,
+        22.5,
+        202.0,
+        35.5
+      ]
+    },
+    {
+      "id": 16,
+      "x": 109.25,
+      "y": 47.75,
+      "radius": 5.494315243958978,
+      "bbox_xyxy": [
+        104.0,
+        42.0,
+        114.5,
+        53.5
+      ]
+    },
+    {
+      "id": 17,
+      "x": 83.5,
+      "y": 55.25,
+      "radius": 6.363961030678928,
+      "bbox_xyxy": [
+        77.5,
+        48.5,
+        89.5,
+        62.0
+      ]
+    },
+    {
+      "id": 18,
+      "x": 53.75,
+      "y": 71.25,
+      "radius": 7.73385414912901,
+      "bbox_xyxy": [
+        45.5,
+        64.0,
+        62.0,
+        78.5
+      ]
+    },
+    {
+      "id": 19,
+      "x": 76.0,
+      "y": 84.75,
+      "radius": 6.093028803476971,
+      "bbox_xyxy": [
+        70.5,
+        78.0,
+        81.5,
+        91.5
+      ]
+    },
+    {
+      "id": 20,
+      "x": 150.75,
+      "y": 52.0,
+      "radius": 6.123724356957945,
+      "bbox_xyxy": [
+        144.5,
+        46.0,
+        157.0,
+        58.0
+      ]
+    },
+    {
+      "id": 21,
+      "x": 175.25,
+      "y": 54.0,
+      "radius": 6.34428877022476,
+      "bbox_xyxy": [
+        169.5,
+        47.0,
+        181.0,
+        61.0
+      ]
+    },
+    {
+      "id": 22,
+      "x": 200.5,
+      "y": 46.0,
+      "radius": 5.0,
+      "bbox_xyxy": [
+        195.5,
+        41.0,
+        205.5,
+        51.0
+      ]
+    },
+    {
+      "id": 23,
+      "x": 201.25,
+      "y": 64.0,
+      "radius": 4.373213921133975,
+      "bbox_xyxy": [
+        197.0,
+        59.5,
+        205.5,
+        68.5
+      ]
+    },
+    {
+      "id": 24,
+      "x": 131.5,
+      "y": 51.25,
+      "radius": 4.358898943540674,
+      "bbox_xyxy": [
+        127.5,
+        46.5,
+        135.5,
+        56.0
+      ]
+    },
+    {
+      "id": 25,
+      "x": 125.5,
+      "y": 61.0,
+      "radius": 4.9749371855331,
+      "bbox_xyxy": [
+        121.0,
+        55.5,
+        130.0,
+        66.5
+      ]
+    },
+    {
+      "id": 26,
+      "x": 128.5,
+      "y": 88.25,
+      "radius": 5.873670062235365,
+      "bbox_xyxy": [
+        122.5,
+        82.5,
+        134.5,
+        94.0
+      ]
+    },
+    {
+      "id": 27,
+      "x": 111.25,
+      "y": 87.25,
+      "radius": 6.959705453537527,
+      "bbox_xyxy": [
+        103.5,
+        81.0,
+        119.0,
+        93.5
+      ]
+    },
+    {
+      "id": 28,
+      "x": 56.5,
+      "y": 105.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        51.0,
+        99.0,
+        62.0,
+        112.0
+      ]
+    },
+    {
+      "id": 29,
+      "x": 38.75,
+      "y": 115.25,
+      "radius": 5.226136240091718,
+      "bbox_xyxy": [
+        34.0,
+        109.5,
+        43.5,
+        121.0
+      ]
+    },
+    {
+      "id": 30,
+      "x": 77.0,
+      "y": 112.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        71.5,
+        106.0,
+        82.5,
+        118.0
+      ]
+    },
+    {
+      "id": 31,
+      "x": 98.75,
+      "y": 109.75,
+      "radius": 4.993746088859544,
+      "bbox_xyxy": [
+        94.0,
+        104.5,
+        103.5,
+        115.0
+      ]
+    },
+    {
+      "id": 32,
+      "x": 114.75,
+      "y": 114.75,
+      "radius": 5.448623679425842,
+      "bbox_xyxy": [
+        110.0,
+        108.5,
+        119.5,
+        121.0
+      ]
+    },
+    {
+      "id": 33,
+      "x": 138.25,
+      "y": 108.75,
+      "radius": 5.356071321407137,
+      "bbox_xyxy": [
+        131.5,
+        104.5,
+        145.0,
+        113.0
+      ]
+    },
+    {
+      "id": 34,
+      "x": 167.0,
+      "y": 83.75,
+      "radius": 7.5,
+      "bbox_xyxy": [
+        158.0,
+        77.5,
+        176.0,
+        90.0
+      ]
+    },
+    {
+      "id": 35,
+      "x": 78.5,
+      "y": 127.25,
+      "radius": 5.361902647381804,
+      "bbox_xyxy": [
+        73.5,
+        121.5,
+        83.5,
+        133.0
+      ]
+    },
+    {
+      "id": 36,
+      "x": 232.0,
+      "y": 71.25,
+      "radius": 5.873670062235365,
+      "bbox_xyxy": [
+        226.0,
+        65.5,
+        238.0,
+        77.0
+      ]
+    },
+    {
+      "id": 37,
+      "x": 193.25,
+      "y": 109.0,
+      "radius": 5.873670062235365,
+      "bbox_xyxy": [
+        187.5,
+        103.0,
+        199.0,
+        115.0
+      ]
+    },
+    {
+      "id": 38,
+      "x": 167.75,
+      "y": 117.0,
+      "radius": 5.766281297335398,
+      "bbox_xyxy": [
+        163.0,
+        110.0,
+        172.5,
+        124.0
+      ]
+    },
+    {
+      "id": 39,
+      "x": 49.0,
+      "y": 155.75,
+      "radius": 7.365459931328117,
+      "bbox_xyxy": [
+        42.0,
+        148.0,
+        56.0,
+        163.5
+      ]
+    },
+    {
+      "id": 40,
+      "x": 80.0,
+      "y": 169.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        75.0,
+        163.0,
+        85.0,
+        175.0
+      ]
+    },
+    {
+      "id": 41,
+      "x": 88.25,
+      "y": 151.25,
+      "radius": 5.448623679425842,
+      "bbox_xyxy": [
+        83.5,
+        145.0,
+        93.0,
+        157.5
+      ]
+    },
+    {
+      "id": 42,
+      "x": 112.0,
+      "y": 150.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        106.5,
+        144.0,
+        117.5,
+        156.0
+      ]
+    },
+    {
+      "id": 43,
+      "x": 122.0,
+      "y": 134.5,
+      "radius": 6.324555320336759,
+      "bbox_xyxy": [
+        114.0,
+        129.5,
+        130.0,
+        139.5
+      ]
+    },
+    {
+      "id": 44,
+      "x": 215.25,
+      "y": 196.0,
+      "radius": 5.5565276927232174,
+      "bbox_xyxy": [
+        210.5,
+        189.5,
+        220.0,
+        202.5
+      ]
+    },
+    {
+      "id": 45,
+      "x": 496.0,
+      "y": 11.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        489.0,
+        5.0,
+        503.0,
+        17.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        489.0,
+        5.0,
+        503.0,
+        17.0
+      ]
+    },
+    {
+      "id": 46,
+      "x": 456.5,
+      "y": 36.5,
+      "radius": 4.769696007084728,
+      "bbox_xyxy": [
+        453.0,
+        30.0,
+        460.0,
+        43.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [
+        "possible_touching_or_elongated_objects"
+      ],
+      "suggested_bbox_xyxy": [
+        453.0,
+        30.0,
+        460.0,
+        43.0
+      ]
+    },
+    {
+      "id": 47,
+      "x": 446.0,
+      "y": 39.5,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        441.0,
+        34.0,
+        451.0,
+        45.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        441.0,
+        34.0,
+        451.0,
+        45.0
+      ]
+    },
+    {
+      "id": 48,
+      "x": 455.0,
+      "y": 51.0,
+      "radius": 5.0,
+      "bbox_xyxy": [
+        450.0,
+        46.0,
+        460.0,
+        56.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        450.0,
+        46.0,
+        460.0,
+        56.0
+      ]
+    },
+    {
+      "id": 49,
+      "x": 496.0,
+      "y": 52.0,
+      "radius": 6.928203230275509,
+      "bbox_xyxy": [
+        488.0,
+        46.0,
+        504.0,
+        58.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        488.0,
+        46.0,
+        504.0,
+        58.0
+      ]
+    },
+    {
+      "id": 50,
+      "x": 418.0,
+      "y": 59.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        412.0,
+        53.0,
+        424.0,
+        65.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        412.0,
+        53.0,
+        424.0,
+        65.0
+      ]
+    },
+    {
+      "id": 51,
+      "x": 393.5,
+      "y": 71.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        388.0,
+        65.0,
+        399.0,
+        77.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        388.0,
+        65.0,
+        399.0,
+        77.0
+      ]
+    },
+    {
+      "id": 52,
+      "x": 443.5,
+      "y": 76.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        437.0,
+        70.0,
+        450.0,
+        82.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        437.0,
+        70.0,
+        450.0,
+        82.0
+      ]
+    },
+    {
+      "id": 53,
+      "x": 429.5,
+      "y": 84.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        423.0,
+        79.0,
+        436.0,
+        90.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        423.0,
+        79.0,
+        436.0,
+        90.0
+      ]
+    },
+    {
+      "id": 54,
+      "x": 498.5,
+      "y": 97.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        492.0,
+        91.0,
+        505.0,
+        104.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        492.0,
+        91.0,
+        505.0,
+        104.0
+      ]
+    },
+    {
+      "id": 55,
+      "x": 481.5,
+      "y": 100.0,
+      "radius": 5.612486080160912,
+      "bbox_xyxy": [
+        477.0,
+        93.0,
+        486.0,
+        107.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        477.0,
+        93.0,
+        486.0,
+        107.0
+      ]
+    },
+    {
+      "id": 56,
+      "x": 430.5,
+      "y": 128.0,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        424.0,
+        123.0,
+        437.0,
+        133.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        424.0,
+        123.0,
+        437.0,
+        133.0
+      ]
+    },
+    {
+      "id": 57,
+      "x": 470.0,
+      "y": 135.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        464.0,
+        130.0,
+        476.0,
+        141.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        464.0,
+        130.0,
+        476.0,
+        141.0
+      ]
+    },
+    {
+      "id": 58,
+      "x": 441.5,
+      "y": 140.5,
+      "radius": 5.408326913195984,
+      "bbox_xyxy": [
+        435.0,
+        136.0,
+        448.0,
+        145.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        435.0,
+        136.0,
+        448.0,
+        145.0
+      ]
+    },
+    {
+      "id": 59,
+      "x": 422.5,
+      "y": 152.0,
+      "radius": 6.708203932499369,
+      "bbox_xyxy": [
+        415.0,
+        146.0,
+        430.0,
+        158.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        415.0,
+        146.0,
+        430.0,
+        158.0
+      ]
+    },
+    {
+      "id": 60,
+      "x": 478.5,
+      "y": 158.0,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        472.0,
+        153.0,
+        485.0,
+        163.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        472.0,
+        153.0,
+        485.0,
+        163.0
+      ]
+    },
+    {
+      "id": 61,
+      "x": 454.0,
+      "y": 175.0,
+      "radius": 7.483314773547883,
+      "bbox_xyxy": [
+        446.0,
+        168.0,
+        462.0,
+        182.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        446.0,
+        168.0,
+        462.0,
+        182.0
+      ]
+    },
+    {
+      "id": 62,
+      "x": 436.0,
+      "y": 180.0,
+      "radius": 6.928203230275509,
+      "bbox_xyxy": [
+        430.0,
+        172.0,
+        442.0,
+        188.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        430.0,
+        172.0,
+        442.0,
+        188.0
+      ]
+    },
+    {
+      "id": 63,
+      "x": 489.0,
+      "y": 178.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        482.0,
+        172.0,
+        496.0,
+        185.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        482.0,
+        172.0,
+        496.0,
+        185.0
+      ]
+    },
+    {
+      "id": 64,
+      "x": 387.0,
+      "y": 199.5,
+      "radius": 7.211102550927978,
+      "bbox_xyxy": [
+        379.0,
+        193.0,
+        395.0,
+        206.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        379.0,
+        193.0,
+        395.0,
+        206.0
+      ]
+    },
+    {
+      "id": 65,
+      "x": 452.5,
+      "y": 201.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        446.0,
+        195.0,
+        459.0,
+        207.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        446.0,
+        195.0,
+        459.0,
+        207.0
+      ]
+    },
+    {
+      "id": 66,
+      "x": 427.5,
+      "y": 202.5,
+      "radius": 4.9749371855331,
+      "bbox_xyxy": [
+        423.0,
+        197.0,
+        432.0,
+        208.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        423.0,
+        197.0,
+        432.0,
+        208.0
+      ]
+    },
+    {
+      "id": 67,
+      "x": 485.0,
+      "y": 209.5,
+      "radius": 6.708203932499369,
+      "bbox_xyxy": [
+        479.0,
+        202.0,
+        491.0,
+        217.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        479.0,
+        202.0,
+        491.0,
+        217.0
+      ]
+    },
+    {
+      "id": 68,
+      "x": 253.5,
+      "y": 215.0,
+      "radius": 5.196152422706632,
+      "bbox_xyxy": [
+        249.0,
+        209.0,
+        258.0,
+        221.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        249.0,
+        209.0,
+        258.0,
+        221.0
+      ]
+    },
+    {
+      "id": 69,
+      "x": 433.5,
+      "y": 218.5,
+      "radius": 7.984359711335656,
+      "bbox_xyxy": [
+        425.0,
+        211.0,
+        442.0,
+        226.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        425.0,
+        211.0,
+        442.0,
+        226.0
+      ]
+    },
+    {
+      "id": 70,
+      "x": 265.0,
+      "y": 221.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        259.0,
+        216.0,
+        271.0,
+        226.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        259.0,
+        216.0,
+        271.0,
+        226.0
+      ]
+    },
+    {
+      "id": 71,
+      "x": 402.5,
+      "y": 227.0,
+      "radius": 7.245688373094719,
+      "bbox_xyxy": [
+        395.0,
+        220.0,
+        410.0,
+        234.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        395.0,
+        220.0,
+        410.0,
+        234.0
+      ]
+    },
+    {
+      "id": 72,
+      "x": 468.0,
+      "y": 229.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        462.0,
+        222.0,
+        474.0,
+        236.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        462.0,
+        222.0,
+        474.0,
+        236.0
+      ]
+    },
+    {
+      "id": 73,
+      "x": 264.0,
+      "y": 238.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        257.0,
+        232.0,
+        271.0,
+        245.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        257.0,
+        232.0,
+        271.0,
+        245.0
+      ]
+    },
+    {
+      "id": 74,
+      "x": 447.5,
+      "y": 241.0,
+      "radius": 7.713624310270756,
+      "bbox_xyxy": [
+        439.0,
+        234.0,
+        456.0,
+        248.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        439.0,
+        234.0,
+        456.0,
+        248.0
+      ]
+    },
+    {
+      "id": 75,
+      "x": 499.5,
+      "y": 247.0,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        493.0,
+        240.0,
+        506.0,
+        254.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        493.0,
+        240.0,
+        506.0,
+        254.0
+      ]
+    },
+    {
+      "id": 76,
+      "x": 233.5,
+      "y": 249.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        227.0,
+        244.0,
+        240.0,
+        255.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        227.0,
+        244.0,
+        240.0,
+        255.0
+      ]
+    },
+    {
+      "id": 77,
+      "x": 286.5,
+      "y": 252.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        281.0,
+        247.0,
+        292.0,
+        257.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        281.0,
+        247.0,
+        292.0,
+        257.0
+      ]
+    },
+    {
+      "id": 78,
+      "x": 462.5,
+      "y": 254.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        457.0,
+        248.0,
+        468.0,
+        261.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        457.0,
+        248.0,
+        468.0,
+        261.0
+      ]
+    },
+    {
+      "id": 79,
+      "x": 308.5,
+      "y": 257.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        303.0,
+        252.0,
+        314.0,
+        263.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        303.0,
+        252.0,
+        314.0,
+        263.0
+      ]
+    },
+    {
+      "id": 80,
+      "x": 225.0,
+      "y": 261.5,
+      "radius": 4.743416490252569,
+      "bbox_xyxy": [
+        220.0,
+        257.0,
+        230.0,
+        266.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        220.0,
+        257.0,
+        230.0,
+        266.0
+      ]
+    },
+    {
+      "id": 81,
+      "x": 304.5,
+      "y": 269.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        298.0,
+        264.0,
+        311.0,
+        275.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        298.0,
+        264.0,
+        311.0,
+        275.0
+      ]
+    },
+    {
+      "id": 82,
+      "x": 259.5,
+      "y": 273.0,
+      "radius": 7.245688373094719,
+      "bbox_xyxy": [
+        252.0,
+        266.0,
+        267.0,
+        280.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        252.0,
+        266.0,
+        267.0,
+        280.0
+      ]
+    },
+    {
+      "id": 83,
+      "x": 443.5,
+      "y": 279.0,
+      "radius": 7.245688373094719,
+      "bbox_xyxy": [
+        436.0,
+        272.0,
+        451.0,
+        286.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        436.0,
+        272.0,
+        451.0,
+        286.0
+      ]
+    },
+    {
+      "id": 84,
+      "x": 225.0,
+      "y": 285.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        218.0,
+        279.0,
+        232.0,
+        291.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        218.0,
+        279.0,
+        232.0,
+        291.0
+      ]
+    },
+    {
+      "id": 85,
+      "x": 396.5,
+      "y": 287.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        390.0,
+        281.0,
+        403.0,
+        294.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        390.0,
+        281.0,
+        403.0,
+        294.0
+      ]
+    },
+    {
+      "id": 86,
+      "x": 485.5,
+      "y": 287.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        480.0,
+        281.0,
+        491.0,
+        293.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        480.0,
+        281.0,
+        491.0,
+        293.0
+      ]
+    },
+    {
+      "id": 87,
+      "x": 286.0,
+      "y": 288.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        279.0,
+        282.0,
+        293.0,
+        294.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        279.0,
+        282.0,
+        293.0,
+        294.0
+      ]
+    },
+    {
+      "id": 88,
+      "x": 306.5,
+      "y": 287.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        301.0,
+        282.0,
+        312.0,
+        292.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        301.0,
+        282.0,
+        312.0,
+        292.0
+      ]
+    },
+    {
+      "id": 89,
+      "x": 413.0,
+      "y": 290.5,
+      "radius": 7.14142842854285,
+      "bbox_xyxy": [
+        407.0,
+        282.0,
+        419.0,
+        299.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        407.0,
+        282.0,
+        419.0,
+        299.0
+      ]
+    },
+    {
+      "id": 90,
+      "x": 209.5,
+      "y": 291.5,
+      "radius": 7.5,
+      "bbox_xyxy": [
+        202.0,
+        284.0,
+        217.0,
+        299.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        202.0,
+        284.0,
+        217.0,
+        299.0
+      ]
+    },
+    {
+      "id": 91,
+      "x": 134.5,
+      "y": 292.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        129.0,
+        287.0,
+        140.0,
+        298.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        129.0,
+        287.0,
+        140.0,
+        298.0
+      ]
+    },
+    {
+      "id": 92,
+      "x": 383.5,
+      "y": 295.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        377.0,
+        289.0,
+        390.0,
+        301.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        377.0,
+        289.0,
+        390.0,
+        301.0
+      ]
+    },
+    {
+      "id": 93,
+      "x": 427.5,
+      "y": 295.5,
+      "radius": 6.98212002188447,
+      "bbox_xyxy": [
+        420.0,
+        289.0,
+        435.0,
+        302.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        420.0,
+        289.0,
+        435.0,
+        302.0
+      ]
+    },
+    {
+      "id": 94,
+      "x": 467.5,
+      "y": 294.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        462.0,
+        289.0,
+        473.0,
+        299.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        462.0,
+        289.0,
+        473.0,
+        299.0
+      ]
+    },
+    {
+      "id": 95,
+      "x": 331.0,
+      "y": 295.0,
+      "radius": 5.0,
+      "bbox_xyxy": [
+        326.0,
+        290.0,
+        336.0,
+        300.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        326.0,
+        290.0,
+        336.0,
+        300.0
+      ]
+    },
+    {
+      "id": 96,
+      "x": 263.0,
+      "y": 297.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        258.0,
+        291.0,
+        268.0,
+        303.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        258.0,
+        291.0,
+        268.0,
+        303.0
+      ]
+    },
+    {
+      "id": 97,
+      "x": 110.0,
+      "y": 298.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        104.0,
+        292.0,
+        116.0,
+        305.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        104.0,
+        292.0,
+        116.0,
+        305.0
+      ]
+    },
+    {
+      "id": 98,
+      "x": 312.0,
+      "y": 300.0,
+      "radius": 5.0,
+      "bbox_xyxy": [
+        307.0,
+        295.0,
+        317.0,
+        305.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        307.0,
+        295.0,
+        317.0,
+        305.0
+      ]
+    },
+    {
+      "id": 99,
+      "x": 496.5,
+      "y": 306.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        491.0,
+        301.0,
+        502.0,
+        312.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        491.0,
+        301.0,
+        502.0,
+        312.0
+      ]
+    },
+    {
+      "id": 100,
+      "x": 248.0,
+      "y": 309.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        242.0,
+        303.0,
+        254.0,
+        315.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        242.0,
+        303.0,
+        254.0,
+        315.0
+      ]
+    },
+    {
+      "id": 101,
+      "x": 275.5,
+      "y": 308.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        270.0,
+        303.0,
+        281.0,
+        313.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        270.0,
+        303.0,
+        281.0,
+        313.0
+      ]
+    },
+    {
+      "id": 102,
+      "x": 448.5,
+      "y": 308.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        443.0,
+        303.0,
+        454.0,
+        313.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        443.0,
+        303.0,
+        454.0,
+        313.0
+      ]
+    },
+    {
+      "id": 103,
+      "x": 475.5,
+      "y": 308.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        469.0,
+        303.0,
+        482.0,
+        314.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        469.0,
+        303.0,
+        482.0,
+        314.0
+      ]
+    },
+    {
+      "id": 104,
+      "x": 366.0,
+      "y": 309.0,
+      "radius": 5.916079783099616,
+      "bbox_xyxy": [
+        359.0,
+        304.0,
+        373.0,
+        314.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        359.0,
+        304.0,
+        373.0,
+        314.0
+      ]
+    },
+    {
+      "id": 105,
+      "x": 75.0,
+      "y": 313.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        68.0,
+        307.0,
+        82.0,
+        319.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        68.0,
+        307.0,
+        82.0,
+        319.0
+      ]
+    },
+    {
+      "id": 106,
+      "x": 321.0,
+      "y": 314.5,
+      "radius": 5.196152422706632,
+      "bbox_xyxy": [
+        315.0,
+        310.0,
+        327.0,
+        319.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        315.0,
+        310.0,
+        327.0,
+        319.0
+      ]
+    },
+    {
+      "id": 107,
+      "x": 390.5,
+      "y": 316.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        384.0,
+        310.0,
+        397.0,
+        322.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        384.0,
+        310.0,
+        397.0,
+        322.0
+      ]
+    },
+    {
+      "id": 108,
+      "x": 417.5,
+      "y": 316.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        412.0,
+        310.0,
+        423.0,
+        322.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        412.0,
+        310.0,
+        423.0,
+        322.0
+      ]
+    },
+    {
+      "id": 109,
+      "x": 456.5,
+      "y": 315.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        451.0,
+        310.0,
+        462.0,
+        321.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        451.0,
+        310.0,
+        462.0,
+        321.0
+      ]
+    },
+    {
+      "id": 110,
+      "x": 427.0,
+      "y": 317.5,
+      "radius": 5.0990195135927845,
+      "bbox_xyxy": [
+        423.0,
+        311.0,
+        431.0,
+        324.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        423.0,
+        311.0,
+        431.0,
+        324.0
+      ]
+    },
+    {
+      "id": 111,
+      "x": 93.5,
+      "y": 319.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        87.0,
+        313.0,
+        100.0,
+        326.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        87.0,
+        313.0,
+        100.0,
+        326.0
+      ]
+    },
+    {
+      "id": 112,
+      "x": 437.0,
+      "y": 321.5,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        432.0,
+        315.0,
+        442.0,
+        328.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        432.0,
+        315.0,
+        442.0,
+        328.0
+      ]
+    },
+    {
+      "id": 113,
+      "x": 504.0,
+      "y": 320.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        498.0,
+        315.0,
+        510.0,
+        325.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        498.0,
+        315.0,
+        510.0,
+        325.0
+      ]
+    },
+    {
+      "id": 114,
+      "x": 475.0,
+      "y": 323.0,
+      "radius": 7.0,
+      "bbox_xyxy": [
+        468.0,
+        316.0,
+        482.0,
+        330.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        468.0,
+        316.0,
+        482.0,
+        330.0
+      ]
+    },
+    {
+      "id": 115,
+      "x": 259.5,
+      "y": 322.0,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        253.0,
+        317.0,
+        266.0,
+        327.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        253.0,
+        317.0,
+        266.0,
+        327.0
+      ]
+    },
+    {
+      "id": 116,
+      "x": 313.0,
+      "y": 329.5,
+      "radius": 7.745966692414834,
+      "bbox_xyxy": [
+        305.0,
+        322.0,
+        321.0,
+        337.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        305.0,
+        322.0,
+        321.0,
+        337.0
+      ]
+    },
+    {
+      "id": 117,
+      "x": 446.0,
+      "y": 328.5,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        441.0,
+        323.0,
+        451.0,
+        334.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        441.0,
+        323.0,
+        451.0,
+        334.0
+      ]
+    },
+    {
+      "id": 118,
+      "x": 295.5,
+      "y": 332.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        289.0,
+        326.0,
+        302.0,
+        338.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        289.0,
+        326.0,
+        302.0,
+        338.0
+      ]
+    },
+    {
+      "id": 119,
+      "x": 384.5,
+      "y": 334.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        378.0,
+        329.0,
+        391.0,
+        340.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        378.0,
+        329.0,
+        391.0,
+        340.0
+      ]
+    },
+    {
+      "id": 120,
+      "x": 124.5,
+      "y": 335.5,
+      "radius": 5.809475019311125,
+      "bbox_xyxy": [
+        117.0,
+        331.0,
+        132.0,
+        340.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        117.0,
+        331.0,
+        132.0,
+        340.0
+      ]
+    },
+    {
+      "id": 121,
+      "x": 489.5,
+      "y": 340.0,
+      "radius": 7.245688373094719,
+      "bbox_xyxy": [
+        482.0,
+        333.0,
+        497.0,
+        347.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        482.0,
+        333.0,
+        497.0,
+        347.0
+      ]
+    },
+    {
+      "id": 122,
+      "x": 268.5,
+      "y": 339.0,
+      "radius": 4.743416490252569,
+      "bbox_xyxy": [
+        264.0,
+        334.0,
+        273.0,
+        344.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        264.0,
+        334.0,
+        273.0,
+        344.0
+      ]
+    },
+    {
+      "id": 123,
+      "x": 406.0,
+      "y": 342.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        400.0,
+        336.0,
+        412.0,
+        348.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        400.0,
+        336.0,
+        412.0,
+        348.0
+      ]
+    },
+    {
+      "id": 124,
+      "x": 332.5,
+      "y": 345.5,
+      "radius": 7.433034373659253,
+      "bbox_xyxy": [
+        326.0,
+        337.0,
+        339.0,
+        354.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        326.0,
+        337.0,
+        339.0,
+        354.0
+      ]
+    },
+    {
+      "id": 125,
+      "x": 99.5,
+      "y": 343.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        93.0,
+        338.0,
+        106.0,
+        349.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        93.0,
+        338.0,
+        106.0,
+        349.0
+      ]
+    },
+    {
+      "id": 126,
+      "x": 16.5,
+      "y": 345.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        11.0,
+        340.0,
+        22.0,
+        350.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        11.0,
+        340.0,
+        22.0,
+        350.0
+      ]
+    },
+    {
+      "id": 127,
+      "x": 456.5,
+      "y": 348.5,
+      "radius": 6.98212002188447,
+      "bbox_xyxy": [
+        450.0,
+        341.0,
+        463.0,
+        356.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        450.0,
+        341.0,
+        463.0,
+        356.0
+      ]
+    },
+    {
+      "id": 128,
+      "x": 286.5,
+      "y": 350.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        281.0,
+        344.0,
+        292.0,
+        356.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        281.0,
+        344.0,
+        292.0,
+        356.0
+      ]
+    },
+    {
+      "id": 129,
+      "x": 249.5,
+      "y": 355.5,
+      "radius": 6.422616289332565,
+      "bbox_xyxy": [
+        244.0,
+        348.0,
+        255.0,
+        363.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        244.0,
+        348.0,
+        255.0,
+        363.0
+      ]
+    },
+    {
+      "id": 130,
+      "x": 309.0,
+      "y": 354.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        303.0,
+        348.0,
+        315.0,
+        361.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        303.0,
+        348.0,
+        315.0,
+        361.0
+      ]
+    },
+    {
+      "id": 131,
+      "x": 379.0,
+      "y": 353.5,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        374.0,
+        348.0,
+        384.0,
+        359.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        374.0,
+        348.0,
+        384.0,
+        359.0
+      ]
+    },
+    {
+      "id": 132,
+      "x": 403.5,
+      "y": 359.5,
+      "radius": 9.447221813845593,
+      "bbox_xyxy": [
+        395.0,
+        349.0,
+        412.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        395.0,
+        349.0,
+        412.0,
+        370.0
+      ]
+    },
+    {
+      "id": 133,
+      "x": 478.5,
+      "y": 357.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        472.0,
+        351.0,
+        485.0,
+        363.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        472.0,
+        351.0,
+        485.0,
+        363.0
+      ]
+    },
+    {
+      "id": 134,
+      "x": 133.0,
+      "y": 360.5,
+      "radius": 7.245688373094719,
+      "bbox_xyxy": [
+        126.0,
+        353.0,
+        140.0,
+        368.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        126.0,
+        353.0,
+        140.0,
+        368.0
+      ]
+    },
+    {
+      "id": 135,
+      "x": 491.5,
+      "y": 359.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        486.0,
+        353.0,
+        497.0,
+        365.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        486.0,
+        353.0,
+        497.0,
+        365.0
+      ]
+    },
+    {
+      "id": 136,
+      "x": 36.0,
+      "y": 359.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        30.0,
+        354.0,
+        42.0,
+        365.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        30.0,
+        354.0,
+        42.0,
+        365.0
+      ]
+    },
+    {
+      "id": 137,
+      "x": 338.0,
+      "y": 363.5,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        333.0,
+        357.0,
+        343.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        333.0,
+        357.0,
+        343.0,
+        370.0
+      ]
+    },
+    {
+      "id": 138,
+      "x": 435.0,
+      "y": 363.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        429.0,
+        357.0,
+        441.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        429.0,
+        357.0,
+        441.0,
+        370.0
+      ]
+    },
+    {
+      "id": 139,
+      "x": 15.0,
+      "y": 364.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        9.0,
+        358.0,
+        21.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        9.0,
+        358.0,
+        21.0,
+        370.0
+      ]
+    },
+    {
+      "id": 140,
+      "x": 240.0,
+      "y": 364.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        235.0,
+        358.0,
+        245.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        235.0,
+        358.0,
+        245.0,
+        370.0
+      ]
+    },
+    {
+      "id": 141,
+      "x": 267.5,
+      "y": 366.5,
+      "radius": 7.984359711335656,
+      "bbox_xyxy": [
+        260.0,
+        358.0,
+        275.0,
+        375.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        260.0,
+        358.0,
+        275.0,
+        375.0
+      ]
+    },
+    {
+      "id": 142,
+      "x": 292.5,
+      "y": 365.5,
+      "radius": 7.5,
+      "bbox_xyxy": [
+        285.0,
+        358.0,
+        300.0,
+        373.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        285.0,
+        358.0,
+        300.0,
+        373.0
+      ]
+    },
+    {
+      "id": 143,
+      "x": 356.0,
+      "y": 364.5,
+      "radius": 6.2048368229954285,
+      "bbox_xyxy": [
+        349.0,
+        359.0,
+        363.0,
+        370.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        349.0,
+        359.0,
+        363.0,
+        370.0
+      ]
+    },
+    {
+      "id": 144,
+      "x": 420.0,
+      "y": 368.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        414.0,
+        363.0,
+        426.0,
+        373.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        414.0,
+        363.0,
+        426.0,
+        373.0
+      ]
+    },
+    {
+      "id": 145,
+      "x": 226.5,
+      "y": 370.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        220.0,
+        364.0,
+        233.0,
+        377.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        220.0,
+        364.0,
+        233.0,
+        377.0
+      ]
+    },
+    {
+      "id": 146,
+      "x": 393.0,
+      "y": 372.5,
+      "radius": 7.211102550927978,
+      "bbox_xyxy": [
+        385.0,
+        366.0,
+        401.0,
+        379.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        385.0,
+        366.0,
+        401.0,
+        379.0
+      ]
+    },
+    {
+      "id": 147,
+      "x": 484.5,
+      "y": 375.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        478.0,
+        369.0,
+        491.0,
+        381.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        478.0,
+        369.0,
+        491.0,
+        381.0
+      ]
+    },
+    {
+      "id": 148,
+      "x": 441.0,
+      "y": 377.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        435.0,
+        370.0,
+        447.0,
+        384.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        435.0,
+        370.0,
+        447.0,
+        384.0
+      ]
+    },
+    {
+      "id": 149,
+      "x": 62.0,
+      "y": 379.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        56.0,
+        373.0,
+        68.0,
+        386.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        56.0,
+        373.0,
+        68.0,
+        386.0
+      ]
+    },
+    {
+      "id": 150,
+      "x": 242.5,
+      "y": 379.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        237.0,
+        373.0,
+        248.0,
+        385.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        237.0,
+        373.0,
+        248.0,
+        385.0
+      ]
+    },
+    {
+      "id": 151,
+      "x": 455.5,
+      "y": 379.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        449.0,
+        373.0,
+        462.0,
+        386.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        449.0,
+        373.0,
+        462.0,
+        386.0
+      ]
+    },
+    {
+      "id": 152,
+      "x": 170.5,
+      "y": 380.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        165.0,
+        375.0,
+        176.0,
+        386.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        165.0,
+        375.0,
+        176.0,
+        386.0
+      ]
+    },
+    {
+      "id": 153,
+      "x": 212.5,
+      "y": 385.0,
+      "radius": 6.6332495807108,
+      "bbox_xyxy": [
+        207.0,
+        377.0,
+        218.0,
+        393.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        207.0,
+        377.0,
+        218.0,
+        393.0
+      ]
+    },
+    {
+      "id": 154,
+      "x": 229.0,
+      "y": 383.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        224.0,
+        377.0,
+        234.0,
+        389.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        224.0,
+        377.0,
+        234.0,
+        389.0
+      ]
+    },
+    {
+      "id": 155,
+      "x": 138.5,
+      "y": 383.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        133.0,
+        378.0,
+        144.0,
+        388.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        133.0,
+        378.0,
+        144.0,
+        388.0
+      ]
+    },
+    {
+      "id": 156,
+      "x": 302.0,
+      "y": 383.0,
+      "radius": 5.916079783099616,
+      "bbox_xyxy": [
+        295.0,
+        378.0,
+        309.0,
+        388.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        295.0,
+        378.0,
+        309.0,
+        388.0
+      ]
+    },
+    {
+      "id": 157,
+      "x": 348.5,
+      "y": 386.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        342.0,
+        380.0,
+        355.0,
+        393.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        342.0,
+        380.0,
+        355.0,
+        393.0
+      ]
+    },
+    {
+      "id": 158,
+      "x": 22.0,
+      "y": 391.0,
+      "radius": 7.483314773547883,
+      "bbox_xyxy": [
+        15.0,
+        383.0,
+        29.0,
+        399.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        15.0,
+        383.0,
+        29.0,
+        399.0
+      ]
+    },
+    {
+      "id": 159,
+      "x": 402.0,
+      "y": 389.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        396.0,
+        383.0,
+        408.0,
+        396.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        396.0,
+        383.0,
+        408.0,
+        396.0
+      ]
+    },
+    {
+      "id": 160,
+      "x": 40.0,
+      "y": 390.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        33.0,
+        384.0,
+        47.0,
+        397.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        33.0,
+        384.0,
+        47.0,
+        397.0
+      ]
+    },
+    {
+      "id": 161,
+      "x": 331.5,
+      "y": 391.5,
+      "radius": 7.5,
+      "bbox_xyxy": [
+        324.0,
+        384.0,
+        339.0,
+        399.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        324.0,
+        384.0,
+        339.0,
+        399.0
+      ]
+    },
+    {
+      "id": 162,
+      "x": 472.0,
+      "y": 392.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        465.0,
+        386.0,
+        479.0,
+        399.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        465.0,
+        386.0,
+        479.0,
+        399.0
+      ]
+    },
+    {
+      "id": 163,
+      "x": 151.5,
+      "y": 392.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        146.0,
+        387.0,
+        157.0,
+        398.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        146.0,
+        387.0,
+        157.0,
+        398.0
+      ]
+    },
+    {
+      "id": 164,
+      "x": 186.0,
+      "y": 396.0,
+      "radius": 7.3484692283495345,
+      "bbox_xyxy": [
+        180.0,
+        387.0,
+        192.0,
+        405.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        180.0,
+        387.0,
+        192.0,
+        405.0
+      ]
+    },
+    {
+      "id": 165,
+      "x": 272.0,
+      "y": 394.5,
+      "radius": 7.745966692414834,
+      "bbox_xyxy": [
+        264.0,
+        387.0,
+        280.0,
+        402.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        264.0,
+        387.0,
+        280.0,
+        402.0
+      ]
+    },
+    {
+      "id": 166,
+      "x": 444.5,
+      "y": 403.5,
+      "radius": 8.5,
+      "bbox_xyxy": [
+        436.0,
+        395.0,
+        453.0,
+        412.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        436.0,
+        395.0,
+        453.0,
+        412.0
+      ]
+    },
+    {
+      "id": 167,
+      "x": 304.5,
+      "y": 402.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        298.0,
+        396.0,
+        311.0,
+        408.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        298.0,
+        396.0,
+        311.0,
+        408.0
+      ]
+    },
+    {
+      "id": 168,
+      "x": 197.5,
+      "y": 403.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        192.0,
+        398.0,
+        203.0,
+        409.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        192.0,
+        398.0,
+        203.0,
+        409.0
+      ]
+    },
+    {
+      "id": 169,
+      "x": 63.5,
+      "y": 404.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        57.0,
+        399.0,
+        70.0,
+        410.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        57.0,
+        399.0,
+        70.0,
+        410.0
+      ]
+    },
+    {
+      "id": 170,
+      "x": 423.0,
+      "y": 405.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        417.0,
+        400.0,
+        429.0,
+        411.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        417.0,
+        400.0,
+        429.0,
+        411.0
+      ]
+    },
+    {
+      "id": 171,
+      "x": 366.5,
+      "y": 409.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        360.0,
+        403.0,
+        373.0,
+        415.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        360.0,
+        403.0,
+        373.0,
+        415.0
+      ]
+    },
+    {
+      "id": 172,
+      "x": 390.0,
+      "y": 408.5,
+      "radius": 5.196152422706632,
+      "bbox_xyxy": [
+        384.0,
+        404.0,
+        396.0,
+        413.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        384.0,
+        404.0,
+        396.0,
+        413.0
+      ]
+    },
+    {
+      "id": 173,
+      "x": 461.5,
+      "y": 413.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        456.0,
+        408.0,
+        467.0,
+        419.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        456.0,
+        408.0,
+        467.0,
+        419.0
+      ]
+    },
+    {
+      "id": 174,
+      "x": 284.0,
+      "y": 415.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        277.0,
+        409.0,
+        291.0,
+        422.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        277.0,
+        409.0,
+        291.0,
+        422.0
+      ]
+    },
+    {
+      "id": 175,
+      "x": 220.0,
+      "y": 416.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        214.0,
+        410.0,
+        226.0,
+        422.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        214.0,
+        410.0,
+        226.0,
+        422.0
+      ]
+    },
+    {
+      "id": 176,
+      "x": 328.0,
+      "y": 416.5,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        321.0,
+        410.0,
+        335.0,
+        423.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        321.0,
+        410.0,
+        335.0,
+        423.0
+      ]
+    },
+    {
+      "id": 177,
+      "x": 479.5,
+      "y": 415.0,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        473.0,
+        410.0,
+        486.0,
+        420.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        473.0,
+        410.0,
+        486.0,
+        420.0
+      ]
+    },
+    {
+      "id": 178,
+      "x": 143.0,
+      "y": 419.0,
+      "radius": 7.483314773547883,
+      "bbox_xyxy": [
+        135.0,
+        412.0,
+        151.0,
+        426.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        135.0,
+        412.0,
+        151.0,
+        426.0
+      ]
+    },
+    {
+      "id": 179,
+      "x": 394.0,
+      "y": 418.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        388.0,
+        413.0,
+        400.0,
+        424.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        388.0,
+        413.0,
+        400.0,
+        424.0
+      ]
+    },
+    {
+      "id": 180,
+      "x": 344.0,
+      "y": 419.5,
+      "radius": 4.743416490252569,
+      "bbox_xyxy": [
+        339.0,
+        415.0,
+        349.0,
+        424.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        339.0,
+        415.0,
+        349.0,
+        424.0
+      ]
+    },
+    {
+      "id": 181,
+      "x": 444.5,
+      "y": 420.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        438.0,
+        415.0,
+        451.0,
+        426.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        438.0,
+        415.0,
+        451.0,
+        426.0
+      ]
+    },
+    {
+      "id": 182,
+      "x": 360.5,
+      "y": 422.5,
+      "radius": 6.5,
+      "bbox_xyxy": [
+        354.0,
+        416.0,
+        367.0,
+        429.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        354.0,
+        416.0,
+        367.0,
+        429.0
+      ]
+    },
+    {
+      "id": 183,
+      "x": 34.5,
+      "y": 424.0,
+      "radius": 6.745368781616021,
+      "bbox_xyxy": [
+        28.0,
+        417.0,
+        41.0,
+        431.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        28.0,
+        417.0,
+        41.0,
+        431.0
+      ]
+    },
+    {
+      "id": 184,
+      "x": 56.0,
+      "y": 427.0,
+      "radius": 7.483314773547883,
+      "bbox_xyxy": [
+        49.0,
+        419.0,
+        63.0,
+        435.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        49.0,
+        419.0,
+        63.0,
+        435.0
+      ]
+    },
+    {
+      "id": 185,
+      "x": 464.0,
+      "y": 425.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        458.0,
+        419.0,
+        470.0,
+        431.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        458.0,
+        419.0,
+        470.0,
+        431.0
+      ]
+    },
+    {
+      "id": 186,
+      "x": 486.0,
+      "y": 430.5,
+      "radius": 6.2048368229954285,
+      "bbox_xyxy": [
+        479.0,
+        425.0,
+        493.0,
+        436.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        479.0,
+        425.0,
+        493.0,
+        436.0
+      ]
+    },
+    {
+      "id": 187,
+      "x": 292.0,
+      "y": 433.0,
+      "radius": 7.937253933193772,
+      "bbox_xyxy": [
+        283.0,
+        426.0,
+        301.0,
+        440.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        283.0,
+        426.0,
+        301.0,
+        440.0
+      ]
+    },
+    {
+      "id": 188,
+      "x": 345.5,
+      "y": 431.0,
+      "radius": 4.69041575982343,
+      "bbox_xyxy": [
+        340.0,
+        427.0,
+        351.0,
+        435.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        340.0,
+        427.0,
+        351.0,
+        435.0
+      ]
+    },
+    {
+      "id": 189,
+      "x": 107.5,
+      "y": 437.0,
+      "radius": 6.708203932499369,
+      "bbox_xyxy": [
+        100.0,
+        431.0,
+        115.0,
+        443.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        100.0,
+        431.0,
+        115.0,
+        443.0
+      ]
+    },
+    {
+      "id": 190,
+      "x": 454.5,
+      "y": 437.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        449.0,
+        431.0,
+        460.0,
+        443.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        449.0,
+        431.0,
+        460.0,
+        443.0
+      ]
+    },
+    {
+      "id": 191,
+      "x": 325.0,
+      "y": 439.5,
+      "radius": 7.211102550927978,
+      "bbox_xyxy": [
+        317.0,
+        433.0,
+        333.0,
+        446.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        317.0,
+        433.0,
+        333.0,
+        446.0
+      ]
+    },
+    {
+      "id": 192,
+      "x": 474.5,
+      "y": 440.5,
+      "radius": 5.408326913195984,
+      "bbox_xyxy": [
+        470.0,
+        434.0,
+        479.0,
+        447.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        470.0,
+        434.0,
+        479.0,
+        447.0
+      ]
+    },
+    {
+      "id": 193,
+      "x": 144.5,
+      "y": 443.0,
+      "radius": 7.211102550927978,
+      "bbox_xyxy": [
+        138.0,
+        435.0,
+        151.0,
+        451.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        138.0,
+        435.0,
+        151.0,
+        451.0
+      ]
+    },
+    {
+      "id": 194,
+      "x": 48.5,
+      "y": 443.0,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        42.0,
+        437.0,
+        55.0,
+        449.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        42.0,
+        437.0,
+        55.0,
+        449.0
+      ]
+    },
+    {
+      "id": 195,
+      "x": 417.5,
+      "y": 444.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        412.0,
+        438.0,
+        423.0,
+        451.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        412.0,
+        438.0,
+        423.0,
+        451.0
+      ]
+    },
+    {
+      "id": 196,
+      "x": 24.5,
+      "y": 445.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        19.0,
+        440.0,
+        30.0,
+        450.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        19.0,
+        440.0,
+        30.0,
+        450.0
+      ]
+    },
+    {
+      "id": 197,
+      "x": 497.5,
+      "y": 447.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        492.0,
+        442.0,
+        503.0,
+        453.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        492.0,
+        442.0,
+        503.0,
+        453.0
+      ]
+    },
+    {
+      "id": 198,
+      "x": 352.5,
+      "y": 449.0,
+      "radius": 6.708203932499369,
+      "bbox_xyxy": [
+        345.0,
+        443.0,
+        360.0,
+        455.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        345.0,
+        443.0,
+        360.0,
+        455.0
+      ]
+    },
+    {
+      "id": 199,
+      "x": 267.5,
+      "y": 453.5,
+      "radius": 7.984359711335656,
+      "bbox_xyxy": [
+        259.0,
+        446.0,
+        276.0,
+        461.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        259.0,
+        446.0,
+        276.0,
+        461.0
+      ]
+    },
+    {
+      "id": 200,
+      "x": 460.5,
+      "y": 452.5,
+      "radius": 5.979130371550699,
+      "bbox_xyxy": [
+        454.0,
+        447.0,
+        467.0,
+        458.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        454.0,
+        447.0,
+        467.0,
+        458.0
+      ]
+    },
+    {
+      "id": 201,
+      "x": 22.0,
+      "y": 455.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        16.0,
+        450.0,
+        28.0,
+        460.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        16.0,
+        450.0,
+        28.0,
+        460.0
+      ]
+    },
+    {
+      "id": 202,
+      "x": 68.0,
+      "y": 455.0,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        62.0,
+        450.0,
+        74.0,
+        460.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        62.0,
+        450.0,
+        74.0,
+        460.0
+      ]
+    },
+    {
+      "id": 203,
+      "x": 330.0,
+      "y": 459.5,
+      "radius": 7.745966692414834,
+      "bbox_xyxy": [
+        322.0,
+        452.0,
+        338.0,
+        467.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        322.0,
+        452.0,
+        338.0,
+        467.0
+      ]
+    },
+    {
+      "id": 204,
+      "x": 51.5,
+      "y": 459.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        46.0,
+        453.0,
+        57.0,
+        465.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        46.0,
+        453.0,
+        57.0,
+        465.0
+      ]
+    },
+    {
+      "id": 205,
+      "x": 407.0,
+      "y": 458.5,
+      "radius": 6.2048368229954285,
+      "bbox_xyxy": [
+        400.0,
+        453.0,
+        414.0,
+        464.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        400.0,
+        453.0,
+        414.0,
+        464.0
+      ]
+    },
+    {
+      "id": 206,
+      "x": 386.0,
+      "y": 463.0,
+      "radius": 5.916079783099616,
+      "bbox_xyxy": [
+        379.0,
+        458.0,
+        393.0,
+        468.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        379.0,
+        458.0,
+        393.0,
+        468.0
+      ]
+    },
+    {
+      "id": 207,
+      "x": 480.5,
+      "y": 466.0,
+      "radius": 5.612486080160912,
+      "bbox_xyxy": [
+        476.0,
+        459.0,
+        485.0,
+        473.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        476.0,
+        459.0,
+        485.0,
+        473.0
+      ]
+    },
+    {
+      "id": 208,
+      "x": 139.0,
+      "y": 469.0,
+      "radius": 7.483314773547883,
+      "bbox_xyxy": [
+        132.0,
+        461.0,
+        146.0,
+        477.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        132.0,
+        461.0,
+        146.0,
+        477.0
+      ]
+    },
+    {
+      "id": 209,
+      "x": 464.0,
+      "y": 468.0,
+      "radius": 7.0,
+      "bbox_xyxy": [
+        457.0,
+        461.0,
+        471.0,
+        475.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        457.0,
+        461.0,
+        471.0,
+        475.0
+      ]
+    },
+    {
+      "id": 210,
+      "x": 492.5,
+      "y": 468.5,
+      "radius": 5.408326913195984,
+      "bbox_xyxy": [
+        488.0,
+        462.0,
+        497.0,
+        475.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        488.0,
+        462.0,
+        497.0,
+        475.0
+      ]
+    },
+    {
+      "id": 211,
+      "x": 439.0,
+      "y": 478.0,
+      "radius": 7.3484692283495345,
+      "bbox_xyxy": [
+        433.0,
+        469.0,
+        445.0,
+        487.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        433.0,
+        469.0,
+        445.0,
+        487.0
+      ]
+    },
+    {
+      "id": 212,
+      "x": 360.5,
+      "y": 476.0,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        355.0,
+        470.0,
+        366.0,
+        482.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        355.0,
+        470.0,
+        366.0,
+        482.0
+      ]
+    },
+    {
+      "id": 213,
+      "x": 75.0,
+      "y": 479.0,
+      "radius": 6.0,
+      "bbox_xyxy": [
+        69.0,
+        473.0,
+        81.0,
+        485.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        69.0,
+        473.0,
+        81.0,
+        485.0
+      ]
+    },
+    {
+      "id": 214,
+      "x": 10.5,
+      "y": 480.0,
+      "radius": 5.70087712549569,
+      "bbox_xyxy": [
+        4.0,
+        475.0,
+        17.0,
+        485.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        4.0,
+        475.0,
+        17.0,
+        485.0
+      ]
+    },
+    {
+      "id": 215,
+      "x": 244.0,
+      "y": 483.0,
+      "radius": 5.291502622129181,
+      "bbox_xyxy": [
+        240.0,
+        476.0,
+        248.0,
+        490.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        240.0,
+        476.0,
+        248.0,
+        490.0
+      ]
+    },
+    {
+      "id": 216,
+      "x": 395.0,
+      "y": 485.0,
+      "radius": 6.928203230275509,
+      "bbox_xyxy": [
+        389.0,
+        477.0,
+        401.0,
+        493.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        389.0,
+        477.0,
+        401.0,
+        493.0
+      ]
+    },
+    {
+      "id": 217,
+      "x": 116.0,
+      "y": 486.0,
+      "radius": 8.48528137423857,
+      "bbox_xyxy": [
+        107.0,
+        478.0,
+        125.0,
+        494.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        107.0,
+        478.0,
+        125.0,
+        494.0
+      ]
+    },
+    {
+      "id": 218,
+      "x": 271.0,
+      "y": 486.5,
+      "radius": 7.713624310270756,
+      "bbox_xyxy": [
+        264.0,
+        478.0,
+        278.0,
+        495.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        264.0,
+        478.0,
+        278.0,
+        495.0
+      ]
+    },
+    {
+      "id": 219,
+      "x": 351.0,
+      "y": 486.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        345.0,
+        480.0,
+        357.0,
+        493.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        345.0,
+        480.0,
+        357.0,
+        493.0
+      ]
+    },
+    {
+      "id": 220,
+      "x": 465.5,
+      "y": 488.5,
+      "radius": 6.98212002188447,
+      "bbox_xyxy": [
+        458.0,
+        482.0,
+        473.0,
+        495.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        458.0,
+        482.0,
+        473.0,
+        495.0
+      ]
+    },
+    {
+      "id": 221,
+      "x": 383.0,
+      "y": 490.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        377.0,
+        485.0,
+        389.0,
+        496.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        377.0,
+        485.0,
+        389.0,
+        496.0
+      ]
+    },
+    {
+      "id": 222,
+      "x": 65.0,
+      "y": 492.0,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        58.0,
+        486.0,
+        72.0,
+        498.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        58.0,
+        486.0,
+        72.0,
+        498.0
+      ]
+    },
+    {
+      "id": 223,
+      "x": 133.5,
+      "y": 494.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        128.0,
+        489.0,
+        139.0,
+        500.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        128.0,
+        489.0,
+        139.0,
+        500.0
+      ]
+    },
+    {
+      "id": 224,
+      "x": 337.5,
+      "y": 496.0,
+      "radius": 6.2048368229954285,
+      "bbox_xyxy": [
+        332.0,
+        489.0,
+        343.0,
+        503.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        332.0,
+        489.0,
+        343.0,
+        503.0
+      ]
+    },
+    {
+      "id": 225,
+      "x": 372.0,
+      "y": 498.0,
+      "radius": 5.916079783099616,
+      "bbox_xyxy": [
+        367.0,
+        491.0,
+        377.0,
+        505.0
+      ],
+      "annotation_method": "threshold_component_suggestion",
+      "proposal_reviewed": true,
+      "suggestion_threshold": 32,
+      "suggestion_flags": [],
+      "suggested_bbox_xyxy": [
+        367.0,
+        491.0,
+        377.0,
+        505.0
+      ]
+    },
+    {
+      "id": 226,
+      "x": 175.0,
+      "y": 357.0,
+      "radius": 6.422616289332565,
+      "bbox_xyxy": [
+        169.5,
+        349.5,
+        180.5,
+        364.5
+      ]
+    },
+    {
+      "id": 227,
+      "x": 189.0,
+      "y": 362.5,
+      "radius": 3.7416573867739413,
+      "bbox_xyxy": [
+        185.5,
+        358.5,
+        192.5,
+        366.5
+      ]
+    },
+    {
+      "id": 228,
+      "x": 376.5,
+      "y": 376.0,
+      "radius": 5.916079783099616,
+      "bbox_xyxy": [
+        371.5,
+        369.0,
+        381.5,
+        383.0
+      ]
+    },
+    {
+      "id": 229,
+      "x": 365.5,
+      "y": 378.5,
+      "radius": 4.9749371855331,
+      "bbox_xyxy": [
+        361.0,
+        373.0,
+        370.0,
+        384.0
+      ]
+    },
+    {
+      "id": 230,
+      "x": 173.25,
+      "y": 153.5,
+      "radius": 7.123903424387503,
+      "bbox_xyxy": [
+        166.0,
+        146.5,
+        180.5,
+        160.5
+      ]
+    },
+    {
+      "id": 231,
+      "x": 179.25,
+      "y": 142.0,
+      "radius": 4.107919181288746,
+      "bbox_xyxy": [
+        175.5,
+        137.5,
+        183.0,
+        146.5
+      ]
+    },
+    {
+      "id": 232,
+      "x": 168.0,
+      "y": 140.5,
+      "radius": 5.0,
+      "bbox_xyxy": [
+        163.0,
+        135.5,
+        173.0,
+        145.5
+      ]
+    },
+    {
+      "id": 233,
+      "x": 475.25,
+      "y": 275.5,
+      "radius": 4.541475531146237,
+      "bbox_xyxy": [
+        471.5,
+        270.0,
+        479.0,
+        281.0
+      ]
+    },
+    {
+      "id": 234,
+      "x": 478.5,
+      "y": 264.25,
+      "radius": 3.856812155135378,
+      "bbox_xyxy": [
+        475.0,
+        260.0,
+        482.0,
+        268.5
+      ]
+    },
+    {
+      "id": 235,
+      "x": 467.25,
+      "y": 266.25,
+      "radius": 3.992179855667828,
+      "bbox_xyxy": [
+        463.5,
+        262.0,
+        471.0,
+        270.5
+      ]
+    },
+    {
+      "id": 236,
+      "x": 377.25,
+      "y": 438.75,
+      "radius": 4.25,
+      "bbox_xyxy": [
+        373.0,
+        434.5,
+        381.5,
+        443.0
+      ]
+    },
+    {
+      "id": 237,
+      "x": 323.0,
+      "y": 491.75,
+      "radius": 3.6228441865473595,
+      "bbox_xyxy": [
+        319.5,
+        488.0,
+        326.5,
+        495.5
+      ]
+    },
+    {
+      "id": 238,
+      "x": 323.25,
+      "y": 483.0,
+      "radius": 3.570714214271425,
+      "bbox_xyxy": [
+        319.0,
+        480.0,
+        327.5,
+        486.0
+      ]
+    },
+    {
+      "id": 239,
+      "x": 487.5,
+      "y": 506.0,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        482.0,
+        501.0,
+        493.0,
+        511.0
+      ]
+    },
+    {
+      "id": 240,
+      "x": 499.5,
+      "y": 485.5,
+      "radius": 5.5,
+      "bbox_xyxy": [
+        494.0,
+        480.0,
+        505.0,
+        491.0
+      ]
+    },
+    {
+      "id": 241,
+      "x": 507.75,
+      "y": 493.25,
+      "radius": 3.929058411375428,
+      "bbox_xyxy": [
+        504.5,
+        488.5,
+        511.0,
+        498.0
+      ]
+    },
+    {
+      "id": 242,
+      "x": 250.75,
+      "y": 505.25,
+      "radius": 6.229967897188556,
+      "bbox_xyxy": [
+        244.0,
+        499.5,
+        257.5,
+        511.0
+      ]
+    },
+    {
+      "id": 243,
+      "x": 8.5,
+      "y": 430.25,
+      "radius": 7.599342076785332,
+      "bbox_xyxy": [
+        1.5,
+        422.0,
+        15.5,
+        438.5
+      ]
+    },
+    {
+      "id": 244,
+      "x": 24.5,
+      "y": 468.5,
+      "radius": 4.9749371855331,
+      "bbox_xyxy": [
+        20.0,
+        463.0,
+        29.0,
+        474.0
+      ]
+    },
+    {
+      "id": 245,
+      "x": 36.75,
+      "y": 463.5,
+      "radius": 4.077376607575022,
+      "bbox_xyxy": [
+        32.0,
+        460.0,
+        41.5,
+        467.0
+      ]
+    },
+    {
+      "id": 246,
+      "x": 267.75,
+      "y": 422.25,
+      "radius": 5.868347297152751,
+      "bbox_xyxy": [
+        263.0,
+        415.0,
+        272.5,
+        429.5
+      ]
+    },
+    {
+      "id": 247,
+      "x": 233.5,
+      "y": 403.25,
+      "radius": 5.5901699437494745,
+      "bbox_xyxy": [
+        228.5,
+        397.0,
+        238.5,
+        409.5
+      ]
+    },
+    {
+      "id": 248,
+      "x": 256.0,
+      "y": 420.5,
+      "radius": 5.744562646538029,
+      "bbox_xyxy": [
+        250.5,
+        414.5,
+        261.5,
+        426.5
+      ]
+    },
+    {
+      "id": 249,
+      "x": 246.75,
+      "y": 422.5,
+      "radius": 5.454356057317857,
+      "bbox_xyxy": [
+        242.5,
+        415.5,
+        251.0,
+        429.5
+      ]
+    },
+    {
+      "id": 250,
+      "x": 239.5,
+      "y": 412.5,
+      "radius": 4.242640687119285,
+      "bbox_xyxy": [
+        235.0,
+        408.5,
+        244.0,
+        416.5
+      ]
+    },
+    {
+      "id": 251,
+      "x": 349.75,
+      "y": 334.75,
+      "radius": 4.993746088859544,
+      "bbox_xyxy": [
+        345.0,
+        329.5,
+        354.5,
+        340.0
+      ]
+    },
+    {
+      "id": 252,
+      "x": 367.25,
+      "y": 340.25,
+      "radius": 4.993746088859544,
+      "bbox_xyxy": [
+        362.0,
+        335.5,
+        372.5,
+        345.0
+      ]
+    },
+    {
+      "id": 253,
+      "x": 357.0,
+      "y": 343.5,
+      "radius": 3.4641016151377544,
+      "bbox_xyxy": [
+        354.0,
+        339.5,
+        360.0,
+        347.5
+      ]
+    },
+    {
+      "id": 254,
+      "x": 183.5,
+      "y": 310.5,
+      "radius": 6.48074069840786,
+      "bbox_xyxy": [
+        176.5,
+        304.5,
+        190.5,
+        316.5
+      ]
+    },
+    {
+      "id": 255,
+      "x": 216.5,
+      "y": 314.75,
+      "radius": 6.614378277661476,
+      "bbox_xyxy": [
+        209.5,
+        308.5,
+        223.5,
+        321.0
+      ]
+    },
+    {
+      "id": 256,
+      "x": 232.0,
+      "y": 339.0,
+      "radius": 5.408326913195984,
+      "bbox_xyxy": [
+        227.5,
+        332.5,
+        236.5,
+        345.5
+      ]
+    },
+    {
+      "id": 257,
+      "x": 203.25,
+      "y": 348.75,
+      "radius": 5.153882032022076,
+      "bbox_xyxy": [
+        199.0,
+        342.5,
+        207.5,
+        355.0
+      ]
+    },
+    {
+      "id": 258,
+      "x": 214.5,
+      "y": 342.5,
+      "radius": 6.244997998398398,
+      "bbox_xyxy": [
+        208.5,
+        336.0,
+        220.5,
+        349.0
+      ]
+    },
+    {
+      "id": 259,
+      "x": 478.0,
+      "y": 8.0,
+      "radius": 5.196152422706632,
+      "bbox_xyxy": [
+        472.0,
+        3.5,
+        484.0,
+        12.5
+      ]
+    },
+    {
+      "id": 260,
+      "x": 439.75,
+      "y": 11.0,
+      "radius": 5.454356057317857,
+      "bbox_xyxy": [
+        435.5,
+        4.0,
+        444.0,
+        18.0
+      ]
+    },
+    {
+      "id": 261,
+      "x": 451.5,
+      "y": 4.75,
+      "radius": 5.338539126015656,
+      "bbox_xyxy": [
+        445.5,
+        0.0,
+        457.5,
+        9.5
+      ]
+    },
+    {
+      "id": 262,
+      "x": 417.75,
+      "y": 389.0,
+      "radius": 3.824264635194589,
+      "bbox_xyxy": [
+        414.5,
+        384.5,
+        421.0,
+        393.5
+      ]
+    },
+    {
+      "id": 263,
+      "x": 415.0,
+      "y": 378.0,
+      "radius": 3.968626966596886,
+      "bbox_xyxy": [
+        411.5,
+        373.5,
+        418.5,
+        382.5
+      ]
+    },
+    {
+      "id": 264,
+      "x": 385.5,
+      "y": 396.75,
+      "radius": 5.086747487343951,
+      "bbox_xyxy": [
+        381.0,
+        391.0,
+        390.0,
+        402.5
+      ]
+    },
+    {
+      "id": 265,
+      "x": 390.5,
+      "y": 387.0,
+      "radius": 4.183300132670378,
+      "bbox_xyxy": [
+        385.5,
+        383.5,
+        395.5,
+        390.5
+      ]
+    },
+    {
+      "id": 266,
+      "x": 404.75,
+      "y": 429.0,
+      "radius": 5.123475382979799,
+      "bbox_xyxy": [
+        399.5,
+        424.0,
+        410.0,
+        434.0
+      ]
+    },
+    {
+      "id": 267,
+      "x": 410.0,
+      "y": 417.5,
+      "radius": 5.244044240850758,
+      "bbox_xyxy": [
+        405.0,
+        412.0,
+        415.0,
+        423.0
+      ]
+    },
+    {
+      "id": 268,
+      "x": 11.25,
+      "y": 297.0,
+      "radius": 2.598076211353316,
+      "bbox_xyxy": [
+        9.0,
+        294.0,
+        13.5,
+        300.0
+      ]
+    },
+    {
+      "id": 269,
+      "x": 3.25,
+      "y": 300.0,
+      "radius": 3.517811819867572,
+      "bbox_xyxy": [
+        1.0,
+        294.5,
+        5.5,
+        305.5
+      ]
+    },
+    {
+      "id": 270,
+      "x": 17.5,
+      "y": 307.25,
+      "radius": 5.766281297335398,
+      "bbox_xyxy": [
+        10.5,
+        302.5,
+        24.5,
+        312.0
+      ]
+    },
+    {
+      "id": 271,
+      "x": 507.5,
+      "y": 116.25,
+      "radius": 4.286607049870562,
+      "bbox_xyxy": [
+        504.0,
+        111.0,
+        511.0,
+        121.5
+      ]
+    },
+    {
+      "id": 272,
+      "x": 507.25,
+      "y": 279.75,
+      "radius": 5.390964663211956,
+      "bbox_xyxy": [
+        503.5,
+        272.0,
+        511.0,
+        287.5
+      ]
+    },
+    {
+      "id": 273,
+      "x": 503.75,
+      "y": 384.75,
+      "radius": 7.495832175282475,
+      "bbox_xyxy": [
+        496.5,
+        377.0,
+        511.0,
+        392.5
+      ]
+    }
+  ],
+  "ignore_regions": [
+    [
+      373.0,
+      242.5,
+      403.0,
+      275.0
+    ],
+    [
+      336.5,
+      262.5,
+      356.5,
+      281.0
+    ],
+    [
+      180.5,
+      317.0,
+      193.5,
+      339.5
+    ],
+    [
+      111.0,
+      310.0,
+      136.0,
+      325.5
+    ],
+    [
+      431.5,
+      340.0,
+      446.0,
+      355.5
+    ],
+    [
+      489.5,
+      395.0,
+      510.0,
+      415.5
+    ],
+    [
+      67.0,
+      411.5,
+      86.0,
+      442.0
+    ],
+    [
+      413.0,
+      463.0,
+      426.5,
+      485.5
+    ],
+    [
+      289.5,
+      474.5,
+      307.0,
+      502.5
+    ],
+    [
+      483.5,
+      66.0,
+      510.5,
+      80.5
+    ],
+    [
+      21.0,
+      490.5,
+      60.0,
+      511.0
+    ],
+    [
+      214.0,
+      322.0,
+      226.5,
+      337.0
+    ],
+    [
+      483.5,
+      21.5,
+      508.0,
+      35.5
+    ],
+    [
+      191.5,
+      372.0,
+      206.0,
+      391.5
+    ],
+    [
+      275.0,
+      108.0,
+      298.0,
+      131.5
+    ]
+  ],
+  "radius_definition": "equivalent-area radius=sqrt(bbox_width*bbox_height)/2",
+  "protocol": "Annotate every unambiguous fully visible nucleus/cell; one object per separable nucleus. Mark truncated or ambiguous clusters as ignore regions. Review entire image before completion.",
+  "annotation_assistance": {
+    "method": "threshold_8_connected_components",
+    "threshold": 32,
+    "code": "src/eval/cell_proposals.py",
+    "code_sha256": "ad1ce06d4781f5ad8e2ff005b6ea19ef4913c4c94a5f6e210e401dc15cca2be9"
+  }
+}

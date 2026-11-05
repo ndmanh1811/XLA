@@ -1,0 +1,31 @@
+{
+  "image": "blob_05",
+  "image_sha256": "40b323f8d2b24a1723d71a545302a31627b460d3e25712e17d8e54b54dde3a92",
+  "shape": [
+    512,
+    512
+  ],
+  "coordinate_system": "zero-based; x=column; y=row; pixel units",
+  "origin": "manual_annotation",
+  "status": "DRAFT",
+  "polarity": "bright",
+  "reviewed": false,
+  "reviewer": "Duc",
+  "objects": [
+    {
+      "id": 1,
+      "x": 213.0,
+      "y": 115.5,
+      "radius": 5.477225575051661,
+      "bbox_xyxy": [
+        208.0,
+        109.5,
+        218.0,
+        121.5
+      ]
+    }
+  ],
+  "ignore_regions": [],
+  "radius_definition": "equivalent-area radius=sqrt(bbox_width*bbox_height)/2",
+  "protocol": "Annotate every unambiguous fully visible nucleus/cell; one object per separable nucleus. Mark truncated or ambiguous clusters as ignore regions. Review entire image before completion."
+}
