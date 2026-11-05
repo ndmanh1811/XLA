@@ -1,0 +1,25 @@
+# ==============================================================================
+# BTL Xu ly anh so (INT3404E / IT4440) - De tai: Phat hien dac trung anh da ty le
+# Nhom 2: Nguyen Duc Manh (Lead Developer / Role 2)
+# Environment: Python 3.9+ (Recommended: Python 3.10 / 3.11)
+# ==============================================================================
+
+# 1. Core Engine & Configuration (Pure NumPy Engine & Config)
+numpy>=1.24.0
+pyyaml>=6.0.0
+Pillow>=9.5.0
+
+# 2. 32-bit TIFF Processing (Fiji / Calibration)
+tifffile>=2023.4.12
+
+# 3. Experimental Evaluation & Ground Truth (Role 1 / Evaluation)
+scipy>=1.10.0
+
+# 4. Oracle Reference Baselines (OpenCV C++)
+opencv-python>=4.7.0.72
+
+# 5. Scientific Plots & Visualization 300 DPI
+matplotlib>=3.7.0
+
+# 6. Task Management & Worksheets (Optional)
+openpyxl>=3.1.0
