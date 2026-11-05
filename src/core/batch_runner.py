@@ -16,6 +16,13 @@ if sys.platform == "win32":
 ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
+from src.config import (
+    get_tier1_images,
+    get_sigmas,
+    get_blob_sigmas,
+    get_structure_pairs,
+    get_eigen_order,
+)
 from src.core.derivatives import (
     gaussian_smooth,
     compute_derivatives_1st,
@@ -33,10 +40,11 @@ RAW_DIR = ROOT / "data" / "raw"
 OUT_DIR = ROOT / "outputs" / "python"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-TIER1_IMAGES = ["bsds_01", "bsds_02", "drive_01", "blob_01", "blob_02"]
-SIGMAS_STD = [1.0, 2.0, 4.0, 8.0]
-SIGMAS_BLOB = [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0]
-ST_PAIRS = [(1.0, 3.0), (2.0, 6.0)]
+# Đọc cấu hình tập trung từ config.yaml (không gõ cứng)
+TIER1_IMAGES = get_tier1_images()
+SIGMAS_STD = get_sigmas()
+SIGMAS_BLOB = get_blob_sigmas()
+ST_PAIRS = get_structure_pairs()
 
 def save_tif(path: Path, data: np.ndarray):
     """Lưu mảng 2D thành tệp TIFF 32-bit float không nén."""
@@ -76,8 +84,8 @@ def process_tier1_image(name: str):
         lap = compute_laplacian(img, sigma=s)
         save_tif(OUT_DIR / f"py_{name}_lap_s{s:.1f}.tif", lap)
         
-        # Hessian eigenvalues (l1 >= l2)
-        hl1, hl2 = compute_hessian_eigenvalues(lxx, lyy, lxy, sort_order="algebraic")
+        # Hessian eigenvalues theo config
+        hl1, hl2 = compute_hessian_eigenvalues(lxx, lyy, lxy, sort_order=get_eigen_order())
         save_tif(OUT_DIR / f"py_{name}_hess-l1_s{s:.1f}.tif", hl1)
         save_tif(OUT_DIR / f"py_{name}_hess-l2_s{s:.1f}.tif", hl2)
         

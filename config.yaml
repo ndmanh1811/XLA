@@ -16,7 +16,7 @@ featurej_normalized:       # Cờ xác nhận FeatureJ có tự động nhân th
   edges: false            # FeatureJ Edges = sqrt(Lx^2 + Ly^2) thô
   structure: false        # Structure Tensor thô
 
-eigen_order: absolute      # ĐÃ ĐO: Khi tick 'Absolute eigenvalue comparison', FeatureJ xếp theo |l1| >= |l2|
+eigen_order: algebraic      # Mặc định FeatureJ (false = algebraic: l1 >= l2) khớp với BatchTier1Fiji.java
 
 sigmas: [1.0, 2.0, 4.0, 8.0] # Dãy tỷ lệ chuẩn theo cấp số nhân cơ số 2
 

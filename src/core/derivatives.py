@@ -14,6 +14,7 @@ Quy ước trục:
 
 from typing import Optional, Tuple
 import numpy as np
+from src.config import get_kernel_k
 from src.core.convolution import separable_convolve_2d
 from src.core.kernel import get_gaussian_kernel_1d
 
@@ -25,7 +26,8 @@ def gaussian_smooth(
     mode: Optional[str] = None,
 ) -> np.ndarray:
   """Làm mịn ảnh bằng bộ lọc Gaussian tách rời 2D (bậc 0 theo x và bậc 0 theo y)."""
-  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k)
+  k0 = k if k is not None else get_kernel_k(0)
+  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k0)
   return separable_convolve_2d(img, kernel_x=g0, kernel_y=g0, mode=mode)
 
 
@@ -37,11 +39,13 @@ def compute_derivatives_1st(
 ) -> Tuple[np.ndarray, np.ndarray]:
   """Tính đạo hàm Gaussian bậc 1: (Lx, Ly).
 
-  - Lx: g1 theo chiều ngang (axis=1), g0 theo chiều dọc (axis=0).
-  - Ly: g0 theo chiều ngang (axis=1), g1 theo chiều dọc (axis=0).
+  - Lx: g1 (bậc 1) theo chiều ngang (axis=1), g0 (bậc 0) theo chiều dọc (axis=0).
+  - Ly: g0 (bậc 0) theo chiều ngang (axis=1), g1 (bậc 1) theo chiều dọc (axis=0).
   """
-  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k)
-  g1 = get_gaussian_kernel_1d(sigma, order=1, k=k)
+  k0 = k if k is not None else get_kernel_k(0)
+  k1 = k if k is not None else get_kernel_k(1)
+  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k0)
+  g1 = get_gaussian_kernel_1d(sigma, order=1, k=k1)
 
   lx = separable_convolve_2d(img, kernel_x=g1, kernel_y=g0, mode=mode)
   ly = separable_convolve_2d(img, kernel_x=g0, kernel_y=g1, mode=mode)
@@ -61,13 +65,16 @@ def compute_derivatives_2nd(
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
   """Tính đạo hàm Gaussian bậc 2: (Lxx, Lyy, Lxy).
 
-  - Lxx: g2 theo chiều ngang (axis=1), g0 theo chiều dọc (axis=0).
-  - Lyy: g0 theo chiều ngang (axis=1), g2 theo chiều dọc (axis=0).
-  - Lxy: g1 theo chiều ngang (axis=1), g1 theo chiều dọc (axis=0).
+  - Lxx: g2 (bậc 2) theo chiều ngang (axis=1), g0 (bậc 0) theo chiều dọc (axis=0).
+  - Lyy: g0 (bậc 0) theo chiều ngang (axis=1), g2 (bậc 2) theo chiều dọc (axis=0).
+  - Lxy: g1 (bậc 1) theo chiều ngang (axis=1), g1 (bậc 1) theo chiều dọc (axis=0).
   """
-  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k)
-  g1 = get_gaussian_kernel_1d(sigma, order=1, k=k)
-  g2 = get_gaussian_kernel_1d(sigma, order=2, k=k)
+  k0 = k if k is not None else get_kernel_k(0)
+  k1 = k if k is not None else get_kernel_k(1)
+  k2 = k if k is not None else get_kernel_k(2)
+  g0 = get_gaussian_kernel_1d(sigma, order=0, k=k0)
+  g1 = get_gaussian_kernel_1d(sigma, order=1, k=k1)
+  g2 = get_gaussian_kernel_1d(sigma, order=2, k=k2)
 
   lxx = separable_convolve_2d(img, kernel_x=g2, kernel_y=g0, mode=mode)
   lyy = separable_convolve_2d(img, kernel_x=g0, kernel_y=g2, mode=mode)
