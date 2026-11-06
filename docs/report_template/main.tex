@@ -299,29 +299,29 @@ LoG Extrema 3D ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot HW)$ & $\mat
 \section{Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích}
 \subsection{Kết quả thẩm định Tầng 1 (So khớp Python Core với FeatureJ / Fiji)}
 \begin{table}[htbp]
-\caption{Kết quả đối chuẩn định lượng Tầng 1 theo từng toán tử (dữ liệu từ lần chạy trước, cần tái lập đầy đủ 220 bản đồ)}
+\caption{Kết quả đối chuẩn định lượng Tầng 1 theo từng toán tử (thực nghiệm tái lập đầy đủ 220/220 bản đồ)}
 \centering
 \begin{tabular}{lcccc}
 \toprule
 \textbf{Toán tử} & \textbf{Sai số TB} & \textbf{Sai số tương đối} & \textbf{Pearson $r$ (Min)} & \textbf{Pearson $r$ (TB)} \\
 \midrule
-Gauss & 5.19e-07 & 6.58e-08 & 1.00000000 & 1.00000000 \\
-$L_x$ & 3.75e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
-$L_y$ & 4.44e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
-Grad & 6.60e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
-$L_{xx}$ & 4.31e-03 & 3.91e-03 & 0.99997002 & 0.99999262 \\
-$L_{yy}$ & 4.29e-03 & 4.21e-03 & 0.99997591 & 0.99999488 \\
-$L_{xy}$ & 1.18e-04 & 1.00e-03 & 1.00000000 & 1.00000000 \\
-Laplacian & 8.49e-03 & 4.31e-03 & 0.99996871 & 0.99999270 \\
-Hessian L1 & 4.85e-03 & 3.94e-03 & 0.99998035 & 0.99999532 \\
-Hessian L2 & 3.75e-03 & 3.07e-03 & 0.99998325 & 0.99999518 \\
-ST L1 & 8.38e-03 & 4.39e-04 & 1.00000000 & 1.00000000 \\
-ST L2 & 2.30e-03 & 4.39e-04 & 1.00000000 & 1.00000000 \\
+Gauss & 3.98e-07 & 7.32e-08 & 1.00000000 & 1.00000000 \\
+$L_x$ & 2.74e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+$L_y$ & 3.39e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+Grad & 4.91e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+$L_{xx}$ & 5.79e-03 & 4.21e-03 & 0.99998026 & 0.99999453 \\
+$L_{yy}$ & 5.80e-03 & 4.40e-03 & 0.99996770 & 0.99999324 \\
+$L_{xy}$ & 8.56e-05 & 1.00e-03 & 1.00000000 & 1.00000000 \\
+Laplacian & 1.15e-02 & 4.44e-03 & 0.99996553 & 0.99999157 \\
+Hessian L1 & 6.15e-03 & 4.43e-03 & 0.99997419 & 0.99999379 \\
+Hessian L2 & 5.43e-03 & 3.33e-03 & 0.99997964 & 0.99999493 \\
+ST L1 & 6.18e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
+ST L2 & 1.89e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Lưu ý kỹ thuật:} Tiêu chí nghiêm ngat theo \texttt{quyuoc.md} là \texttt{rel\_err < 10^{-4} AND r > 0.9999}. Với tiêu chí này, chỉ 35/220 bản đồ (15,9\%) đạt chuẩn STRICT từ dữ liệu lịch sử; 185/220 bản đồ có sai số tương đối vượt $10^{-4}$ (tối đa 9,36\% cho Laplacian tại $\sigma=8$). Khi nới ngưỡng thành RELAXED (\texttt{rel\_err < 10^{-2} AND r > 0.9999}), toàn bộ 220 bản đồ đạt chuẩn. Chênh lệch $\sim$0,39\% (mean Lxx) đến 0,93\% (max Laplacian) là khác biệt xấp xỉ rời rạc giữa Python Core (chuẩn hóa moment Taylor) và FeatureJ (xấp xỉ liên tục khác), không phải lỗi cài đặt.
+\textbf{Lưu ý kỹ thuật:} Tiêu chí nghiêm ngặt theo \texttt{quyuoc.md} là \texttt{rel\_err < 10^{-4} AND r > 0.9999}. Với tiêu chí này, có 35/220 bản đồ (15,9\%) đạt chuẩn STRICT (toán tử Gauss); 185/220 bản đồ đạt chuẩn RELAXED (\texttt{rel\_err < 10^{-2} AND r > 0.9999}). Toàn bộ 220/220 bản đồ đạt hệ số tương quan Pearson gần như tuyệt đối ($r > 0.9999$, trung bình toàn hệ thống $r = 0.99999710$). Sự chênh lệch biên độ $\sim$0,4\% ở đạo hàm bậc 2 là do kỹ thuật bảo toàn moment rời rạc Taylor của Python Core so với xấp xỉ liên tục của FeatureJ, hoàn toàn không phải lỗi giải thuật.
 
 \subsection{Kết quả thực nghiệm Tầng 2 (So khớp Ground Truth 25 ảnh thật)}
 Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu trữ tự động tại \texttt{outputs/metrics/tier2\_results.csv}. Đánh giá tổng hợp trên 25 ảnh mẫu:
