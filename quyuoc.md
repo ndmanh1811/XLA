@@ -121,7 +121,10 @@ Trước khi **Người phụ trách Lập trình Python** khóa code kernel, **
 ### Tầng 1: Python so với Fiji (Kiểm chứng độ trung thực số học)
 - **Tập dữ liệu (5 ảnh đại diện, tập con của 25 ảnh):** `bsds_01`, `bsds_02`, `drive_01` (kênh Green), `blob_01`, `blob_02`.
 - **Yêu cầu xuất file:** Xuất đầy đủ các bản đồ vi phân (`gauss`, `lx`, `ly`, `lxx`, `lxy`, `lyy`, `grad`, `lap`, `hess-l1`, `hess-l2`, `st-l1`, `st-l2`) tại $\sigma \in \{1, 2, 4, 8\}$ và Structure Tensor $(\sigma_d, \sigma_i) \in \{(1, 3), (2, 6)\}$.
-- **Chỉ số:** MAE, RMSE, Max Absolute Error ($\max |\Delta|$), Pearson $r$. Chỉ áp dụng cho bản đồ vi phân liên tục, không dùng cho bản đồ nhị phân, không dùng PSNR cho bản đồ đạo hàm có dấu.
+- **Chỉ số:** MAE, RMSE, Max Absolute Error ($\max |\Delta|$), Relative Error, Pearson $r$. 
+  > [!NOTE] Thống nhất về chỉ số PSNR trong nghiệm thu Tầng 1:
+  > - **Bản đồ làm mịn Gauss $L(x,y)$**: Giữ nguyên dải cường độ mức xám $[0, 255]$, được phép tính $\text{PSNR} = 20 \log_{10}(255.0 / \text{RMSE})$.
+  > - **Các bản đồ đạo hàm có dấu ($L_x, L_y, L_{xx}, L_{xy}, L_{yy}$, Hessian, Laplacian, Structure Tensor)**: Giá trị mang cả dấu âm và dương, dải biên độ không cố định trong $[0, 255]$. Vì vậy, **tuyệt đối không áp dụng PSNR với $\text{MAX}=255$** vì sai lệch bản chất toán học. Bộ chỉ số chuẩn mực quốc tế bắt buộc dùng là: MAE, RMSE, Relative Error và Pearson $r$.
 - **Tiêu chuẩn nghiệm thu:**
   $$\frac{\max |\Delta|}{\max |\text{ref}|} < 10^{-4} \quad \text{và} \quad r > 0.9999$$
   ($\max |\text{ref}|$ tính trong vùng lõi sau khi crop.)
@@ -146,7 +149,7 @@ Trước khi **Người phụ trách Lập trình Python** khóa code kernel, **
 - **Tiêu chí chấm từng bài toán:**
   - **Edge (BSDS500):**
     + Dung sai biên 2 px. Precision: tỉ lệ pixel dò được nằm trong 2 px của biên của ít nhất một người gán nhãn. Recall: trung bình theo từng người gán nhãn của tỉ lệ biên người đó được dò trúng trong 2 px.
-    + Ngưỡng trễ biểu diễn bằng **phân vị của độ lớn gradient** trong từng ảnh (không dùng giá trị tuyệt đối, vì độ lớn gradient đổi theo $\sigma$ và theo tương phản ảnh). Quét lưới phân vị và chọn bộ ngưỡng tối ưu F1 trung bình **riêng cho từng $\sigma$**; áp giống nhau cho Fiji và Python. Báo cáo F1 theo $\sigma$.
+    + Ngưỡng trễ biểu diễn bằng **phân vị của độ lớn gradient**: được tính trên tập ứng viên biên khác 0 sau khi khử cực đại (`nms[nms > 0]`) trong từng ảnh (không tính trên toàn ảnh bao gồm cả vùng nền đen phẳng $= 0$, vì vùng nền chiếm >80% diện tích sẽ làm suy biến giá trị phân vị). Hàm `detect_canny(lx, ly, p_low, p_high)` đã cài đặt chuẩn xác cơ chế này. Quét lưới phân vị và chọn bộ ngưỡng tối ưu F1 trung bình **riêng cho từng $\sigma$**; áp giống nhau cho Fiji và Python. Báo cáo F1 theo $\sigma$.
     + Hai nhánh so sánh: (A) `detect_canny` chạy trên `lx`, `ly` của cả hai nguồn (công bằng thuật toán); (B) `FeatureJ Edges` nguyên bản làm tham chiếu, ngưỡng quét theo đơn vị riêng của plugin, báo cáo riêng.
   - **Ridge (DRIVE):**
     + Frangi với $\beta = 0.5$ và $c = 0.5 \cdot \max_{x,y} \sqrt{\lambda_1^2 + \lambda_2^2}$ (tính trên bản đồ đã chuẩn hóa $\sigma^2$, riêng cho từng $\sigma$ và từng ảnh).

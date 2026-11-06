@@ -103,8 +103,17 @@ def run_tier1_verification():
                 diff = np.abs(py_c - fj_c)
                 max_diff = float(np.max(diff))
                 mean_diff = float(np.mean(diff))
+                rmse = float(np.sqrt(np.mean((py_c - fj_c) ** 2)))
                 ref_peak = float(np.max(np.abs(fj_c)))
                 rel_err = max_diff / (ref_peak + 1e-12)
+                
+                # PSNR chỉ hợp lệ về mặt vật lý với ảnh làm mịn Gauss L (dải [0, 255])
+                # Đối với các bản đồ đạo hàm có dấu, không dùng PSNR (dùng MAE, RMSE, Pearson r)
+                if op_code == "gauss":
+                    psnr_val = 20 * np.log10(255.0 / (rmse + 1e-12))
+                    psnr_str = f"{psnr_val:.2f} dB"
+                else:
+                    psnr_str = "N/A (Signed)"
                 
                 # Pearson r với xử lý an toàn cho vùng phẳng / zero variance
                 std_py = float(np.std(py_c))
@@ -124,6 +133,8 @@ def run_tier1_verification():
                     "param": f"s={s:.1f}",
                     "max_diff": max_diff,
                     "mean_diff": mean_diff,
+                    "rmse": rmse,
+                    "psnr": psnr_str,
                     "rel_error": rel_err,
                     "pearson_r": r,
                     "status": status
@@ -156,8 +167,10 @@ def run_tier1_verification():
                 diff = np.abs(py_c - fj_c)
                 max_diff = float(np.max(diff))
                 mean_diff = float(np.mean(diff))
+                rmse = float(np.sqrt(np.mean((py_c - fj_c) ** 2)))
                 ref_peak = float(np.max(np.abs(fj_c)))
                 rel_err = max_diff / (ref_peak + 1e-12)
+                psnr_str = "N/A (Signed)"
                 
                 std_py = float(np.std(py_c))
                 std_fj = float(np.std(fj_c))
@@ -176,6 +189,8 @@ def run_tier1_verification():
                     "param": f"sd={sd:.1f}_si={si:.1f}",
                     "max_diff": max_diff,
                     "mean_diff": mean_diff,
+                    "rmse": rmse,
+                    "psnr": psnr_str,
                     "rel_error": rel_err,
                     "pearson_r": r,
                     "status": status

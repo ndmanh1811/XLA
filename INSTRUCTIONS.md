@@ -41,6 +41,7 @@ Mọi AI Agent khi sinh code hoặc hướng dẫn cho bất kỳ thành viên n
 9. **Tiêu chuẩn nghiệm thu số học Tầng 1:**
    - Đo trên 5 ảnh đại diện (2 BSDS + 1 DRIVE + 2 đốm), sau khi crop bỏ dải biên $\lceil k \cdot \sigma \rceil$ px (Structure Tensor crop $\lceil k\sigma_d \rceil + \lceil k\sigma_i \rceil$ px).
    - Nghiệm thu khi $\frac{\max |\Delta|}{\max |\text{ref}|} < 10^{-4}$ (với $\max|\text{ref}|$ tính trong vùng lõi) và Pearson $r > 0.9999$. Chỉ áp dụng cho bản đồ vi phân liên tục.
+   - **Về chỉ số PSNR:** Cho phép tính $\text{PSNR} = 20 \log_{10}(255.0 / \text{RMSE})$ đối với bản đồ làm mịn Gauss $L(x,y)$ (do giữ nguyên dải cường độ $[0, 255]$). Tuyệt đối không dùng PSNR với $\text{MAX}=255$ cho các bản đồ đạo hàm có dấu ($L_x, L_y, L_{xx}, \dots$), thay vào đó bắt buộc dùng MAE, RMSE, Relative Error và Pearson $r$.
    - **Nếu không đạt:** không chỉnh code chỉ để ép sai số xuống. Kiểm tra theo thứ tự $k$ và `border_mode`, cờ chuẩn hóa, cách chuẩn hóa tổng trọng số kernel; nếu sai số còn lại mang tính hệ thống thì báo cáo sai số thực, nhóm quyết định nới ngưỡng (có lý do) và ghi vào báo cáo.
 
 ---
@@ -69,7 +70,7 @@ Mọi AI Agent khi sinh code hoặc hướng dẫn cho bất kỳ thành viên n
   - `src/core/hessian.py`: Nghiệm đóng trị riêng ma trận Hessian $(\lambda_1, \lambda_2)$, sắp xếp theo `eigen_order` trong `config.yaml`.
   - `src/core/structure_tensor.py`: Tích phân tensor 2 tỷ lệ $(\sigma_d, \sigma_i)$, xuất $(\mu_1, \mu_2)$; Coherence $= \frac{\mu_1 - \mu_2}{\mu_1 + \mu_2 + 10^{-6}}$.
   - `src/core/detectors.py`: 3 hàm dò mức cao (chỉ nhận mảng số thực, không nhận ảnh gốc):
-    + `detect_canny(lx, ly, p_low, p_high)`: NMS theo hướng gradient + ngưỡng trễ. Ngưỡng là **phân vị (0–100)** của độ lớn gradient trong ảnh, không phải giá trị tuyệt đối.
+    + `detect_canny(lx, ly, p_low, p_high)`: NMS theo hướng gradient + ngưỡng trễ. Ngưỡng là **phân vị (0–100)** của độ lớn gradient được tính trên tập ứng viên biên khác 0 (`nms[nms > 0]`) trong từng ảnh để ngưỡng thích nghi với cấu trúc biên thực tế, không bị suy biến bởi nền đen chiếm diện tích lớn.
     + `detect_ridge(hess_l1, hess_l2, sigma)`: Frangi với $\beta = 0.5$, $c = 0.5 \cdot \max \sqrt{\lambda_1^2 + \lambda_2^2}$. **Tự sắp xếp hai trị riêng theo $|\lambda|$ bên trong** (vì hai nguồn có thể xếp thứ tự khác nhau). Giữ trị riêng lớn nhất theo độ lớn mang dấu dương (rãnh tối DRIVE). Lấy $\max$ qua các $\sigma$ trên bản đồ đã chuẩn hóa $\sigma^2$.
     + `detect_blob(laplacian_scale_stack, sigmas, polarity)`: Cực trị địa phương LoG 3D. `polarity='bright'` tìm cực tiểu của $\sigma^2\nabla^2 L$, `'dark'` tìm cực đại.
   - **Mốc giao hàng:** khung hàm (đúng chữ ký, trả dữ liệu giả) nộp từ **ngày 3**; hàm hoàn chỉnh bàn giao trước **08/11**.
@@ -124,7 +125,7 @@ Mọi AI Agent khi sinh code hoặc hướng dẫn cho bất kỳ thành viên n
      - Xử lý theo quy tắc "nếu không đạt" ở Hard Constraint 9.
   3. **Benchmark Tầng 2 (`src/eval/benchmark_tier2.py`):**
      - Import hàm dò từ `src.core.detectors`; chạy trên đầu ra của cả Fiji và Python (viết pipeline song song bằng khung hàm từ ngày 3).
-     - **Edge (BSDS):** Dung sai 2 px. Precision: tỉ lệ pixel dò được nằm trong 2 px của biên của ít nhất một người gán nhãn. Recall: trung bình theo từng người gán nhãn. Ngưỡng là phân vị độ lớn gradient; quét lưới, chọn bộ tối ưu F1 trung bình **riêng cho từng $\sigma$**, áp giống nhau cho Fiji và Python. Hai nhánh: `detect_canny` trên `lx`, `ly` của cả hai nguồn, và FeatureJ Edges nguyên bản (ngưỡng theo đơn vị của plugin) làm tham chiếu riêng.
+     - **Edge (BSDS):** Dung sai 2 px. Precision: tỉ lệ pixel dò được nằm trong 2 px của biên của ít nhất một người gán nhãn. Recall: trung bình theo từng người gán nhãn. Ngưỡng là phân vị độ lớn gradient tính trên tập candidate khác 0 (`nms > 0`); quét lưới, chọn bộ tối ưu F1 trung bình **riêng cho từng $\sigma$**, áp giống nhau cho Fiji và Python. Hai nhánh: `detect_canny` trên `lx`, `ly` của cả hai nguồn, và FeatureJ Edges nguyên bản (ngưỡng theo đơn vị của plugin) làm tham chiếu riêng.
      - **Ridge (DRIVE):** Áp mặt nạ FOV **đã xói mòn** $\lceil k\sigma \rceil$ px, chỉ tính F1/IoU trong vùng này.
      - **Blob:** Khai báo cực tính (`bright`/`dark`) của từng ảnh. Khớp đúng khi tâm lệch $\le 2$ px và bán kính sai $\le 20\%$.
      - Vẽ biểu đồ Precision-Recall, F1 theo $\sigma$, và đồ thị thời gian chạy Python so với Fiji (từ `fiji_runtime.csv`; lặp nhiều lần, bỏ lần chạy đầu).

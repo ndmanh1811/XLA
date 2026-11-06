@@ -26,3 +26,6 @@ outputs/*.tif
 # Priority smoke test TIFFs for Duc
 !outputs/smoke_test_tier1/*.tif
 !outputs/smoke_test_bsds01_s2.zip
+
+# Redundant zip archives in docs (raw LaTeX is already tracked)
+docs/*.zip
