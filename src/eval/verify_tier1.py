@@ -118,11 +118,27 @@ def status_from_metrics(rel_err, r):
     else:
         return "FAIL"
 
+def ensure_fiji_java_data():
+    """Tự động giải nén outputs/fiji_java_tier1.zip nếu thư mục outputs/fiji_java chưa đủ 220 file."""
+    import zipfile
+    zip_path = OUT_DIR / "fiji_java_tier1.zip"
+    if not FJ_DIR.exists() or len(list(FJ_DIR.glob("*.tif"))) < 220:
+        if zip_path.exists():
+            print(f"-> Đang tự động giải nén {zip_path.name} vào {FJ_DIR}...")
+            FJ_DIR.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(zip_path, "r") as zf:
+                zf.extractall(FJ_DIR)
+            print(f"   ✓ Đã giải nén {len(list(FJ_DIR.glob('*.tif')))} tệp TIFF.")
+        else:
+            print(f"   [!] Cảnh báo: Chưa có {zip_path} để giải nén tự động.")
+
 def run_tier1_verification():
     print("=" * 80)
     print("      BÁO CÁO NGHIỆM THU KIỂM CHỨNG ĐỐI CHUẨN SỐ HỌC TẦNG 1")
     print("            PYTHON CORE ENGINE vs FIJI / FEATUREJ")
     print("=" * 80)
+
+    ensure_fiji_java_data()
 
     records = []
     expected_count = 0

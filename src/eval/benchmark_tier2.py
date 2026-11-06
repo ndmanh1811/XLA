@@ -304,17 +304,30 @@ def evaluate_blobs(sample_limit=5, records=None):
     print(f"   => [KẾT QUẢ ĐỐM] Tỉ lệ phát hiện trúng đích tổng thể (F1): {overall_f1:.3f}")
     return overall_f1
 
+def parse_args():
+    """Hỗ trợ truyền tham số phân vị Canny và số lượng mẫu từ dòng lệnh."""
+    import argparse
+    parser = argparse.ArgumentParser(description="Khung đánh giá định lượng Tầng 2 (Ground Truth Benchmark)")
+    parser.add_argument("--p-low", type=float, default=60.0, help="Phân vị ngưỡng dưới Canny (mặc định: 60.0)")
+    parser.add_argument("--p-high", type=float, default=85.0, help="Phân vị ngưỡng trên Canny (mặc định: 85.0)")
+    parser.add_argument("--bsds-samples", type=int, default=10, help="Số lượng ảnh BSDS500 (mặc định: 10)")
+    parser.add_argument("--drive-samples", type=int, default=10, help="Số lượng ảnh DRIVE (mặc định: 10)")
+    parser.add_argument("--blob-samples", type=int, default=5, help="Số lượng ảnh Blob (mặc định: 5)")
+    return parser.parse_known_args()[0]
+
 def main():
+    args = parse_args()
     print("=" * 65)
     print("  KHỞI CHẠY KHUNG ĐÁNH GIÁ ĐỊNH LƯỢNG TẦNG 2 (BENCHMARK)")
+    print(f"  Cấu hình Canny: p_low={args.p_low:.1f}, p_high={args.p_high:.1f}")
     print("=" * 65)
     
     all_records = []
     
     # Chạy đủ 25 ảnh: 10 BSDS + 10 DRIVE + 5 Blob (theo spec Tầng 2)
-    evaluate_bsds_edges(sample_limit=10, p_low=60.0, p_high=85.0, records=all_records)
-    evaluate_drive_vessels(sample_limit=10, records=all_records)
-    evaluate_blobs(sample_limit=5, records=all_records)
+    evaluate_bsds_edges(sample_limit=args.bsds_samples, p_low=args.p_low, p_high=args.p_high, records=all_records)
+    evaluate_drive_vessels(sample_limit=args.drive_samples, records=all_records)
+    evaluate_blobs(sample_limit=args.blob_samples, records=all_records)
     
     # Lưu toàn bộ kết quả định lượng ra outputs/metrics/tier2_results.csv
     out_csv = METRICS_DIR / "tier2_results.csv"

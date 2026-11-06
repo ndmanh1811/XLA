@@ -52,8 +52,10 @@ if (!File.isDirectory(outputsDir)) File.makeDirectory(outputsDir);
 if (!File.isDirectory(fijiDir)) File.makeDirectory(fijiDir);
 if (!File.isDirectory(metricsDir)) File.makeDirectory(metricsDir);
 
-// Start a clean runtime table for this batch invocation.
-File.saveString("source,image,command,sigma,runtime_ms,output_files\n", runtimePath);
+// Initialize header if runtime table does not exist, preserving existing records across runs.
+if (!File.exists(runtimePath)) {
+    File.saveString("source,image,command,sigma,runtime_ms,output_files\n", runtimePath);
+}
 
 files = getFileList(rawDir);
 processed = 0;
