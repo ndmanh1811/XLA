@@ -49,6 +49,14 @@ OPERATORS = [
     ("hess-l2", "Trị riêng Hessian L2")
 ]
 
+def find_fiji_file(img_name: str, op_code: str, suffix: str) -> Path:
+    """Tìm file FeatureJ theo cả hai tiền tố fiji_ và fj_."""
+    for prefix in ["fiji_", "fj_"]:
+        p = FJ_DIR / f"{prefix}{img_name}_{op_code}_{suffix}.tif"
+        if p.exists():
+            return p
+    return FJ_DIR / f"fiji_{img_name}_{op_code}_{suffix}.tif"
+
 def run_tier1_verification():
     print("=" * 80)
     print("      BÁO CÁO NGHIỆM THU KIỂM CHỨNG ĐỐI CHUẨN SỐ HỌC TẦNG 1")
@@ -64,7 +72,7 @@ def run_tier1_verification():
         for op_code, op_name in OPERATORS:
             for s in SIGMAS:
                 py_file = PY_DIR / f"py_{img_name}_{op_code}_s{s:.1f}.tif"
-                fj_file = FJ_DIR / f"fj_{img_name}_{op_code}_s{s:.1f}.tif"
+                fj_file = find_fiji_file(img_name, op_code, f"s{s:.1f}")
                 
                 if not py_file.exists() or not fj_file.exists():
                     print(f"   [!] Thiếu file cho {op_code} tại sigma={s}")
@@ -93,11 +101,16 @@ def run_tier1_verification():
                 ref_peak = float(np.max(np.abs(fj_c)))
                 rel_err = max_diff / (ref_peak + 1e-12)
                 
-                # Pearson r
-                r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
-                r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else 1.0
+                # Pearson r với xử lý an toàn cho vùng phẳng / zero variance
+                std_py = float(np.std(py_c))
+                std_fj = float(np.std(fj_c))
+                if std_py < 1e-12 or std_fj < 1e-12:
+                    r = 1.0 if max_diff < 1e-4 else 0.0
+                else:
+                    r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
+                    r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else (1.0 if max_diff < 1e-4 else 0.0)
                     
-                status = "PASS" if r >= 0.9999 else ("ACCEPTABLE" if r >= 0.9990 else "FAIL")
+                status = "PASS" if (r >= 0.9999 or rel_err < 1e-4) else ("ACCEPTABLE" if r >= 0.9990 else "FAIL")
                 
                 records.append({
                     "image": img_name,
@@ -115,7 +128,7 @@ def run_tier1_verification():
         for sd, si in ST_PAIRS:
             for op_code in ["st-l1", "st-l2"]:
                 py_file = PY_DIR / f"py_{img_name}_{op_code}_sd{sd:.1f}_si{si:.1f}.tif"
-                fj_file = FJ_DIR / f"fj_{img_name}_{op_code}_sd{sd:.1f}_si{si:.1f}.tif"
+                fj_file = find_fiji_file(img_name, op_code, f"sd{sd:.1f}_si{si:.1f}")
                 
                 if not py_file.exists() or not fj_file.exists():
                     continue
@@ -138,10 +151,15 @@ def run_tier1_verification():
                 ref_peak = float(np.max(np.abs(fj_c)))
                 rel_err = max_diff / (ref_peak + 1e-12)
                 
-                r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
-                r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else 1.0
+                std_py = float(np.std(py_c))
+                std_fj = float(np.std(fj_c))
+                if std_py < 1e-12 or std_fj < 1e-12:
+                    r = 1.0 if max_diff < 1e-4 else 0.0
+                else:
+                    r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
+                    r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else (1.0 if max_diff < 1e-4 else 0.0)
                     
-                status = "PASS" if r >= 0.9990 else "FAIL"
+                status = "PASS" if (r >= 0.9990 or rel_err < 1e-4) else "FAIL"
                 
                 records.append({
                     "image": img_name,
