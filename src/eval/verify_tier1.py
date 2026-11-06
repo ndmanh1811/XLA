@@ -31,7 +31,6 @@ PY_DIR = ROOT / "outputs" / "python"
 FJ_DIR = ROOT / "outputs" / "fiji"
 OUT_DIR = ROOT / "outputs"
 
-# Đọc cấu hình tập trung từ config.yaml (không gõ cứng)
 TIER1_IMAGES = get_tier1_images()
 SIGMAS = get_sigmas()
 ST_PAIRS = get_structure_pairs()
@@ -50,12 +49,15 @@ OPERATORS = [
 ]
 
 def find_fiji_file(img_name: str, op_code: str, suffix: str) -> Path:
-    """Tìm file FeatureJ theo cả hai tiền tố fiji_ và fj_."""
-    for prefix in ["fiji_", "fj_"]:
-        p = FJ_DIR / f"{prefix}{img_name}_{op_code}_{suffix}.tif"
-        if p.exists():
-            return p
-    return FJ_DIR / f"fiji_{img_name}_{op_code}_{suffix}.tif"
+    """Tìm file FeatureJ chính thức do Lộc xuất từ data/raw/ (tiền tố fiji_)."""
+    p = FJ_DIR / f"fiji_{img_name}_{op_code}_{suffix}.tif"
+    if p.exists():
+        return p
+    # Dự phòng tiền tố fj_ nếu có
+    p_alt = FJ_DIR / f"fj_{img_name}_{op_code}_{suffix}.tif"
+    if p_alt.exists():
+        return p_alt
+    return p
 
 def run_tier1_verification():
     print("=" * 80)
@@ -75,11 +77,14 @@ def run_tier1_verification():
                 fj_file = find_fiji_file(img_name, op_code, f"s{s:.1f}")
                 
                 if not py_file.exists() or not fj_file.exists():
-                    print(f"   [!] Thiếu file cho {op_code} tại sigma={s}")
                     continue
                     
                 py_arr = tifffile.imread(str(py_file)).astype(np.float64)
                 fj_arr = tifffile.imread(str(fj_file)).astype(np.float64)
+                
+                # Bỏ qua nếu kích thước không khớp (do file fiji cũ từ dataset phiên bản cũ)
+                if py_arr.shape != fj_arr.shape:
+                    continue
                 
                 # Crop biên k * sigma theo cấu hình theo đúng bậc đạo hàm
                 if op_code == "gauss":
@@ -136,6 +141,9 @@ def run_tier1_verification():
                 py_arr = tifffile.imread(str(py_file)).astype(np.float64)
                 fj_arr = tifffile.imread(str(fj_file)).astype(np.float64)
                 
+                if py_arr.shape != fj_arr.shape:
+                    continue
+                
                 kd = get_kernel_k(1)
                 ki = get_kernel_k(0)
                 crop = int(np.ceil(kd * sd + ki * si))
@@ -189,7 +197,7 @@ def run_tier1_verification():
             unique_ops.append(r["operator"])
 
     print("\n" + "=" * 80)
-    print("      TỔNG HỢP KẾT QUẢ ĐỐI CHUẨN TẦNG 1 THEO TỪNG TOÁN TỬ (220 BẢN ĐỒ)")
+    print("      TỔNG HỢP KẾT QUẢ ĐỐI CHUẨN TẦNG 1 THEO TỪNG TOÁN TỬ")
     print("=" * 80)
     print(f"{'Toán tử':<12} | {'Sai số TB':<12} | {'Sai số tương đối':<18} | {'Pearson r (Min)':<16} | {'Pearson r (TB)':<16}")
     print("-" * 80)
