@@ -22,7 +22,7 @@ public class BatchTier1Fiji {
         System.out.println("  BẮT ĐẦU BATCH EXPORTER FIJI / FEATUREJ (TIER 1 BENCHMARK)");
         System.out.println("=================================================================");
 
-        File outDir = new File("outputs/fiji");
+        File outDir = new File("outputs/fiji_java");
         if (!outDir.exists()) {
             outDir.mkdirs();
         }
@@ -31,7 +31,8 @@ public class BatchTier1Fiji {
             metricsDir.mkdirs();
         }
 
-        File csvFile = new File("outputs/metrics/fiji_runtime.csv");
+        // Ghi ra file RIÊNG, KHÔNG ghi đè fiji_runtime.csv (schema 6 cột) của Lộc.
+        File csvFile = new File("outputs/metrics/fiji_runtime_java.csv");
 
         try (PrintWriter pw = new PrintWriter(new FileWriter(csvFile))) {
             pw.println("image,operator,sigma,runtime_ms");
@@ -62,61 +63,61 @@ public class BatchTier1Fiji {
                     long t0 = System.currentTimeMillis();
                     Image g = diff.run(baseImg.duplicate(), s, 0, 0, 0);
                     long dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_gauss_s" + sStr + ".tif", g);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_gauss_s" + sStr + ".tif", g);
                     pw.println(name + ",gauss," + sStr + "," + dt);
 
                     // Lx, Ly
                     t0 = System.currentTimeMillis();
                     Image lx = diff.run(baseImg.duplicate(), s, 1, 0, 0);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_lx_s" + sStr + ".tif", lx);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_lx_s" + sStr + ".tif", lx);
                     pw.println(name + ",lx," + sStr + "," + dt);
 
                     t0 = System.currentTimeMillis();
                     Image ly = diff.run(baseImg.duplicate(), s, 0, 1, 0);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_ly_s" + sStr + ".tif", ly);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_ly_s" + sStr + ".tif", ly);
                     pw.println(name + ",ly," + sStr + "," + dt);
 
                     // Grad
                     t0 = System.currentTimeMillis();
                     Image grad = edges.run(baseImg.duplicate(), s, false);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_grad_s" + sStr + ".tif", grad);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_grad_s" + sStr + ".tif", grad);
                     pw.println(name + ",grad," + sStr + "," + dt);
 
                     // Lxx, Lyy, Lxy
                     t0 = System.currentTimeMillis();
                     Image lxx = diff.run(baseImg.duplicate(), s, 2, 0, 0);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_lxx_s" + sStr + ".tif", lxx);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_lxx_s" + sStr + ".tif", lxx);
                     pw.println(name + ",lxx," + sStr + "," + dt);
 
                     t0 = System.currentTimeMillis();
                     Image lyy = diff.run(baseImg.duplicate(), s, 0, 2, 0);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_lyy_s" + sStr + ".tif", lyy);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_lyy_s" + sStr + ".tif", lyy);
                     pw.println(name + ",lyy," + sStr + "," + dt);
 
                     t0 = System.currentTimeMillis();
                     Image lxy = diff.run(baseImg.duplicate(), s, 1, 1, 0);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_lxy_s" + sStr + ".tif", lxy);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_lxy_s" + sStr + ".tif", lxy);
                     pw.println(name + ",lxy," + sStr + "," + dt);
 
                     // Laplacian
                     t0 = System.currentTimeMillis();
                     Image lp = lap.run(baseImg.duplicate(), s);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_lap_s" + sStr + ".tif", lp);
+                    saveTif("outputs/fiji_java/fiji_" + name + "_lap_s" + sStr + ".tif", lp);
                     pw.println(name + ",lap," + sStr + "," + dt);
 
                     // Hessian eigenvalues (algebraic: absolute=false)
                     t0 = System.currentTimeMillis();
                     Vector<Image> h = hess.run(baseImg.duplicate(), s, false);
                     dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_hess-l1_s" + sStr + ".tif", h.get(0));
-                    saveTif("outputs/fiji/fj_" + name + "_hess-l2_s" + sStr + ".tif", h.get(1));
+                    saveTif("outputs/fiji_java/fiji_" + name + "_hess-l1_s" + sStr + ".tif", h.get(0));
+                    saveTif("outputs/fiji_java/fiji_" + name + "_hess-l2_s" + sStr + ".tif", h.get(1));
                     pw.println(name + ",hess-l1," + sStr + "," + dt);
                     pw.println(name + ",hess-l2," + sStr + "," + dt);
                 }
@@ -131,8 +132,8 @@ public class BatchTier1Fiji {
                     long t0 = System.currentTimeMillis();
                     Vector<Image> svec = st.run(baseImg.duplicate(), sd, si);
                     long dt = System.currentTimeMillis() - t0;
-                    saveTif("outputs/fiji/fj_" + name + "_st-l1_sd" + sdStr + "_si" + siStr + ".tif", svec.get(0));
-                    saveTif("outputs/fiji/fj_" + name + "_st-l2_sd" + sdStr + "_si" + siStr + ".tif", svec.get(1));
+                    saveTif("outputs/fiji_java/fiji_" + name + "_st-l1_sd" + sdStr + "_si" + siStr + ".tif", svec.get(0));
+                    saveTif("outputs/fiji_java/fiji_" + name + "_st-l2_sd" + sdStr + "_si" + siStr + ".tif", svec.get(1));
                     pw.println(name + ",st-l1," + sdStr + "_" + siStr + "," + dt);
                     pw.println(name + ",st-l2," + sdStr + "_" + siStr + "," + dt);
                 }
@@ -142,8 +143,9 @@ public class BatchTier1Fiji {
 
             pw.flush();
             System.out.println("=================================================================");
-            System.out.println("  HOÀN THÀNH XUẤT TOÀN BỘ BẢN ĐỒ FEATUREJ (outputs/fiji/)!");
-            System.out.println("  -> Đã lưu thời gian thực thi: outputs/metrics/fiji_runtime.csv");
+            System.out.println("  HOÀN THÀNH XUẤT TOÀN BỘ BẢN ĐỒ FEATUREJ (outputs/fiji_java/)!");
+            System.out.println("  -> Đã lưu thời gian thực thi: outputs/metrics/fiji_runtime_java.csv");
+            System.out.println("  -> Lưu ý: KHÔNG ghi đè outputs/metrics/fiji_runtime.csv của Lộc.");
             System.out.println("=================================================================");
         } catch (Exception e) {
             e.printStackTrace();

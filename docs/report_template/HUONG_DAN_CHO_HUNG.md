@@ -35,7 +35,7 @@
 | **Chương 2** | **Cơ sở lý thuyết & Mô hình toán** | ~7 – 8 trang | Không gian tỷ lệ (Scale-space), tiên đề Lindeberg, tích chập tách rời 2D, đạo hàm riêng bậc 1, bậc 2, chuẩn hóa $\gamma$-normalized, ma trận Hessian, Structure Tensor, tiêu chuẩn cực trị Canny, Frangi Vesselness, LoG Blob. | Đã gõ sẵn toàn bộ công thức toán LaTeX đẹp trong `docs/report_template/main.tex`. |
 | **Chương 3** | **Khảo sát FeatureJ & Workflow Fiji** | ~5 – 6 trang | Phân tích plugin FeatureJ (tác giả Erik Meijering), dịch ngược mã nguồn Java (`Differentiator.class`), giải thích vì sao FeatureJ chỉ chuẩn hóa bậc 0 mà không chuẩn hóa moment Taylor bậc 1/2, workflow đồ họa và ImageJ Macro. | Tham khảo file Java `src/fiji/BatchTier1Fiji.java` và Macro `src/fiji/batch_process.ijm`. |
 | **Chương 4** | **Thiết kế & Cài đặt hệ thống (Python)** | ~6 – 7 trang | Kiến trúc mã nguồn thuần NumPy from scratch (0% OpenCV trong lõi), thuật toán tích chập tách rời $O(2K)$ thay vì $O(K^2)$, xử lý biên `mirror`/`reflect`, thuật toán loang BFS Canny, tìm cực trị 3D scale-space LoG. | Đọc docstring và code trong `src/core/*.py` (`kernel.py`, `derivatives.py`, `hessian.py`, `detectors.py`). |
-| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn 220 bản đồ vi phân với FeatureJ ($r=0.999997$). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh (BSDS500 F1=0.599, DRIVE F1=0.649, Blob F1=1.000, Tế bào sinh học F1=0.463). | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
+| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn bản đồ vi phân Python Core với FeatureJ ($r > 0.9999$ cho làm mịn và đạo hàm bậc 1; sai số tương đối tăng theo bậc đạo hàm). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh (10 BSDS500 + 10 DRIVE + 5 Blob; BSDS500 F1=0.494, DRIVE F1=0.679/IoU=0.516, Blob F1=1.000 cho blob_01–04, F1=0.463 cho blob_05). | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
 | **Chương 6** | **Kết luận & Hướng mở rộng** | ~2 trang | Đánh giá mức độ hoàn thành chỉ tiêu, đóng góp khoa học, bài học kinh nghiệm và hướng phát triển (GPU CUDA, 3D volumn). | Tóm tắt từ kết quả thực nghiệm vượt chuẩn. |
 
 ---
@@ -44,7 +44,7 @@
 
 ### A. Bảng đối chuẩn Tầng 1 (220 bản đồ vi phân Python vs FeatureJ)
 * **Nguồn dữ liệu:** File CSV [outputs/tier1_verification_summary.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/tier1_verification_summary.csv).
-* **Kết quả chính:** 220/220 bản đồ PASS 100%, hệ số tương quan Pearson trung bình toàn hệ thống đạt $r = 0.99999734$.
+* **Kết quả chính:** Dữ liệu Tầng 1 cần tái lập đầy đủ 220 bản đồ. Dữ liệu lịch sử: 35/220 đạt chuẩn STRICT (rel < 1e-4 AND r > 0.9999), 220/220 đạt chuẩn RELAXED (rel < 1e-2 AND r > 0.9999). Pearson trung bình toàn hệ thống từ dữ liệu lịch sử: $r = 0.99999734$.
 * **Bảng thời gian chạy:** File [outputs/metrics/fiji_runtime.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/metrics/fiji_runtime.csv).
 
 ### B. Bảng đánh giá Tầng 2 (So với Ground Truth 25 ảnh chuẩn của Đức)
@@ -52,13 +52,13 @@
 * **Số liệu chính thức đưa vào báo cáo:**
   1. **Bài toán dò biên (BSDS500 - Canny):**
      * Đánh giá dung sai $\pm 2$ pixel so với tập nhãn đa annotator con người vẽ tay của Berkeley.
-     * Precision trung bình: $0.587$, Recall trung bình: $0.638$, **F1-Score trung bình: 0.599**.
+     * F1-Score trung bình (10 ảnh): **0.494** ($\sigma=2.0$, phân vị 60/85).
   2. **Bài toán dò mạch máu võng mạc (DRIVE - Frangi Vesselness):**
-     * Đánh giá trong vùng quan sát xói mòn (Eroded FOV) so với nét vẽ bác sĩ nhãn khoa.
-     * Precision trung bình: $0.614$, Recall trung bình: $0.702$, **F1-Score: 0.649, IoU: 0.483**.
+     * Đánh giá trong vùng quan sát xói mòn (Eroded FOV $17\times 17 \approx$ 8px) so với nét vẽ bác sĩ nhãn khoa.
+     * F1-Score trung bình (10 ảnh): **0.679**, IoU trung bình: **0.516**.
   3. **Bài toán dò đốm đa tỷ lệ (Blob Detection - LoG 3D Scale-Space):**
      * Ảnh toán học giải tích (`blob_01` đến `blob_04`): **Đạt F1 = 1.000 tuyệt đối (Khớp 100% cả tâm và bán kính)**.
-     * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Bắt trúng **140 / 276 nhân tế bào** do Đức chấm tay $\rightarrow$ **F1 = 0.463**.
+     * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**. Tổng thể F1 (5 ảnh): **0.490** (hạn chế của detector trên domain tế bào thật, không phải kết luận nhãn Ground Truth sai).
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.

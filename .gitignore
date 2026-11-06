@@ -29,3 +29,6 @@ outputs/*.tif
 
 # Redundant zip archives in docs (raw LaTeX is already tracked)
 docs/*.zip
+
+# Local pre-migration backup
+backup_pre_p0/

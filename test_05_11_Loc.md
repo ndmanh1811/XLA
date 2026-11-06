@@ -27,7 +27,7 @@ Nhóm trưởng đã chạy kiểm tra ma trận số học giữa 12 file TIFF 
   - Trong ảnh võng mạc y tế (DRIVE), huyết sắc tố hemoglobin trong máu **hấp thụ ánh sáng mạnh nhất ở bước sóng xanh lá (Green)**. Kênh Green cho độ tương phản mạch máu cực đại, trong khi kênh Red bị chói lóa (overexposed) và kênh Blue rất tối/nhiễu. Gộp 3 kênh lại làm mạch máu bị mờ đục và mất các mao mạch mảnh.
 * **Hậu quả đo đạc thực tế:**
   - Bản đồ Hessian Lộc xuất ra bị lệch trung bình **13.62 mức xám** so với ảnh chuẩn.
-  - Hệ số tương quan Pearson giữa file Lộc nộp và file chuẩn của nhóm chỉ đạt **$r = 0.9156$** (trong khi tiêu chuẩn nghiệm thu của bài toán bắt buộc đạt $r \ge 0.9999$).
+  - Hệ số tương quan Pearson giữa file Lộc nộp (phiên bản 05/11, chưa sửa prefix và nguồn ảnh) và file chuẩn của nhóm chỉ đạt **$r = 0.9156$** — đây là số liệu lịch sử từ đợt nộp cũ, không phản ánh bản nộp cuối cùng đã đọc từ `data/raw/` với tiền tố `fiji_`.
 * **Giải pháp bắt buộc:**
   - **Không mở ảnh ở thư mục `sources/`**.
   - **Bắt buộc mở ảnh từ thư mục `data/raw/*.png`** (Bùi Trung Đức đã tiền xử lý chuẩn: DRIVE lấy riêng kênh Green lossless, BSDS chuyển theo chuẩn BT.601).
@@ -39,22 +39,22 @@ Hệ thống đánh giá tự động (`verify_tier1.py` và `benchmark_tier2.py
 
 | Thành phần | Lộc đang đặt | Quy ước nhóm (`quyuoc.md`) | Cách sửa |
 | :--- | :--- | :--- | :--- |
-| **Tiền tố nguồn** | `fiji_...` | `fj_...` | Đổi thành `fj_` |
+| **Tiền tố nguồn** | `fiji_...` | `fiji_...` (theo quyuoc.md, INSTRUCTIONS.md) | Đã đúng, KHÔNG cần đổi |
 | **Tên ảnh** | Dùng ID gốc: `100075`, `21_training` | Dùng mã chuẩn: `bsds_01`, `drive_01` | Dùng mã nhóm (`bsds_01`, `drive_01`...) |
 | **Toán tử** | `edge`, `hess-l1`, `hess-l2` | `edge`, `hess-l1`, `hess-l2` |  Đã đúng |
 | **Ký hiệu $\sigma$** | `_s1.tif`, `_s2.tif` | `_s1.0.tif`, `_s2.0.tif` | Thêm số thập phân `.0` (dạng float) |
 
-**Ví dụ cụ thể:**
+**Ví dụ cụ thể (đã đúng quy ước `fiji_`):**
 - File của Lộc: `outputs/fiji/fiji_100075_edge_s1.tif`  
-  👉 Đổi thành: `outputs/fiji/fj_bsds_01_edge_s1.0.tif`
+  👉 Tên ảnh cần đổi sang mã chuẩn: `outputs/fiji/fiji_bsds_01_edge_s1.0.tif`
 - File của Lộc: `outputs/fiji/fiji_21_training_hess-l1_s1.tif`  
-  👉 Đổi thành: `outputs/fiji/fj_drive_01_hess-l1_s1.0.tif`
+  👉 Tên ảnh cần đổi sang mã chuẩn: `outputs/fiji/fiji_drive_01_hess-l1_s1.0.tif`
 
 ---
 
 ### ⚠️ Lỗi 3: Chưa có kịch bản Macro tự động hóa (.ijm)
 * Ở commit này Lộc mới làm chuột thủ công bằng tay (GUI) trên 2 ảnh đại diện được 12 file.
-* Bộ kiểm chuẩn Tầng 1 gồm **5 ảnh** (`bsds_01`, `bsds_02`, `drive_01`, `blob_01`, `blob_02`), mỗi ảnh gồm **11 toán tử vi phân** qua **4 mức scale**, tổng cộng **220 bản đồ TIFF 32-bit**.
+* Bộ kiểm chuẩn Tầng 1 gồm **5 ảnh** (`bsds_01`, `bsds_02`, `drive_01`, `blob_01`, `blob_02`), gồm **10 toán tử vi phân** qua **4 mức scale** (200 bản đồ) cộng **Structure Tensor 2 cặp × 2 thành phần** (20 bản đồ), tổng cộng **220 bản đồ TIFF 32-bit**.
 * Làm tay 220 bản đồ sẽ rất mất thời gian và dễ nhầm lẫn. Lộc cần hoàn thành kịch bản Macro tự động hóa `.ijm` cho nhiệm vụ **STT 18 (Hạn 08/11/2026)**.
 
 ---
@@ -98,12 +98,12 @@ for (i = 0; i < images.length; i++) {
         
         // Lưu L1 (Largest)
         selectWindow(orig_title + " Hessian largest eigenvalues");
-        saveAs("Tiff", "outputs/fiji/fj_" + img_name + "_hess-l1_s" + s_str + ".tif");
+        saveAs("Tiff", "outputs/fiji/fiji_" + img_name + "_hess-l1_s" + s_str + ".tif");
         close();
         
         // Lưu L2 (Smallest)
         selectWindow(orig_title + " Hessian smallest eigenvalues");
-        saveAs("Tiff", "outputs/fiji/fj_" + img_name + "_hess-l2_s" + s_str + ".tif");
+        saveAs("Tiff", "outputs/fiji/fiji_" + img_name + "_hess-l2_s" + s_str + ".tif");
         close();
         
         File.append(img_name + ",hessian," + s_str + "," + (t1 - t0) + "\n", csv_path);
@@ -121,7 +121,7 @@ print("=== HOÀN TẤT XUẤT TOÀN BỘ BẢN ĐỒ ===");
 
 1. **Hạn 07/11 (STT 17):** Dựng workflow tương tự cho **Blob (FeatureJ Laplacian)** và **Structure Tensor (FeatureJ Structure)**. Bổ sung ảnh chụp màn hình vào file báo cáo.
 2. **Hạn 08/11 (STT 18):** Hoàn thiện file script `src/fiji/batch_process.ijm` chạy tự động quét toàn bộ 5 ảnh của Tầng 1.
-3. **Hạn 09/11 (STT 19):** Chạy macro xuất toàn bộ 220 file TIFF đúng chuẩn tên `fj_*` vào `outputs/fiji/` và file đo thời gian `outputs/metrics/fiji_runtime.csv`.
+3. **Hạn 09/11 (STT 19):** Chạy macro xuất toàn bộ 220 file TIFF đúng chuẩn tên `fiji_*` vào `outputs/fiji/` và file đo thời gian `outputs/metrics/fiji_runtime.csv`.
 4. **Phối hợp viết Báo cáo:** Phối hợp cùng Hưng để chuyển nội dung từ file `.docx` sang **Chương 3 (Khảo sát FeatureJ & Workflow Fiji)** trong file LaTeX `docs/report_template/main.tex` (~6 trang).
 
 *Chúc Lộc hoàn thành tốt các mốc tiếp theo! Nhóm đang làm rất mượt và đi trước tiến độ.*

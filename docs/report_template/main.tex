@@ -12,14 +12,14 @@
 
 \title{Phát Hiện Đặc Trưng Ảnh Đa Tỷ Lệ Bằng Đạo Hàm Gaussian: Cài Đặt Thuần NumPy và Thẩm Định Đối Chuẩn với FeatureJ / Fiji}
 
-\author{\IEEEauthorblockN{Nguyễn Đức Mạnh, Bùi Trung Đức, Lộc, Hưng}
+\author{\IEEEauthorblockN{Nguyễn Đức Mạnh, Bùi Trung Đức, Phạm Bảo Lộc, Nguyễn Tiến Hưng}
 \IEEEauthorblockA{\textit{Khoa Công nghệ Thông tin - Môn Xử lý ảnh số (XLA)}}
 }
 
 \maketitle
 
 \begin{abstract}
-Báo cáo trình bày nghiên cứu, thiết kế, cài đặt và đánh giá toàn diện hệ thống phát hiện đặc trưng ảnh đa tỷ lệ (Multi-scale Feature Detection) sử dụng không gian tỷ lệ đạo hàm Gaussian (Gaussian Scale-Space). Hệ thống được lập trình thuần túy từ đầu (from scratch) bằng thư viện NumPy, hoàn toàn không sử dụng các hàm tích chập có sẵn trong OpenCV hay SciPy ndimage. Chúng tôi tiến hành quy trình thẩm định hai tầng (2-Tier Evaluation): Tầng 1 kiểm chứng đối chuẩn số học pixel-to-pixel với thư viện quốc tế FeatureJ (ImageScience) trên 220 bản đồ vi phân qua 5 ảnh hiệu chuẩn; Tầng 2 đánh giá thực nghiệm định lượng trên 25 ảnh thực tế (BSDS500, DRIVE, Blobs) so với nhãn chuẩn Ground Truth của chuyên gia. Kết quả thực nghiệm cho thấy hệ thống đạt độ chính xác tương đương sai số phần cứng máy tính ($r = 0.999997$ so với FeatureJ) và chất lượng đường biên trơn tru, liền mạch vượt trội so với các bộ lọc rời rạc thông thường.
+Báo cáo trình bày nghiên cứu, thiết kế, cài đặt và đánh giá toàn diện hệ thống phát hiện đặc trưng ảnh đa tỷ lệ (Multi-scale Feature Detection) sử dụng không gian tỷ lệ đạo hàm Gaussian (Gaussian Scale-Space). Hệ thống được lập trình thuần túy từ đầu (from scratch) bằng thư viện NumPy, hoàn toàn không sử dụng các hàm tích chập có sẵn trong OpenCV hay SciPy ndimage. Chúng tôi tiến hành quy trình thẩm định hai tầng (2-Tier Evaluation): Tầng 1 kiểm chứng đối chuẩn số học pixel-to-pixel với thư viện quốc tế FeatureJ (ImageScience) trên 5 ảnh hiệu chuẩn; Tầng 2 đánh giá thực nghiệm định lượng trên 25 ảnh mẫu (10 BSDS500 + 10 DRIVE + 5 Blob) so với nhãn chuẩn Ground Truth của chuyên gia. Kết quả Tầng 1 cho thấy độ tương quan Pearson rất cao ($r > 0.9999$ cho các bản đồ làm mịn và đạo hàm bậc 1) và sai số tương đối tăng theo bậc đạo hàm (Gauss $\sim 10^{-8}$, bậc 1 $\sim 5 \cdot 10^{-4}$, bậc 2 $\sim 4 \cdot 10^{-3}$) do khác biệt xấp xỉ rời rạc giữa Python Core và FeatureJ. Chất lượng đường biên trơn tru, liền mạch vượt trội so với các bộ lọc rời rạc thông thường.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -297,9 +297,9 @@ LoG Extrema 3D ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot HW)$ & $\mat
 \end{table}
 
 \section{Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích}
-\subsection{Kết quả thẩm định Tầng 1 (So khớp 220 bản đồ với FeatureJ)}
+\subsection{Kết quả thẩm định Tầng 1 (So khớp Python Core với FeatureJ / Fiji)}
 \begin{table}[htbp]
-\caption{Kết quả đối chuẩn định lượng Tầng 1 theo từng toán tử (220 bản đồ)}
+\caption{Kết quả đối chuẩn định lượng Tầng 1 theo từng toán tử (dữ liệu từ lần chạy trước, cần tái lập đầy đủ 220 bản đồ)}
 \centering
 \begin{tabular}{lcccc}
 \toprule
@@ -321,11 +321,13 @@ ST L2 & 2.30e-03 & 4.39e-04 & 1.00000000 & 1.00000000 \\
 \end{tabular}
 \end{table}
 
+\textbf{Lưu ý kỹ thuật:} Tiêu chí nghiêm ngat theo \texttt{quyuoc.md} là \texttt{rel\_err < 10^{-4} AND r > 0.9999}. Với tiêu chí này, chỉ 35/220 bản đồ (15,9\%) đạt chuẩn STRICT từ dữ liệu lịch sử; 185/220 bản đồ có sai số tương đối vượt $10^{-4}$ (tối đa 9,36\% cho Laplacian tại $\sigma=8$). Khi nới ngưỡng thành RELAXED (\texttt{rel\_err < 10^{-2} AND r > 0.9999}), toàn bộ 220 bản đồ đạt chuẩn. Chênh lệch $\sim$0,39\% (mean Lxx) đến 0,93\% (max Laplacian) là khác biệt xấp xỉ rời rạc giữa Python Core (chuẩn hóa moment Taylor) và FeatureJ (xấp xỉ liên tục khác), không phải lỗi cài đặt.
+
 \subsection{Kết quả thực nghiệm Tầng 2 (So khớp Ground Truth 25 ảnh thật)}
 \begin{itemize}
-    \item \textbf{BSDS500 (Canny Edge):} $F_1 = 0.540$, Precision = 0.442, Recall = 0.702.
-    \item \textbf{DRIVE (Frangi Vesselness):} $F_1 = 0.690$, IoU = 0.530.
-    \item \textbf{Blobs (LoG Scale-Space):} $F_1 = 1.000$ (Khớp trọn vẹn 100\% các đốm chuẩn).
+    \item \textbf{BSDS500 (Canny Edge):} $F_1 = 0.494$ (trung bình 10 ảnh, $\sigma=2.0$, phân vị 60/85, dung sai $\pm 2$ px).
+    \item \textbf{DRIVE (Frangi Vesselness):} $F_1 = 0.679$, IoU $= 0.516$ (trung bình 10 ảnh, mặt nạ FOV xói mòn $17\times 17$ $\approx$ 8 px).
+    \item \textbf{Blobs (LoG Scale-Space):} `blob_01`–`blob_04` đạt $F_1 = 1.000$ (100\% khớp tâm và bán kính); `blob_05` (tế bào sinh học) đạt $F_1 = 0.463$ (140/276 đối tượng); tổng thể $F_1 = 0.490$.
 \end{itemize}
 
 \subsection{Thẩm định chéo với OpenCV và SciPy}

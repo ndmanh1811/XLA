@@ -129,8 +129,9 @@ def evaluate_drive_vessels(sample_limit=3):
         gt_vessels = np.array(Image.open(vessel_gt_path)) > 128
         fov_mask = np.array(Image.open(fov_mask_path)) > 128
         
-        # Bắt buộc áp mặt nạ FOV đã xói mòn khoảng 8px để tránh gờ giả ở biên tròn
-        struct_erode = np.ones((9, 9), dtype=bool)
+        # Bắt buộc áp mặt nạ FOV đã xói mòn theo ceil(k*sigma) = ceil(4.0 * 2.0) = 8px
+        # (structuring element 17x17 cho sigma=2.0; cho multiscale nen dung ceil(k * max_sigma))
+        struct_erode = np.ones((17, 17), dtype=bool)
         eroded_fov = binary_erosion(fov_mask, structure=struct_erode)
         
         # Giữ nguyên dải float64 0-255 theo chuẩn quy ước INSTRUCTIONS
@@ -251,8 +252,9 @@ def main():
     print("=" * 65)
     print("  KHỞI CHẠY KHUNG ĐÁNH GIÁ ĐỊNH LƯỢNG TẦNG 2 (BENCHMARK)")
     print("=" * 65)
-    evaluate_bsds_edges(sample_limit=5)
-    evaluate_drive_vessels(sample_limit=5)
+    # Chạy đủ 25 ảnh: 10 BSDS + 10 DRIVE + 5 Blob (theo spec Tầng 2)
+    evaluate_bsds_edges(sample_limit=10)
+    evaluate_drive_vessels(sample_limit=10)
     evaluate_blobs(sample_limit=5)
     print("\n" + "=" * 65)
     print("  HOÀN TẤT ĐÁNH GIÁ ĐỊNH LƯỢNG TẦNG 2!")

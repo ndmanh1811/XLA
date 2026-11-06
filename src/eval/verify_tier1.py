@@ -3,9 +3,15 @@ verify_tier1.py - Kiểm chứng số học Tầng 1 (Python Core vs FeatureJ / 
 Đối chuẩn định lượng trên 5 ảnh đại diện: bsds_01, bsds_02, drive_01, blob_01, blob_02
 tại các tỷ lệ sigma in [1.0, 2.0, 4.0, 8.0] và Structure Tensor (sd, si).
 
-Tiêu chí nghiệm thu chuẩn:
-- Pearson correlation r > 0.9999 (độ tương quan hình học gần như tuyệt đối 1.0)
+Tiêu chí nghiệm thu chuẩn (quyuoc.md):
+- STRICT:   rel_err < 1e-4  AND  r > 0.9999
+- RELAXED:  rel_err < 1e-2  AND  r > 0.9999
+- Pearson r > 0.9999 (độ tương quan hình học gần như tuyệt đối 1.0)
 - Sai số tương đối max|Δ| / max|ref| cực nhỏ sau khi crop bỏ dải biên k*sigma px.
+
+Lưu ý: Không bỏ qua im lặng khi thiếu file. Tất cả 220 bản đồ vi phân kỳ vọng
+được ghi rõ trạng thái: PASS_STRICT / PASS_RELAXED / ACCEPTABLE / FAIL /
+MISSING / SKIP_SHAPE.
 """
 
 import sys
@@ -28,7 +34,7 @@ from src.config import (
 )
 
 PY_DIR = ROOT / "outputs" / "python"
-FJ_DIR = ROOT / "outputs" / "fiji"
+FJ_DIR = ROOT / "outputs" / "fiji_java"
 OUT_DIR = ROOT / "outputs"
 
 TIER1_IMAGES = get_tier1_images()
@@ -49,15 +55,68 @@ OPERATORS = [
 ]
 
 def find_fiji_file(img_name: str, op_code: str, suffix: str) -> Path:
-    """Tìm file FeatureJ chính thức do Lộc xuất từ data/raw/ (tiền tố fiji_)."""
+    """Tìm file FeatureJ chính thức do exporter xuất từ data/raw/ (tiền tố fiji_)."""
     p = FJ_DIR / f"fiji_{img_name}_{op_code}_{suffix}.tif"
-    if p.exists():
-        return p
-    # Dự phòng tiền tố fj_ nếu có
-    p_alt = FJ_DIR / f"fj_{img_name}_{op_code}_{suffix}.tif"
-    if p_alt.exists():
-        return p_alt
     return p
+
+def evaluate_pair(py_arr, fj_arr, op_code, s):
+    """Crop, tính sai số và Pearson r giữa mảng Python và Fiji."""
+    # Crop biên k * sigma theo cấu hình theo đúng bậc đạo hàm
+    if op_code == "gauss":
+        k_crop = get_kernel_k(0)
+    elif op_code in ["lx", "ly", "grad"]:
+        k_crop = get_kernel_k(1)
+    else:
+        k_crop = get_kernel_k(2)
+    crop = int(np.ceil(k_crop * s))
+    if 2 * crop < py_arr.shape[0] and 2 * crop < py_arr.shape[1]:
+        py_c = py_arr[crop:-crop, crop:-crop]
+        fj_c = fj_arr[crop:-crop, crop:-crop]
+    else:
+        py_c, fj_c = py_arr, fj_arr
+
+    diff = np.abs(py_c - fj_c)
+    max_diff = float(np.max(diff))
+    mean_diff = float(np.mean(diff))
+    rmse = float(np.sqrt(np.mean((py_c - fj_c) ** 2)))
+    ref_peak = float(np.max(np.abs(fj_c)))
+    rel_err = max_diff / (ref_peak + 1e-12)
+
+    # PSNR chỉ hợp lệ về mặt vật lý với ảnh làm mịn Gauss L (dải [0, 255])
+    if op_code == "gauss":
+        psnr_val = 20 * np.log10(255.0 / (rmse + 1e-12))
+        psnr_str = f"{psnr_val:.2f} dB"
+    else:
+        psnr_str = "N/A (Signed)"
+
+    # Pearson r với xử lý an toàn cho vùng phẳng / zero variance
+    std_py = float(np.std(py_c))
+    std_fj = float(np.std(fj_c))
+    if std_py < 1e-12 or std_fj < 1e-12:
+        r = 1.0 if max_diff < 1e-4 else 0.0
+    else:
+        r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
+        r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else (1.0 if max_diff < 1e-4 else 0.0)
+
+    return {
+        "max_diff": max_diff,
+        "mean_diff": mean_diff,
+        "rmse": rmse,
+        "psnr": psnr_str,
+        "rel_error": rel_err,
+        "pearson_r": r,
+    }
+
+def status_from_metrics(rel_err, r):
+    """Trả về status theo tiêu chí nghiêm ngat (strict) cua quy uoc."""
+    if rel_err < 1e-4 and r > 0.9999:
+        return "PASS_STRICT"
+    elif rel_err < 1e-2 and r > 0.9999:
+        return "PASS_RELAXED"
+    elif r >= 0.9990:
+        return "ACCEPTABLE"
+    else:
+        return "FAIL"
 
 def run_tier1_verification():
     print("=" * 80)
@@ -66,95 +125,123 @@ def run_tier1_verification():
     print("=" * 80)
 
     records = []
+    expected_count = 0
+    missing_count = 0
+    skip_shape_count = 0
 
     for img_name in TIER1_IMAGES:
         print(f"\n-> Đang kiểm chứng đối chuẩn cho ảnh: {img_name}...")
-        
+
         # 1. Kiểm tra 10 toán tử vi phân ở 4 tỷ lệ chuẩn
         for op_code, op_name in OPERATORS:
             for s in SIGMAS:
+                expected_count += 1
                 py_file = PY_DIR / f"py_{img_name}_{op_code}_s{s:.1f}.tif"
                 fj_file = find_fiji_file(img_name, op_code, f"s{s:.1f}")
-                
+
                 if not py_file.exists() or not fj_file.exists():
+                    missing_count += 1
+                    records.append({
+                        "image": img_name,
+                        "operator": op_code,
+                        "operator_name": op_name,
+                        "param": f"s={s:.1f}",
+                        "max_diff": None,
+                        "mean_diff": None,
+                        "rmse": None,
+                        "psnr": None,
+                        "rel_error": None,
+                        "pearson_r": None,
+                        "status": "MISSING",
+                        "reason": "missing_py_or_fiji_file",
+                    })
                     continue
-                    
+
                 py_arr = tifffile.imread(str(py_file)).astype(np.float64)
                 fj_arr = tifffile.imread(str(fj_file)).astype(np.float64)
-                
-                # Bỏ qua nếu kích thước không khớp (do file fiji cũ từ dataset phiên bản cũ)
+
                 if py_arr.shape != fj_arr.shape:
+                    skip_shape_count += 1
+                    records.append({
+                        "image": img_name,
+                        "operator": op_code,
+                        "operator_name": op_name,
+                        "param": f"s={s:.1f}",
+                        "max_diff": None,
+                        "mean_diff": None,
+                        "rmse": None,
+                        "psnr": None,
+                        "rel_error": None,
+                        "pearson_r": None,
+                        "status": "SKIP_SHAPE",
+                        "reason": f"shape_mismatch_py_{py_arr.shape}_vs_fiji_{fj_arr.shape}",
+                    })
                     continue
-                
-                # Crop biên k * sigma theo cấu hình theo đúng bậc đạo hàm
-                if op_code == "gauss":
-                    k_crop = get_kernel_k(0)
-                elif op_code in ["lx", "ly", "grad"]:
-                    k_crop = get_kernel_k(1)
-                else:
-                    k_crop = get_kernel_k(2)
-                crop = int(np.ceil(k_crop * s))
-                if 2 * crop < py_arr.shape[0] and 2 * crop < py_arr.shape[1]:
-                    py_c = py_arr[crop:-crop, crop:-crop]
-                    fj_c = fj_arr[crop:-crop, crop:-crop]
-                else:
-                    py_c, fj_c = py_arr, fj_arr
-                    
-                diff = np.abs(py_c - fj_c)
-                max_diff = float(np.max(diff))
-                mean_diff = float(np.mean(diff))
-                rmse = float(np.sqrt(np.mean((py_c - fj_c) ** 2)))
-                ref_peak = float(np.max(np.abs(fj_c)))
-                rel_err = max_diff / (ref_peak + 1e-12)
-                
-                # PSNR chỉ hợp lệ về mặt vật lý với ảnh làm mịn Gauss L (dải [0, 255])
-                # Đối với các bản đồ đạo hàm có dấu, không dùng PSNR (dùng MAE, RMSE, Pearson r)
-                if op_code == "gauss":
-                    psnr_val = 20 * np.log10(255.0 / (rmse + 1e-12))
-                    psnr_str = f"{psnr_val:.2f} dB"
-                else:
-                    psnr_str = "N/A (Signed)"
-                
-                # Pearson r với xử lý an toàn cho vùng phẳng / zero variance
-                std_py = float(np.std(py_c))
-                std_fj = float(np.std(fj_c))
-                if std_py < 1e-12 or std_fj < 1e-12:
-                    r = 1.0 if max_diff < 1e-4 else 0.0
-                else:
-                    r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
-                    r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else (1.0 if max_diff < 1e-4 else 0.0)
-                    
-                status = "PASS" if (r >= 0.9999 or rel_err < 1e-4) else ("ACCEPTABLE" if r >= 0.9990 else "FAIL")
-                
+
+                metrics = evaluate_pair(py_arr, fj_arr, op_code, s)
+                status = status_from_metrics(metrics["rel_error"], metrics["pearson_r"])
+
                 records.append({
                     "image": img_name,
                     "operator": op_code,
                     "operator_name": op_name,
                     "param": f"s={s:.1f}",
-                    "max_diff": max_diff,
-                    "mean_diff": mean_diff,
-                    "rmse": rmse,
-                    "psnr": psnr_str,
-                    "rel_error": rel_err,
-                    "pearson_r": r,
-                    "status": status
+                    "max_diff": metrics["max_diff"],
+                    "mean_diff": metrics["mean_diff"],
+                    "rmse": metrics["rmse"],
+                    "psnr": metrics["psnr"],
+                    "rel_error": metrics["rel_error"],
+                    "pearson_r": metrics["pearson_r"],
+                    "status": status,
+                    "reason": "",
                 })
 
         # 2. Kiểm tra Structure Tensor ở 2 cặp (sd, si)
         for sd, si in ST_PAIRS:
             for op_code in ["st-l1", "st-l2"]:
+                expected_count += 1
                 py_file = PY_DIR / f"py_{img_name}_{op_code}_sd{sd:.1f}_si{si:.1f}.tif"
                 fj_file = find_fiji_file(img_name, op_code, f"sd{sd:.1f}_si{si:.1f}")
-                
+
                 if not py_file.exists() or not fj_file.exists():
+                    missing_count += 1
+                    records.append({
+                        "image": img_name,
+                        "operator": op_code,
+                        "operator_name": f"Structure Tensor ({op_code})",
+                        "param": f"sd={sd:.1f}_si={si:.1f}",
+                        "max_diff": None,
+                        "mean_diff": None,
+                        "rmse": None,
+                        "psnr": None,
+                        "rel_error": None,
+                        "pearson_r": None,
+                        "status": "MISSING",
+                        "reason": "missing_py_or_fiji_file",
+                    })
                     continue
-                    
+
                 py_arr = tifffile.imread(str(py_file)).astype(np.float64)
                 fj_arr = tifffile.imread(str(fj_file)).astype(np.float64)
-                
+
                 if py_arr.shape != fj_arr.shape:
+                    skip_shape_count += 1
+                    records.append({
+                        "image": img_name,
+                        "operator": op_code,
+                        "operator_name": f"Structure Tensor ({op_code})",
+                        "param": f"sd={sd:.1f}_si={si:.1f}",
+                        "max_diff": None,
+                        "mean_diff": None,
+                        "rmse": None,
+                        "psnr": None,
+                        "rel_error": None,
+                        "pearson_r": None,
+                        "status": "SKIP_SHAPE",
+                        "reason": f"shape_mismatch_py_{py_arr.shape}_vs_fiji_{fj_arr.shape}",
+                    })
                     continue
-                
+
                 kd = get_kernel_k(1)
                 ki = get_kernel_k(0)
                 crop = int(np.ceil(kd * sd + ki * si))
@@ -163,7 +250,7 @@ def run_tier1_verification():
                     fj_c = fj_arr[crop:-crop, crop:-crop]
                 else:
                     py_c, fj_c = py_arr, fj_arr
-                    
+
                 diff = np.abs(py_c - fj_c)
                 max_diff = float(np.max(diff))
                 mean_diff = float(np.mean(diff))
@@ -171,7 +258,7 @@ def run_tier1_verification():
                 ref_peak = float(np.max(np.abs(fj_c)))
                 rel_err = max_diff / (ref_peak + 1e-12)
                 psnr_str = "N/A (Signed)"
-                
+
                 std_py = float(np.std(py_c))
                 std_fj = float(np.std(fj_c))
                 if std_py < 1e-12 or std_fj < 1e-12:
@@ -179,9 +266,9 @@ def run_tier1_verification():
                 else:
                     r_matrix = np.corrcoef(py_c.ravel(), fj_c.ravel())
                     r = float(r_matrix[0, 1]) if not np.isnan(r_matrix[0, 1]) else (1.0 if max_diff < 1e-4 else 0.0)
-                    
-                status = "PASS" if (r >= 0.9990 or rel_err < 1e-4) else "FAIL"
-                
+
+                status = status_from_metrics(rel_err, r)
+
                 records.append({
                     "image": img_name,
                     "operator": op_code,
@@ -193,21 +280,28 @@ def run_tier1_verification():
                     "psnr": psnr_str,
                     "rel_error": rel_err,
                     "pearson_r": r,
-                    "status": status
+                    "status": status,
+                    "reason": "",
                 })
+
+    found_count = expected_count - missing_count - skip_shape_count
 
     # Lưu bảng kết quả tổng hợp ra CSV
     csv_path = OUT_DIR / "tier1_verification_summary.csv"
-    if records:
-        keys = list(records[0].keys())
-        with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
-            writer = csv.DictWriter(f, fieldnames=keys)
-            writer.writeheader()
-            writer.writerows(records)
+    keys = [
+        "image", "operator", "operator_name", "param",
+        "max_diff", "mean_diff", "rmse", "psnr",
+        "rel_error", "pearson_r", "status", "reason",
+    ]
+    with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(records)
 
-    # Thống kê tổng hợp theo từng toán tử
+    # Thống kê tổng hợp theo từng toán tử (chi cac record co so lieu)
+    valid_records = [r for r in records if r["status"] not in ("MISSING", "SKIP_SHAPE")]
     unique_ops = []
-    for r in records:
+    for r in valid_records:
         if r["operator"] not in unique_ops:
             unique_ops.append(r["operator"])
 
@@ -218,7 +312,7 @@ def run_tier1_verification():
     print("-" * 80)
 
     for op in unique_ops:
-        sub = [r for r in records if r["operator"] == op]
+        sub = [r for r in valid_records if r["operator"] == op]
         m_diff = sum(r["mean_diff"] for r in sub) / len(sub)
         r_err = sum(r["rel_error"] for r in sub) / len(sub)
         r_min = min(r["pearson_r"] for r in sub)
@@ -226,14 +320,23 @@ def run_tier1_verification():
         print(f"{op:<12} | {m_diff:<12.4e} | {r_err:<18.4e} | {r_min:<16.8f} | {r_mean:<16.8f}")
 
     print("=" * 80)
-    pass_count = sum(1 for r in records if r["status"] in ["PASS", "ACCEPTABLE"])
-    total_count = len(records)
-    pass_rate = (pass_count / total_count) * 100.0 if total_count > 0 else 0.0
-    all_r = [r["pearson_r"] for r in records]
+    pass_strict = sum(1 for r in records if r["status"] == "PASS_STRICT")
+    pass_relaxed = sum(1 for r in records if r["status"] == "PASS_RELAXED")
+    acceptable = sum(1 for r in records if r["status"] == "ACCEPTABLE")
+    fail = sum(1 for r in records if r["status"] == "FAIL")
+    all_r = [r["pearson_r"] for r in valid_records]
     avg_r = sum(all_r) / len(all_r) if all_r else 0.0
 
-    print(f"\n-> TỔNG KẾT: {pass_count}/{total_count} bản đồ vi phân ĐẠT CHUẨN ({pass_rate:.1f}%).")
-    print(f"-> Hệ số tương quan Pearson trung bình toàn hệ thống: r = {avg_r:.8f}")
+    print(f"\n-> TỔNG KẾT TIÊU CHUẨN:")
+    print(f"   Kỳ vọng:   {expected_count} bản đồ vi phân")
+    print(f"   Có sẵn:    {found_count} bản đồ")
+    print(f"   Thiếu:     {missing_count} bản đồ (MISSING)")
+    print(f"   Bỏ qua:    {skip_shape_count} bản đồ (SKIP_SHAPE)")
+    print(f"   PASS_STRICT:  {pass_strict}  (rel < 1e-4 AND r > 0.9999)")
+    print(f"   PASS_RELAXED: {pass_relaxed}  (rel < 1e-2 AND r > 0.9999)")
+    print(f"   ACCEPTABLE:   {acceptable}  (r >= 0.9990, chưa đạt strict/relaxed)")
+    print(f"   FAIL:         {fail}")
+    print(f"   Hệ số tương quan Pearson trung bình toàn hệ thống: r = {avg_r:.8f}")
     print(f"-> Toàn bộ kết quả chi tiết đã được xuất ra: {csv_path.name}")
     print("=" * 80)
 
