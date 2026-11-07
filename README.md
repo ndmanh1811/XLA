@@ -41,14 +41,14 @@ XLA/
 │   │   └── batch_blob_structure.ijm
 │   └── eval/                      # KHUNG ĐÁNH GIÁ VÀ NGHIỆM THU ĐỊNH LƯỢNG
 │       ├── verify_tier1.py        #   Nghiệm thu Tầng 1 (Python Core vs 220 bản đồ FeatureJ)
-│       └── benchmark_tier2.py     #   Đánh giá Tầng 2 (So sánh với Ground Truth 25 ảnh chuẩn)
+│       └── benchmark_tier2.py     #   Đánh giá Tầng 2 (Python + Fiji, so sánh với Ground Truth 25 ảnh)
 ├── outputs/                       # DỮ LIỆU ĐẦU RA VÀ ĐỐI CHUẨN
 │   ├── python/                    #   220 bản đồ vi phân chuẩn xuất từ Python Core (TIFF 32-bit float)
 │   ├── fiji/                      #   231 bản đồ vi phân do kịch bản Macro của Lộc xuất
 │   ├── fiji_java/                 #   220 bản đồ vi phân do BatchTier1Fiji.java xuất (đối chuẩn Tầng 1)
 │   ├── fiji_java_tier1.zip        #   Kho lưu trữ nén 220 TIFF Tier 1 (92.58 MiB)
 │   ├── tier1_verification_summary.csv # Kết quả đối chuẩn pixel-to-pixel chi tiết 220 bản đồ
-│   └── metrics/                   #   Bảng số liệu thực nghiệm (tier2_results.csv, fiji_runtime_java.csv)
+│   └── metrics/                   #   Bảng số liệu thực nghiệm (tier2_results*.csv, tier2_comparison.csv, fiji_runtime_java.csv)
 ├── docs/                          # TÀI LIỆU VÀ BÁO CÁO KHOA HỌC
 │   ├── report_template/           #   Mã nguồn LaTeX báo cáo chuẩn IEEE (main.tex, references.bib, figures/)
 │   └── report_overleaf.zip        #   Gói 1-click (gửi kèm, không tracked trên Git)
@@ -116,10 +116,31 @@ python src/eval/verify_tier1.py
 ### 4. Đánh giá thực nghiệm Tầng 2 (Tier 2 Benchmark: Ground Truth Evaluation)
 Đánh giá định lượng trên 25 ảnh thực tế với Ground Truth chuyên gia, áp dụng xói mòn FOV thích ứng đa tỷ lệ $r = \lceil 4.0\sigma \rceil$ và hỗ trợ tham số hóa Canny từ dòng lệnh:
 ```bash
+# Nhánh chính thức: Python Core (mặc định, Blob 8 sigma)
 python src/eval/benchmark_tier2.py --p-low 60.0 --p-high 85.0
+
+# Nhánh đối chứng: đọc 231 bản đồ TIFF do ImageJ Macro của Lộc xuất trong outputs/fiji/
+python src/eval/benchmark_tier2.py --source fiji
+
+# Chạy song song cả hai nhánh và xuất bảng đối sánh
+python src/eval/benchmark_tier2.py --source both --blob-sigmas config
 ```
-* **Kết quả xuất ra file:** `outputs/metrics/tier2_results.csv` (đầy đủ 25 dòng số liệu chi tiết).
-* **Hiệu năng định lượng đạt được:**
+* **Kết quả xuất ra file:**
+  - `outputs/metrics/tier2_results.csv`: nhánh Python chính thức (25 dòng).
+  - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji (25 dòng).
+  - `outputs/metrics/tier2_results_both.csv`: gộp cả hai nhánh (50 dòng, có cột `source`).
+  - `outputs/metrics/tier2_comparison.csv`: bảng đối sánh song song Python vs Fiji (25 dòng).
+* **Bảng đối sánh Python vs Fiji** (cùng phân vị p60/p85, cùng FOV; Blob dùng 7 sigma cấu hình vì Fiji không có Laplacian tại $\sigma=11.3$):
+
+| Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
+| :--- | :---: | :---: | :---: |
+| BSDS500 - Canny Edge (10 ảnh) | 0.4937 | 0.4966 | **+0.0029** |
+| DRIVE - Frangi Vesselness (10 ảnh) | 0.6806 | 0.6816 | **+0.0010** |
+| Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.8930 | 0.8919 | **−0.0011** |
+
+  - DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
+  - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463); bảng trên chỉ hạ Python về 7σ để so sánh công bằng với dữ liệu Fiji hiện có.
+* **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
   - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** $F_1 = 0.494$ (dung sai $\pm 2$ px so với nhãn người vẽ tay).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
   - **Bài toán Đốm (Blobs - LoG Scale-Space, 5 ảnh):**

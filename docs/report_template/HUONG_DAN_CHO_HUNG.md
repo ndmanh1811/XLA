@@ -61,6 +61,18 @@
      * Ảnh toán học giải tích (`blob_01` đến `blob_04`): **Đạt F1 = 1.000 tuyệt đối (Khớp 100% cả tâm và bán kính)**.
      * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**.
      * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/292 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
+  4. **Đối sánh song song Python Core vs Fiji/FeatureJ (Tầng 2):**
+     * Tái lập bằng lệnh: `python src/eval/benchmark_tier2.py --source both --blob-sigmas config`. Số liệu thô: [outputs/metrics/tier2_comparison.csv](../../outputs/metrics/tier2_comparison.csv) (25 dòng).
+     * Cùng phân vị p60/p85 và cùng mặt nạ FOV; Blob dùng 7 sigma cấu hình vì Fiji không có bản đồ Laplacian tại $\sigma=11.3$:
+
+     | Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
+     | :--- | :---: | :---: | :---: |
+     | BSDS500 - Canny Edge (10 ảnh) | 0.4937 | 0.4966 | **+0.0029** |
+     | DRIVE - Frangi Vesselness (10 ảnh) | 0.6806 | 0.6816 | **+0.0010** |
+     | Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.8930 | 0.8919 | **−0.0011** |
+
+     * DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
+     * `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python vẫn giữ nguyên trong `tier2_results.csv` (140/329, F1 = 0.463).
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.
