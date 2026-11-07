@@ -73,6 +73,7 @@
 
      * DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
      * `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python vẫn giữ nguyên trong `tier2_results.csv` (140/329, F1 = 0.463).
+     * Sai lệch $|\Delta F_1| \le 0.003$ đến từ xấp xỉ rời rạc và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.

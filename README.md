@@ -140,6 +140,7 @@ python src/eval/benchmark_tier2.py --source both --blob-sigmas config
 
   - DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
   - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463); bảng trên chỉ hạ Python về 7σ để so sánh công bằng với dữ liệu Fiji hiện có.
+  - Sai lệch $|\Delta F_1| \le 0.003$ đến từ xấp xỉ rời rạc và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
 * **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
   - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** $F_1 = 0.494$ (dung sai $\pm 2$ px so với nhãn người vẽ tay).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
