@@ -16,7 +16,7 @@
   1. Đăng ký/Đăng nhập tài khoản tại [Overleaf.com](https://www.overleaf.com/).
   2. Tạo dự án mới: `New Project` $\rightarrow$ `Upload Project` (hoặc tạo Blank Project).
   3. Tải lên 2 file đã dựng sẵn trong thư mục `docs/report_template/`:
-     * `main.tex`: Khung sườn 6 chương chuẩn IEEE Transactions 2 cột.
+   * `main.tex`: Khung sườn 6 chương định dạng 2 cột IEEE (`\documentclass[conference]{IEEEtran}`). *Lưu ý:* Hưng cần chốt với giảng viên: nếu yêu cầu định dạng Tạp chí (Transactions/Journal) thì đổi thành `\documentclass[journal]{IEEEtran}`, hoặc giữ nguyên `conference` nếu nộp định dạng hội thảo.
      * `references.bib`: Toàn bộ trích dẫn BibTeX bài báo kinh điển.
   4. Nhấn **Recompile** là có ngay bản PDF chuẩn đẹp!
 
@@ -32,11 +32,11 @@
 | Chương | Tiêu đề chương | Số trang đề xuất | Nội dung kỹ thuật cần viết | Tài nguyên có sẵn để lấy số liệu & hình ảnh |
 | :--- | :--- | :---: | :--- | :--- |
 | **Chương 1** | **Giới thiệu & Tổng quan** | ~2 – 3 trang | Bối cảnh xử lý ảnh đa tỷ lệ, tầm quan trọng của đạo hàm Gaussian, mục tiêu nghiên cứu và cấu trúc báo cáo. | Đọc tổng quan trong `debai.md` và `quyuoc.md`. |
-| **Chương 2** | **Cơ sở lý thuyết & Mô hình toán** | ~7 – 8 trang | Không gian tỷ lệ (Scale-space), tiên đề Lindeberg, tích chập tách rời 2D, đạo hàm riêng bậc 1, bậc 2, chuẩn hóa $\gamma$-normalized, ma trận Hessian, Structure Tensor, tiêu chuẩn cực trị Canny, Frangi Vesselness, LoG Blob. | Đã gõ sẵn toàn bộ công thức toán LaTeX đẹp trong `docs/report_template/main.tex`. |
+| **Chương 2** | **Cơ sở lý thuyết & Mô hình toán** | ~7 – 8 trang | Không gian tỷ lệ (Scale-space), tiên đề Lindeberg, tích chập tách rời 2D, đạo hàm riêng bậc 1, bậc 2, chuẩn hóa $\gamma$-normalized, ma trận Hessian, Structure Tensor, tiêu chuẩn cực trị Canny, Frangi Vesselness, LoG Blob. | Hiện tại `main.tex` chỉ mới có khung sườn các công thức toán cốt lõi (~250 từ). Hưng cần viết diễn giải lý thuyết chuyên sâu, vẽ sơ đồ và mở rộng thành 7–8 trang hoàn chỉnh. |
 | **Chương 3** | **Khảo sát FeatureJ & Workflow Fiji** | ~5 – 6 trang | Phân tích plugin FeatureJ (tác giả Erik Meijering), dịch ngược mã nguồn Java (`Differentiator.class`), giải thích vì sao FeatureJ chỉ chuẩn hóa bậc 0 mà không chuẩn hóa moment Taylor bậc 1/2, workflow đồ họa và ImageJ Macro. | Tham khảo file Java `src/fiji/BatchTier1Fiji.java` và Macro `src/fiji/batch_process.ijm`. |
 | **Chương 4** | **Thiết kế & Cài đặt hệ thống (Python)** | ~6 – 7 trang | Kiến trúc mã nguồn thuần NumPy from scratch (0% OpenCV trong lõi), thuật toán tích chập tách rời $O(2K)$ thay vì $O(K^2)$, xử lý biên `mirror`/`reflect`, thuật toán loang BFS Canny, tìm cực trị 3D scale-space LoG. | Đọc docstring và code trong `src/core/*.py` (`kernel.py`, `derivatives.py`, `hessian.py`, `detectors.py`). |
-| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn bản đồ vi phân Python Core với FeatureJ ($r > 0.9999$ cho làm mịn và đạo hàm bậc 1; sai số tương đối tăng theo bậc đạo hàm). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh (10 BSDS500 + 10 DRIVE + 5 Blob; BSDS500 F1=0.494, DRIVE F1=0.679/IoU=0.516, Blob F1=1.000 cho blob_01–04, F1=0.463 cho blob_05). | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
-| **Chương 6** | **Kết luận & Hướng mở rộng** | ~2 trang | Đánh giá mức độ hoàn thành chỉ tiêu, đóng góp khoa học, bài học kinh nghiệm và hướng phát triển (GPU CUDA, 3D volumn). | Tóm tắt từ kết quả thực nghiệm vượt chuẩn. |
+| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn bản đồ vi phân Python Core với FeatureJ ($r > 0.9999$ cho làm mịn và đạo hàm bậc 1; sai số tương đối tăng theo bậc đạo hàm). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh: BSDS500 $F_1=0.494$, DRIVE $F_1=0.681$ / $\text{IoU}=0.518$, Blobs: `blob_01`–`blob_04` đạt $F_1=1.000$, `blob_05` đạt $F_1=0.463$; trung bình 5 ảnh macro-$F_1 = 0.8926$, tính gộp toàn bộ đối tượng micro-$F_1 = 0.4898$. | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
+| **Chương 6** | **Kết luận & Hướng mở rộng** | ~2 trang | Đánh giá mức độ hoàn thành chỉ tiêu, đóng góp khoa học, bài học kinh nghiệm và hướng phát triển (GPU CUDA, 3D volume). | Tóm tắt trung thực từ kết quả thực nghiệm thực tế: 35/220 bản đồ đạt STRICT, 185/220 bản đồ đạt RELAXED do khác biệt xấp xỉ rời rạc giữa bảo toàn moment Taylor và lấy mẫu liên tục. |
 
 ---
 
@@ -45,7 +45,8 @@
 ### A. Bảng đối chuẩn Tầng 1 (220 bản đồ vi phân Python vs FeatureJ)
 * **Nguồn dữ liệu:** File CSV [outputs/tier1_verification_summary.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/tier1_verification_summary.csv).
 * **Kết quả chính:** Dữ liệu Tầng 1 cần tái lập đầy đủ 220 bản đồ. Dữ liệu lịch sử: 35/220 đạt chuẩn STRICT (rel < 1e-4 AND r > 0.9999), 220/220 đạt chuẩn RELAXED (rel < 1e-2 AND r > 0.9999). Pearson trung bình toàn hệ thống từ dữ liệu lịch sử: $r = 0.99999734$.
-* **Bảng thời gian chạy:** File [outputs/metrics/fiji_runtime.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/metrics/fiji_runtime.csv).
+* **Bảng thời gian chạy chính thức Tầng 1 (Java Exporter):** File [outputs/metrics/fiji_runtime_java.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/metrics/fiji_runtime_java.csv) (221 dòng = 1 header + 220 bản ghi, schema 4 cột: `image,operator,sigma,runtime_ms`).
+* **Lưu ý:** File `outputs/metrics/fiji_runtime.csv` là nhật ký chạy ImageJ Macro của Lộc (165 dòng, schema 6 cột), không dùng lẫn lộn.
 
 ### B. Bảng đánh giá Tầng 2 (So với Ground Truth 25 ảnh chuẩn của Đức)
 * **Nguồn dữ liệu:** Xuất từ script [src/eval/benchmark_tier2.py](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/src/eval/benchmark_tier2.py).
@@ -54,11 +55,12 @@
      * Đánh giá dung sai $\pm 2$ pixel so với tập nhãn đa annotator con người vẽ tay của Berkeley.
      * F1-Score trung bình (10 ảnh): **0.494** ($\sigma=2.0$, phân vị 60/85).
   2. **Bài toán dò mạch máu võng mạc (DRIVE - Frangi Vesselness):**
-     * Đánh giá trong vùng quan sát xói mòn (Eroded FOV $17\times 17 \approx$ 8px) so với nét vẽ bác sĩ nhãn khoa.
-     * F1-Score trung bình (10 ảnh): **0.679**, IoU trung bình: **0.516**.
+     * Đánh giá trong vùng quan sát FOV xói mòn thích ứng đa tỷ lệ theo công thức $r = \lceil 4.0\sigma \rceil$ (tại $\sigma=2.0$ tương ứng bán kính $r=8$ px, phần tử cấu trúc $17\times 17$; tại các tỷ lệ khác xói mòn co dãn tương ứng để khử triệt để viền nhãn cầu).
+     * F1-Score trung bình (10 ảnh): **0.681**, IoU trung bình: **0.518**.
   3. **Bài toán dò đốm đa tỷ lệ (Blob Detection - LoG 3D Scale-Space):**
      * Ảnh toán học giải tích (`blob_01` đến `blob_04`): **Đạt F1 = 1.000 tuyệt đối (Khớp 100% cả tâm và bán kính)**.
-     * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**. Tổng thể F1 (5 ảnh): **0.490** (hạn chế của detector trên domain tế bào thật, không phải kết luận nhãn Ground Truth sai).
+     * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**.
+     * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 295 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/295 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.
@@ -97,11 +99,11 @@ Tất cả các hình ảnh sau đều được xuất ở độ phân giải in
 
 * Sử dụng phần mềm **[Zotero](https://www.zotero.org/)** kết hợp plugin **Zotero Connector** để lưu bài báo từ Google Scholar / IEEE Xplore.
 * Danh mục trích dẫn đã có sẵn trong `references.bib`:
-  * Trích dẫn bài báo của Tony Lindeberg: `\cite{lindeberg1998principles}` hoặc `\cite{lindeberg1994scale}`.
+  * Trích dẫn bài báo của Tony Lindeberg: `\cite{lindeberg1998feature}` hoặc `\cite{lindeberg1994scale}`.
   * Trích dẫn bài báo Canny: `\cite{canny1986computational}`.
   * Trích dẫn bài báo Frangi: `\cite{frangi1998multiscale}`.
   * Trích dẫn bài báo FeatureJ: `\cite{meijering2004design}`.
-  * Trích dẫn bộ dữ liệu BSDS500: `\cite{arbelaez2011contour}`.
+  * Trích dẫn bộ dữ liệu BSDS500: `\cite{arbelaez2010contour}`.
 
 ---
 
@@ -110,6 +112,7 @@ Tất cả các hình ảnh sau đều được xuất ở độ phân giải in
 - [ ] **Độ dài trang:** Đạt từ 28 – 32 trang (chuẩn yêu cầu khoảng 30 trang IEEE).
 - [ ] **Bố cục:** Đầy đủ 6 chương mục lục, có phần Tóm tắt (Abstract) và Từ khóa (Index Terms).
 - [ ] **Công thức toán:** Viết bằng môi trường LaTeX `\begin{equation} ... \end{equation}`, đánh số công thức tự động, các biến ký hiệu in nghiêng ($x, y, \sigma$).
-- [ ] **Bảng và Hình:** Tất cả đều có tiêu đề (Caption), được viện dẫn rõ ràng trong nội dung văn bản (ví dụ: *"như trình bày trong Bảng~\ref{tab:tier1} và Hình~\ref{fig:master}"*).
+- [ ] **CẢNH BÁO QUAN TRỌNG VỀ THIẾU VIỆN DẪN (`\ref` / `\eqref`):** File `main.tex` hiện đã có 16 `\label` (cho 6 hình, 2 bảng và các công thức toán) nhưng **hiện tại có 0 lệnh `\ref` hoặc `\eqref` nào trong phần lời văn** (tất cả hình, bảng, phương trình đang bị "treo lơ lửng" không được nhắc đến trong bài). Hưng **BẮT BUỘC** phải chèn các viện dẫn `\ref{fig:...}`, `\ref{tab:...}`, `\eqref{eq:...}` trực tiếp vào các đoạn văn ở Chương 2, 3, 4, 5 trước khi nộp bài để đáp ứng tiêu chuẩn chấm điểm IEEE!
+- [ ] **Bảng và Hình:** Tất cả đều có tiêu đề (Caption), được viện dẫn rõ ràng trong nội dung văn bản (ví dụ: *"như trình bày trong Bảng~\ref{tab:featurej_mapping} và Hình~\ref{fig:master_side_by_side}"*).
 - [ ] **Không còn lỗi trích dẫn:** Không xuất hiện dấu chấm hỏi đỏ `[?]` do thiếu citation key.
 - [ ] **Liêm chính học thuật:** Nhấn mạnh đóng góp cốt lõi của nhóm: Toàn bộ thuật toán Python được lập trình thuần NumPy từ công thức toán học giải tích (from scratch), không sử dụng hàm tích chập có sẵn của OpenCV hay SciPy.
