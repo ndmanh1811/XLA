@@ -17,7 +17,7 @@
   2. Tạo dự án mới: `New Project` $\rightarrow$ `Upload Project` (hoặc tạo Blank Project).
   3. Tải lên 2 file đã dựng sẵn trong thư mục `docs/report_template/`:
    * `main.tex`: Khung sườn 6 chương định dạng 2 cột IEEE (`\documentclass[conference]{IEEEtran}`). *Lưu ý:* Hưng cần chốt với giảng viên: nếu yêu cầu định dạng Tạp chí (Transactions/Journal) thì đổi thành `\documentclass[journal]{IEEEtran}`, hoặc giữ nguyên `conference` nếu nộp định dạng hội thảo.
-     * `references.bib`: Toàn bộ trích dẫn BibTeX bài báo kinh điển.
+   * `references.bib`: Toàn bộ trích dẫn BibTeX bài báo kinh điển.
   4. Nhấn **Recompile** là có ngay bản PDF chuẩn đẹp!
 
 ### B. Nền tảng số 2: VS Code + Extension LaTeX Workshop (Nếu muốn gõ Offline)
@@ -43,13 +43,13 @@
 ## 3. Bảng số liệu thực nghiệm & Cách chuyển đổi sang LaTeX
 
 ### A. Bảng đối chuẩn Tầng 1 (220 bản đồ vi phân Python vs FeatureJ)
-* **Nguồn dữ liệu:** File CSV [outputs/tier1_verification_summary.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/tier1_verification_summary.csv).
-* **Kết quả chính:** Dữ liệu Tầng 1 cần tái lập đầy đủ 220 bản đồ. Dữ liệu lịch sử: 35/220 đạt chuẩn STRICT (rel < 1e-4 AND r > 0.9999), 220/220 đạt chuẩn RELAXED (rel < 1e-2 AND r > 0.9999). Pearson trung bình toàn hệ thống từ dữ liệu lịch sử: $r = 0.99999734$.
-* **Bảng thời gian chạy chính thức Tầng 1 (Java Exporter):** File [outputs/metrics/fiji_runtime_java.csv](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/outputs/metrics/fiji_runtime_java.csv) (221 dòng = 1 header + 220 bản ghi, schema 4 cột: `image,operator,sigma,runtime_ms`).
+* **Nguồn dữ liệu:** File CSV [outputs/tier1_verification_summary.csv](../../outputs/tier1_verification_summary.csv).
+* **Kết quả chính (đối chuẩn Java Exporter, 220 bản đồ):** 35/220 đạt chuẩn STRICT (`rel < 1e-4` AND `r > 0.9999`), 185/220 đạt chuẩn RELAXED (`rel < 1e-2` AND `r > 0.9999`), 0 FAIL, 0 MISSING. Pearson trung bình toàn hệ thống: $r = 0.99999710$; thấp nhất $r_{\min} = 0.99996553$. Sai số tương đối lớn nhất: **0.00928702** (toán tử `hess-l1`, ảnh `bsds_02`, $\sigma = 8.0$).
+* **Bảng thời gian chạy chính thức Tầng 1 (Java Exporter):** File [outputs/metrics/fiji_runtime_java.csv](../../outputs/metrics/fiji_runtime_java.csv) (221 dòng = 1 header + 220 bản ghi, schema 4 cột: `image,operator,sigma,runtime_ms`).
 * **Lưu ý:** File `outputs/metrics/fiji_runtime.csv` là nhật ký chạy ImageJ Macro của Lộc (165 dòng, schema 6 cột), không dùng lẫn lộn.
 
 ### B. Bảng đánh giá Tầng 2 (So với Ground Truth 25 ảnh chuẩn của Đức)
-* **Nguồn dữ liệu:** Xuất từ script [src/eval/benchmark_tier2.py](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/src/eval/benchmark_tier2.py).
+* **Nguồn dữ liệu:** Xuất từ script [src/eval/benchmark_tier2.py](../../src/eval/benchmark_tier2.py).
 * **Số liệu chính thức đưa vào báo cáo:**
   1. **Bài toán dò biên (BSDS500 - Canny):**
      * Đánh giá dung sai $\pm 2$ pixel so với tập nhãn đa annotator con người vẽ tay của Berkeley.
@@ -60,7 +60,7 @@
   3. **Bài toán dò đốm đa tỷ lệ (Blob Detection - LoG 3D Scale-Space):**
      * Ảnh toán học giải tích (`blob_01` đến `blob_04`): **Đạt F1 = 1.000 tuyệt đối (Khớp 100% cả tâm và bán kính)**.
      * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**.
-     * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 295 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/295 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
+     * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/292 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.

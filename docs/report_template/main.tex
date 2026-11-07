@@ -396,14 +396,14 @@ ST L2 & 1.89e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
 \end{tabular}
 \end{table}
 
-\textbf{Lưu ý kỹ thuật:} Tiêu chí nghiêm ngặt theo \texttt{quyuoc.md} là \texttt{rel\_err < 10^{-4} AND r > 0.9999}. Với tiêu chí này, có 35/220 bản đồ (15,9\%) đạt chuẩn STRICT (toán tử Gauss); 185/220 bản đồ đạt chuẩn RELAXED (\texttt{rel\_err < 10^{-2} AND r > 0.9999}). Toàn bộ 220/220 bản đồ đạt hệ số tương quan Pearson gần như tuyệt đối ($r > 0.9999$, trung bình toàn hệ thống $r = 0.99999710$). Sự chênh lệch biên độ $\sim$0,4\% ở đạo hàm bậc 2 là do kỹ thuật bảo toàn moment rời rạc Taylor của Python Core so với xấp xỉ liên tục của FeatureJ, hoàn toàn không phải lỗi giải thuật.
+\textbf{Lưu ý kỹ thuật:} Tiêu chí nghiêm ngặt theo \texttt{quyuoc.md} là \texttt{rel\_err < 10^{-4} AND r > 0.9999}. Với tiêu chí này, có 35/220 bản đồ (15,9\%) đạt chuẩn STRICT (20 bản đồ Gauss + 15 đạo hàm bậc 1 tại $\sigma=1.0$); 185/220 bản đồ đạt chuẩn RELAXED (\texttt{rel\_err < 10^{-2} AND r > 0.9999}). Toàn bộ 220/220 bản đồ đạt hệ số tương quan Pearson gần như tuyệt đối ($r > 0.9999$, trung bình toàn hệ thống $r = 0.99999710$). Sự chênh lệch biên độ $\sim$0,4\% ở đạo hàm bậc 2 là do kỹ thuật bảo toàn moment rời rạc Taylor của Python Core so với xấp xỉ liên tục của FeatureJ, hoàn toàn không phải lỗi giải thuật.
 
 \subsection{Kết quả thực nghiệm Tầng 2 (So khớp Ground Truth 25 ảnh thật)}
 Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu trữ tự động tại \texttt{outputs/metrics/tier2\_results.csv}. Đánh giá tổng hợp trên 25 ảnh mẫu:
 \begin{itemize}
     \item \textbf{BSDS500 (Canny Edge):} Thử nghiệm trên tập ảnh chuẩn BSDS500 \cite{arbelaez2010contour} đạt $F_1 = 0.494$ (trung bình 10 ảnh, $\sigma=2.0$, phân vị ngưỡng động $p_{\text{low}}=60.0$, $p_{\text{high}}=85.0$, dung sai $\pm 2$ px).
     \item \textbf{DRIVE (Frangi Vesselness):} Thử nghiệm trên tập ảnh mạch máu võng mạc DRIVE \cite{staal2004ridge} đạt $F_1 = 0.681$, $\text{IoU} = 0.518$ (trung bình 10 ảnh, áp dụng mặt nạ FOV xói mòn thích ứng đa tỷ lệ theo công thức $r = \lceil 4.0\sigma \rceil$ để khử nhiễu viền nhãn cầu).
-    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.463$ (140/276 đối tượng phát hiện chính xác); trung bình cộng 5 ảnh đạt macro-$F_1 = 0.893$, tính gộp toàn bộ 295 đối tượng (micro-average) đạt micro-$F_1 = 0.490$ (do đối tượng \texttt{blob\_05} chiếm 93,6\% tổng số lượng).
+    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.463$ (140/276 đối tượng phát hiện chính xác); trung bình cộng 5 ảnh đạt macro-$F_1 = 0.893$, tính gộp toàn bộ 292 đối tượng (micro-average) đạt micro-$F_1 = 0.490$ (do đối tượng \texttt{blob\_05} chiếm 94,5\% tổng số lượng).
 \end{itemize}
 
 \subsection{Thẩm Định Chéo với OpenCV và SciPy}

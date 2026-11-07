@@ -51,7 +51,7 @@ XLA/
 │   └── metrics/                   #   Bảng số liệu thực nghiệm (tier2_results.csv, fiji_runtime_java.csv)
 ├── docs/                          # TÀI LIỆU VÀ BÁO CÁO KHOA HỌC
 │   ├── report_template/           #   Mã nguồn LaTeX báo cáo chuẩn IEEE (main.tex, references.bib, figures/)
-│   └── report_overleaf.zip        #   Gói 1-click tải lên Overleaf biên dịch PDF tức thì
+│   └── report_overleaf.zip        #   Gói 1-click (gửi kèm, không tracked trên Git)
 └── tests/                         # KIỂM THỬ TỰ ĐỘNG
     └── test_ground_truth.py       #   Bộ 10 unit test kiểm tra tính toàn vẹn và hợp thức của Ground Truth
 ```
@@ -65,7 +65,7 @@ Hệ thống được thiết kế theo triết lý **Zero-External-Dependencies
 ### Phiên bản Python & Thư viện (khuyến nghị `Python >= 3.11`):
 * `python == 3.11.8`
 * `numpy == 2.3.5` (hoặc `>= 1.26.0`)
-* `scipy == 1.17.1` (chỉ dùng trong unit test đối chuẩn độc lập và đọc ma trận `.mat` của BSDS500)
+* `scipy == 1.17.1` (chỉ dùng ngoài nhân lõi: unit test đối chuẩn, đọc ma trận `.mat` của BSDS500, và morphology trong `src/eval/` — `binary_erosion` cho FOV, `binary_dilation` cho dung sai 2 px)
 * `tifffile == 2026.3.3` (đọc và ghi file ảnh TIFF 32-bit float không nén)
 * `opencv-python == 5.0.0` (chỉ dùng trong thẩm định chéo ngoại vi, tuyệt đối không dùng trong `src/core/`)
 * `matplotlib == 3.10.8` (trực quan hóa bản đồ nhiệt và biểu đồ)
@@ -105,10 +105,10 @@ So sánh đối chuẩn pixel-to-pixel giữa 220 bản đồ của Python Core 
 ```bash
 python src/eval/verify_tier1.py
 ```
-* **Cơ chế tự động giải nén:** Nếu thư mục `outputs/fiji_java/` chưa có đủ 220 file TIFF (ví dụ khi mới clone repo về máy mới), script sẽ **tự động giải nén** từ kho lưu trữ `outputs/fiji_java_tier1.zip` (92.58 MiB) đã được kiểm chứng mã băm SHA256 tại `outputs/metrics/fiji_java_manifest.csv`.
+* **Cơ chế tự động giải nén:** Nếu thư mục `outputs/fiji_java/` chưa có đủ 220 file TIFF (ví dụ khi mới clone repo về máy mới), script sẽ **tự động giải nén** từ kho lưu trữ `outputs/fiji_java_tier1.zip` (92.58 MiB). Bảng mã băm SHA256 của 220 file nằm tại `outputs/metrics/fiji_java_manifest.csv` để đối chiếu toàn vẹn thủ công; hàm `ensure_fiji_java_data()` hiện chỉ giải nén, chưa tự động so hash.
 * **Kết quả nghiệm thu thực tế:**
   - **Kỳ vọng:** 220 bản đồ vi phân | **Có sẵn:** 220 bản đồ | **Thiếu:** 0 file | **Bỏ qua:** 0 file.
-  - **PASS STRICT:** 35 bản đồ (sai số tương đối $\text{rel} < 10^{-4} \land r > 0.9999$ - toàn bộ toán tử Gauss).
+  - **PASS STRICT:** 35 bản đồ ($\text{rel} < 10^{-4} \land r > 0.9999$): 20 bản đồ Gauss (5 ảnh × 4 $\sigma$) + 15 bản đồ đạo hàm bậc 1 tại $\sigma=1.0$ (5 `lx`, 5 `ly`, 5 `grad`).
   - **PASS RELAXED:** 185 bản đồ ($\text{rel} < 10^{-2} \land r > 0.9999$ - đạo hàm bậc 1, bậc 2, Hessian, Structure Tensor).
   - **FAIL:** 0 | **ACCEPTABLE:** 0.
   - **Tương quan Pearson trung bình toàn hệ thống:** $r = 0.99999710$ (thấp nhất $r_{\min} = 0.99996553$).
@@ -125,7 +125,7 @@ python src/eval/benchmark_tier2.py --p-low 60.0 --p-high 85.0
   - **Bài toán Đốm (Blobs - LoG Scale-Space, 5 ảnh):**
     - `blob_01` đến `blob_04` (đốm giải tích): **$F_1 = 1.000$ tuyệt đối** (khớp 100% tâm và bán kính).
     - `blob_05` (tế bào sinh học tự gán nhãn): **$F_1 = 0.463$** (phát hiện chính xác 140/276 tế bào).
-    - Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 295 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**.
+    - Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**.
 
 ### 5. Tái sinh toàn bộ 220 bản đồ FeatureJ bằng Java Exporter (Tùy chọn)
 Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi trường có sẵn JDK của Fiji:
@@ -154,4 +154,4 @@ Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi t
 * Toàn bộ mã nguồn bài báo khoa học nằm trong thư mục: `docs/report_template/`
   - `main.tex`: Báo cáo chi tiết 6 chương định dạng 2 cột chuẩn IEEE (41.800 ký tự, 488 dòng, tích hợp đầy đủ 6 hình ảnh khoa học và 8 trích dẫn BibTeX).
   - `references.bib`: 8 trích dẫn bài báo kinh điển (Witkin 1983, Lindeberg 1994, Lindeberg 1998, Canny 1986, Frangi 1998, Meijering 2004, Arbelaez 2010, Staal 2004).
-* **Gói biên dịch 1-click:** File nén sẵn [docs/report_overleaf.zip](file:///c:/Users/ROG%20M16/OneDrive/Desktop/XLA/docs/report_overleaf.zip) (16.9 MB) hỗ trợ kéo thả trực tiếp lên **[Overleaf.com](https://www.overleaf.com/)** nhấn *Recompile* để tạo bản in PDF hoàn chỉnh.
+* **Gói biên dịch 1-click:** File `docs/report_overleaf.zip` (16.9 MB) được gửi kèm khi bàn giao — **không tracked trên Git** vì `.gitignore` loại `docs/*.zip`. Kéo thả trực tiếp lên **[Overleaf.com](https://www.overleaf.com/)** và nhấn *Recompile* để tạo bản in PDF hoàn chỉnh.
