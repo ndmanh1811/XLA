@@ -9,8 +9,12 @@ Khung đánh giá định lượng Tầng 2 trên toàn bộ 25 ảnh so với G
 
 Hỗ trợ 2 nguồn bản đồ (--source):
 - python: tính toán trực tiếp từ nhân NumPy thuần (mặc định, kết quả chính thức).
-- fiji:   đọc 231 bản đồ TIFF do ImageJ Macro của Lộc xuất tại outputs/fiji/.
+- fiji:   đọc các bản đồ TIFF do ImageJ Macro của Lộc xuất tại outputs/fiji/.
 - both:   chạy cả hai và xuất bảng đối sánh song song tier2_comparison.csv.
+
+Nhánh BSDS của Fiji có 2 chế độ (--bsds-fiji-mode):
+- canny: đọc fiji_*_lx/ly, chuẩn hóa sigma rồi gọi detect_canny (mặc định, fair).
+- edge:  đọc fiji_*_edge (FeatureJ Edges) và áp hysteresis (tham chiếu riêng).
 
 Toàn bộ kết quả chi tiết và tổng hợp được lưu vào: outputs/metrics/tier2_results.csv
 """
@@ -92,11 +96,27 @@ def get_fov_eroded_mask(fov_mask: np.ndarray, sigma: float, k: float = 4.0) -> n
     struct = np.ones((struct_size, struct_size), dtype=bool)
     return binary_erosion(fov_mask, structure=struct)
 
-def evaluate_bsds_edges(sample_limit=10, p_low=60.0, p_high=85.0, records=None, source="python"):
-    """Đánh giá Canny Edge Detection trên ảnh BSDS500 so với Ground Truth đa annotator."""
+def evaluate_bsds_edges(
+    sample_limit=10,
+    p_low=60.0,
+    p_high=85.0,
+    records=None,
+    source="python",
+    fiji_mode="canny",
+    task_name="BSDS500_Canny_Edge",
+):
+    """Đánh giá Canny Edge Detection trên ảnh BSDS500 so với Ground Truth đa annotator.
+
+    Nhánh Fiji:
+    - fiji_mode="canny": đọc lx/ly của Macro, nhân sigma rồi gọi detect_canny
+      (cùng thuật toán với nhánh Python -> đối sánh công bằng).
+    - fiji_mode="edge": đọc bản đồ FeatureJ Edges (đã NMS nội bộ) và chỉ áp
+      ngưỡng trễ; đây là tham chiếu riêng, không dùng thay nhánh fair.
+    """
     print("\n" + "=" * 65)
     print("  1. BENCHMARK BÀI TOÁN DÒ BIÊN (BSDS500 - CANNY EDGE DETECTION)")
-    print(f"     Nguồn bản đồ: {source.upper()} | p_low={p_low:.1f}, p_high={p_high:.1f}")
+    fiji_note = f" | Fiji mode={fiji_mode}" if source == "fiji" else ""
+    print(f"     Nguồn bản đồ: {source.upper()}{fiji_note} | p_low={p_low:.1f}, p_high={p_high:.1f}")
     print("=" * 65)
     
     results = []
@@ -121,9 +141,18 @@ def evaluate_bsds_edges(sample_limit=10, p_low=60.0, p_high=85.0, records=None, 
         img = np.array(Image.open(img_path), dtype=np.float64)
 
         if source == "fiji":
-            # FeatureJ Edge đã NMS nội bộ: chỉ cần áp ngưỡng trễ phân vị
-            nms = _fiji_tif(f"fiji_{stem}_edge_s{sigma:.1f}.tif")
-            pred_edge_binary = hysteresis_from_nms(nms, p_low=p_low, p_high=p_high)
+            if fiji_mode == "canny":
+                # Nhánh fair: dùng đạo hàm bậc 1 lx/ly của Fiji, chuẩn hóa sigma
+                # rồi chạy đúng detect_canny như nhánh Python.
+                lx = (sigma ** 1.0) * _fiji_tif(f"fiji_{stem}_lx_s{sigma:.1f}.tif")
+                ly = (sigma ** 1.0) * _fiji_tif(f"fiji_{stem}_ly_s{sigma:.1f}.tif")
+                pred_edge_binary = detect_canny(
+                    lx, ly, p_low=p_low, p_high=p_high, return_binary=False
+                )
+            else:
+                # Tham chiếu riêng: FeatureJ Edge đã NMS nội bộ, chỉ áp ngưỡng trễ.
+                nms = _fiji_tif(f"fiji_{stem}_edge_s{sigma:.1f}.tif")
+                pred_edge_binary = hysteresis_from_nms(nms, p_low=p_low, p_high=p_high)
         else:
             # Đạo hàm bậc 1 chuẩn hóa gamma=1 (Lindeberg)
             lx, ly = compute_derivatives_1st(img, sigma=sigma)
@@ -165,7 +194,7 @@ def evaluate_bsds_edges(sample_limit=10, p_low=60.0, p_high=85.0, records=None, 
         if records is not None:
             records.append({
                 "source": source,
-                "task": "BSDS500_Canny_Edge",
+                "task": task_name,
                 "image": stem,
                 "parameter": f"sigma={sigma:.1f}_plow={p_low:.1f}_phigh={p_high:.1f}",
                 "precision": round(precision, 4),
@@ -175,6 +204,7 @@ def evaluate_bsds_edges(sample_limit=10, p_low=60.0, p_high=85.0, records=None, 
                 "gt_count": int(union_gt.sum()),
                 "detected_count": pred_positive,
                 "matched_count": true_positives,
+                "_f1_raw": f1,
             })
         print(f"   Ảnh {stem}: Precision={precision:.3f}, Recall={recall:.3f} => F1-Score={f1:.3f}")
         
@@ -272,6 +302,8 @@ def evaluate_drive_vessels(sample_limit=10, records=None, source="python"):
                 "gt_count": gt_cnt,
                 "detected_count": pred_cnt,
                 "matched_count": intersection,
+                "_f1_raw": f1,
+                "_iou_raw": iou,
             })
         print(f"   Ảnh {stem}: Precision={prec:.3f}, Recall={rec:.3f} => F1={f1:.3f}, IoU={iou:.3f}")
         
@@ -371,12 +403,27 @@ def evaluate_blobs(sample_limit=5, records=None, source="python", blob_sigmas="e
                 "gt_count": len(gt_blobs),
                 "detected_count": len(detected),
                 "matched_count": matched_gt,
+                "_f1_raw": f1,
             })
         print(f"   Ảnh {stem} ({polarity}): GT={len(gt_blobs)}, Tìm thấy={len(detected)}, Khớp={matched_gt} => F1={f1:.3f}")
         
     overall_f1 = (2 * total_matched) / (total_gt + total_pred + 1e-10)
     print(f"   => [KẾT QUẢ ĐỐM] Tỉ lệ phát hiện trúng đích tổng thể (F1): {overall_f1:.3f}")
     return overall_f1
+
+def write_records(records, out_path):
+    """Ghi danh sách bản ghi kết quả định lượng ra CSV (bỏ các khóa nội bộ)."""
+    if not records:
+        print(f"   [!] Không có bản ghi nào để ghi vào {out_path}")
+        return
+    fields = [key for key in records[0].keys() if not key.startswith("_")]
+    clean = [{key: rec[key] for key in fields} for rec in records]
+    with open(out_path, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(clean)
+    print(f"\n-> ĐÃ XUẤT KẾT QUẢ RA: {out_path}")
+
 
 def write_comparison(records, out_path):
     """Tổng hợp bảng đối sánh Python vs Fiji theo từng ảnh và từng bài toán."""
@@ -396,6 +443,10 @@ def write_comparison(records, out_path):
             continue
         py, fj = pair["python"], pair["fiji"]
         py_iou, fj_iou = _num(py["iou"]), _num(fj["iou"])
+        py_f1_raw = float(py.get("_f1_raw", py["f1"]))
+        fj_f1_raw = float(fj.get("_f1_raw", fj["f1"]))
+        py_iou_raw = py.get("_iou_raw", py_iou)
+        fj_iou_raw = fj.get("_iou_raw", fj_iou)
         rows.append({
             "task": task,
             "image": image,
@@ -409,12 +460,14 @@ def write_comparison(records, out_path):
             "fiji_recall": fj["recall"],
             "fiji_f1": fj["f1"],
             "fiji_iou": fj["iou"],
-            "delta_f1": round(float(fj["f1"]) - float(py["f1"]), 4),
+            "delta_f1": round(fj_f1_raw - py_f1_raw, 6),
             "delta_iou": (
-                round(fj_iou - py_iou, 4)
-                if py_iou is not None and fj_iou is not None
+                round(float(fj_iou_raw) - float(py_iou_raw), 6)
+                if py_iou_raw is not None and fj_iou_raw is not None
                 else "N/A"
             ),
+            "_python_f1_raw": py_f1_raw,
+            "_fiji_f1_raw": fj_f1_raw,
         })
 
     rows.sort(key=lambda r: (r["task"], r["image"]))
@@ -425,7 +478,7 @@ def write_comparison(records, out_path):
         "delta_f1", "delta_iou",
     ]
     with open(out_path, "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -433,12 +486,12 @@ def write_comparison(records, out_path):
     by_task = {}
     for row in rows:
         by_task.setdefault(row["task"], []).append(row)
-    print(f"   {'Bài toán':<28} {'Python F1':>10} {'Fiji F1':>10} {'ΔF1':>8}")
-    print("   " + "-" * 60)
+    print(f"   {'Bài toán':<28} {'Python F1':>10} {'Fiji F1':>10} {'ΔF1':>10}")
+    print("   " + "-" * 64)
     for task, group in sorted(by_task.items()):
-        py_f1 = float(np.mean([float(r["python_f1"]) for r in group]))
-        fj_f1 = float(np.mean([float(r["fiji_f1"]) for r in group]))
-        print(f"   {task:<28} {py_f1:>10.4f} {fj_f1:>10.4f} {fj_f1 - py_f1:>+8.4f}")
+        py_f1 = float(np.mean([r["_python_f1_raw"] for r in group]))
+        fj_f1 = float(np.mean([r["_fiji_f1_raw"] for r in group]))
+        print(f"   {task:<28} {py_f1:>10.6f} {fj_f1:>10.6f} {fj_f1 - py_f1:>+10.6f}")
     return rows
 
 
@@ -453,7 +506,16 @@ def parse_args():
     parser.add_argument("--blob-samples", type=int, default=5, help="Số lượng ảnh Blob (mặc định: 5)")
     parser.add_argument(
         "--source", choices=["python", "fiji", "both"], default="python",
-        help="Nguồn bản đồ: python (mặc định), fiji (231 TIFF của Lộc), hoặc both (đối sánh song song)"
+        help="Nguồn bản đồ: python (mặc định), fiji (các TIFF của Lộc), hoặc both (đối sánh song song)"
+    )
+    parser.add_argument(
+        "--bsds-fiji-mode", choices=["canny", "edge"], default="canny",
+        help="Nhánh BSDS của Fiji: canny = lx/ly + detect_canny (mặc định, fair); "
+             "edge = FeatureJ Edges + hysteresis (tham chiếu riêng)"
+    )
+    parser.add_argument(
+        "--edge-reference-out", type=str, default=None,
+        help="CSV tham chiếu FeatureJ Edges cho BSDS (mặc định: outputs/metrics/tier2_bsds_edge_reference.csv)"
     )
     parser.add_argument(
         "--blob-sigmas", choices=["config", "extended"], default=None,
@@ -472,6 +534,7 @@ def main():
     print("=" * 65)
     print("  KHỞI CHẠY KHUNG ĐÁNH GIÁ ĐỊNH LƯỢNG TẦNG 2 (BENCHMARK)")
     print(f"  Nguồn bản đồ: {args.source.upper()} | Canny: p_low={args.p_low:.1f}, p_high={args.p_high:.1f}")
+    print(f"  Nhánh BSDS của Fiji: {args.bsds_fiji_mode}")
     print(f"  Thang đo Blob: {blob_mode} ({7 if blob_mode == 'config' else 8} sigma)")
     print("=" * 65)
     
@@ -479,9 +542,35 @@ def main():
     
     # Chạy đủ 25 ảnh: 10 BSDS + 10 DRIVE + 5 Blob (theo spec Tầng 2)
     for source in sources:
-        evaluate_bsds_edges(sample_limit=args.bsds_samples, p_low=args.p_low, p_high=args.p_high, records=all_records, source=source)
+        evaluate_bsds_edges(
+            sample_limit=args.bsds_samples,
+            p_low=args.p_low,
+            p_high=args.p_high,
+            records=all_records,
+            source=source,
+            fiji_mode=args.bsds_fiji_mode,
+        )
         evaluate_drive_vessels(sample_limit=args.drive_samples, records=all_records, source=source)
         evaluate_blobs(sample_limit=args.blob_samples, records=all_records, source=source, blob_sigmas=blob_mode)
+
+    # Tham chiếu riêng FeatureJ Edges: chỉ ghi khi bảng chính dùng nhánh fair canny.
+    if args.source == "both" and args.bsds_fiji_mode == "canny":
+        edge_ref_records = []
+        evaluate_bsds_edges(
+            sample_limit=args.bsds_samples,
+            p_low=args.p_low,
+            p_high=args.p_high,
+            records=edge_ref_records,
+            source="fiji",
+            fiji_mode="edge",
+            task_name="BSDS500_FeatureJ_Edges_Reference",
+        )
+        edge_ref_csv = (
+            Path(args.edge_reference_out)
+            if args.edge_reference_out
+            else METRICS_DIR / "tier2_bsds_edge_reference.csv"
+        )
+        write_records(edge_ref_records, edge_ref_csv)
     
     # Lưu toàn bộ kết quả định lượng ra outputs/metrics/tier2_results.csv
     if args.out:
@@ -494,13 +583,7 @@ def main():
         }
         out_csv = METRICS_DIR / default_names[args.source]
 
-    if all_records:
-        keys = list(all_records[0].keys())
-        with open(out_csv, "w", newline="", encoding="utf-8-sig") as f:
-            writer = csv.DictWriter(f, fieldnames=keys)
-            writer.writeheader()
-            writer.writerows(all_records)
-        print(f"\n-> ĐÃ XUẤT TOÀN BỘ KẾT QUẢ ĐỊNH LƯỢNG RA: {out_csv}")
+    write_records(all_records, out_csv)
 
     if args.source == "both":
         comp_csv = Path(args.comparison_out) if args.comparison_out else METRICS_DIR / "tier2_comparison.csv"

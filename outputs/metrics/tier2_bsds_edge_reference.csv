@@ -1,0 +1,11 @@
+﻿source,task,image,parameter,precision,recall,f1,iou,gt_count,detected_count,matched_count
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_01,sigma=2.0_plow=60.0_phigh=85.0,0.4462,0.5967,0.5106,N/A,11927,6488,2895
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_02,sigma=2.0_plow=60.0_phigh=85.0,0.5765,0.4096,0.479,N/A,13466,4730,2727
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_03,sigma=2.0_plow=60.0_phigh=85.0,0.8494,0.6824,0.7568,N/A,17072,7449,6327
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_04,sigma=2.0_plow=60.0_phigh=85.0,0.4762,0.7018,0.5674,N/A,7813,5962,2839
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_05,sigma=2.0_plow=60.0_phigh=85.0,0.6323,0.7622,0.6912,N/A,14168,7082,4478
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_06,sigma=2.0_plow=60.0_phigh=85.0,0.2095,0.903,0.3402,N/A,4021,7521,1576
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_07,sigma=2.0_plow=60.0_phigh=85.0,0.3581,0.7931,0.4934,N/A,5936,6224,2229
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_08,sigma=2.0_plow=60.0_phigh=85.0,0.2197,0.4469,0.2946,N/A,6709,6782,1490
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_09,sigma=2.0_plow=60.0_phigh=85.0,0.4169,0.6576,0.5103,N/A,8759,4795,1999
+fiji,BSDS500_FeatureJ_Edges_Reference,bsds_10,sigma=2.0_plow=60.0_phigh=85.0,0.2489,0.4572,0.3224,N/A,6976,5636,1403

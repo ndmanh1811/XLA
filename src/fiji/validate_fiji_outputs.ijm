@@ -9,6 +9,12 @@
  *
  * Result:
  *   outputs/metrics/fiji_output_manifest.csv
+ *
+ * Scope caveat:
+ *   This macro only validates files that are present (naming + 32-bit depth).
+ *   It does NOT detect missing files, duplicate outputs, manifest/runtime
+ *   coverage or checksums. For the full 423 macro-scope + 12 legacy expected
+ *   set, run: python src/eval/validate_fiji_outputs.py
  */
 
 requires("1.54");

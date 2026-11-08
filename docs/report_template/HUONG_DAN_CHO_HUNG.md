@@ -46,7 +46,7 @@
 * **Nguồn dữ liệu:** File CSV [outputs/tier1_verification_summary.csv](../../outputs/tier1_verification_summary.csv).
 * **Kết quả chính (đối chuẩn Java Exporter, 220 bản đồ):** 35/220 đạt chuẩn STRICT (`rel < 1e-4` AND `r > 0.9999`), 185/220 đạt chuẩn RELAXED (`rel < 1e-2` AND `r > 0.9999`), 0 FAIL, 0 MISSING. Pearson trung bình toàn hệ thống: $r = 0.99999710$; thấp nhất $r_{\min} = 0.99996553$. Sai số tương đối lớn nhất: **0.00928702** (toán tử `hess-l1`, ảnh `bsds_02`, $\sigma = 8.0$).
 * **Bảng thời gian chạy chính thức Tầng 1 (Java Exporter):** File [outputs/metrics/fiji_runtime_java.csv](../../outputs/metrics/fiji_runtime_java.csv) (221 dòng = 1 header + 220 bản ghi, schema 4 cột: `image,operator,sigma,runtime_ms`).
-* **Lưu ý:** File `outputs/metrics/fiji_runtime.csv` là nhật ký chạy ImageJ Macro của Lộc (165 dòng, schema 6 cột), không dùng lẫn lộn.
+* **Lưu ý:** File `outputs/metrics/fiji_runtime.csv` là nhật ký chạy ImageJ Macro của Lộc (369 dòng, schema 6 cột: 303 dòng một đầu ra + 66 dòng hai đầu ra, phủ đủ 435 TIFF gồm 12 file legacy), không dùng lẫn lộn với bảng thời gian Java 220 dòng.
 
 ### B. Bảng đánh giá Tầng 2 (So với Ground Truth 25 ảnh chuẩn của Đức)
 * **Nguồn dữ liệu:** Xuất từ script [src/eval/benchmark_tier2.py](../../src/eval/benchmark_tier2.py).
@@ -63,17 +63,19 @@
      * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/292 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
   4. **Đối sánh song song Python Core vs Fiji/FeatureJ (Tầng 2):**
      * Tái lập bằng lệnh: `python src/eval/benchmark_tier2.py --source both --blob-sigmas config`. Số liệu thô: [outputs/metrics/tier2_comparison.csv](../../outputs/metrics/tier2_comparison.csv) (25 dòng).
-     * Cùng phân vị p60/p85 và cùng mặt nạ FOV; Blob dùng 7 sigma cấu hình vì Fiji không có bản đồ Laplacian tại $\sigma=11.3$:
+     * Cùng phân vị p60/p85 và cùng mặt nạ FOV; BSDS dùng nhánh fair (`lx/ly × σ` + `detect_canny`), Blob dùng 7 sigma cấu hình vì Fiji không có bản đồ Laplacian tại $\sigma=11.3$:
 
      | Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
      | :--- | :---: | :---: | :---: |
-     | BSDS500 - Canny Edge (10 ảnh) | 0.4937 | 0.4966 | **+0.0029** |
-     | DRIVE - Frangi Vesselness (10 ảnh) | 0.6806 | 0.6816 | **+0.0010** |
-     | Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.8930 | 0.8919 | **−0.0011** |
+     | BSDS500 - Canny Edge fair (10 ảnh) | 0.493689 | 0.493697 | **+0.000009** |
+     | DRIVE - Frangi Vesselness (10 ảnh) | 0.680633 | 0.681651 | **+0.001019** |
+     | Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.893023 | 0.891901 | **−0.001122** |
 
+     * Các giá trị $F_1$ trong bảng là trung bình trên F1 **chưa làm tròn** (6 chữ số); CSV từng ảnh vẫn giữ 4 chữ số.
+     * **Tham chiếu riêng FeatureJ Edges:** bản đồ `edge` + hysteresis đạt $F_1 = 0.496572$, lưu tại [outputs/metrics/tier2_bsds_edge_reference.csv](../../outputs/metrics/tier2_bsds_edge_reference.csv) (10 dòng). Đây là tham chiếu khác thuật toán (FeatureJ NMS nội bộ), không dùng thay bảng fair.
      * DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
      * `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python vẫn giữ nguyên trong `tier2_results.csv` (140/329, F1 = 0.463).
-     * Sai lệch $|\Delta F_1| \le 0.003$ đến từ xấp xỉ rời rạc và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
+     * Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
 
 ### C. Công cụ biến CSV thành bảng LaTeX trong 3 giây
 * Truy cập trang web miễn phí: **[TablesGenerator.com](https://www.tablesgenerator.com/)**.

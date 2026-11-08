@@ -44,7 +44,7 @@ XLA/
 │       └── benchmark_tier2.py     #   Đánh giá Tầng 2 (Python + Fiji, so sánh với Ground Truth 25 ảnh)
 ├── outputs/                       # DỮ LIỆU ĐẦU RA VÀ ĐỐI CHUẨN
 │   ├── python/                    #   220 bản đồ vi phân chuẩn xuất từ Python Core (TIFF 32-bit float)
-│   ├── fiji/                      #   435 bản đồ vi phân do kịch bản Macro của Lộc xuất (phủ trọn vẹn 25 ảnh)
+│   ├── fiji/                      #   435 bản đồ: 423 trong phạm vi macro hợp nhất + 12 TIFF edge cũ (61aedec)
 │   ├── fiji_java/                 #   220 bản đồ vi phân do BatchTier1Fiji.java xuất (đối chuẩn Tầng 1)
 │   ├── fiji_java_tier1.zip        #   Kho lưu trữ nén 220 TIFF Tier 1 (92.58 MiB)
 │   ├── tier1_verification_summary.csv # Kết quả đối chuẩn pixel-to-pixel chi tiết 220 bản đồ
@@ -105,7 +105,7 @@ So sánh đối chuẩn pixel-to-pixel giữa 220 bản đồ của Python Core 
 ```bash
 python src/eval/verify_tier1.py
 ```
-* **Cơ chế tự động giải nén:** Nếu thư mục `outputs/fiji_java/` chưa có đủ 220 file TIFF (ví dụ khi mới clone repo về máy mới), script sẽ **tự động giải nén** từ kho lưu trữ `outputs/fiji_java_tier1.zip` (92.58 MiB). Bảng mã băm SHA256 của 220 file nằm tại `outputs/metrics/fiji_java_manifest.csv` để đối chiếu toàn vẹn thủ công; hàm `ensure_fiji_java_data()` hiện chỉ giải nén, chưa tự động so hash.
+* **Cơ chế tự động giải nén và kiểm tra toàn vẹn:** Nếu thư mục `outputs/fiji_java/` chưa có đủ 220 file TIFF (ví dụ khi mới clone repo về máy mới), script sẽ **tự động giải nén** từ kho lưu trữ `outputs/fiji_java_tier1.zip` (92.58 MiB). Sau đó `ensure_fiji_java_data()` đối chiếu từng file với kích thước và mã băm SHA256 trong `outputs/metrics/fiji_java_manifest.csv`; nếu sai lệch, script dừng ngay với lỗi toàn vẹn thay vì tiếp tục nghiệm thu trên dữ liệu hỏng.
 * **Kết quả nghiệm thu thực tế:**
   - **Kỳ vọng:** 220 bản đồ vi phân | **Có sẵn:** 220 bản đồ | **Thiếu:** 0 file | **Bỏ qua:** 0 file.
   - **PASS STRICT:** 35 bản đồ ($\text{rel} < 10^{-4} \land r > 0.9999$): 20 bản đồ Gauss (5 ảnh × 4 $\sigma$) + 15 bản đồ đạo hàm bậc 1 tại $\sigma=1.0$ (5 `lx`, 5 `ly`, 5 `grad`).
@@ -120,27 +120,33 @@ python src/eval/verify_tier1.py
 python src/eval/benchmark_tier2.py --p-low 60.0 --p-high 85.0
 
 # Nhánh đối chứng: đọc bản đồ TIFF do ImageJ Macro của Lộc xuất trong outputs/fiji/
+# BSDS dùng nhánh fair: lx/ly x sigma + detect_canny (mặc định --bsds-fiji-mode canny)
 python src/eval/benchmark_tier2.py --source fiji
 
-# Chạy song song cả hai nhánh và xuất bảng đối sánh
+# Chạy song song cả hai nhánh, xuất bảng đối sánh và tham chiếu FeatureJ Edges
 python src/eval/benchmark_tier2.py --source both --blob-sigmas config
 ```
+* **Ghi chú nhánh BSDS của Fiji:** mặc định `--bsds-fiji-mode canny` dùng `lx/ly × σ` + `detect_canny` (cùng thuật toán với Python). Chế độ `edge` chỉ dùng để tái lập tham chiếu FeatureJ Edges; khi chạy `--source both` ở chế độ `canny`, script tự ghi tham chiếu này ra `tier2_bsds_edge_reference.csv`.
 * **Kết quả xuất ra file:**
   - `outputs/metrics/tier2_results.csv`: nhánh Python chính thức (25 dòng).
-  - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji (25 dòng).
+  - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji fair (25 dòng).
   - `outputs/metrics/tier2_results_both.csv`: gộp cả hai nhánh (50 dòng, có cột `source`).
   - `outputs/metrics/tier2_comparison.csv`: bảng đối sánh song song Python vs Fiji (25 dòng).
+  - `outputs/metrics/tier2_bsds_edge_reference.csv`: tham chiếu FeatureJ Edges cho 10 ảnh BSDS (10 dòng, tự sinh khi `--source both` và mode `canny`).
 * **Bảng đối sánh Python vs Fiji** (cùng phân vị p60/p85, cùng FOV; Blob dùng 7 sigma cấu hình vì Fiji không có Laplacian tại $\sigma=11.3$):
 
 | Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
 | :--- | :---: | :---: | :---: |
-| BSDS500 - Canny Edge (10 ảnh) | 0.4937 | 0.4966 | **+0.0029** |
-| DRIVE - Frangi Vesselness (10 ảnh) | 0.6806 | 0.6816 | **+0.0010** |
-| Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.8930 | 0.8919 | **−0.0011** |
+| BSDS500 - Canny Edge fair (`lx/ly` × $\sigma$, 10 ảnh) | 0.493689 | 0.493697 | **+0.000009** |
+| DRIVE - Frangi Vesselness (10 ảnh) | 0.680633 | 0.681651 | **+0.001019** |
+| Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.893023 | 0.891901 | **−0.001122** |
 
+  - Các giá trị $F_1$ trong bảng là trung bình trên F1 **chưa làm tròn** (6 chữ số); CSV từng ảnh vẫn giữ 4 chữ số.
+  - **Nhánh BSDS fair:** Fiji dùng chính `lx`, `ly` do macro xuất, nhân $\sigma$ rồi chạy cùng `detect_canny` như Python (p60/p85, dung sai ±2 px). Nhờ đó $\Delta F_1$ chỉ còn $+0.000009$.
+  - **Tham chiếu riêng FeatureJ Edges:** Bản đồ `edge` (đã NMS nội bộ) + hysteresis đạt $F_1 = 0.496572$, lưu tại `outputs/metrics/tier2_bsds_edge_reference.csv` (10 dòng). Đây là tham chiếu khác thuật toán, **không** dùng thay bảng fair.
   - DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
-  - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463); bảng trên chỉ hạ Python về 7σ để so sánh công bằng với dữ liệu Fiji hiện có.
-  - Sai lệch $|\Delta F_1| \le 0.003$ đến từ xấp xỉ rời rạc và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
+  - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463).
+  - Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
 * **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
   - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** $F_1 = 0.494$ (dung sai $\pm 2$ px so với nhãn người vẽ tay).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
@@ -149,7 +155,15 @@ python src/eval/benchmark_tier2.py --source both --blob-sigmas config
     - `blob_05` (tế bào sinh học tự gán nhãn): **$F_1 = 0.463$** (phát hiện chính xác 140/276 tế bào).
     - Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**.
 
-### 5. Tái sinh toàn bộ 220 bản đồ FeatureJ bằng Java Exporter (Tùy chọn)
+### 5. Kiểm tra toàn vẹn bộ 435 TIFF Fiji (Macro Outputs)
+Đối chiếu bộ file thực tế với bộ kỳ vọng **423 file trong phạm vi macro hợp nhất + 12 file `edge` legacy** = 435 file, đồng thời kiểm tra manifest, runtime và định dạng từng TIFF:
+```bash
+python src/eval/validate_fiji_outputs.py
+# Kết quả kỳ vọng: PASS: 435/435 file đúng bộ kỳ vọng, manifest, runtime và định dạng.
+```
+Script kiểm tra: đủ/không thừa file so với quy tắc sinh tên từ `config.yaml`; 435 dòng manifest không trùng, `name_ok=1`, `depth_ok=1`, `bit_depth=32`; 369 dòng runtime (303 một đầu ra + 66 hai đầu ra) phủ đủ 435 file; mọi TIFF là `float32`, đúng kích thước ảnh gốc và không có NaN/Inf.
+
+### 6. Tái sinh toàn bộ 220 bản đồ FeatureJ bằng Java Exporter (Tùy chọn)
 Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi trường có sẵn JDK của Fiji:
 ```bash
 # Biên dịch
@@ -167,7 +181,7 @@ Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi t
 | :--- | :--- | :---: | :--- | :--- |
 | `outputs/python/` | Nhân vi phân Python Core thuần NumPy | **220 TIFF** | Dữ liệu gốc của hệ thống tự lập trình | Chuẩn hóa giải tích $r = \lceil k\sigma \rceil$, bảo toàn moment rời rạc Taylor bậc 0, 1, 2. |
 | `outputs/fiji_java/` | Java Batch Exporter gọi trực tiếp `imagescience.jar` | **220 TIFF** | Nguồn tham chiếu đối chuẩn Tầng 1 chính thức | Hệ số tương quan Pearson $r > 0.9999$. Sai số tương đối ở đạo hàm bậc 2 ($L_{xx}, \nabla^2 L \sim 0.4\%$, tối đa $0.93\%$ tại $\sigma=8.0$) là do **khác biệt phương pháp rời rạc hóa**: Python Core bảo toàn moment Taylor rời rạc, còn FeatureJ dùng xấp xỉ lấy mẫu liên tục (Continuous Sampling). |
-| `outputs/fiji/` | Kịch bản ImageJ Macro (`batch_all_sigmas.ijm` của Lộc) | **435 TIFF** | Minh chứng thực nghiệm quy trình GUI ImageJ | Phủ trọn vẹn 25 ảnh mẫu trên toàn bộ thang đo $\sigma$. Thời gian chạy ghi tại `outputs/metrics/fiji_runtime.csv` (369 dòng dữ liệu). Toàn bộ 435 file được xác thực định dạng 32-bit và quy ước đặt tên tại `outputs/metrics/fiji_output_manifest.csv`. |
+| `outputs/fiji/` | Kịch bản ImageJ Macro hợp nhất (`batch_process.ijm` của Lộc) + 12 TIFF `edge` cũ từ commit `61aedec` | **435 TIFF** | Minh chứng thực nghiệm quy trình GUI ImageJ | Gồm **423 TIFF trong phạm vi macro hợp nhất** và **12 TIFF `edge` legacy** (`blob_01`, `blob_02`, `drive_01` × 4 $\sigma$) tạo trước khi hợp nhất. Thời gian chạy ghi tại `outputs/metrics/fiji_runtime.csv` (369 dòng dữ liệu, gồm cả 12 dòng legacy). Toàn bộ 435 file được kiểm tra định dạng 32-bit, quy ước đặt tên và đủ bộ kỳ vọng bằng `src/eval/validate_fiji_outputs.py`. |
 
 ---
 

@@ -16,6 +16,7 @@ MISSING / SKIP_SHAPE.
 
 import sys
 from pathlib import Path
+import hashlib
 import numpy as np
 import tifffile
 import csv
@@ -118,6 +119,85 @@ def status_from_metrics(rel_err, r):
     else:
         return "FAIL"
 
+def _sha256_file(path: Path) -> str:
+    """Tính SHA256 theo luồng để không nạp toàn bộ TIFF vào RAM."""
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def verify_fiji_java_manifest() -> bool:
+    """Đối chiếu 220 TIFF với kích thước và SHA256 trong manifest.
+
+    Trả về True nếu toàn bộ khớp; False nếu thiếu file, sai kích thước,
+    sai hash hoặc manifest không đủ 220 dòng.
+    """
+    manifest_path = OUT_DIR / "metrics" / "fiji_java_manifest.csv"
+    if not manifest_path.exists():
+        print(f"   [!] Cảnh báo: thiếu manifest {manifest_path}; bỏ qua kiểm tra SHA256.")
+        return True
+
+    errors = []
+    checked = 0
+    manifest_names = set()
+    with open(manifest_path, "r", newline="", encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            if not any(row.values()):
+                continue
+            name = (row.get("filename") or "").strip()
+            if not name:
+                errors.append("Manifest có dòng thiếu filename")
+                continue
+            manifest_names.add(name)
+
+            path = FJ_DIR / name
+            if not path.exists():
+                errors.append(f"Thiếu file: {name}")
+                continue
+
+            expected_size = (row.get("size_bytes") or "").strip()
+            if expected_size:
+                actual_size = path.stat().st_size
+                if int(expected_size) != actual_size:
+                    errors.append(
+                        f"Sai kích thước: {name} ({actual_size} != {expected_size})"
+                    )
+            else:
+                errors.append(f"Manifest thiếu size_bytes: {name}")
+
+            expected_hash = (row.get("sha256") or "").strip().lower()
+            if not expected_hash:
+                errors.append(f"Manifest thiếu sha256: {name}")
+            actual_hash = _sha256_file(path)
+            if expected_hash and expected_hash != actual_hash:
+                errors.append(f"Sai SHA256: {name}")
+
+            checked += 1
+
+    if checked != 220:
+        errors.append(f"Manifest có {checked} dòng, kỳ vọng 220")
+
+    actual_names = {path.name for path in FJ_DIR.glob("*.tif")}
+    extra = sorted(actual_names - manifest_names)
+    if extra:
+        errors.append(
+            f"Thư mục có {len(extra)} TIFF thừa ngoài manifest, ví dụ: {extra[:5]}"
+        )
+
+    if errors:
+        print(f"   ✗ SHA256: {len(errors)} lỗi toàn vẹn dữ liệu fiji_java")
+        for err in errors[:10]:
+            print(f"      - {err}")
+        if len(errors) > 10:
+            print(f"      ... và {len(errors) - 10} lỗi khác")
+        return False
+
+    print(f"   ✓ SHA256: {checked}/220 TIFF khớp kích thước và mã băm.")
+    return True
+
+
 def ensure_fiji_java_data():
     """Tự động giải nén outputs/fiji_java_tier1.zip nếu thư mục outputs/fiji_java chưa đủ 220 file."""
     import zipfile
@@ -131,6 +211,12 @@ def ensure_fiji_java_data():
             print(f"   ✓ Đã giải nén {len(list(FJ_DIR.glob('*.tif')))} tệp TIFF.")
         else:
             print(f"   [!] Cảnh báo: Chưa có {zip_path} để giải nén tự động.")
+
+    if not verify_fiji_java_manifest():
+        raise RuntimeError(
+            "Dữ liệu outputs/fiji_java không khớp manifest SHA256. "
+            "Hãy xóa thư mục này và chạy lại để giải nén từ ZIP chuẩn."
+        )
 
 def run_tier1_verification():
     print("=" * 80)
