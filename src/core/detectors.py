@@ -24,24 +24,20 @@ from typing import List, Optional, Tuple, Union
 import numpy as np
 
 
-def detect_canny(
-    lx: np.ndarray,
-    ly: np.ndarray,
-    p_low: float = 50.0,
-    p_high: float = 80.0,
-    return_binary: bool = True,
-) -> np.ndarray:
-  """Thuật toán phát hiện biên Canny từ đạo hàm Lx, Ly.
+def canny_nms(lx: np.ndarray, ly: np.ndarray) -> np.ndarray:
+  """Tính edge strength sau Non-Maximum Suppression (NMS).
+
+  NMS chỉ phụ thuộc vào ``lx`` và ``ly``, không phụ thuộc ngưỡng. Tách riêng
+  bước này cho phép quét lưới ngưỡng trên cùng một lần tính NMS, thay vì tính
+  lại NMS cho từng cặp ``(p_low, p_high)``.
 
   Args:
       lx: Mảng đạo hàm theo cột (axis=1).
       ly: Mảng đạo hàm theo hàng (axis=0).
-      p_low: Phân vị ngưỡng dưới (0 đến 100), ví dụ 50.0.
-      p_high: Phân vị ngưỡng trên (0 đến 100), ví dụ 80.0.
-      return_binary: Nếu True, trả về mảng uint8 (0 và 255); False trả về bool.
 
   Returns:
-      Mặt nạ biên nhị phân.
+      Mảng cùng kích thước với ``lx``; giá trị 0 tại pixel không phải cực đại
+      địa phương theo hướng gradient.
   """
   magnitude = np.sqrt(lx * lx + ly * ly)
   h, w = magnitude.shape
@@ -85,15 +81,32 @@ def detect_canny(
   cond90 = sec90 & (magnitude >= n1_90) & (magnitude >= n2_90)
   cond135 = sec135 & (magnitude >= n1_135) & (magnitude >= n2_135)
 
-  nms = np.where(cond0 | cond45 | cond90 | cond135, magnitude, 0.0)
+  return np.where(cond0 | cond45 | cond90 | cond135, magnitude, 0.0)
 
-  # 2. Ngưỡng trễ Hysteresis theo phân vị
+
+def hysteresis_from_nms(
+    nms: np.ndarray,
+    p_low: float = 50.0,
+    p_high: float = 80.0,
+    return_binary: bool = False,
+) -> np.ndarray:
+  """Áp ngưỡng trễ phân vị lên edge strength đã NMS.
+
+  Args:
+      nms: Edge strength sau NMS (giá trị 0 tại pixel bị loại).
+      p_low: Phân vị ngưỡng dưới (0 đến 100).
+      p_high: Phân vị ngưỡng trên (0 đến 100).
+      return_binary: Nếu True, trả về mảng uint8 (0 và 255); False trả về bool.
+
+  Returns:
+      Mặt nạ biên nhị phân.
+  """
   non_zero = nms[nms > 0]
   if len(non_zero) == 0:
     return (
-        np.zeros_like(magnitude, dtype=np.uint8)
+        np.zeros_like(nms, dtype=np.uint8)
         if return_binary
-        else np.zeros_like(magnitude, dtype=bool)
+        else np.zeros_like(nms, dtype=bool)
     )
 
   t_high = np.percentile(non_zero, p_high)
@@ -107,6 +120,7 @@ def detect_canny(
   queue = list(zip(*np.where(strong_mask)))
   visited = strong_mask.copy()
 
+  h, w = nms.shape
   dys = [-1, -1, -1, 0, 0, 1, 1, 1]
   dxs = [-1, 0, 1, -1, 1, -1, 0, 1]
 
@@ -123,6 +137,31 @@ def detect_canny(
   if return_binary:
     return np.where(edge_bool, 255, 0).astype(np.uint8)
   return edge_bool
+
+
+def detect_canny(
+    lx: np.ndarray,
+    ly: np.ndarray,
+    p_low: float = 50.0,
+    p_high: float = 80.0,
+    return_binary: bool = True,
+) -> np.ndarray:
+  """Thuật toán phát hiện biên Canny từ đạo hàm Lx, Ly.
+
+  Args:
+      lx: Mảng đạo hàm theo cột (axis=1).
+      ly: Mảng đạo hàm theo hàng (axis=0).
+      p_low: Phân vị ngưỡng dưới (0 đến 100), ví dụ 50.0.
+      p_high: Phân vị ngưỡng trên (0 đến 100), ví dụ 80.0.
+      return_binary: Nếu True, trả về mảng uint8 (0 và 255); False trả về bool.
+
+  Returns:
+      Mặt nạ biên nhị phân.
+  """
+  nms = canny_nms(lx, ly)
+  return hysteresis_from_nms(
+      nms, p_low=p_low, p_high=p_high, return_binary=return_binary
+  )
 
 
 def detect_ridge(

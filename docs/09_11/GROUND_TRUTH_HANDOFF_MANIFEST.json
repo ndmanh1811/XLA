@@ -1,0 +1,32 @@
+{
+  "prepared_on": "2026-11-08",
+  "intended_handoff": "2026-11-09",
+  "recipient": "Hung",
+  "sent": false,
+  "ready_images": 25,
+  "bsds_annotators_by_image": {
+    "bsds_01": 6,
+    "bsds_02": 5,
+    "bsds_03": 5,
+    "bsds_04": 6,
+    "bsds_05": 7,
+    "bsds_06": 6,
+    "bsds_07": 5,
+    "bsds_08": 5,
+    "bsds_09": 6,
+    "bsds_10": 5
+  },
+  "total_bsds_annotations": 56,
+  "cells": 276,
+  "ignore_rectangles": 15,
+  "files": {
+    "GUI_HUNG_GROUND_TRUTH_09_11.docx": "d07dec12c6992c9c85a74aa0881cbf06aefaa876e62bb58e55ca620247e6e307",
+    "GUI_HUNG_GROUND_TRUTH_09_11.md": "46c90acd774c8b981a29b2a6cfae635371a25cb93f4314d9442a8042d23e2513",
+    "ground_truth_figures\\01_bsds_01_overlay.png": "760302314749f14a6b7914494b3715bf3154f8e345d83ccd0f3cea5e4321ba92",
+    "ground_truth_figures\\02_blob_05_overlay.png": "fe768a63f1b8dc9d1cca2f74446cfac3e78446d0519bf4819d094a6020d14610"
+  },
+  "overlay_source_sha256": {
+    "data/gt/previews/bsds_01_overlay.png": "760302314749f14a6b7914494b3715bf3154f8e345d83ccd0f3cea5e4321ba92",
+    "data/gt/previews/blob_05_overlay.png": "fe768a63f1b8dc9d1cca2f74446cfac3e78446d0519bf4819d094a6020d14610"
+  }
+}

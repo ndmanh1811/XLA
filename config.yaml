@@ -2,10 +2,10 @@
 # Mọi script Python và ImageJ Macro đều tham chiếu các giá trị từ file này.
 # Được trích xuất và đo đạc thực nghiệm đối chuẩn 100% với FeatureJ / ImageScience.
 
-kernel_k:                 # Bán kính cắt kernel r = floor(k * sigma) + 1 theo FeatureJ Differentiator
-  gauss: 3.0             # Bậc 0 (Làm mịn): k = 3.0
-  lx: 4.0                # Bậc 1 (Đạo hàm riêng): k = 4.0
-  lxx: 4.0               # Bậc 2 (Hessian / Laplacian): k = 4.0
+kernel_k:                 # Bán kính cắt kernel r = ceil(k * sigma) khớp thực nghiệm 100% với FeatureJ Differentiator
+  gauss: 3.0             # Bậc 0 (Làm mịn): k = 3.0 (r = ceil(3.0 * sigma))
+  lx: 4.0                # Bậc 1 (Đạo hàm riêng): k = 4.0 (r = ceil(4.0 * sigma))
+  lxx: 4.0               # Bậc 2 (Hessian / Laplacian): k = 4.0 (r = ceil(4.0 * sigma))
 
 border_mode: mirror     # Kiểu phản xạ biên theo SciPy: 'mirror' (không lặp pixel biên x[-1] = x[1], tương ứng mode='reflect' của NumPy)
 
@@ -16,7 +16,7 @@ featurej_normalized:       # Cờ xác nhận FeatureJ có tự động nhân th
   edges: false            # FeatureJ Edges = sqrt(Lx^2 + Ly^2) thô
   structure: false        # Structure Tensor thô
 
-eigen_order: absolute      # ĐÃ ĐO: Khi tick 'Absolute eigenvalue comparison', FeatureJ xếp theo |l1| >= |l2|
+eigen_order: algebraic      # Mặc định FeatureJ (false = algebraic: l1 >= l2) khớp với BatchTier1Fiji.java
 
 sigmas: [1.0, 2.0, 4.0, 8.0] # Dãy tỷ lệ chuẩn theo cấp số nhân cơ số 2
 

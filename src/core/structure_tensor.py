@@ -28,8 +28,10 @@ def compute_structure_tensor(
     img: np.ndarray,
     sigma_d: float,
     sigma_i: float,
-    k: Optional[float] = None,
+    k_d: Optional[float] = None,
+    k_i: Optional[float] = None,
     mode: Optional[str] = None,
+    k: Optional[float] = None,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
   """Tính 3 thành phần của ma trận Structure Tensor 2D: (J11, J22, J12).
 
@@ -37,24 +39,32 @@ def compute_structure_tensor(
       img: Mảng ảnh 2D (float64).
       sigma_d: Differentiation scale (tỷ lệ đạo hàm vi phân).
       sigma_i: Integration scale (tỷ lệ làm trơn tích phân).
-      k: Hệ số cắt kernel.
+      k_d: Hệ số cắt kernel cho đạo hàm (mặc định đọc kernel_k.lx = 4.0).
+      k_i: Hệ số cắt kernel cho làm mịn (mặc định đọc kernel_k.gauss = 3.0).
       mode: Chế độ xử lý biên ('reflect' hoặc 'mirror').
+      k: Hệ số cắt kernel chung (nếu truyền thì áp dụng cho cả hai).
 
   Returns:
       (J11, J22, J12): Ba mảng thành phần tensor sau làm mịn.
   """
-  # 1. Đạo hàm ở thang sigma_d
-  lx, ly = compute_derivatives_1st(img, sigma=sigma_d, k=k, mode=mode)
+  if k is not None:
+    if k_d is None:
+      k_d = k
+    if k_i is None:
+      k_i = k
+
+  # 1. Đạo hàm ở thang sigma_d (vi phân dùng k=4)
+  lx, ly = compute_derivatives_1st(img, sigma=sigma_d, k=k_d, mode=mode)
 
   # 2. Tích ngoài gradient
   lx2 = lx * lx
   ly2 = ly * ly
   lxy = lx * ly
 
-  # 3. Làm mịn ở thang sigma_i
-  j11 = gaussian_smooth(lx2, sigma=sigma_i, k=k, mode=mode)
-  j22 = gaussian_smooth(ly2, sigma=sigma_i, k=k, mode=mode)
-  j12 = gaussian_smooth(lxy, sigma=sigma_i, k=k, mode=mode)
+  # 3. Làm mịn ở thang sigma_i (tích phân làm mịn dùng k=3)
+  j11 = gaussian_smooth(lx2, sigma=sigma_i, k=k_i, mode=mode)
+  j22 = gaussian_smooth(ly2, sigma=sigma_i, k=k_i, mode=mode)
+  j12 = gaussian_smooth(lxy, sigma=sigma_i, k=k_i, mode=mode)
 
   return j11, j22, j12
 

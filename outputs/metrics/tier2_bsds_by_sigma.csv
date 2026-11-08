@@ -1,0 +1,5 @@
+﻿sigma,python_p_low,python_p_high,python_mean_precision,python_mean_recall,python_mean_f1,fiji_p_low,fiji_p_high,fiji_mean_precision,fiji_mean_recall,fiji_mean_f1,delta_f1,edge_reference_t_low,edge_reference_t_high,edge_reference_mean_precision,edge_reference_mean_recall,edge_reference_mean_f1,n_images
+1.0,80.0000,94.0000,0.474488,0.561455,0.490868,80.0000,94.0000,0.474547,0.561455,0.490909,+0.000041,N/A,N/A,N/A,N/A,N/A,10
+2.0,67.0000,91.0000,0.516651,0.569150,0.516600,67.0000,91.0000,0.516651,0.569150,0.516600,+0.000000,N/A,N/A,N/A,N/A,N/A,10
+4.0,49.0000,80.0000,0.509410,0.530687,0.490542,49.0000,80.0000,0.509410,0.530687,0.490542,+0.000000,N/A,N/A,N/A,N/A,N/A,10
+8.0,23.0000,50.0000,0.423306,0.413914,0.395759,23.0000,50.0000,0.423306,0.413914,0.395759,+0.000000,N/A,N/A,N/A,N/A,N/A,10

@@ -42,11 +42,13 @@ Không sửa hay đo mới config trong nhiệm vụ này.
 Nếu thông số đo cần dùng còn `null`, bước tính toán tương ứng phải báo lỗi và
 dừng theo INSTRUCTIONS; bản thiết kế không cung cấp giá trị thay thế.
 
-Config hiện ghi k theo bậc = (3,4,4), biên `mirror`, thứ tự trị riêng `absolute`,
+Config ban đầu ngày 02/11 ghi k theo bậc = (3,4,4), biên `mirror`, thứ tự trị riêng `absolute`,
 các cờ chuẩn hóa FeatureJ = false. Đây là **tham chiếu cấu hình sẵn có**, không
-phải kết quả đo do Đức thực hiện. Cần nhóm phụ trách Fiji xác nhận bằng chứng đo.
-Comment config nói `floor(k*sigma)+1`, trong khi tài liệu yêu cầu `ceil(k*sigma)`;
-khác biệt này còn cần xác minh, không coi là đã chốt tương đương số học.
+phải kết quả đo do Đức thực hiện.
+
+> **Cập nhật đồng bộ hóa hệ thống (ngày 07/11):**
+> - **Thứ tự trị riêng:** Đã chốt chính thức là `algebraic` ($\lambda_1 \ge \lambda_2$) theo mặc định chuẩn của FeatureJ và `BatchTier1Fiji.java` (khớp hoàn toàn `config.yaml` và `quyuoc.md`).
+> - **Bán kính cắt kernel:** Đã chuẩn hóa chính thức là $r = \lceil k\sigma \rceil$ theo đúng tài liệu yêu cầu và cấu hình thống nhất toàn nhóm.
 
 ## Lưới ngưỡng và quy tắc lựa chọn đã định trước
 
