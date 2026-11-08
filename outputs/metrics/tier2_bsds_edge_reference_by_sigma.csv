@@ -1,0 +1,5 @@
+﻿sigma,t_low,t_high,mean_precision,mean_recall,mean_f1,n_images,selection_stage,selected
+1.0,8.021123000,16.752979000,0.513753,0.647299,0.527289,10,coarse_to_fine_absolute,1
+2.0,2.993310000,7.551928000,0.540514,0.648131,0.543644,10,coarse_to_fine_absolute,1
+4.0,1.572090000,2.379769000,0.532798,0.580047,0.519099,10,coarse_to_fine_absolute,1
+8.0,0.469800000,1.076625000,0.503264,0.380533,0.413642,10,coarse_to_fine_absolute,1

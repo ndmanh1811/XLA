@@ -41,7 +41,11 @@ XLA/
 │   │   └── batch_blob_structure.ijm
 │   └── eval/                      # KHUNG ĐÁNH GIÁ VÀ NGHIỆM THU ĐỊNH LƯỢNG
 │       ├── verify_tier1.py        #   Nghiệm thu Tầng 1 (Python Core vs 220 bản đồ FeatureJ)
-│       └── benchmark_tier2.py     #   Đánh giá Tầng 2 (Python + Fiji, so sánh với Ground Truth 25 ảnh)
+│       ├── benchmark_tier2.py     #   Đánh giá Tầng 2 (Python + Fiji, quét lưới ngưỡng theo σ, GT 25 ảnh)
+│       ├── benchmark_runtime.py   #   Đo thời gian Python theo phạm vi fiji_runtime.csv
+│       ├── bsds_threshold_grid.py #   Công cụ quét lưới ngưỡng BSDS theo từng σ (NMS cache, hysteresis nhanh)
+│       ├── plot_bsds_thresholds.py#   Vẽ 4 biểu đồ điều khiển Tier 2 (PR, F1-vs-σ, heatmap, runtime)
+│       └── validate_fiji_outputs.py # Kiểm tra 435 TIFF Fiji (tên, định dạng, manifest, runtime)
 ├── outputs/                       # DỮ LIỆU ĐẦU RA VÀ ĐỐI CHUẨN
 │   ├── python/                    #   220 bản đồ vi phân chuẩn xuất từ Python Core (TIFF 32-bit float)
 │   ├── fiji/                      #   435 bản đồ: 423 trong phạm vi macro hợp nhất + 12 TIFF edge cũ (61aedec)
@@ -53,6 +57,8 @@ XLA/
 │   ├── report_template/           #   Mã nguồn LaTeX báo cáo chuẩn IEEE (main.tex, references.bib, figures/)
 │   └── report_overleaf.zip        #   Gói 1-click (gửi kèm, không tracked trên Git)
 └── tests/                         # KIỂM THỬ TỰ ĐỘNG
+    ├── test_core.py               #   5 unit test nhân lõi (kernel, chập, đa thức, tensor, bộ dò)
+    ├── test_bsds_grid.py          #   5 unit test lưới ngưỡng BSDS (hysteresis pixel-identical, grid)
     └── test_ground_truth.py       #   Bộ 10 unit test kiểm tra tính toàn vẹn và hợp thức của Ground Truth
 ```
 
@@ -116,44 +122,66 @@ python src/eval/verify_tier1.py
 ### 4. Đánh giá thực nghiệm Tầng 2 (Tier 2 Benchmark: Ground Truth Evaluation)
 Đánh giá định lượng trên 25 ảnh thực tế với Ground Truth chuyên gia, áp dụng xói mòn FOV thích ứng đa tỷ lệ $r = \lceil 4.0\sigma \rceil$ và hỗ trợ tham số hóa Canny từ dòng lệnh:
 ```bash
-# Nhánh chính thức: Python Core (mặc định, Blob 8 sigma)
-python src/eval/benchmark_tier2.py --p-low 60.0 --p-high 85.0
+# Lệnh chuẩn: chạy cả Python và Fiji, quét lưới phân vị riêng cho từng sigma
+# (mặc định --bsds-threshold-mode grid --bsds-sigmas config)
+python src/eval/benchmark_tier2.py --source both --blob-sigmas config
 
-# Nhánh đối chứng: đọc bản đồ TIFF do ImageJ Macro của Lộc xuất trong outputs/fiji/
-# BSDS dùng nhánh fair: lx/ly x sigma + detect_canny (mặc định --bsds-fiji-mode canny)
+# Nhánh chính thức chỉ Python (mặc định, Blob 8 sigma mở rộng)
+python src/eval/benchmark_tier2.py --source python
+
+# Chỉ đọc bản đồ TIFF của Fiji (nhánh fair: lx/ly x sigma + detect_canny)
 python src/eval/benchmark_tier2.py --source fiji
 
-# Chạy song song cả hai nhánh, xuất bảng đối sánh và tham chiếu FeatureJ Edges
-python src/eval/benchmark_tier2.py --source both --blob-sigmas config
+# Chế độ lịch sử: một cặp p_low/p_high cố định tại sigma=2.0 (không quét lưới)
+python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p-low 60.0 --p-high 85.0
 ```
-* **Ghi chú nhánh BSDS của Fiji:** mặc định `--bsds-fiji-mode canny` dùng `lx/ly × σ` + `detect_canny` (cùng thuật toán với Python). Chế độ `edge` chỉ dùng để tái lập tham chiếu FeatureJ Edges; khi chạy `--source both` ở chế độ `canny`, script tự ghi tham chiếu này ra `tier2_bsds_edge_reference.csv`.
+* **Ghi chú nhánh BSDS của Fiji:** mặc định `--bsds-fiji-mode canny` dùng `lx/ly × σ` + `detect_canny` (cùng thuật toán với Python). Bộ ngưỡng phân vị được chọn trên Python (F1 trung bình cao nhất, tie-break precision cao hơn rồi ngưỡng cao hơn), sau đó **đóng băng và áp nguyên vẹn cho Fiji**. Chế độ `edge` chỉ dùng để tái lập tham chiếu FeatureJ Edges (ngưỡng tuyệt đối, báo cáo riêng).
 * **Kết quả xuất ra file:**
   - `outputs/metrics/tier2_results.csv`: nhánh Python chính thức (25 dòng).
   - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji fair (25 dòng).
-  - `outputs/metrics/tier2_results_both.csv`: gộp cả hai nhánh (50 dòng, có cột `source`).
-  - `outputs/metrics/tier2_comparison.csv`: bảng đối sánh song song Python vs Fiji (25 dòng).
-  - `outputs/metrics/tier2_bsds_edge_reference.csv`: tham chiếu FeatureJ Edges cho 10 ảnh BSDS (10 dòng, tự sinh khi `--source both` và mode `canny`).
-* **Bảng đối sánh Python vs Fiji** (cùng phân vị p60/p85, cùng FOV; Blob dùng 7 sigma cấu hình vì Fiji không có Laplacian tại $\sigma=11.3$):
+  - `outputs/metrics/tier2_results_both.csv`: gộp cả hai nhánh (110 dòng: 40 BSDS + 10 DRIVE + 5 Blob mỗi nhánh, có cột `source` và `sigma`).
+  - `outputs/metrics/tier2_comparison.csv`: bảng đối sánh song song Python vs Fiji (55 dòng: 40 BSDS theo 4 $\sigma$ + 10 DRIVE + 5 Blob, có cột `sigma`).
+  - `outputs/metrics/tier2_bsds_sigma_grid.csv`: lưới ngưỡng đầy đủ (1172 dòng: thô 17 cặp × 4 σ × 2 nguồn + tinh 24 cặp × 4 σ × Python).
+  - `outputs/metrics/tier2_bsds_thresholds.csv`: ngưỡng tối ưu theo $\sigma$ (4 dòng, chọn trên Python, đóng băng cho Fiji).
+  - `outputs/metrics/tier2_bsds_by_sigma.csv`: bảng tổng hợp F1 theo $\sigma$ (4 dòng: Python, Fiji, tham chiếu FeatureJ Edges).
+  - `outputs/metrics/tier2_bsds_edge_reference.csv`: tham chiếu FeatureJ Edges chi tiết từng ảnh (40 dòng: 10 ảnh × 4 $\sigma$).
+  - `outputs/metrics/tier2_bsds_edge_reference_grid.csv`: lưới ngưỡng tuyệt đối tham chiếu (626 dòng).
+  - `outputs/metrics/tier2_bsds_edge_reference_by_sigma.csv`: tổng hợp tham chiếu theo $\sigma$ (4 dòng).
+  - `outputs/metrics/python_runtime.csv`: thời gian chạy Python (369 dòng, schema giống `fiji_runtime.csv`; bỏ lần chạy đầu, lấy trung vị).
+  - `outputs/metrics/fiji_runtime.csv`: thời gian chạy Fiji do macro của Lộc xuất (369 dòng).
+* **Bảng tổng hợp F1 theo $\sigma$ (BSDS500 - Canny Edge fair, 10 ảnh, dung sai ±2 px; ngưỡng chọn trên Python, áp cho Fiji):**
 
-| Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
+| $\sigma$ | Python $p_{low}/p_{high}$ | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ | FeatureJ Edges $F_1$ (tham chiếu) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| 1.0 | 80 / 94 | 0.490868 | 0.490909 | **+0.000041** | 0.527289 |
+| 2.0 | 67 / 91 | 0.516600 | 0.516600 | **+0.000000** | 0.543644 |
+| 4.0 | 49 / 80 | 0.490542 | 0.490542 | **+0.000000** | 0.519099 |
+| 8.0 | 23 / 50 | 0.395759 | 0.395759 | **+0.000000** | 0.413642 |
+
+| Bài toán khác | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
 | :--- | :---: | :---: | :---: |
-| BSDS500 - Canny Edge fair (`lx/ly` × $\sigma$, 10 ảnh) | 0.493689 | 0.493697 | **+0.000009** |
-| DRIVE - Frangi Vesselness (10 ảnh) | 0.680633 | 0.681651 | **+0.001019** |
-| Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.893023 | 0.891901 | **−0.001122** |
+| DRIVE - Frangi Vesselness (10 ảnh, multiscale) | 0.680633 | 0.681651 | **+0.001019** |
+| Blobs - LoG Scale-Space (5 ảnh, 7σ config) | 0.893023 | 0.891901 | **−0.001122** |
 
-  - Các giá trị $F_1$ trong bảng là trung bình trên F1 **chưa làm tròn** (6 chữ số); CSV từng ảnh vẫn giữ 4 chữ số.
-  - **Nhánh BSDS fair:** Fiji dùng chính `lx`, `ly` do macro xuất, nhân $\sigma$ rồi chạy cùng `detect_canny` như Python (p60/p85, dung sai ±2 px). Nhờ đó $\Delta F_1$ chỉ còn $+0.000009$.
-  - **Tham chiếu riêng FeatureJ Edges:** Bản đồ `edge` (đã NMS nội bộ) + hysteresis đạt $F_1 = 0.496572$, lưu tại `outputs/metrics/tier2_bsds_edge_reference.csv` (10 dòng). Đây là tham chiếu khác thuật toán, **không** dùng thay bảng fair.
+  - Các giá trị $F_1$ là trung bình trên F1 **chưa làm tròn** (6 chữ số); CSV từng ảnh vẫn giữ 4 chữ số.
+  - **Nhánh BSDS fair:** Fiji dùng chính `lx`, `ly` do macro xuất, nhân $\sigma$ rồi chạy cùng `detect_canny` như Python (dung sai ±2 px).
+  - **Tham chiếu riêng FeatureJ Edges:** bản đồ `edge` (đã NMS nội bộ) + hysteresis, ngưỡng tuyệt đối riêng cho từng $\sigma$; chỉ dùng làm tham chiếu, **không** dùng thay bảng fair.
   - DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
   - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463).
   - Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
+  - Ghi nhận ràng buộc chọn ngưỡng: ngưỡng được điều chỉnh và đánh giá trên cùng 10 ảnh BSDS; coi đây là một hạn chế và báo cáo trong Limitations của bài cáo.
 * **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
-  - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** $F_1 = 0.494$ (dung sai $\pm 2$ px so với nhãn người vẽ tay).
+  - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** F1 cao nhất tại $\sigma=2.0$ là **0.516600** ($p_{low}=67$, $p_{high}=91$); số $0.494$ tại $p60/p85$, $\sigma=2.0$ chỉ là kết quả lịch sử (chế độ `fixed`).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
   - **Bài toán Đốm (Blobs - LoG Scale-Space, 5 ảnh):**
     - `blob_01` đến `blob_04` (đốm giải tích): **$F_1 = 1.000$ tuyệt đối** (khớp 100% tâm và bán kính).
     - `blob_05` (tế bào sinh học tự gán nhãn): **$F_1 = 0.463$** (phát hiện chính xác 140/276 tế bào).
     - Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**.
+* **Biểu đồ trong `outputs/figures/`:**
+  - `tier2_bsds_pr_curves.png`: Precision–Recall tại bộ ngưỡng đã chọn, từng $\sigma$.
+  - `tier2_bsds_f1_vs_sigma.png`: F1 trung bình vs $\sigma$ (Python, Fiji, tham chiếu FeatureJ Edges).
+  - `tier2_bsds_f1_heatmap.png`: bản đồ nhiệt F1 của Python trên lưới $(p_{low}, p_{high})$ tại $\sigma=2.0$.
+  - `tier2_runtime_comparison.png`: so sánh thời gian chạy trung vị Python vs Fiji theo loại phép toán.
 
 ### 5. Kiểm tra toàn vẹn bộ 435 TIFF Fiji (Macro Outputs)
 Đối chiếu bộ file thực tế với bộ kỳ vọng **423 file trong phạm vi macro hợp nhất + 12 file `edge` legacy** = 435 file, đồng thời kiểm tra manifest, runtime và định dạng từng TIFF:

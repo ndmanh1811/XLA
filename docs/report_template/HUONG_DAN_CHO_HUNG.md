@@ -35,7 +35,7 @@
 | **Chương 2** | **Cơ sở lý thuyết & Mô hình toán** | ~7 – 8 trang | Không gian tỷ lệ (Scale-space), tiên đề Lindeberg, tích chập tách rời 2D, đạo hàm riêng bậc 1, bậc 2, chuẩn hóa $\gamma$-normalized, ma trận Hessian, Structure Tensor, tiêu chuẩn cực trị Canny, Frangi Vesselness, LoG Blob. | Hiện tại `main.tex` chỉ mới có khung sườn các công thức toán cốt lõi (~250 từ). Hưng cần viết diễn giải lý thuyết chuyên sâu, vẽ sơ đồ và mở rộng thành 7–8 trang hoàn chỉnh. |
 | **Chương 3** | **Khảo sát FeatureJ & Workflow Fiji** | ~5 – 6 trang | Phân tích plugin FeatureJ (tác giả Erik Meijering), dịch ngược mã nguồn Java (`Differentiator.class`), giải thích vì sao FeatureJ chỉ chuẩn hóa bậc 0 mà không chuẩn hóa moment Taylor bậc 1/2, workflow đồ họa và ImageJ Macro. | Tham khảo file Java `src/fiji/BatchTier1Fiji.java` và Macro `src/fiji/batch_process.ijm`. |
 | **Chương 4** | **Thiết kế & Cài đặt hệ thống (Python)** | ~6 – 7 trang | Kiến trúc mã nguồn thuần NumPy from scratch (0% OpenCV trong lõi), thuật toán tích chập tách rời $O(2K)$ thay vì $O(K^2)$, xử lý biên `mirror`/`reflect`, thuật toán loang BFS Canny, tìm cực trị 3D scale-space LoG. | Đọc docstring và code trong `src/core/*.py` (`kernel.py`, `derivatives.py`, `hessian.py`, `detectors.py`). |
-| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn bản đồ vi phân Python Core với FeatureJ ($r > 0.9999$ cho làm mịn và đạo hàm bậc 1; sai số tương đối tăng theo bậc đạo hàm). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh: BSDS500 $F_1=0.494$, DRIVE $F_1=0.681$ / $\text{IoU}=0.518$, Blobs: `blob_01`–`blob_04` đạt $F_1=1.000$, `blob_05` đạt $F_1=0.463$; trung bình 5 ảnh macro-$F_1 = 0.8926$, tính gộp toàn bộ đối tượng micro-$F_1 = 0.4898$. | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
+| **Chương 5** | **Thực nghiệm, Đối chuẩn & Phân tích** | ~8 – 9 trang | **Tầng 1:** Đối chuẩn bản đồ vi phân Python Core với FeatureJ ($r > 0.9999$ cho làm mịn và đạo hàm bậc 1; sai số tương đối tăng theo bậc đạo hàm). **Đối chuẩn ngoại:** Khớp SciPy/OpenCV ($r=1.00000000$). **Tầng 2:** Đánh giá trên Ground Truth 25 ảnh: BSDS500 Canny Edge theo từng $\sigma$ ($\sigma=1,2,4,8$, ngưỡng phân vị chọn trên Python, áp cho Fiji): $\sigma=1.0 \rightarrow 0.490868$, $\sigma=2.0 \rightarrow \mathbf{0.516600}$ ($p_{low}=67/p_{high}=91$), $\sigma=4.0 \rightarrow 0.490542$, $\sigma=8.0 \rightarrow 0.395759$; DRIVE $F_1=0.681$ / $\text{IoU}=0.518$, Blobs: `blob_01`–`blob_04` đạt $F_1=1.000$, `blob_05` đạt $F_1=0.463$; trung bình 5 ảnh macro-$F_1 = 0.8926$, tính gộp toàn bộ đối tượng micro-$F_1 = 0.4898$. | Lấy dữ liệu từ mục 3 và mục 4 bên dưới. |
 | **Chương 6** | **Kết luận & Hướng mở rộng** | ~2 trang | Đánh giá mức độ hoàn thành chỉ tiêu, đóng góp khoa học, bài học kinh nghiệm và hướng phát triển (GPU CUDA, 3D volume). | Tóm tắt trung thực từ kết quả thực nghiệm thực tế: 35/220 bản đồ đạt STRICT, 185/220 bản đồ đạt RELAXED do khác biệt xấp xỉ rời rạc giữa bảo toàn moment Taylor và lấy mẫu liên tục. |
 
 ---
@@ -53,7 +53,13 @@
 * **Số liệu chính thức đưa vào báo cáo:**
   1. **Bài toán dò biên (BSDS500 - Canny):**
      * Đánh giá dung sai $\pm 2$ pixel so với tập nhãn đa annotator con người vẽ tay của Berkeley.
-     * F1-Score trung bình (10 ảnh): **0.494** ($\sigma=2.0$, phân vị 60/85).
+     * Quét lưới phân vị riêng cho từng $\sigma$ (lưới thô 5% + tinh ±2 điểm, bước 1%), chọn bộ ngưỡng tối ưu trên Python theo F1 trung bình, đóng băng và áp nguyên vẹn cho Fiji.
+     * F1-Score trung bình (10 ảnh), theo từng $\sigma$:
+       - $\sigma=1.0$: Python $p_{low}=80/p_{high}=94$, $F_1 = 0.490868$; Fiji $F_1 = 0.490909$; $\Delta = +0.000041$.
+       - $\sigma=2.0$: Python $p_{low}=67/p_{high}=91$, $F_1 = \mathbf{0.516600}$; Fiji $F_1 = 0.516600$; $\Delta = +0.000000$. ← Số headline, thay thế giá trị lịch sử 0.494 tại p60/p85.
+       - $\sigma=4.0$: Python $p_{low}=49/p_{high}=80$, $F_1 = 0.490542$; Fiji $F_1 = 0.490542$; $\Delta = +0.000000$.
+       - $\sigma=8.0$: Python $p_{low}=23/p_{high}=50$, $F_1 = 0.395759$; Fiji $F_1 = 0.395759$; $\Delta = +0.000000$.
+     * Tham chiếu riêng FeatureJ Edges (ngưỡng tuyệt đối, không dùng thay bảng fair): $\sigma=1.0 \rightarrow 0.527289$; $\sigma=2.0 \rightarrow 0.543644$; $\sigma=4.0 \rightarrow 0.519099$; $\sigma=8.0 \rightarrow 0.413642`.
   2. **Bài toán dò mạch máu võng mạc (DRIVE - Frangi Vesselness):**
      * Đánh giá trong vùng quan sát FOV xói mòn thích ứng đa tỷ lệ theo công thức $r = \lceil 4.0\sigma \rceil$ (tại $\sigma=2.0$ tương ứng bán kính $r=8$ px, phần tử cấu trúc $17\times 17$; tại các tỷ lệ khác xói mòn co dãn tương ứng để khử triệt để viền nhãn cầu).
      * F1-Score trung bình (10 ảnh): **0.681**, IoU trung bình: **0.518**.
@@ -62,17 +68,21 @@
      * Ảnh kính hiển vi tế bào sinh học (`blob_05` - Mitosis): Detector khớp **140 / 276 đối tượng** $\rightarrow$ **F1 = 0.463**.
      * Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$** (do ảnh `blob_05` chiếm tỷ trọng áp đảo 276/292 đối tượng). Đây là giới hạn tự nhiên của detector trên ảnh y sinh có cụm tế bào dính nhau, không phải lỗi nhãn Ground Truth.
   4. **Đối sánh song song Python Core vs Fiji/FeatureJ (Tầng 2):**
-     * Tái lập bằng lệnh: `python src/eval/benchmark_tier2.py --source both --blob-sigmas config`. Số liệu thô: [outputs/metrics/tier2_comparison.csv](../../outputs/metrics/tier2_comparison.csv) (25 dòng).
-     * Cùng phân vị p60/p85 và cùng mặt nạ FOV; BSDS dùng nhánh fair (`lx/ly × σ` + `detect_canny`), Blob dùng 7 sigma cấu hình vì Fiji không có bản đồ Laplacian tại $\sigma=11.3$:
+     * Tái lập bằng lệnh: `python src/eval/benchmark_tier2.py --source both --blob-sigmas config`. Số liệu thô: [outputs/metrics/tier2_comparison.csv](../../outputs/metrics/tier2_comparison.csv) (55 dòng, có cột `sigma`).
+     * Nhánh fair (`lx/ly × σ` + `detect_canny`) với ngưỡng đã chọn trên Python, áp cho Fiji; Blob dùng 7 sigma cấu hình vì Fiji không có bản đồ Laplacian tại $\sigma=11.3$:
 
      | Bài toán | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
      | :--- | :---: | :---: | :---: |
-     | BSDS500 - Canny Edge fair (10 ảnh) | 0.493689 | 0.493697 | **+0.000009** |
-     | DRIVE - Frangi Vesselness (10 ảnh) | 0.680633 | 0.681651 | **+0.001019** |
+     | BSDS500 - Canny Edge fair ($\sigma=1.0$) | 0.490868 | 0.490909 | **+0.000041** |
+     | BSDS500 - Canny Edge fair ($\sigma=2.0$) | 0.516600 | 0.516600 | **+0.000000** |
+     | BSDS500 - Canny Edge fair ($\sigma=4.0$) | 0.490542 | 0.490542 | **+0.000000** |
+     | BSDS500 - Canny Edge fair ($\sigma=8.0$) | 0.395759 | 0.395759 | **+0.000000** |
+     | DRIVE - Frangi Vesselness (10 ảnh, multiscale) | 0.680633 | 0.681651 | **+0.001019** |
      | Blobs - LoG Scale-Space (5 ảnh, 7σ) | 0.893023 | 0.891901 | **−0.001122** |
 
      * Các giá trị $F_1$ trong bảng là trung bình trên F1 **chưa làm tròn** (6 chữ số); CSV từng ảnh vẫn giữ 4 chữ số.
-     * **Tham chiếu riêng FeatureJ Edges:** bản đồ `edge` + hysteresis đạt $F_1 = 0.496572$, lưu tại [outputs/metrics/tier2_bsds_edge_reference.csv](../../outputs/metrics/tier2_bsds_edge_reference.csv) (10 dòng). Đây là tham chiếu khác thuật toán (FeatureJ NMS nội bộ), không dùng thay bảng fair.
+     * **Tham chiếu riêng FeatureJ Edges:** bản đồ `edge` (đã NMS nội bộ) + hysteresis, ngưỡng tuyệt đối riêng cho từng $\sigma$; chỉ dùng làm tham chiếu, **không** dùng thay bảng fair. F1 tham chiếu: $\sigma=1.0 \rightarrow 0.527289$, $\sigma=2.0 \rightarrow 0.543644$, $\sigma=4.0 \rightarrow 0.519099$, $\sigma=8.0 \rightarrow 0.413642`.
+     * Bộ file đầu ra mới: `tier2_bsds_sigma_grid.csv` (1172 dòng), `tier2_bsds_thresholds.csv` (4 dòng), `tier2_bsds_by_sigma.csv` (4 dòng), `tier2_bsds_edge_reference.csv` (40 dòng), `tier2_bsds_edge_reference_grid.csv` (626 dòng), `tier2_bsds_edge_reference_by_sigma.csv` (4 dòng), `python_runtime.csv` (369 dòng), `tier2_runtime_comparison.png` và 3 biểu đồ BSDS trong `outputs/figures/`.
      * DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
      * `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python vẫn giữ nguyên trong `tier2_results.csv` (140/329, F1 = 0.463).
      * Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
