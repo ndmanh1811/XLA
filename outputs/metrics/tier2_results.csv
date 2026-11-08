@@ -49,8 +49,8 @@ python,DRIVE_Frangi_Ridge,drive_07,multiscale,"multiscale_sigmas=[1,2,4,8]_thres
 python,DRIVE_Frangi_Ridge,drive_08,multiscale,"multiscale_sigmas=[1,2,4,8]_thresh=p85_FOVscale",0.7271,0.7488,0.7378,0.5845,30639,31554,22942
 python,DRIVE_Frangi_Ridge,drive_09,multiscale,"multiscale_sigmas=[1,2,4,8]_thresh=p85_FOVscale",0.6465,0.7651,0.7008,0.5394,26664,31553,20400
 python,DRIVE_Frangi_Ridge,drive_10,multiscale,"multiscale_sigmas=[1,2,4,8]_thresh=p85_FOVscale",0.6145,0.7774,0.6864,0.5225,24931,31542,19381
-python,Blobs_LoG_ScaleSpace,blob_01,multiscale,polarity=bright_thresh=0.03_nsigmas=8,1.0,1.0,1.0,N/A,4,4,4
-python,Blobs_LoG_ScaleSpace,blob_02,multiscale,polarity=dark_thresh=0.03_nsigmas=8,1.0,1.0,1.0,N/A,4,4,4
-python,Blobs_LoG_ScaleSpace,blob_03,multiscale,polarity=bright_thresh=0.03_nsigmas=8,1.0,1.0,1.0,N/A,4,4,4
-python,Blobs_LoG_ScaleSpace,blob_04,multiscale,polarity=dark_thresh=0.03_nsigmas=8,1.0,1.0,1.0,N/A,4,4,4
-python,Blobs_LoG_ScaleSpace,blob_05,multiscale,polarity=bright_thresh=0.03_nsigmas=8,0.4255,0.5072,0.4628,N/A,276,329,140
+python,Blobs_LoG_ScaleSpace,blob_01,multiscale,polarity=bright_thresh=0.03_nsigmas=7,1.0,1.0,1.0,N/A,4,4,4
+python,Blobs_LoG_ScaleSpace,blob_02,multiscale,polarity=dark_thresh=0.03_nsigmas=7,1.0,1.0,1.0,N/A,4,4,4
+python,Blobs_LoG_ScaleSpace,blob_03,multiscale,polarity=bright_thresh=0.03_nsigmas=7,1.0,1.0,1.0,N/A,4,4,4
+python,Blobs_LoG_ScaleSpace,blob_04,multiscale,polarity=dark_thresh=0.03_nsigmas=7,1.0,1.0,1.0,N/A,4,4,4
+python,Blobs_LoG_ScaleSpace,blob_05,multiscale,polarity=bright_thresh=0.03_nsigmas=7,0.4294,0.5072,0.4651,N/A,276,326,140
