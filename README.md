@@ -44,7 +44,7 @@ XLA/
 │       └── benchmark_tier2.py     #   Đánh giá Tầng 2 (Python + Fiji, so sánh với Ground Truth 25 ảnh)
 ├── outputs/                       # DỮ LIỆU ĐẦU RA VÀ ĐỐI CHUẨN
 │   ├── python/                    #   220 bản đồ vi phân chuẩn xuất từ Python Core (TIFF 32-bit float)
-│   ├── fiji/                      #   231 bản đồ vi phân do kịch bản Macro của Lộc xuất
+│   ├── fiji/                      #   435 bản đồ vi phân do kịch bản Macro của Lộc xuất (phủ trọn vẹn 25 ảnh)
 │   ├── fiji_java/                 #   220 bản đồ vi phân do BatchTier1Fiji.java xuất (đối chuẩn Tầng 1)
 │   ├── fiji_java_tier1.zip        #   Kho lưu trữ nén 220 TIFF Tier 1 (92.58 MiB)
 │   ├── tier1_verification_summary.csv # Kết quả đối chuẩn pixel-to-pixel chi tiết 220 bản đồ
@@ -119,7 +119,7 @@ python src/eval/verify_tier1.py
 # Nhánh chính thức: Python Core (mặc định, Blob 8 sigma)
 python src/eval/benchmark_tier2.py --p-low 60.0 --p-high 85.0
 
-# Nhánh đối chứng: đọc 231 bản đồ TIFF do ImageJ Macro của Lộc xuất trong outputs/fiji/
+# Nhánh đối chứng: đọc bản đồ TIFF do ImageJ Macro của Lộc xuất trong outputs/fiji/
 python src/eval/benchmark_tier2.py --source fiji
 
 # Chạy song song cả hai nhánh và xuất bảng đối sánh
@@ -167,7 +167,7 @@ Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi t
 | :--- | :--- | :---: | :--- | :--- |
 | `outputs/python/` | Nhân vi phân Python Core thuần NumPy | **220 TIFF** | Dữ liệu gốc của hệ thống tự lập trình | Chuẩn hóa giải tích $r = \lceil k\sigma \rceil$, bảo toàn moment rời rạc Taylor bậc 0, 1, 2. |
 | `outputs/fiji_java/` | Java Batch Exporter gọi trực tiếp `imagescience.jar` | **220 TIFF** | Nguồn tham chiếu đối chuẩn Tầng 1 chính thức | Hệ số tương quan Pearson $r > 0.9999$. Sai số tương đối ở đạo hàm bậc 2 ($L_{xx}, \nabla^2 L \sim 0.4\%$, tối đa $0.93\%$ tại $\sigma=8.0$) là do **khác biệt phương pháp rời rạc hóa**: Python Core bảo toàn moment Taylor rời rạc, còn FeatureJ dùng xấp xỉ lấy mẫu liên tục (Continuous Sampling). |
-| `outputs/fiji/` | Kịch bản ImageJ Macro (`batch_process.ijm` của Lộc) | **231 TIFF** | Minh chứng thực nghiệm quy trình GUI ImageJ | Gồm 52 Edge + 112 Hessian + 47 Laplacian + 20 Structure Tensor. Thời gian chạy ghi tại `outputs/metrics/fiji_runtime.csv` (165 dòng). |
+| `outputs/fiji/` | Kịch bản ImageJ Macro (`batch_all_sigmas.ijm` của Lộc) | **435 TIFF** | Minh chứng thực nghiệm quy trình GUI ImageJ | Phủ trọn vẹn 25 ảnh mẫu trên toàn bộ thang đo $\sigma$. Thời gian chạy ghi tại `outputs/metrics/fiji_runtime.csv` (369 dòng dữ liệu). Toàn bộ 435 file được xác thực định dạng 32-bit và quy ước đặt tên tại `outputs/metrics/fiji_output_manifest.csv`. |
 
 ---
 
