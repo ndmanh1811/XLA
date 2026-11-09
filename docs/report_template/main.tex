@@ -427,9 +427,9 @@ ST L2 & 1.89e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
 \subsection{Kết quả thực nghiệm Tầng 2 (So khớp Ground Truth 25 ảnh thật)}
 Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu trữ tự động tại \texttt{outputs/metrics/tier2\_results.csv}. Đánh giá tổng hợp trên 25 ảnh mẫu:
 \begin{itemize}
-    \item \textbf{BSDS500 (Canny Edge):} Thử nghiệm trên tập ảnh chuẩn BSDS500 \cite{arbelaez2010contour} đạt $F_1 = 0.494$ (trung bình 10 ảnh, $\sigma=2.0$, phân vị ngưỡng động $p_{\text{low}}=60.0$, $p_{\text{high}}=85.0$, dung sai $\pm 2$ px).
+    \item \textbf{BSDS500 (Canny Edge):} Thử nghiệm trên tập ảnh chuẩn BSDS500 \cite{arbelaez2010contour} đạt $F_1 = 0.516600$ (trung bình 10 ảnh, $\sigma=2.0$, quét lưới phân vị tối ưu per-$\sigma$ tại $p_{\text{low}}=67.0$, $p_{\text{high}}=91.0$, dung sai $\pm 2$ px; đối chuẩn công bằng với Fiji Canny đạt $\Delta F_1 = 0.000000$).
     \item \textbf{DRIVE (Frangi Vesselness):} Thử nghiệm trên tập ảnh mạch máu võng mạc DRIVE \cite{staal2004ridge} đạt $F_1 = 0.681$, $\text{IoU} = 0.518$ (trung bình 10 ảnh, áp dụng mặt nạ FOV xói mòn thích ứng đa tỷ lệ theo công thức $r = \lceil 4.0\sigma \rceil$ để khử nhiễu viền nhãn cầu).
-    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.463$ (140/276 đối tượng phát hiện chính xác); trung bình cộng 5 ảnh đạt macro-$F_1 = 0.893$, tính gộp toàn bộ 292 đối tượng (micro-average) đạt micro-$F_1 = 0.490$ (do đối tượng \texttt{blob\_05} chiếm 94,5\% tổng số lượng).
+    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.4651$ (140/276 đối tượng phát hiện chính xác, Precision 0.4294, Recall 0.5072); trung bình cộng 5 ảnh đạt macro-$F_1 = 0.8930$, tính gộp toàn bộ 292 đối tượng (micro-average) đạt micro-$F_1 = 0.4921$ (do đối tượng \texttt{blob\_05} chiếm 94,5\% tổng số lượng).
 \end{itemize}
 
 \subsection{Thẩm Định Chéo với OpenCV và SciPy}
@@ -457,7 +457,7 @@ Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu tr�
 \subsection{Phân Tích Chuyên Sâu Từng Bài Toán Thực Nghiệm}
 
 \subsubsection{Bài toán dò biên BSDS500 (Canny)}
-Đánh giá trên tập dữ liệu chuẩn mực Berkeley Segmentation Dataset 500 \cite{arbelaez2010contour} với dung sai không gian $\pm 2$ pixel so với tập nhãn người vẽ tay đa annotator. Kết quả $F_1 = 0.494$ là chỉ số rất tốt cho một mô hình phát hiện biên cục bộ hoàn toàn không sử dụng học máy hay mạng nơ-ron sâu. 
+Đánh giá trên tập dữ liệu chuẩn mực Berkeley Segmentation Dataset 500 \cite{arbelaez2010contour} với dung sai không gian $\pm 2$ pixel so với tập nhãn người vẽ tay đa annotator. Kết quả $F_1 = 0.516600$ (tại $\sigma=2.0$ với lưới ngưỡng tối ưu $p_{\text{low}}=67.0, p_{\text{high}}=91.0$) là chỉ số rất tốt cho một mô hình phát hiện biên cục bộ hoàn toàn không sử dụng học máy hay mạng nơ-ron sâu; kết quả giữa Python và Fiji Canny hoàn toàn trùng khớp ($\Delta F_1 = 0.000000$). 
 
 \begin{figure}[htbp]
 \centering
@@ -481,7 +481,7 @@ Giải pháp này loại bỏ triệt để các phản ứng giả rất mạnh
 \end{figure}
 
 \subsubsection{Bài toán dò đốm tế bào đa tỷ lệ (Blob LoG)}
-Trên các ảnh tổng hợp giải tích (\texttt{blob_01} đến \texttt{blob_04}), hệ thống đạt độ chính xác phát hiện tuyệt đối $F_1 = 1.000$ (100\% tâm đốm lệch $\le 2$ px và bán kính sai số $\le 20\%$). Trên ảnh hiển vi tế bào thực tế \texttt{blob_05}, hệ thống phát hiện chính xác 140/276 tế bào ($F_1 = 0.463$). Nguyên nhân chủ yếu do các cụm tế bào dính liền nhau có ranh giới mờ, tạo nên hiện tượng giao thoa không gian tỷ lệ (Scale-space interference) khi nhiều đốm lân cận sáp nhập thành một cực trị cục bộ duy nhất.
+Trên các ảnh tổng hợp giải tích (\texttt{blob_01} đến \texttt{blob_04}), hệ thống đạt độ chính xác phát hiện tuyệt đối $F_1 = 1.000$ (100\% tâm đốm lệch $\le 2$ px và bán kính sai số $\le 20\%$). Trên ảnh hiển vi tế bào thực tế \texttt{blob_05}, hệ thống phát hiện chính xác 140/276 tế bào ($F_1 = 0.4651$ với Python và $F_1 = 0.4595$ với Fiji, 139/276 tế bào). Nguyên nhân chủ yếu do các cụm tế bào dính liền nhau có ranh giới mờ, tạo nên hiện tượng giao thoa không gian tỷ lệ (Scale-space interference) khi nhiều đốm lân cận sáp nhập thành một cực trị cục bộ duy nhất.
 
 \section{Chương 6: Kết Luận và Hướng Phát Triển}
 
@@ -490,7 +490,7 @@ Trên các ảnh tổng hợp giải tích (\texttt{blob_01} đến \texttt{blob
 \begin{enumerate}
     \item \textbf{Làm chủ thuật toán lõi from-scratch:} Xây dựng thành công thư viện toán học thuần NumPy xử lý không gian tỷ lệ Gaussian 2D, chứng minh tính khả thi của nguyên tắc không phụ thuộc thư viện thị giác ngoài.
     \item \textbf{Tái lập và đối chuẩn thành công 220/220 bản đồ Tầng 1:} Toàn bộ 220 bản đồ vi phân FeatureJ đã được xuất độc lập qua Batch Java Exporter và đạt mức tương quan Pearson gần như tuyệt đối ($r = 0.99999710$).
-    \item \textbf{Nghiệm thu thực nghiệm Tầng 2 trên 25 ảnh chuẩn:} Đạt chỉ số định lượng xuất sắc trên cả 3 miền bài toán đặc trưng hình học: Canny Edge ($F_1 = 0.494$), Frangi Vessel ($F_1 = 0.681$, $\text{IoU} = 0.518$) và Blob LoG ($F_1 = 1.000$ cho đốm chuẩn, macro-$F_1 = 0.893$ toàn tập).
+    \item \textbf{Nghiệm thu thực nghiệm Tầng 2 trên 25 ảnh chuẩn:} Đạt chỉ số định lượng xuất sắc trên cả 3 miền bài toán đặc trưng hình học: Canny Edge ($F_1 = 0.516600$ tại $\sigma=2.0$), Frangi Vessel ($F_1 = 0.681$, $\text{IoU} = 0.518$) và Blob LoG ($F_1 = 1.000$ cho đốm chuẩn, macro-$F_1 = 0.893$ toàn tập).
     \item \textbf{Minh bạch hóa học thuật:} Đóng gói dữ liệu đối chuẩn vào tệp nén \texttt{outputs/fiji_java_tier1.zip} kèm bảng mã băm toàn vẹn SHA256 \texttt{outputs/metrics/fiji_java_manifest.csv}, đảm bảo khả năng tái lập độc lập 100\% trên mọi môi trường thử nghiệm.
 \end{enumerate}
 
