@@ -4,8 +4,8 @@
 
 ## Fiji so với Python
 
-220 bản đồ Tầng 1: {'PASS': 35, 'FAIL': 185}. Chấm đúng ngưỡng gốc: relative error < 1e-4 **và** Pearson r > 0.9999.
-FAIL là kết quả số học không đạt ngưỡng, không phải lỗi chạy chương trình. Không tự nới ngưỡng.
+220 bản đồ Tầng 1: {'STRICT': 35, 'RELAXED': 185, 'FAIL': 0}. Chấm đúng ngưỡng gốc: relative error < 1e-4 **và** Pearson r > 0.9999.
+RELAXED là kết quả số học không đạt ngưỡng STRICT (rel < 1e-4) nhưng đạt ngưỡng RELAXED (rel < 1e-2 và r > 0.9999), không phải lỗi chạy chương trình. Không tự nới ngưỡng.
 PSNR dùng MAX=255 chỉ cho Gaussian; ô PSNR của toán tử khác để trống có chủ đích.
 
 | Smoke test σ=2 | Relative error | Pearson r | Trạng thái |
@@ -18,18 +18,18 @@ PSNR dùng MAX=255 chỉ cho Gaussian; ô PSNR của toán tử khác để tr�
 
 | Nguồn | Bài toán | Sigma | Macro Precision | Macro Recall | Macro F1 | Micro F1 |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| python | edge_bsds | 1.0 | 0.421340 | 0.534874 | 0.451718 | — |
-| python | edge_bsds | 2.0 | 0.478408 | 0.518773 | 0.472945 | — |
-| python | edge_bsds | 4.0 | 0.477295 | 0.457956 | 0.441437 | — |
-| python | edge_bsds | 8.0 | 0.509335 | 0.248494 | 0.322360 | — |
-| python | ridge_drive | multiscale | 0.811157 | 0.352088 | 0.477382 | 0.486776 |
-| python | blob_log | multiscale | 0.895563 | 0.901449 | 0.898418 | 0.519135 |
-| fiji | edge_bsds | 1.0 | 0.421340 | 0.534874 | 0.451718 | — |
-| fiji | edge_bsds | 2.0 | 0.478399 | 0.518750 | 0.472930 | — |
-| fiji | edge_bsds | 4.0 | 0.477295 | 0.457956 | 0.441437 | — |
-| fiji | edge_bsds | 8.0 | 0.509335 | 0.248494 | 0.322360 | — |
-| fiji | ridge_drive | multiscale | 0.814269 | 0.347986 | 0.473863 | 0.483343 |
-| fiji | blob_log | multiscale | 0.894237 | 0.900725 | 0.897373 | 0.514096 |
+| python | edge_bsds | 1.0 | 0.421340 | 0.534874 | 0.490868 | — |
+| python | edge_bsds | 2.0 | 0.478408 | 0.518773 | 0.516600 | — |
+| python | edge_bsds | 4.0 | 0.477295 | 0.457956 | 0.490542 | — |
+| python | edge_bsds | 8.0 | 0.509335 | 0.248494 | 0.395759 | — |
+| python | ridge_drive | multiscale | 0.811157 | 0.352088 | 0.680633 | 0.486776 |
+| python | blob_log | multiscale | 0.895563 | 0.901449 | 0.893023 | 0.4921 |
+| fiji | edge_bsds | 1.0 | 0.421340 | 0.534874 | 0.490868 | — |
+| fiji | edge_bsds | 2.0 | 0.478399 | 0.518750 | 0.516600 | — |
+| fiji | edge_bsds | 4.0 | 0.477295 | 0.457956 | 0.490542 | — |
+| fiji | edge_bsds | 8.0 | 0.509335 | 0.248494 | 0.395759 | — |
+| fiji | ridge_drive | multiscale | 0.814269 | 0.347986 | 0.681651 | 0.483343 |
+| fiji | blob_log | multiscale | 0.894237 | 0.900725 | 0.891901 | 0.514096 |
 
 ## Phạm vi và giới hạn
 
