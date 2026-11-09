@@ -183,7 +183,41 @@ python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p
   - `tier2_bsds_f1_heatmap.png`: bản đồ nhiệt F1 của Python trên lưới $(p_{low}, p_{high})$ tại $\sigma=2.0$.
   - `tier2_runtime_comparison.png`: so sánh thời gian chạy trung vị Python vs Fiji theo loại phép toán.
 
-### 5. Kiểm tra toàn vẹn bộ 435 TIFF Fiji (Macro Outputs)
+### 5. Benchmark tối ưu chương trình (STT 14)
+
+Đánh giá cải tiến tốc độ khi tách chập 2D thành hai phép chập 1D nối tiếp:
+
+- Phép chập 2D trực tiếp: chi phí $\mathcal{O}(K_x \cdot K_y \cdot HW)$.
+- Tách chập 1D: chi phí $\mathcal{O}((K_x + K_y) \cdot HW)$.
+
+Script đo: `src/eval/benchmark_optimization.py` (chỉ dùng để đo, không đưa vào `src/core`).
+
+```bash
+python src/eval/benchmark_optimization.py
+```
+
+* **Output:** `outputs/metrics/optimization_benchmark.csv` (36 dòng: 3 ảnh × 4 sigma × 3 toán tử).
+* **Đúng đắn:** sai số tuyệt đối giữa naive và separable $\sim 10^{-13}$ trên mọi case.
+* **Kết quả đại diện (trung bình trên 3 ảnh bsds\_01, drive\_01, blob\_01):**
+
+| Toán tử | $\sigma$ | Naive (ms) | Tách 1D (ms) | Tăng tốc thực | Lý thuyết |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Gauss | 1.0 | 24.06 | 9.14 | 2.44 | 3.50 |
+| Gauss | 2.0 | 80.77 | 13.73 | 5.43 | 6.50 |
+| Gauss | 4.0 | 318.00 | 25.64 | 11.46 | 12.50 |
+| Gauss | 8.0 | 1197.77 | 47.79 | 22.89 | 24.50 |
+| $L_x$ | 1.0 | 30.87 | 9.42 | 2.86 | 3.94 |
+| $L_x$ | 2.0 | 107.32 | 15.81 | 6.34 | 7.37 |
+| $L_x$ | 4.0 | 409.26 | 28.07 | 14.18 | 14.22 |
+| $L_x$ | 8.0 | 1573.68 | 56.47 | 27.24 | 27.94 |
+| $L_{xx}$ | 1.0 | 31.61 | 9.04 | 3.12 | 3.94 |
+| $L_{xx}$ | 2.0 | 106.67 | 17.81 | 5.57 | 7.37 |
+| $L_{xx}$ | 4.0 | 404.20 | 28.88 | 12.76 | 14.22 |
+| $L_{xx}$ | 8.0 | 1580.24 | 54.99 | 28.99 | 27.94 |
+
+* **Giải thích:** tốc độ tăng thực tế khớp sát hệ số lý thuyết $\frac{K_x \cdot K_y}{K_x + K_y}$. Sai lệch nhỏ do chi phí đệm bộ nhớ, kernel chữ nhật ($L_x, L_{xx}$) và overhead cấp phát mảng trong NumPy. Tại $\sigma=8$, $L_{xx}$ đạt tăng tốc $\approx 29\times$ thực nghiệm (lý thuyết $27.9\times$), chứ không phải con số $32.5\times$ chỉ áp cho kernel vuông $K=65$ (Gauss $\sigma=8$).
+
+### 6. Kiểm tra toàn vẹn bộ 435 TIFF Fiji (Macro Outputs)
 Đối chiếu bộ file thực tế với bộ kỳ vọng **423 file trong phạm vi macro hợp nhất + 12 file `edge` legacy** = 435 file, đồng thời kiểm tra manifest, runtime và định dạng từng TIFF:
 ```bash
 python src/eval/validate_fiji_outputs.py
@@ -191,7 +225,7 @@ python src/eval/validate_fiji_outputs.py
 ```
 Script kiểm tra: đủ/không thừa file so với quy tắc sinh tên từ `config.yaml`; 435 dòng manifest không trùng, `name_ok=1`, `depth_ok=1`, `bit_depth=32`; 369 dòng runtime (303 một đầu ra + 66 hai đầu ra) phủ đủ 435 file; mọi TIFF là `float32`, đúng kích thước ảnh gốc và không có NaN/Inf.
 
-### 6. Tái sinh toàn bộ 220 bản đồ FeatureJ bằng Java Exporter (Tùy chọn)
+### 7. Tái sinh toàn bộ 220 bản đồ FeatureJ bằng Java Exporter (Tùy chọn)
 Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi trường có sẵn JDK của Fiji:
 ```bash
 # Biên dịch
