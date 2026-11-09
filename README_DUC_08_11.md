@@ -15,6 +15,7 @@
 
 | Cần xem | File | Cách mở |
 | --- | --- | --- |
+| ZIP bàn giao 415 TIFF Python | [README_BAN_GIAO.md](outputs/archives/duc_08_11/README_BAN_GIAO.md) | Gửi đủ 3 ZIP; mỗi ZIP chỉ có TIFF ở cấp đầu. Giải nén vào `outputs/python/` |
 | Kết quả ngắn gọn, PASS/FAIL và P/R/F1 | [KET_QUA_METRIC.md](outputs/metrics/duc_08_11/KET_QUA_METRIC.md) | VS Code, nhấn Ctrl+Shift+V để xem Markdown |
 | Bảng metric 220 cặp TIFF | [tier1_report.csv](outputs/metrics/duc_08_11/tier1_report.csv) | Excel hoặc VS Code |
 | Sai số riêng vùng biên | [tier1_border_report.csv](outputs/metrics/duc_08_11/tier1_border_report.csv) | Excel hoặc VS Code |
