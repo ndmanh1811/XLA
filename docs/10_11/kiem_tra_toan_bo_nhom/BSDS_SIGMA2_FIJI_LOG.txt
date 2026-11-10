@@ -1,0 +1,18 @@
+
+=================================================================
+  1. BENCHMARK BÀI TOÁN DÒ BIÊN (BSDS500 - CANNY EDGE DETECTION)
+     Nguồn bản đồ: FIJI | Fiji mode=canny | sigmas=2.0
+     Cách chọn ngưỡng: audit_frozen_no_reselection
+=================================================================
+   Ảnh bsds_01 | sigma=2.0: Precision=0.473, Recall=0.491 => F1=0.482 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_02 | sigma=2.0: Precision=0.624, Recall=0.309 => F1=0.414 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_03 | sigma=2.0: Precision=0.892, Recall=0.572 => F1=0.697 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_04 | sigma=2.0: Precision=0.482, Recall=0.456 => F1=0.469 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_05 | sigma=2.0: Precision=0.700, Recall=0.633 => F1=0.665 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_06 | sigma=2.0: Precision=0.292, Recall=0.811 => F1=0.430 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_07 | sigma=2.0: Precision=0.459, Recall=0.645 => F1=0.537 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_08 | sigma=2.0: Precision=0.224, Recall=0.271 => F1=0.245 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_09 | sigma=2.0: Precision=0.497, Recall=0.563 => F1=0.528 (p_low=67.0, p_high=91.0)
+   Ảnh bsds_10 | sigma=2.0: Precision=0.266, Recall=0.382 => F1=0.314 (p_low=67.0, p_high=91.0)
+   => [BSDS500 sigma=2.0] F1 trung bình: 0.477886
+   => [KẾT QUẢ BSDS500] F1 trung bình toàn bộ sigma: 0.477886

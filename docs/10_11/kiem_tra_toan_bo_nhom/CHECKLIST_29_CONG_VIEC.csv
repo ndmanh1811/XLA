@@ -1,0 +1,30 @@
+stt,role_for_review,deadline,task,review_status,evidence,remaining
+1,Hưng,2026-11-02,Gaussian smoothing và scale-space,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Viết đủ định nghĩa và tính chất tách trục/bán nhóm; kiểm tra chương lý thuyết
+2,Hưng,2026-11-02,Đạo hàm bậc 1 và gradient,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Hoàn thiện công thức và hướng gradient theo quy ước trục
+3,Hưng,2026-11-04,Đạo hàm bậc 2 Laplacian Hessian,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Đủ trị riêng/vector riêng và ý nghĩa hình học; đồng bộ thứ tự trị riêng
+4,Hưng,2026-11-06,Scale normalization,Có nội dung; cần rà soát,docs/report_template/main.tex,Giải thích gamma=1 và chuẩn hóa đúng một lần; phân biệt tầng 1/tầng 2
+5,Hưng,2026-11-08,Mô hình toán Edge Ridge Blob,Có nội dung; cần sửa diễn giải,docs/report_template/main.tex;docs/slides/BTL_XLA_Nhom_BaoCao.pptx,Sửa gamma và mô tả FeatureJ Edges; phân biệt NMS 4 sector với 8 lân cận
+6,Hưng,2026-11-08,Structure tensor và cấu trúc,Có nội dung; chưa chốt,docs/report_template/main.tex;src/core/structure_tensor.py,Hoàn thiện hướng và ý nghĩa coherence/trị riêng; phân biệt nội dung lý thuyết với hàm đã triển khai
+7,Hưng,2026-11-12,Tài liệu tham khảo,Có 8 nguồn; cần rà soát,docs/report_template/references.bib,Kiểm tra đúng loại tài liệu/thông tin xuất bản và nguồn hỗ trợ từng khẳng định
+8,Mạnh,2026-11-03,Gaussian kernel và convolution,Có code; test lõi PASS; strict đã sửa,src/core/kernel.py;src/core/convolution.py;CORE_TEST_LOG.txt,Giữ strict cho k/border; các getter danh sách scale còn fallback khi thiếu khóa
+9,Mạnh,2026-11-05,Gradient và Hessian eigenvalues,Có code và TIFF; smoke giải tích PASS,src/core/derivatives.py;src/core/hessian.py;ANALYTICAL_SMOKE_LOG.txt,Đường dẫn parabola đã đúng; trình bày đúng 35 STRICT và 185 RELAXED theo ngưỡng mở rộng
+10,Mạnh,2026-11-07,Edge detection đa tỷ lệ,Có code; hai lỗi BSDS trước đã sửa,src/core/detectors.py;src/eval/bsds_threshold_grid.py;UNITTEST_LOG.txt,Đã đạt 47/47 unittest; F1 sigma2 tái lập đúng 0.477886 trên cả hai nguồn; sửa lời giải thích trên slide
+11,Mạnh,2026-11-08,Ridge detection đa tỷ lệ,Có code và ảnh; protocol cần đồng bộ,src/core/detectors.py;src/eval/benchmark_tier2.py,Thống nhất FOV cuối 8/32 px; bỏ k gõ cứng và SciPy ndimage khỏi luồng sản xuất
+12,Mạnh,2026-11-09,Blob detection đa tỷ lệ,Có detector và ảnh; chấm điểm còn lỗi,src/core/detectors.py;src/eval/benchmark_tier2.py,Sửa matching một-một và dùng vùng ignore ở pipeline chính; dùng cùng 7 sigma khi đối chiếu
+13,Mạnh,2026-11-10,Kiểm thử với thư viện,Có bộ script và ảnh so sánh,benchmarks/reference_comparison,Giữ bảng sai số và thiết lập tái lập; bỏ kết luận VERDICT 100% PASS gõ cứng; tránh kết luận ưu thế thiếu đối chứng
+14,Mạnh,2026-11-12,Tối ưu chương trình,Đã có sản phẩm; lỗi số lượt đã sửa,src/eval/benchmark_optimization.py;outputs/metrics/optimization_benchmark.csv,36 trường hợp ghi reps=5; sai số tối đa 1.279e-12; speedup khoảng 1.38-31.39 lần; giữ rõ điều kiện đo
+15,Lộc,2026-11-03,Khảo sát chế độ FeatureJ,Có workflow và config; thiếu truy vết đo riêng,docs/fiji;config.yaml,Bổ sung hồ sơ đo k/border/normalization/eigen_order theo từng lệnh
+16,Lộc,2026-11-05,Workflow Fiji Edge Ridge,Có tài liệu cập nhật 09/11,docs/fiji/WORKFLOW_EDGE_RIDGE.docx,Kiểm tra tham số trong tài liệu đồng nhất config cuối và phối hợp đối chuẩn
+17,Lộc,2026-11-07,Workflow Fiji Blob Structure,Có tài liệu cập nhật 09/11,docs/fiji/WORKFLOW_BLOB_STRUCTURE.docx,Kiểm tra tham số trong tài liệu đồng nhất config cuối và phối hợp đối chuẩn
+18,Lộc,2026-11-08,Macro nhiều sigma,Có macro và kết quả chạy toàn bộ,src/fiji/batch_process.ijm;outputs/metrics/fiji_runtime.csv,Đảm bảo chạy lại nếu config/đầu vào đổi; ghi rõ phạm vi thời gian đo
+19,Lộc,2026-11-09,Xuất TIFF Fiji,435/435 PASS,outputs/fiji;src/eval/validate_fiji_outputs.py,Định dạng đạt; vẫn cần phối hợp giải thích sai lệch biên độ Python-Fiji
+20,Đức,2026-11-02,Chuẩn bị dataset,Đủ 25 ảnh và kiểm tra hợp lệ,data/raw;data/SOURCES.md;data/manifest.json,Giữ ổn định bộ dữ liệu và nguồn; chưa phát hiện thiếu ở đầu việc này
+21,Đức,2026-11-05,Xây dựng ground truth,25/25 READY,data/gt;docs/09_11/GUI_HUNG_GROUND_TRUTH_09_11.docx,Giữ đúng 276 đối tượng và 15 vùng ignore; không gọi nhãn tự rà soát là chuyên gia độc lập
+22,Đức,2026-11-02,Thiết kế thí nghiệm và tham số,Có thiết kế và protocol; cần thống nhất phiên cuối,docs/02_11/02_THIET_KE_THI_NGHIEM.md;outputs/metrics/PROTOCOL.md,Đồng bộ nguồn chính và lịch sử; kịch bản nhiễu/kích thước mới là thiết kế nếu chưa chạy biến thể
+23,Đức,2026-11-12,Tính metric định lượng,Có sản phẩm; chấm blob chính thức còn sai,outputs/metrics;EVALUATION_PROBES.json,Cùng Mạnh sửa matching và ignore; thống nhất DRIVE/normalization; sinh lại metric và provenance; không dùng archive làm nguồn chính
+24,Đức,2026-11-14,Biểu đồ và phân tích,Có sản phẩm; launcher và nguồn cũ chưa đồng bộ,outputs/analysis/duc_task5_08_11;CHAY_CONG_VIEC_5_DUC.cmd,Launcher bị chặn vì metric ARCHIVED_HISTORICAL; runtime fingerprint khác code hiện tại; chuyển sang nguồn chính rồi cập nhật biểu đồ
+25,Nhóm/chưa chỉ định,2026-10-31,Khung báo cáo và ký hiệu,Có khung và bản nháp,docs/report_template/main.tex,Rà ký hiệu/công thức giữa các chương và tài liệu quy ước
+26,Nhóm/chưa chỉ định,2026-11-14,Gộp báo cáo và rà lỗi,Chưa có PDF cuối kiểm chứng được,docs/report_template/main.tex,Hoàn thiện lý thuyết và số liệu; biên dịch PDF; kiểm tra khoảng 30 trang cùng hình/bảng/font
+27,Nhóm/chưa chỉ định,2026-11-17,Slide thuyết trình,Có PPTX 12 slide và HTML 11 slide; cần sửa,docs/slides/BTL_XLA_Nhom_BaoCao.pptx;bai_trinh_trinh_xla.html,Sửa gamma/FeatureJ Edges/diễn giải SHA-256/k và số liệu blob; khai báo python-pptx để build lại; kiểm tra trình chiếu
+28,Nhóm/chưa chỉ định,2026-11-18,Câu hỏi bảo vệ,Có trang Q&A; chưa thấy bộ câu hỏi chung,docs/slides/BTL_XLA_Nhom_BaoCao.pptx,Soạn câu hỏi/trả lời và ôn cả pipeline; hoạt động ôn trực tiếp chưa xác minh
+29,Nhóm/chưa chỉ định,2026-11-18,Nộp LMS và quyền truy cập,Chưa xác minh,Không truy cập LMS trong lần kiểm tra này,Chốt đại diện và mã nhóm; kiểm tra link/quyền truy cập rồi nộp đúng hạn

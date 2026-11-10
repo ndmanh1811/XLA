@@ -1,0 +1,98 @@
+[
+  {
+    "source": "python",
+    "task": "edge_bsds",
+    "sigma": "1.0",
+    "metric": "f1",
+    "raw_mean": 0.45171763047919244,
+    "summary": 0.490868
+  },
+  {
+    "source": "python",
+    "task": "edge_bsds",
+    "sigma": "2.0",
+    "metric": "f1",
+    "raw_mean": 0.4729451418240026,
+    "summary": 0.5166
+  },
+  {
+    "source": "python",
+    "task": "edge_bsds",
+    "sigma": "4.0",
+    "metric": "f1",
+    "raw_mean": 0.4414365662682491,
+    "summary": 0.490542
+  },
+  {
+    "source": "python",
+    "task": "edge_bsds",
+    "sigma": "8.0",
+    "metric": "f1",
+    "raw_mean": 0.3223598078254678,
+    "summary": 0.395759
+  },
+  {
+    "source": "python",
+    "task": "ridge_drive",
+    "sigma": "multiscale",
+    "metric": "f1",
+    "raw_mean": 0.4773821180040218,
+    "summary": 0.680633
+  },
+  {
+    "source": "python",
+    "task": "blob_log",
+    "sigma": "multiscale",
+    "metric": "f1",
+    "raw_mean": 0.8984182776801406,
+    "summary": 0.893023
+  },
+  {
+    "source": "fiji",
+    "task": "edge_bsds",
+    "sigma": "1.0",
+    "metric": "f1",
+    "raw_mean": 0.45171763047919244,
+    "summary": 0.490868
+  },
+  {
+    "source": "fiji",
+    "task": "edge_bsds",
+    "sigma": "2.0",
+    "metric": "f1",
+    "raw_mean": 0.47292951218308305,
+    "summary": 0.5166
+  },
+  {
+    "source": "fiji",
+    "task": "edge_bsds",
+    "sigma": "4.0",
+    "metric": "f1",
+    "raw_mean": 0.4414365662682491,
+    "summary": 0.490542
+  },
+  {
+    "source": "fiji",
+    "task": "edge_bsds",
+    "sigma": "8.0",
+    "metric": "f1",
+    "raw_mean": 0.3223598078254678,
+    "summary": 0.395759
+  },
+  {
+    "source": "fiji",
+    "task": "ridge_drive",
+    "sigma": "multiscale",
+    "metric": "f1",
+    "raw_mean": 0.4738629286952811,
+    "summary": 0.681651
+  },
+  {
+    "source": "fiji",
+    "task": "blob_log",
+    "sigma": "multiscale",
+    "metric": "f1",
+    "raw_mean": 0.8973730297723292,
+    "summary": 0.891901
+  }
+]

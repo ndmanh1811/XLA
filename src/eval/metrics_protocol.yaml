@@ -1,0 +1,11 @@
+# Canonical protocol duc_10_11_v1, frozen before the corrected run.
+# BSDS retains coarse-to-fine search; ridge/blob retain the 02/11 grids.
+# FeatureJ measurements/scales are read ONLY from the root config.yaml.
+bsds_low_percentiles: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85]
+bsds_high_percentiles: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
+bsds_refine: true
+ridge_thresholds: [0.05, 0.10, 0.20, 0.30, 0.50]
+blob_thresholds: [0.5, 1.0, 2.0, 5.0]
+# Separate FeatureJ Edges reference: absolute gradient-response units.
+edge_reference_low: [0.5, 1.0, 2.0, 5.0]
+edge_reference_high: [2.0, 5.0, 10.0, 20.0]

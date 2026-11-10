@@ -1,0 +1,26 @@
+=================================================================
+BƯỚC 1: KIỂM CHỨNG GIẢI TÍCH TRÊN data/calib/ (sigma=2.0, k=4.0)
+=================================================================
+1. Ảnh dốc ramp.tif (I = x):
+   - Mean Lx vùng lõi: 1.0000000000 (kỳ vọng: +1.0)
+   - Sai số cực đại Lx: 5.55e-15
+   - Sai số cực đại Ly: 4.25e-15
+   -> [PASS] Đạo hàm bậc 1 và dấu trục x hoàn toàn chính xác!
+
+2. Ảnh parabola.tif (I = x^2 / 2):
+   - Mean Lxx vùng lõi: 1.0000000000 (kỳ vọng: +1.0)
+   - Sai số cực đại Lxx: 1.05e-13
+   - Sai số cực đại Lyy: 1.32e-13
+   - Sai số cực đại Lxy: 4.20e-15
+   -> [PASS] Đạo hàm bậc 2 Lxx, Lyy, Lxy hoàn toàn chính xác!
+
+3. Ảnh yên ngựa saddle.tif (I = x^2 / 2 - y^2):
+   - Kỳ vọng Hessian lý thuyết: Lxx = +1.0, Lyy = -2.0, Lxy = 0.0
+   - Mean Lxx đo được: 1.0000000000
+   - Mean Lyy đo được: -2.0000000000
+   - Chế độ 'algebraic': lambda_1 = 1.0000, lambda_2 = -2.0000
+   - Chế độ 'absolute':  lambda_1 = -2.0000, lambda_2 = 1.0000
+   -> [PASS] Cả 2 chế độ sắp xếp trị riêng Hessian hoạt động hoàn hảo!
+=================================================================
+KẾT LUẬN: BƯỚC 1 SMOKE TEST GIẢI TÍCH ĐẠT 100%!
+=================================================================

@@ -1,0 +1,30 @@
+﻿stt,group,task,required,deadline,assigned_in_sheet,role_for_review,status_in_sheet
+1,1. Lý thuyết,Gaussian smoothing và scale-space,"Định nghĩa kernel Gaussian, tính chất (tách trục, bán nhóm), khái niệm scale σ",2026-11-02,Hưng,Hung,Đã nhận
+2,1. Lý thuyết,Đạo hàm bậc 1 và gradient,"Công thức tích chập với đạo hàm Gaussian, độ lớn và hướng gradient",2026-11-02,,Hung,Chưa nhận
+3,1. Lý thuyết,"Đạo hàm bậc 2, Laplacian và ma trận Hessian","Trị riêng/vector riêng Hessian, ý nghĩa hình học",2026-11-04,,Hung,Chưa nhận
+4,1. Lý thuyết,Scale normalization (γ-normalized derivative),Giải thích vì sao cần chuẩn hóa theo σ để so sánh các tỷ lệ,2026-11-06,,Hung,Chưa nhận
+5,1. Lý thuyết,"Mô hình toán cho Edge, Ridge, Blob",Tiêu chí phát hiện từng loại dựa trên gradient/Hessian,2026-11-08,,Hung,Chưa nhận
+6,1. Lý thuyết,Structure tensor / phân tích cấu trúc,"Công thức, trị riêng, độ kết hợp (coherence), hướng",2026-11-08,,Hung,Chưa nhận
+7,1. Lý thuyết,Tổng hợp tài liệu tham khảo,"Danh sách trích dẫn (Lindeberg, FeatureJ, ...) đúng định dạng",2026-11-12,,Hung,Chưa nhận
+8,2. Cài đặt Python,Cài đặt Gaussian kernel và đạo hàm bằng tay,"Hàm tạo kernel 1D, tích chập tách trục, xử lý biên",2026-11-03,Nguyễn Đức Mạnh,Manh,Đã nhận
+9,2. Cài đặt Python,Gradient magnitude và Hessian eigenvalues,"Hàm tính kết quả theo σ, xuất ảnh float",2026-11-05,,Manh,Chưa nhận
+10,2. Cài đặt Python,Edge detection đa tỷ lệ,Code + ảnh kết quả theo từng σ,2026-11-07,,Manh,Chưa nhận
+11,2. Cài đặt Python,Ridge detection đa tỷ lệ,Code + ảnh kết quả theo từng σ,2026-11-08,,Manh,Chưa nhận
+12,2. Cài đặt Python,Blob detection (Laplacian/Hessian) đa tỷ lệ,"Code, tìm cực trị trong không gian scale",2026-11-09,,Manh,Chưa nhận
+13,2. Cài đặt Python,Kiểm thử đúng đắn với thư viện (scipy/skimage),Bảng so sánh sai số giữa bản tự cài và thư viện,2026-11-10,,Manh,Chưa nhận
+14,2. Cài đặt Python,Tối ưu chương trình,"Đo thời gian trước/sau khi tối ưu, giải thích cải tiến",2026-11-12,,Manh,Chưa nhận
+15,3. Fiji / FeatureJ,Khảo sát các chế độ FeatureJ,"Derivatives, Hessian, Laplacian, Edges, Structure: tham số và ý nghĩa",2026-11-03,,Loc,Đã nhận
+16,3. Fiji / FeatureJ,Dựng workflow Fiji cho Edge và Ridge,"Các bước thao tác, ảnh chụp màn hình, tham số dùng",2026-11-05,,Loc,Chưa nhận
+17,3. Fiji / FeatureJ,Dựng workflow Fiji cho Blob và Structure,"Các bước thao tác, ảnh chụp màn hình, tham số dùng",2026-11-07,,Loc,Chưa nhận
+18,3. Fiji / FeatureJ,Viết ImageJ Macro chạy hàng loạt nhiều σ,"File .ijm, chạy được trên toàn bộ dataset",2026-11-08,Loc,Loc,Chưa nhận
+19,3. Fiji / FeatureJ,Xuất kết quả Fiji theo quy ước chung,Ảnh TIFF 32-bit đặt tên đúng quy ước để so với Python,2026-11-09,,Loc,Chưa nhận
+20,4. Thực nghiệm,Chuẩn bị dataset,"Bộ ảnh có cạnh, đường (ridge), blob; mô tả nguồn và đặc điểm",2026-11-02,Bùi Trung Đức,Duc,Đã nhận
+21,4. Thực nghiệm,Xây dựng ground truth,Mặt nạ chuẩn cho edge/ridge/blob (hoặc nguồn ground truth có sẵn),2026-11-05,,Duc,Chưa nhận
+22,4. Thực nghiệm,Thiết kế thí nghiệm và chốt tham số,"Danh sách σ, ngưỡng, kịch bản (nhiễu, kích thước ảnh)",2026-11-02,,Duc,Đã nhận
+23,4. Thực nghiệm,Tính metric định lượng,"Fiji vs Python (MSE/PSNR/tương quan), Precision/Recall/F1 so với ground truth",2026-11-12,,Duc,Chưa nhận
+24,4. Thực nghiệm,Vẽ biểu đồ và phân tích kết quả,"Biểu đồ theo σ, theo thời gian chạy; nhận xét ưu/nhược điểm",2026-11-14,,Duc,Chưa nhận
+25,5. Chung,"Khung báo cáo, mục lục, thống nhất ký hiệu toán",Mẫu chung để các chương đồng nhất,2026-10-31,,Nhom / chua chi dinh,Chưa nhận
+26,5. Chung,"Gộp báo cáo, rà lỗi, đánh số hình/bảng (~30 trang)",Bản báo cáo hoàn chỉnh,2026-11-14,,Nhom / chua chi dinh,Chưa nhận
+27,5. Chung,Làm slide thuyết trình (~10 slide),"File slide, mỗi người 2–3 slide phần mình",2026-11-17,,Nhom / chua chi dinh,Chưa nhận
+28,5. Chung,Chuẩn bị câu hỏi bảo vệ,"Mỗi người ôn phần mình, cả nhóm đọc toàn bộ",2026-11-18,,Nhom / chua chi dinh,Chưa nhận
+29,5. Chung,"Nộp link lên LMS (1 đại diện, ghi rõ mã nhóm)","Link nộp đúng, đã kiểm tra quyền truy cập",2026-11-18,,Nhom / chua chi dinh,Chưa nhận

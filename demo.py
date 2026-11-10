@@ -1,178 +1,92 @@
-"""
-demo.py - Kịch bản Demo trực tiếp khi báo cáo Bài tập lớn Xử Lý Ảnh Số.
-Chạy nhanh 1 ảnh đại diện (DRIVE hoặc BSDS) trong 1-2 giây:
-1. Tính toán vi phân Gaussian thuần NumPy (src/core/derivatives.py).
-2. Phát hiện đặc trưng mức cao (Frangi Vesselness / Canny Edges).
-3. In ra thời gian tính toán chuẩn xác và hiển thị cửa sổ trực quan so sánh với Ground Truth.
-"""
+"""Demo with freshly computed per-image metrics, using frozen thresholds.
 
-import sys
-import os
+python demo.py bsds --no-show
+python demo.py drive --no-show
+"""
+import argparse
+from pathlib import Path
 import time
-
-# Chống lỗi encoding trên Windows console
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
-
 import numpy as np
 from PIL import Image
-import matplotlib.pyplot as plt
-
-# Đảm bảo import đúng cấu trúc project
-sys.path.insert(0, os.path.abspath("."))
-
-from src.core.derivatives import (
-    compute_derivatives_1st,
-    compute_derivatives_2nd,
-    compute_gradient_magnitude
-)
+from src.core.derivatives import compute_derivatives_1st, compute_derivatives_2nd
 from src.core.hessian import compute_hessian_eigenvalues
 from src.core.detectors import detect_canny, detect_ridge
+from src.eval.bsds_threshold_grid import load_bsds_items, evaluate_prediction
+from src.eval.metric_utils import ROOT, RESULTS, strict_config, normalize_scale, erode_square, scores
+from src.eval.task5_runtime import read_csv
+from src.eval.analyze_task5 import verify_metric_delivery
 
-def run_quick_demo(choice="drive"):
-    print("=" * 70)
-    print("[DEMO] BTL XU LY ANH SO - DEMO TRUC TIEP NHOM BTL")
-    print("       De tai: Phat hien dac trung anh da ty le bang dao ham Gaussian")
-    print("       Nen tang: Python Core thuan NumPy (Zero-Dependencies)")
-    print("=" * 70)
 
-    if choice == "drive":
-        img_path = "data/raw/drive_01.png"
-        gt_path = "data/gt/drive/drive_01_vessels.png"
-        fov_path = "data/gt/drive/drive_01_fov.png"
-
-        print(f"[*] 1. Dang nap anh vong mac y te: {img_path}")
-        img_pil = Image.open(img_path).convert("L")
-        img_arr = np.array(img_pil).astype(np.float32)
-
-        gt_arr = np.array(Image.open(gt_path)) > 128 if os.path.exists(gt_path) else None
-        fov_arr = np.array(Image.open(fov_path)) > 128 if os.path.exists(fov_path) else None
-
-        sigma = 2.0
-        print(f"[*] 2. Tinh dao ham Gauss bac 1 & 2 (sigma = {sigma}) bang Python Core...")
-        t0 = time.time()
-        lx, ly = compute_derivatives_1st(img_arr, sigma=sigma, mode="mirror")
-        grad_mag = compute_gradient_magnitude(lx, ly)
-        lxx, lyy, lxy = compute_derivatives_2nd(img_arr, sigma=sigma, mode="mirror")
-        t_deriv = (time.time() - t0) * 1000
-
-        print(f"[*] 3. Tinh tri rieng Hessian va loc mach mau Frangi Vesselness...")
-        t1 = time.time()
-        l1, l2 = compute_hessian_eigenvalues(lxx, lyy, lxy, sort_order="algebraic")
-        
-        # Ap dung FOV erosion ceil(4*sigma) de triet tieu bien nhan cau
-        mask = None
-        if fov_arr is not None:
-            from scipy.ndimage import binary_erosion
-            erosion_radius = int(np.ceil(4 * sigma))
-            mask = binary_erosion(fov_arr, iterations=erosion_radius)
-
-        vessel = detect_ridge(l1, l2, sigma=sigma, beta=0.5, polarity="dark", mask=mask)
-        if mask is not None:
-            vessel = vessel * mask
-        t_frangi = (time.time() - t1) * 1000
-
-        print(f"   [OK] Thoi gian vi phan Gauss: {t_deriv:.2f} ms")
-        print(f"   [OK] Thoi gian loc Frangi:    {t_frangi:.2f} ms")
-        print(f"   [OK] TONG THOI GIAN THUAN:    {t_deriv + t_frangi:.2f} ms (Sieu toc!)")
-
-        # Truc quan hoa
-        fig, axes = plt.subplots(1, 4, figsize=(15, 4.2))
-        axes[0].imshow(img_arr, cmap="gray")
-        axes[0].set_title("1. Anh goc (DRIVE)", fontsize=11, fontweight="bold")
-        axes[0].axis("off")
-
-        axes[1].imshow(grad_mag, cmap="inferno")
-        axes[1].set_title(f"2. Gradient Mag (sigma={sigma})", fontsize=11, fontweight="bold")
-        axes[1].axis("off")
-
-        axes[2].imshow(vessel, cmap="hot")
-        axes[2].set_title("3. Frangi (Co FOV 4*sigma)", fontsize=11, fontweight="bold")
-        axes[2].axis("off")
-
-        if gt_arr is not None:
-            axes[3].imshow(gt_arr, cmap="gray")
-            axes[3].set_title("4. Ground Truth Bac si", fontsize=11, fontweight="bold")
-        else:
-            axes[3].imshow(vessel > 0.1, cmap="gray")
-            axes[3].set_title("4. Mach mau nhi phan", fontsize=11, fontweight="bold")
-        axes[3].axis("off")
-
-        plt.suptitle("DEMO TRUC QUAN: Phat hien Mach mau Vong mac Da ty le (Python Core)", fontsize=13, fontweight="bold")
-        plt.tight_layout()
-
-        out_img = "docs/slides/demo_drive_output.png"
-        plt.savefig(out_img, dpi=200, bbox_inches="tight")
-        print(f"[*] Da luu anh ket qua truc quan vao: {out_img}")
-        print("[*] Dang hien thi cua so popup (dong cua so de hoan tat)...")
-        try:
-            plt.show()
-        except Exception:
-            pass
-
+def run_quick_demo(choice="drive", show=True, out_dir=None, sigma=None):
+    verify_metric_delivery()
+    cfg = strict_config()
+    image = "bsds_01" if choice == "bsds" else "drive_01"
+    raw = np.asarray(Image.open(ROOT/f"data/raw/{image}.png"), dtype=np.float64)
+    selected = [r for r in read_csv(RESULTS/"tier2_results_python.csv") if r["image"] == image]
+    started = time.perf_counter()
+    if choice == "bsds":
+        sigma = float(sigma if sigma is not None else cfg["sigmas"][min(1,len(cfg["sigmas"])-1)])
+        row = next((r for r in selected if float(r["sigma"]) == sigma), None)
+        if row is None:
+            raise ValueError(f"Sigma {sigma} not in the completed protocol")
+        lx, ly = compute_derivatives_1st(raw,sigma)
+        lx = normalize_scale(lx,sigma,1,"python","derivatives",cfg)
+        ly = normalize_scale(ly,sigma,1,"python","derivatives",cfg)
+        prediction = detect_canny(lx,ly,float(row["p_low"]),float(row["p_high"]),return_binary=False)
+        item = next(i for i in load_bsds_items(ROOT/"data/raw",ROOT/"data/gt",10) if i.stem == image)
+        measured = evaluate_prediction(prediction,item)
+        precision, recall, f1 = [measured[k] for k in ("precision","recall","f1")]
+        truth, response = item.union_gt,np.hypot(lx,ly)
+        description = f"Canny một ảnh, sigma={sigma:g}; p={float(row['p_low']):g}/{float(row['p_high']):g}"
     else:
-        # BSDS Edge Demo
-        img_path = "data/raw/bsds_01.png"
-        gt_path = "data/gt/bsds/bsds_01/annotator_01_boundaries.png"
+        threshold = float(selected[0]["threshold"])
+        fov = np.asarray(Image.open(ROOT/f"data/gt/drive/{image}_fov.png")) > 0
+        truth = np.asarray(Image.open(ROOT/f"data/gt/drive/{image}_vessels.png")) > 0
+        radii = {s:int(np.ceil(max(cfg["kernel_k"].values())*s)) for s in cfg["sigmas"]}
+        valid = erode_square(fov,max(radii.values()))
+        responses = []
+        for s in cfg["sigmas"]:
+            xx, yy, xy = compute_derivatives_2nd(raw,s)
+            a,b = compute_hessian_eigenvalues(xx,yy,xy,cfg["eigen_order"])
+            a = normalize_scale(a,s,2,"python","hessian",cfg)
+            b = normalize_scale(b,s,2,"python","hessian",cfg)
+            response = detect_ridge(a,b,sigma=s,beta=.5,polarity="dark")
+            response[~erode_square(fov,radii[s])] = 0
+            responses.append(response)
+        response = np.maximum.reduce(responses)
+        prediction, truth = (response >= threshold) & valid,truth & valid
+        precision,recall,f1 = scores(int((prediction & truth).sum()),int(prediction.sum()),int(truth.sum()))
+        description = f"Frangi {cfg['sigmas']}; FOV={max(radii.values())}px; threshold={threshold:g}"
+    elapsed = 1000*(time.perf_counter()-started)
+    print(f"{image}: {description}")
+    print(f"P={precision:.6f}; R={recall:.6f}; F1={f1:.6f}; compute+GT={elapsed:.2f} ms")
+    print("Metric vừa tính cho một ảnh; không phải macro F1 toàn dataset. Threshold lấy từ phiên metric đã đóng băng.")
+    import matplotlib
+    if not show:
+        matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    overlay = np.repeat((raw/255.)[...,None],3,axis=2)
+    overlay[truth] = .35*overlay[truth]+.65*np.array([1.,.2,.2])
+    overlay[prediction] = .35*overlay[prediction]+.65*np.array([0.,1.,1.])
+    fig,axes = plt.subplots(1,4,figsize=(15,4),layout="constrained")
+    for ax,data,title,cmap in zip(axes,[raw,response,prediction,overlay],
+        [image,"Đáp ứng","Dự đoán",f"GT đỏ / dự đoán cyan; F1={f1:.4f}"],["gray","inferno","gray",None]):
+        ax.imshow(data,cmap=cmap); ax.set_title(title,fontsize=10); ax.axis("off")
+    fig.suptitle(description,fontsize=11)
+    folder = Path(out_dir or ROOT/"docs/slides")
+    folder.mkdir(parents=True,exist_ok=True)
+    path = folder/f"demo_{choice}_output.png"
+    fig.savefig(path,dpi=200)
+    if show:
+        plt.show()
+    plt.close(fig)
+    return dict(image=image,precision=precision,recall=recall,f1=f1,output=str(path))
 
-        print(f"[*] 1. Dang nap anh tu nhien: {img_path}")
-        img_pil = Image.open(img_path).convert("L")
-        img_arr = np.array(img_pil).astype(np.float32)
-        gt_arr = np.array(Image.open(gt_path)) > 128 if os.path.exists(gt_path) else None
-
-        sigma = 2.0
-        print(f"[*] 2. Tinh dao ham Gauss va Canny da ty le (sigma = {sigma})...")
-        t0 = time.time()
-        lx, ly = compute_derivatives_1st(img_arr, sigma=sigma, mode="mirror")
-        grad_mag = compute_gradient_magnitude(lx, ly)
-        
-        # Nguong percentile toi uu theo nghiem thu
-        p_low = 67.0
-        p_high = 91.0
-        edges = detect_canny(lx, ly, p_low=p_low, p_high=p_high, return_binary=True)
-        t_canny = (time.time() - t0) * 1000
-
-        print(f"   [OK] Toa do phan vi toi uu: p_low={p_low}%, p_high={p_high}%")
-        print(f"   [OK] F1-score dat dinh:     0.477886 (Delta F1 = 0.000000 vs Fiji)")
-        print(f"   [OK] Tong thoi gian Canny:  {t_canny:.2f} ms")
-
-        # Truc quan hoa
-        fig, axes = plt.subplots(1, 4, figsize=(15, 4.2))
-        axes[0].imshow(img_arr, cmap="gray")
-        axes[0].set_title("1. Anh tu nhien BSDS", fontsize=11, fontweight="bold")
-        axes[0].axis("off")
-
-        axes[1].imshow(grad_mag, cmap="viridis")
-        axes[1].set_title(f"2. Gradient Mag (sigma={sigma})", fontsize=11, fontweight="bold")
-        axes[1].axis("off")
-
-        axes[2].imshow(edges, cmap="gray")
-        axes[2].set_title("3. Canny (F1 = 0.4779)", fontsize=11, fontweight="bold")
-        axes[2].axis("off")
-
-        if gt_arr is not None:
-            axes[3].imshow(gt_arr, cmap="gray")
-            axes[3].set_title("4. Ground Truth Nguoi ve", fontsize=11, fontweight="bold")
-        axes[3].axis("off")
-
-        plt.suptitle("DEMO TRUC QUAN: Phat hien Bien Canny Da ty le BSDS500 (Python Core)", fontsize=13, fontweight="bold")
-        plt.tight_layout()
-
-        out_img = "docs/slides/demo_bsds_output.png"
-        plt.savefig(out_img, dpi=200, bbox_inches="tight")
-        print(f"[*] Da luu anh ket qua truc quan vao: {out_img}")
-        print("[*] Dang hien thi cua so popup (dong cua so de hoan tat)...")
-        try:
-            plt.show()
-        except Exception:
-            pass
-
-    print("=" * 70)
-    print("[SUCCESS] DEMO HOAN TAT THANH CONG!")
-    print("=" * 70)
 
 if __name__ == "__main__":
-    choice = "drive"
-    if len(sys.argv) > 1 and sys.argv[1].lower() in ["bsds", "drive"]:
-        choice = sys.argv[1].lower()
-    run_quick_demo(choice)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("choice",choices=["bsds","drive"],nargs="?",default="drive")
+    parser.add_argument("--no-show",action="store_true")
+    parser.add_argument("--sigma",type=float)
+    args = parser.parse_args()
+    run_quick_demo(args.choice,show=not args.no_show,sigma=args.sigma)

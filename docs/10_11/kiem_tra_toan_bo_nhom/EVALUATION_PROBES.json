@@ -1,0 +1,150 @@
+{
+  "raw": {
+    "count": 25,
+    "all_uint8_gray": true,
+    "minimum_shape": [
+      256,
+      256
+    ]
+  },
+  "calibration": [
+    {
+      "name": "bright_border.tif",
+      "shape": [
+        256,
+        256
+      ],
+      "dtype": "float32",
+      "compression": 1,
+      "finite": true
+    },
+    {
+      "name": "dirac.tif",
+      "shape": [
+        101,
+        101
+      ],
+      "dtype": "float32",
+      "compression": 1,
+      "finite": true
+    },
+    {
+      "name": "parabola.tif",
+      "shape": [
+        256,
+        256
+      ],
+      "dtype": "float32",
+      "compression": 1,
+      "finite": true
+    },
+    {
+      "name": "ramp.tif",
+      "shape": [
+        256,
+        256
+      ],
+      "dtype": "float32",
+      "compression": 1,
+      "finite": true
+    },
+    {
+      "name": "saddle.tif",
+      "shape": [
+        256,
+        256
+      ],
+      "dtype": "float32",
+      "compression": 1,
+      "finite": true
+    }
+  ],
+  "one_prediction_two_gt_probe": [
+    {
+      "source": "python",
+      "task": "Blobs_LoG_ScaleSpace",
+      "image": "blob_probe",
+      "sigma": "multiscale",
+      "parameter": "polarity=bright_thresh=0.03_nsigmas=7",
+      "precision": 2.0,
+      "recall": 1.0,
+      "f1": 1.3333,
+      "iou": "N/A",
+      "gt_count": 2,
+      "detected_count": 1,
+      "matched_count": 2,
+      "_f1_raw": 1.3333333332
+    }
+  ],
+  "same_blob_detector_ignore_comparison": [
+    {
+      "source": "python",
+      "sigmas": [
+        1.0,
+        1.4,
+        2.0,
+        2.8,
+        4.0,
+        5.7,
+        8.0
+      ],
+      "predictions": 326,
+      "legacy_tp": 140,
+      "legacy_precision": 0.4294478527607362,
+      "legacy_recall": 0.5072463768115942,
+      "legacy_f1": 0.46511627906976744,
+      "ignored_predictions": 35,
+      "one_to_one_tp": 140,
+      "corrected_precision": 0.48109965635738833,
+      "corrected_recall": 0.5072463768115942,
+      "corrected_f1": 0.49382716049382713
+    },
+    {
+      "source": "fiji",
+      "sigmas": [
+        1.0,
+        1.4,
+        2.0,
+        2.8,
+        4.0,
+        5.7,
+        8.0
+      ],
+      "predictions": 329,
+      "legacy_tp": 139,
+      "legacy_precision": 0.42249240121580545,
+      "legacy_recall": 0.5036231884057971,
+      "legacy_f1": 0.45950413223140496,
+      "ignored_predictions": 36,
+      "one_to_one_tp": 139,
+      "corrected_precision": 0.47440273037542663,
+      "corrected_recall": 0.5036231884057971,
+      "corrected_f1": 0.48857644991212656
+    }
+  ],
+  "optimization_reps": {
+    "5": 36
+  },
+  "python_vs_fiji_java_sha256": {
+    "compared": 220,
+    "identical": 0
+  },
+  "bsds_sigma2_reproduction": [
+    {
+      "source": "python",
+      "mean_f1": 0.4778861641842619,
+      "expected_rounded": 0.477886,
+      "matches_6_decimals": true
+    },
+    {
+      "source": "fiji",
+      "mean_f1": 0.4778861641842619,
+      "expected_rounded": 0.477886,
+      "matches_6_decimals": true
+    }
+  ],
+  "slide_builder_dependency": {
+    "python_pptx_installed": false,
+    "declared_in_requirements": false
+  }
+}

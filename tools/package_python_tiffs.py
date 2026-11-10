@@ -11,7 +11,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src.eval.metric_utils import sha256, validate_inputs, strict_config, read_map
+from src.eval.metric_utils import RESULTS, sha256, validate_inputs, strict_config, read_map
 from src.eval.run_metrics import expected_source_files
 
 OUT = ROOT / "outputs/archives/duc_08_11"
@@ -30,7 +30,7 @@ def main():
     if not files or not required <= {p.name for p in files}:
         raise ValueError("Missing Python maps; run CHAY_METRIC_DUC_08_11.cmd first")
     shapes = {r["image"]:r["shape"] for r in gt}
-    with (ROOT / "outputs/metrics/duc_08_11/map_manifest.csv").open(encoding="utf-8-sig", newline="") as f:
+    with (RESULTS / "map_manifest.csv").open(encoding="utf-8-sig", newline="") as f:
         metric_hashes = {Path(r["path"].replace("\\", "/")).name:r["sha256"] for r in csv.DictReader(f) if r["source"] == "python"}
     hashes = {}
     for p in files:

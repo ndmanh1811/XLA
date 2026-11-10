@@ -1,0 +1,11 @@
+ImageJ=1.53k ImageScience=3.0.0
+Java=24.0.1 VM=OpenJDK 64-Bit Server VM
+ImageScience cases complete: 40
+ImageScience cases complete: 80
+ImageScience cases complete: 120
+ImageScience cases complete: 160
+ImageScience cases complete: 200
+ImageScience cases complete: 240
+ImageScience cases complete: 280
+ImageScience cases complete: 320
+ImageScience complete: 357 cases, 5 measured repeats each

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "ground_truth_ready": 25,
+  "metric_manifest": "PASS",
+  "tier2_aggregation_and_matching": "PASS",
+  "tier1": {
+    "PASS": 35,
+    "FAIL": 185
+  },
+  "analysis_and_runtime": "PASS",
+  "runtime_cases_per_source": 357,
+  "runtime_samples": 4284,
+  "slides_and_report_data": "PASS (LaTeX PDF not compiled locally)",
+  "python_tiffs_in_verified_archives": 415,
+  "UNITTEST": "PASS",
+  "CORE": "PASS",
+  "FIJI": "PASS",
+  "ANALYTICAL": "PASS"
+}

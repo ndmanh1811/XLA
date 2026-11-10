@@ -1,0 +1,110 @@
+{
+  "tasks": 29,
+  "role_counts": {
+    "Hung": 7,
+    "Manh": 7,
+    "Loc": 5,
+    "Duc": 5,
+    "Nhom / chua chi dinh": 5
+  },
+  "ground_truth": {
+    "count": 25,
+    "statuses": {
+      "READY": 25
+    }
+  },
+  "metric_integrity": "ValueError: Task 23 output changed: blob_threshold_grid.csv",
+  "runtime_integrity": "PASS",
+  "tier1": {
+    "rows": 220,
+    "statuses": {
+      "PASS": 35,
+      "FAIL": 185
+    }
+  },
+  "optimization": {
+    "rows": 36,
+    "max_error": 1.279e-12,
+    "speedup_min": 1.757039,
+    "speedup_max": 29.850224
+  },
+  "report": {
+    "lines": 514,
+    "section_tokens": {
+      "Chương 1: Giới Thiệu Chung": 1078,
+      "Chương 2: Cơ Sở Lý Thuyết Scale-Space và Đạo Hàm Gaussian": 277,
+      "Chương 3: Khảo Sát Nền Tảng Tham Chiếu FeatureJ / Fiji": 889,
+      "Chương 4: Thiết Kế và Cài Đặt Hệ Thống Python Core (From Scratch)": 3120,
+      "Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích": 1255,
+      "Chương 6: Kết Luận và Hướng Phát Triển": 480
+    },
+    "labels": 17,
+    "references": 1,
+    "undefined_refs": [],
+    "citation_keys": 8,
+    "bib_entries": 8,
+    "missing_citations": [],
+    "figures": 6,
+    "missing_figures": [],
+    "environment_errors": [],
+    "unclosed_environments": [],
+    "ch4_included": false,
+    "compiler": {
+      "pdflatex": null,
+      "xelatex": null,
+      "lualatex": null,
+      "latexmk": null
+    }
+  },
+  "pdf_and_slides": [
+    "outputs/analysis/duc_task5_08_11/figures/01_doi_chuan_tang1.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/02_sai_so_bien_va_loi.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/03_psnr_gaussian.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/04_f1_theo_sigma.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/05_precision_recall.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/06_luoi_nguong_canny.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/07_f1_tung_anh.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/08_blob_macro_micro.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/09_thoi_gian_theo_lenh.pdf",
+    "outputs/analysis/duc_task5_08_11/figures/10_thoi_gian_theo_sigma.pdf"
+  ],
+  "fiji_documents": [
+    {
+      "path": "docs/fiji/WORKFLOW_BLOB_STRUCTURE.docx",
+      "date_09_11": true,
+      "images": 6,
+      "mentions435": true
+    },
+    {
+      "path": "docs/fiji/WORKFLOW_EDGE_RIDGE.docx",
+      "date_09_11": true,
+      "images": 6,
+      "mentions435": true
+    }
+  ],
+  "analytical_smoke_paths": {
+    "parabol.tif": false,
+    "parabola.tif": true
+  },
+  "python_packages": {
+    "parts": [
+      {
+        "name": "python_maps_duc_08_11_part01.zip",
+        "maps": 266,
+        "bytes": 94144403
+      },
+      {
+        "name": "python_maps_duc_08_11_part02.zip",
+        "maps": 94,
+        "bytes": 93371994
+      },
+      {
+        "name": "python_maps_duc_08_11_part03.zip",
+        "maps": 55,
+        "bytes": 67483293
+      }
+    ],
+    "total_maps": 415,
+    "complete": true
+  }
+}

@@ -1,0 +1,5 @@
+﻿sigma,p_low,p_high,selected_on,frozen_for_fiji,mean_f1_python,n_images
+1.0,76.0,94.0,python,True,0.4554175650893087,10
+2.0,67.0,91.0,python,True,0.47788616418426183,10
+4.0,49.0,80.0,python,True,0.44149144352924424,10
+8.0,23.0,50.0,python,True,0.34334013263504526,10

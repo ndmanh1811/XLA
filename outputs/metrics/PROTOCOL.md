@@ -1,72 +1,39 @@
-# Giao thức đánh giá Tier 2 (canonical)
+# Protocol hiện hành: duc_10_11_v1
 
-Bản mô tả quy ước số học được dùng để sinh tất cả CSV trong `outputs/metrics/`.
-Mọi số liệu trong báo cáo, slide và DOCX workflow phải trích từ thư mục này.
+Nguồn chính: **`outputs/metrics/duc_10_11`**. Pipeline duy nhất: `python -m src.eval.run_metrics`; `benchmark_tier2.py` chuyển tiếp sang cùng pipeline. Các CSV cũ ở `history/pre_fix_10_11` và bộ `duc_08_11` là lịch sử, khác protocol.
 
-## 1. Dung sai biên (Edge matching)
+## Cấu hình và normalization
 
-- Dạng phần tử cấu trúc: **đĩa Euclidean bán kính 2 px** (13 pixel), không phải ô vuông 5×5 (25 pixel).
-- Ma trận phần tử:
-  ```
-  0 0 1 0 0
-  0 1 1 1 0
-  1 1 1 1 1
-  0 1 1 1 0
-  0 0 1 0 0
-  ```
-  Tức góc `(±2, ±2)` **không** nằm trong dung sai.
-- Áp dụng cho cả vùng GT (dãn union Ground Truth) và vùng dự đoán (dãn bản đồ biên).
+Thông số FeatureJ/scale lấy từ `config.yaml`, thiếu/null phải dừng. Tính float64, ghi TIFF float32 không nén. Trục x=cột, y=hàng.
 
-## 2. Nhánh Fair BSDS500 — Canny Edge
+Tầng 1 giữ đáp ứng thô. Tầng 2 dùng một hàm `normalize_scale`: với gamma=1, bậc n nhân sigma^n. Nguồn Python luôn nhân; nguồn Fiji chỉ bỏ nhân khi `featurej_normalized.<lệnh>` là true. Không nhầm bậc 2 với gamma=2.
 
-- NMS tính **một lần** cho mỗi ảnh tại mỗi σ (trên `σ·Lx`, `σ·Ly`).
-- Ngưỡng trễ là **phân vị của `nms[nms > 0]`** (chỉ lấy pixel có edge strength khác 0 sau NMS; loại nền đen phẳng >80% diện tích).
-- Lưới quét riêng cho từng σ: `p_low ∈ [5,85]`, `p_high ∈ [50,95]` (bước 5), rồi lưới tinh ±2 phần trăm, bước 1.
-- Chọn cặp ngưỡng tối ưu F1 trung bình **trên Python**, sau đó đóng băng và áp nguyên vẹn cho Fiji.
-- Fiji fair đọc `lx`, `ly` từ macro xuất, nhân `σ`, chạy cùng `detect_canny` (mặc định `--bsds-fiji-mode canny`).
-- Chế độ `edge` (FeatureJ Edges + hysteresis) **chỉ dùng làm tham chiếu riêng**, không trộn với bảng fair.
+## BSDS
 
-## 3. Empty-NMS
+- Đĩa Euclidean 2px; precision so với ít nhất một annotator, recall trung bình annotator.
+- Ngưỡng phân vị trên NMS khác 0; ảnh NMS rỗng vẫn được tính với P/R/F1=0.
+- Grid thô p_low=5..85 bước5, p_high=50..95 bước5; tinh ±2 bước1 quanh cặp tốt nhất. Chọn trên Python, tie-break F1/precision/ngưỡng cao hơn, đóng băng cho Fiji.
+- Native FeatureJ Edges dùng grid tuyệt đối riêng trong `src/eval/metrics_protocol.yaml`; không trộn với cặp fair Canny. FeatureJ Edges là Canny, không phải zero-crossing Laplacian.
 
-- Ảnh không có pixel nào sau NMS vẫn nằm trong mẫu số với **F1 = 0**, precision = 0, recall = 0. Không được loại bỏ (loại bỏ sẽ làm bias mean F1 lên cao).
+## DRIVE
 
-## 4. Tham chiếu FeatureJ Edges
+- Frangi dark; beta=.5, c=.5*max(S), Hessian đã chuẩn hóa.
+- Mỗi scale loại vùng ngoài FOV xói mòn theo support; vùng chấm cuối là giao vùng hợp lệ của tất cả scale, hiện bán kính 32px. Không gõ cứng k hoặc sigma=2.
+- Quét các ngưỡng tuyệt đối đã công bố `[.05,.1,.2,.3,.5]` trên Python; áp nguyên ngưỡng và vùng chấm cho Fiji.
+- Khác protocol cũ dùng p85/FOV8px; không so trực tiếp điểm giữa hai protocol như cùng phép đo.
 
-- Bản đồ `edge` (đã NMS nội bộ của plugin) + hysteresis tuyệt đối.
-- Ngưỡng quét theo đơn vị đầu ra của plugin (không phải phân vị).
-- Báo cáo riêng theo σ, không dùng thay bảng fair Python↔Fiji.
+## Blob
 
-## 5. DRIVE — Frangi Ridge
+- Cùng 7 sigma config; không thêm 11.3 riêng cho Python trong cặp so sánh.
+- LoG chuẩn hóa; cực tính theo GT; threshold grid `[.5,1,2,5]`, chọn Python rồi đóng băng.
+- Matching một–một maximum cardinality, tâm ≤2px và sai số bán kính ≤20%.
+- Áp vùng ignore trước khi đếm FP/GT; lưu cặp khớp và chỉ số bị loại trong `blob_matching_audit.json`.
+- Báo cáo cả macro và micro F1. `blob_05` là nhãn nhóm đã rà soát, không phải nhãn chuyên gia độc lập.
 
-- Mặt nạ FOV xói mòn `ceil(k·σ)` px, chỉ tính F1/IoU trong vùng này.
-- Ngưỡng tuyệt đối p85 FOV-scale.
+## Đối chuẩn và timing
 
-## 6. Blob — LoG Scale-Space
-
-- Lệch tâm ≤ 2 px, bán kính sai lệch ≤ 20% so với GT.
-- `blob_05` là nhãn tự xây dựng (không phải GT chuyên gia), không được overclaim.
-
-## 7. Ràng buộc kỹ thuật
-
-- Toàn bộ xử lý hình thái học (dilation, gán nhãn thành phần liên thông) trong `src/eval/bsds_threshold_grid.py` dùng **thuần NumPy** (không `scipy.ndimage`), theo `INSTRUCTIONS.md:25`.
-- SciPy chỉ được phép trong `tests/` và benchmark thời gian (`benchmark_optimization.py`).
-- `config.strict` mặc định `True`; các giá trị trong `config.yaml` đã điền đầy đủ, không còn `null`.
-
-## 8. Tiêu chuẩn nghiệm thu Tier 1 (tham chiếu)
-
-- `rel < 1e-4` và `r > 0.9999` (strict); relaxed: `rel < 1e-2` và `r > 0.9999`.
-- Báo cáo phải giữ **35 STRICT / 185 RELAXED / 0 FAIL**; không gọi 185 RELAXED là FAIL trần.
-
-## 9. Số liệu canonical hiện tại (sau khi sửa đĩa Euclidean, 10 ảnh)
-
-| σ | Python F1 | Fiji F1 | ΔF1 | p_low/p_high | FeatureJ Edges F1 (tham chiếu) |
-|---|-----------|---------|-----|--------------|--------------------------------|
-| 1.0 | 0.455418 | 0.455478 | +0.000060 | 76 / 94 | 0.488766 |
-| 2.0 | 0.477886 | 0.477886 | +0.000000 | 67 / 91 | 0.500818 |
-| 4.0 | 0.441491 | 0.441491 | +0.000000 | 49 / 80 | 0.464873 |
-| 8.0 | 0.343340 | 0.343340 | +0.000000 | 23 / 50 | 0.354292 |
-
-| Bài toán | Python F1 | Fiji F1 | ΔF1 |
-|---|-----------|---------|-----|
-| DRIVE Frangi Ridge | 0.680633 | 0.681651 | +0.001019 |
-| Blob LoG Scale-Space | 0.893023 | 0.891901 | −0.001122 |
+- STRICT: relative max error <1e-4 và Pearson>0.9999 sau crop. Ref=0 hoặc Pearson không xác định không tự PASS. PSNR MAX=255 chỉ cho Gaussian.
+- 35 STRICT/185 chưa đạt ngưỡng gốc; nếu dùng RELAXED1e-2 phải ghi là mở rộng, không sửa chuẩn gốc ngầm.
+- Pipeline chấm/morphology dùng NumPy, không SciPy ndimage. SciPy ndimage chỉ ở test độc lập/benchmark thời gian.
+- Timing mới: 357 case/nguồn, 1 warm-up+5 lần đo; Java API headless, không GUI/I/O. Fingerprint và mẫu thô ở `outputs/analysis/duc_task5_10_11/runtime`.
+- Ngưỡng chọn trên tập nội bộ; chưa có điểm test độc lập hoặc kết quả nhiễu/đổi kích thước.

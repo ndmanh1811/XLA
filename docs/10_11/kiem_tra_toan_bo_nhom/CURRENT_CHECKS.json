@@ -1,0 +1,62 @@
+{
+  "UNITTEST": {
+    "returncode": 0,
+    "tail": [
+      "test_warmup_is_excluded_and_missing_iteration_is_rejected (test_task5_analysis.Task5Tests.test_warmup_is_excluded_and_missing_iteration_is_rejected) ... ok",
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 47 tests in 1.966s",
+      "",
+      "OK"
+    ]
+  },
+  "CORE_TEST": {
+    "returncode": 0,
+    "tail": [
+      "[OK] 3. Kiểm chứng giải tích trên ảnh đa thức (Ramp, Parabol, Saddle)",
+      "[OK] 4. Kiểm tra Structure Tensor & Coherence trên gradient chuẩn",
+      "[OK] 5. Smoke test 3 hàm dò mức cao (Canny, Frangi, Blob LoG)",
+      "============================================================",
+      "KẾT QUẢ: 5/5 bài test đạt chuẩn!",
+      "============================================================"
+    ]
+  },
+  "FIJI_VALIDATION": {
+    "returncode": 0,
+    "tail": [
+      "[2/5] File trên đĩa: 435 TIFF",
+      "[3/5] Manifest: 435 dòng, 435 tên duy nhất",
+      "[4/5] Runtime: 369 dòng (303 một đầu ra + 66 hai đầu ra)",
+      "[5/5] Định dạng: đã đọc 435/435 TIFF float32",
+      "--------------------------------------------------------------------",
+      "=> PASS: 435/435 file đúng bộ kỳ vọng, manifest, runtime và định dạng."
+    ]
+  },
+  "ANALYTICAL_SMOKE": {
+    "returncode": 0,
+    "tail": [
+      "   - Chế độ 'algebraic': lambda_1 = 1.0000, lambda_2 = -2.0000",
+      "   - Chế độ 'absolute':  lambda_1 = -2.0000, lambda_2 = 1.0000",
+      "   -> [PASS] Cả 2 chế độ sắp xếp trị riêng Hessian hoạt động hoàn hảo!",
+      "=================================================================",
+      "KẾT LUẬN: BƯỚC 1 SMOKE TEST GIẢI TÍCH ĐẠT 100%!",
+      "================================================================="
+    ]
+  },
+  "manifest_integrity": {
+    "MATCH": 112,
+    "CHANGED": 12
+  },
+  "archived_summary_mismatches_at_1e_8": 0,
+  "archived_manifest_status": "ARCHIVED_HISTORICAL",
+  "pptx": {
+    "slides": 12,
+    "images": 5,
+    "corrupt_entry": null
+  },
+  "html_slides": {
+    "slides": 11,
+    "missing_local_images": []
+  },
+  "report_figures_missing": []
+}

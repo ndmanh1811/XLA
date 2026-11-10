@@ -1,0 +1,11 @@
+﻿============================================================
+CHẠY UNIT TEST KIỂM THỬ THUẬT TOÁN CỐT LÕI (src.core)
+============================================================
+[OK] 1. Kiểm tra bảo toàn moment kernel Gaussian 1D (order 0, 1, 2)
+[OK] 2. Kiểm tra tích chập tách rời 2D đối chuẩn với SciPy (< 1e-14)
+[OK] 3. Kiểm chứng giải tích trên ảnh đa thức (Ramp, Parabol, Saddle)
+[OK] 4. Kiểm tra Structure Tensor & Coherence trên gradient chuẩn
+[OK] 5. Smoke test 3 hàm dò mức cao (Canny, Frangi, Blob LoG)
+============================================================
+KẾT QUẢ: 5/5 bài test đạt chuẩn!
+============================================================

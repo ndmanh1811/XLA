@@ -100,31 +100,30 @@ def get_eigen_order(strict: bool = True) -> str:
 def get_sigmas() -> List[float]:
   """Lấy danh sách sigma tổng quát: [1.0, 2.0, 4.0, 8.0]."""
   cfg = load_config()
-  return [float(s) for s in cfg.get("sigmas", [1.0, 2.0, 4.0, 8.0])]
+  return [float(s) for s in _required_list(cfg, "sigmas")]
 
 
 def get_blob_sigmas() -> List[float]:
   """Lấy lưới sigma dày cho blob: [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0]."""
   cfg = load_config()
-  return [
-      float(s)
-      for s in cfg.get(
-          "sigmas_blob", [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0]
-      )
-  ]
+  return [float(s) for s in _required_list(cfg, "sigmas_blob")]
 
 
 def get_structure_pairs() -> List[Tuple[float, float]]:
   """Lấy các cặp tỷ lệ Structure Tensor: [(1.0, 3.0), (2.0, 6.0)]."""
   cfg = load_config()
-  pairs = cfg.get("structure_pairs", [[1.0, 3.0], [2.0, 6.0]])
+  pairs = _required_list(cfg, "structure_pairs")
   return [(float(p[0]), float(p[1])) for p in pairs]
 
 
 def get_tier1_images() -> List[str]:
   """Lấy danh sách 5 ảnh đại diện dùng cho Tầng 1."""
   cfg = load_config()
-  return cfg.get(
-      "tier1_images",
-      ["bsds_01", "bsds_02", "drive_01", "blob_01", "blob_02"],
-  )
+  return _required_list(cfg, "tier1_images")
+
+
+def _required_list(cfg, key):
+  value = cfg.get(key)
+  if not isinstance(value, list) or not value or any(v is None for v in value):
+    raise ValueError(f"Missing/invalid required config list: {key}")
+  return value

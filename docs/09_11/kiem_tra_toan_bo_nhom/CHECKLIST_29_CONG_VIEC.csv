@@ -1,0 +1,30 @@
+stt,role_for_review,deadline,task,review_status,evidence,remaining
+1,Hưng,2026-11-02,Gaussian smoothing và scale-space,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Viết đủ định nghĩa và tính chất tách trục/bán nhóm; kiểm tra chương lý thuyết
+2,Hưng,2026-11-02,Đạo hàm bậc 1 và gradient,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Hoàn thiện công thức và hướng gradient theo quy ước trục
+3,Hưng,2026-11-04,Đạo hàm bậc 2 Laplacian Hessian,Có bản nháp; cần hoàn thiện,docs/report_template/main.tex,Đủ trị riêng/vector riêng và ý nghĩa hình học; đồng bộ thứ tự trị riêng
+4,Hưng,2026-11-06,Scale normalization,Có nội dung; cần rà soát,docs/report_template/main.tex,Giải thích gamma=1 và chuẩn hóa đúng một lần; phân biệt tầng 1/tầng 2
+5,Hưng,2026-11-08,Mô hình toán Edge Ridge Blob,Có nội dung; cần đồng bộ,docs/report_template/main.tex,Sửa mô tả NMS 8 hướng thành 4 sector; đối chiếu tiêu chí detector với code
+6,Hưng,2026-11-08,Structure tensor và cấu trúc,Có nội dung; chưa chốt,docs/report_template/main.tex;src/core/structure_tensor.py,Hoàn thiện hướng và ý nghĩa coherence/trị riêng; phân biệt nội dung lý thuyết với hàm đã triển khai
+7,Hưng,2026-11-12,Tài liệu tham khảo,Có 8 nguồn; cần rà soát,docs/report_template/references.bib,Kiểm tra đúng loại tài liệu/thông tin xuất bản và nguồn hỗ trợ từng khẳng định
+8,Mạnh,2026-11-03,Gaussian kernel và convolution,Có code; test lõi PASS,src/core/kernel.py;src/core/convolution.py;CORE_TEST_LOG.txt,Đảm bảo entrypoint sản xuất không fallback khi config thiếu; phối hợp xử lý đối chuẩn
+9,Mạnh,2026-11-05,Gradient và Hessian eigenvalues,Có code và TIFF; chưa đạt đối chuẩn toàn bộ,src/core/derivatives.py;src/core/hessian.py;outputs/metrics/duc_08_11/tier1_report.csv,Cùng Lộc điều tra sai lệch tầng 1; sửa đường dẫn smoke_test_analytical.py
+10,Mạnh,2026-11-07,Edge detection đa tỷ lệ,Có code và ảnh; tích hợp metric lỗi,src/core/detectors.py;src/eval/bsds_threshold_grid.py,Sửa tolerance Euclidean và đếm ảnh NMS rỗng; loại SciPy ndimage khỏi luồng đánh giá chính
+11,Mạnh,2026-11-08,Ridge detection đa tỷ lệ,Có code và ảnh,src/core/detectors.py;outputs/python,Chốt protocol FOV/ngưỡng chính thức với Đức; đồng bộ báo cáo
+12,Mạnh,2026-11-09,Blob detection đa tỷ lệ,Có code và ảnh,src/core/detectors.py;outputs/python,Chọn pipeline đánh giá có matching một-một và vùng ignore; tránh nhầm script cũ
+13,Mạnh,2026-11-10,Kiểm thử với thư viện,Có bộ script và ảnh so sánh,benchmarks/reference_comparison,Đóng gói bảng sai số và thiết lập tái lập; giải thích khác biệt phương pháp
+14,Mạnh,2026-11-12,Tối ưu chương trình,Có 36 trường hợp; còn điểm cần sửa,src/eval/benchmark_optimization.py;outputs/metrics/optimization_benchmark.csv,Sửa cam kết số lần lặp reps=5 vì có thể dừng sau 3; lưu số lượt/môi trường
+15,Lộc,2026-11-03,Khảo sát chế độ FeatureJ,Có workflow và config; thiếu truy vết đo riêng,docs/fiji;config.yaml,Bổ sung hồ sơ đo k/border/normalization/eigen_order theo từng lệnh
+16,Lộc,2026-11-05,Workflow Fiji Edge Ridge,Có tài liệu cập nhật 09/11,docs/fiji/WORKFLOW_EDGE_RIDGE.docx,Kiểm tra tham số trong tài liệu đồng nhất config cuối và phối hợp đối chuẩn
+17,Lộc,2026-11-07,Workflow Fiji Blob Structure,Có tài liệu cập nhật 09/11,docs/fiji/WORKFLOW_BLOB_STRUCTURE.docx,Kiểm tra tham số trong tài liệu đồng nhất config cuối và phối hợp đối chuẩn
+18,Lộc,2026-11-08,Macro nhiều sigma,Có macro và kết quả chạy toàn bộ,src/fiji/batch_process.ijm;outputs/metrics/fiji_runtime.csv,Đảm bảo chạy lại nếu config/đầu vào đổi; ghi rõ phạm vi thời gian đo
+19,Lộc,2026-11-09,Xuất TIFF Fiji,435/435 PASS,outputs/fiji;src/eval/validate_fiji_outputs.py,Định dạng đạt; vẫn cần phối hợp giải thích sai lệch biên độ Python-Fiji
+20,Đức,2026-11-02,Chuẩn bị dataset,Đủ 25 ảnh và kiểm tra hợp lệ,data/raw;data/SOURCES.md;data/manifest.json,Giữ ổn định bộ dữ liệu và nguồn; chưa phát hiện thiếu ở đầu việc này
+21,Đức,2026-11-05,Xây dựng ground truth,25/25 READY,data/gt;docs/09_11/GUI_HUNG_GROUND_TRUTH_09_11.docx,Giữ đúng 276 đối tượng và 15 vùng ignore; không gọi nhãn tự rà soát là chuyên gia độc lập
+22,Đức,2026-11-02,Thiết kế thí nghiệm và tham số,Có thiết kế; cần chốt phạm vi cuối,docs/02_11/02_THIET_KE_THI_NGHIEM.md;src/eval/metrics_protocol.yaml,Đồng bộ protocol sau tích hợp; hiện chưa có kết quả biến thể nhiễu/kích thước
+23,Đức,2026-11-12,Tính metric định lượng,Có sản phẩm; hiện chưa đủ điều kiện chốt,outputs/metrics/duc_08_11;MANIFEST_INTEGRITY.csv;SUMMARY_VS_RAW.json,Sửa tích hợp rồi chạy lại; khớp tổng hợp với từng ảnh; manifest PASS; giữ đúng trạng thái 35/185 tầng 1
+24,Đức,2026-11-14,Biểu đồ và phân tích,Có sản phẩm; cần đồng bộ lại với metric,outputs/analysis/duc_task5_08_11,Chạy lại phân tích sau khi chốt metric; ghi đúng timing engine; không tuyên bố đã khảo sát nhiễu khi chưa chạy
+25,Nhóm/chưa chỉ định,2026-10-31,Khung báo cáo và ký hiệu,Có khung và bản nháp,docs/report_template/main.tex,Rà ký hiệu/công thức giữa các chương và tài liệu quy ước
+26,Nhóm/chưa chỉ định,2026-11-14,Gộp báo cáo và rà lỗi,Chưa có bản cuối kiểm chứng được,docs/report_template/main.tex,Hoàn thiện lý thuyết và số liệu; biên dịch PDF; kiểm tra khoảng 30 trang cùng hình/bảng/font
+27,Nhóm/chưa chỉ định,2026-11-17,Slide thuyết trình,Chưa thấy sản phẩm trong thư mục,Không tìm thấy PPTX/PPT/ODP trong docs và outputs,Tạo hoặc cung cấp bản xuất slide khoảng 10 trang; mỗi người chuẩn bị phần mình
+28,Nhóm/chưa chỉ định,2026-11-18,Câu hỏi bảo vệ,Chưa có bằng chứng trong thư mục,Chưa tìm thấy bộ câu hỏi chung,Soạn câu hỏi/trả lời và ôn cả pipeline; hoạt động ôn trực tiếp chưa xác minh
+29,Nhóm/chưa chỉ định,2026-11-18,Nộp LMS và quyền truy cập,Chưa xác minh,Không truy cập LMS trong lần kiểm tra này,Chốt đại diện và mã nhóm; kiểm tra link/quyền truy cập rồi nộp đúng hạn
