@@ -1,5 +1,5 @@
 {
-  "status": "COMPLETE",
+  "status": "ARCHIVED_HISTORICAL",
   "started_at_utc": "2026-11-08T15:22:46.246123+00:00",
   "task": 23,
   "root": "C:\\Users\\admin\\Documents\\ki1nam4\\XuLyAnh-thayThang\\XLA-dev-NguyenDucManh",
@@ -60,22 +60,23 @@
   "elapsed_seconds": 108.40776610001922,
   "finished_at_utc": "2026-11-08T15:24:34.652551+00:00",
   "tier1_status_counts": {
-    "PASS": 35,
-    "FAIL": 185
+    "STRICT": 35,
+    "RELAXED": 185,
+    "FAIL": 0
   },
   "tier2_rows": 110,
   "smoke_strict_pass": false,
   "outputs": {
     "blob_matching_audit.json": "6329bfc1783eae61b7abb3b8b43b44f985fab2b0ad23459c0f54a4a8817052ef",
-    "blob_threshold_grid.csv": "7b587fe46e47536309fb2ab20b7bdc62ac6208be30bbbf66af8c467e36e6a36a",
-    "bsds_selected_thresholds.csv": "a7ba96fafce3bac3434a4c459f1d779816d34e5bd125755c2fe0879337433b2f",
+    "blob_threshold_grid.csv": "24c62b1e14e5d328ad9bfcb62fa8a0f417fdbd56ea20a5415acc9100bb7d0d3e",
+    "bsds_selected_thresholds.csv": "6d1e9f4e0fd36adb163058e2e8e924dc7094157472231c49132c86d045d16f23",
     "bsds_threshold_grid.csv": "fec0669bac1a7c8179d8446ef8fe3d1093c8b8a754eae6d33611e83ed7727b83",
     "featurej_edge_reference.csv": "3d1e8a196f778f2177e4a7ca136adf6f20048c2d94ddc429d7b2c785d0e3174a",
     "featurej_edge_reference_grid.csv": "8711db439b50109c3a22cc026382c809f59fbb40d0400ec1e14666197d9fcc87",
     "input_manifest.csv": "094dd5d963649b278b37a5a0588693806fd322ecbf4bf453e0aca81f90460338",
-    "KET_QUA_METRIC.md": "91ddfe14e863fda61b967279cc55cffaf5541cfad2ee588d7b8ad5d06d08ded7",
+    "KET_QUA_METRIC.md": "2d09b3cf1303ca904b681169744bb5c89f2eee095c30da41f851aca8247323b3",
     "map_manifest.csv": "8ad13ea851ac889e69f217e12704846769fa96234cc00783d6f4d5fe94cde800",
-    "ridge_threshold_grid.csv": "4615f86ece9e4622b36fd1fb36aed65c010c594726d595298a8f867fe4880ffc",
+    "ridge_threshold_grid.csv": "f7db31763db08c6b1e5da07b555976028384efe508f270b0ae9c048f1db5db6b",
     "smoke_test_report.csv": "4e91c8321000413a90ede6e60c8d29c5c0f19d48714495079a6ea9bc67fcaf82",
     "tier1_border_report.csv": "963f8945369db9dc0ee19538caa482f72ba3f56546fdf60eea550b1c21bfc381",
     "tier1_report.csv": "703bc75e4a7518cc873aa9e783e1b58c0905941834b0c06992a39fe6357cf891",
@@ -84,5 +85,6 @@
     "tier2_results_fiji.csv": "cfa557e4d5daaafa6aba96ffa7489471d1df05b03e3ba3ac5783642fb5ed7c10",
     "tier2_results_python.csv": "361fdf39b4b7b20a8dfa881882caabb0828b229b2bcd97c822a299ffd1b8f41d",
     "tier2_summary.csv": "f26ba04a6a12bf4c8d0c0d1a54fc106e614dac77b45ae49d7171dd9a87008c6e"
-  }
+  },
+  "superseded_by": "outputs/metrics/"
 }

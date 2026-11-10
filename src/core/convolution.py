@@ -39,7 +39,7 @@ def convolve_1d(
     raise ValueError(f"Độ dài kernel phải là số lẻ, nhận được len={len(kernel)}")
 
   if mode is None:
-    mode = get_border_mode(strict=False)
+    mode = get_border_mode(strict=True)
   mode = mode.lower().strip()
 
   # Ánh xạ thuật ngữ SciPy sang chế độ np.pad của NumPy

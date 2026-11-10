@@ -120,7 +120,7 @@ python src/eval/verify_tier1.py
   - **Tương quan Pearson trung bình toàn hệ thống:** $r = 0.99999710$ (thấp nhất $r_{\min} = 0.99996553$).
 
 ### 4. Đánh giá thực nghiệm Tầng 2 (Tier 2 Benchmark: Ground Truth Evaluation)
-Đánh giá định lượng trên 25 ảnh thực tế với Ground Truth chuyên gia, áp dụng xói mòn FOV thích ứng đa tỷ lệ $r = \lceil 4.0\sigma \rceil$ và hỗ trợ tham số hóa Canny từ dòng lệnh:
+Đánh giá định lượng trên 25 ảnh mẫu với bộ nhãn Ground Truth (BSDS500/DRIVE nhãn chuyên gia, đa annotator; `blob_05` là nhãn tế bào nhóm tự xây dựng, đã rà soát thủ công bởi Đức), áp dụng xói mòn FOV thích ứng đa tỷ lệ $r = \lceil 4.0\sigma \rceil$ và hỗ trợ tham số hóa Canny từ dòng lệnh:
 ```bash
 # Lệnh chuẩn: chạy cả Python và Fiji, quét lưới phân vị riêng cho từng sigma
 # (mặc định --bsds-threshold-mode grid --bsds-sigmas config)
@@ -137,8 +137,8 @@ python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p
 ```
 * **Ghi chú nhánh BSDS của Fiji:** mặc định `--bsds-fiji-mode canny` dùng `lx/ly × σ` + `detect_canny` (cùng thuật toán với Python). Bộ ngưỡng phân vị được chọn trên Python (F1 trung bình cao nhất, tie-break precision cao hơn rồi ngưỡng cao hơn), sau đó **đóng băng và áp nguyên vẹn cho Fiji**. Chế độ `edge` chỉ dùng để tái lập tham chiếu FeatureJ Edges (ngưỡng tuyệt đối, báo cáo riêng).
 * **Kết quả xuất ra file:**
-  - `outputs/metrics/tier2_results.csv`: nhánh Python chính thức (25 dòng).
-  - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji fair (25 dòng).
+  - `outputs/metrics/tier2_results.csv`: nhánh Python chính thức (55 dòng: 40 BSDS theo 4 $\sigma$ + 10 DRIVE + 5 Blob, ngưỡng BSDS 8σ mở rộng).
+  - `outputs/metrics/tier2_results_fiji.csv`: nhánh Fiji fair (55 dòng: 40 BSDS theo 4 $\sigma$ + 10 DRIVE + 5 Blob, ngưỡng Blob 7σ config).
   - `outputs/metrics/tier2_results_both.csv`: gộp cả hai nhánh (110 dòng: 40 BSDS + 10 DRIVE + 5 Blob mỗi nhánh, có cột `source` và `sigma`).
   - `outputs/metrics/tier2_comparison.csv`: bảng đối sánh song song Python vs Fiji (55 dòng: 40 BSDS theo 4 $\sigma$ + 10 DRIVE + 5 Blob, có cột `sigma`).
   - `outputs/metrics/tier2_bsds_sigma_grid.csv`: lưới ngưỡng đầy đủ (1172 dòng: thô 17 cặp × 4 σ × 2 nguồn + tinh 24 cặp × 4 σ × Python).
@@ -167,16 +167,16 @@ python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p
   - **Nhánh BSDS fair:** Fiji dùng chính `lx`, `ly` do macro xuất, nhân $\sigma$ rồi chạy cùng `detect_canny` như Python (dung sai ±2 px).
   - **Tham chiếu riêng FeatureJ Edges:** bản đồ `edge` (đã NMS nội bộ) + hysteresis, ngưỡng tuyệt đối riêng cho từng $\sigma$; chỉ dùng làm tham chiếu, **không** dùng thay bảng fair.
   - DRIVE: IoU trung bình Python = 0.5184, Fiji = 0.5195.
-  - `blob_05`: Python 140/326 (F1 = 0.4651) vs Fiji 139/329 (F1 = 0.4595). Kết quả chính thức 8σ của Python trong `tier2_results.csv` vẫn là 140/329 (F1 = 0.463).
-  - Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
+  - `blob_05`: nhánh Fiji fair 7σ = 139/329 (F1 = 0.4595); nhánh Python chính thức 8σ trong `tier2_results.csv` = 140/329 (F1 = 0.4628). Cặp 7σ Python 140/326 (F1 = 0.4651) là tham chiếu lịch sử, không phải con số headline.
+  - Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 (FeatureJ lấy mẫu liên tục theo tiêu chuẩn zero-crossing, khác NumPy rời rạc) và sai số bản đồ giữa hai nguồn; không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
   - Ghi nhận ràng buộc chọn ngưỡng: ngưỡng được điều chỉnh và đánh giá trên cùng 10 ảnh BSDS; coi đây là một hạn chế và báo cáo trong Limitations của bài cáo.
 * **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
   - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** F1 cao nhất tại $\sigma=2.0$ là **0.477886** ($p_{low}=67$, $p_{high}=91$); số $0.494$ tại $p60/p85$, $\sigma=2.0$ chỉ là kết quả lịch sử (chế độ `fixed`).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
   - **Bài toán Đốm (Blobs - LoG Scale-Space, 5 ảnh):**
     - `blob_01` đến `blob_04` (đốm giải tích): **$F_1 = 1.000$ tuyệt đối** (khớp 100% tâm và bán kính).
-    - `blob_05` (tế bào sinh học tự gán nhãn): **$F_1 = 0.463$** (phát hiện chính xác 140/276 tế bào).
-    - Đánh giá tổng hợp tập đốm: Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**.
+    - `blob_05` (tế bào sinh học tự gán nhãn): **$F_1 = 0.463$** (nhánh Python 8σ, phát hiện chính xác 140/276 tế bào; Fiji 7σ = 0.460, 139/276 tế bào).
+    - Đánh giá tổng hợp tập đốm (nhánh Python 8σ): Trung bình cộng 5 ảnh đạt **macro-$F_1 = 0.8926$**; tính gộp toàn bộ 292 đối tượng (micro-average) đạt **micro-$F_1 = 0.4898$**. Nhánh Fiji 7σ: macro-$F_1 = 0.8919$, micro-$F_1 = 0.4921$.
 * **Biểu đồ trong `outputs/figures/`:**
   - `tier2_bsds_pr_curves.png`: Precision–Recall tại bộ ngưỡng đã chọn, từng $\sigma$.
   - `tier2_bsds_f1_vs_sigma.png`: F1 trung bình vs $\sigma$ (Python, Fiji, tham chiếu FeatureJ Edges).
@@ -196,26 +196,26 @@ Script đo: `src/eval/benchmark_optimization.py` (chỉ dùng để đo, không 
 python src/eval/benchmark_optimization.py
 ```
 
-* **Output:** `outputs/metrics/optimization_benchmark.csv` (36 dòng: 3 ảnh × 4 sigma × 3 toán tử).
-* **Đúng đắn:** sai số tuyệt đối giữa naive và separable $\sim 10^{-13}$ trên mọi case.
-* **Kết quả đại diện (trung bình trên 3 ảnh bsds\_01, drive\_01, blob\_01):**
+* **Output:** `outputs/metrics/optimization_benchmark.csv` (36 dòng: 3 ảnh × 4 sigma × 3 toán tử, cột `reps` = 5 lần lặp lấy trung vị).
+* **Đúng đắn:** sai số tuyệt đối giữa naive và separable $\le 1.28 \times 10^{-12}$ trên mọi trường hợp (bảo toàn độ chính xác float64).
+* **Kết quả đại diện (trung bình trên 3 ảnh bsds\_01, drive\_01, blob\_01, 5 lần lặp):**
 
 | Toán tử | $\sigma$ | Naive (ms) | Tách 1D (ms) | Tăng tốc thực | Lý thuyết |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| Gauss | 1.0 | 24.06 | 9.14 | 2.44 | 3.50 |
-| Gauss | 2.0 | 80.77 | 13.73 | 5.43 | 6.50 |
-| Gauss | 4.0 | 318.00 | 25.64 | 11.46 | 12.50 |
-| Gauss | 8.0 | 1197.77 | 47.79 | 22.89 | 24.50 |
-| $L_x$ | 1.0 | 30.87 | 9.42 | 2.86 | 3.94 |
-| $L_x$ | 2.0 | 107.32 | 15.81 | 6.34 | 7.37 |
-| $L_x$ | 4.0 | 409.26 | 28.07 | 14.18 | 14.22 |
-| $L_x$ | 8.0 | 1573.68 | 56.47 | 27.24 | 27.94 |
-| $L_{xx}$ | 1.0 | 31.61 | 9.04 | 3.12 | 3.94 |
-| $L_{xx}$ | 2.0 | 106.67 | 17.81 | 5.57 | 7.37 |
-| $L_{xx}$ | 4.0 | 404.20 | 28.88 | 12.76 | 14.22 |
-| $L_{xx}$ | 8.0 | 1580.24 | 54.99 | 28.99 | 27.94 |
+| Gauss | 1.0 | 26.34 | 9.59 | 2.50 | 3.50 |
+| Gauss | 2.0 | 95.39 | 15.47 | 5.37 | 6.50 |
+| Gauss | 4.0 | 330.03 | 28.73 | 11.05 | 12.50 |
+| Gauss | 8.0 | 1383.99 | 51.59 | 26.16 | 24.50 |
+| $L_x$ | 1.0 | 35.14 | 12.78 | 2.41 | 3.94 |
+| $L_x$ | 2.0 | 127.89 | 20.45 | 6.02 | 7.37 |
+| $L_x$ | 4.0 | 449.94 | 29.74 | 13.46 | 14.22 |
+| $L_x$ | 8.0 | 1700.54 | 59.15 | 27.06 | 27.94 |
+| $L_{xx}$ | 1.0 | 35.22 | 11.02 | 2.66 | 3.94 |
+| $L_{xx}$ | 2.0 | 117.63 | 17.70 | 6.06 | 7.37 |
+| $L_{xx}$ | 4.0 | 421.18 | 36.41 | 11.29 | 14.22 |
+| $L_{xx}$ | 8.0 | 1691.01 | 62.54 | 26.56 | 27.94 |
 
-* **Giải thích:** tốc độ tăng thực tế khớp sát hệ số lý thuyết $\frac{K_x \cdot K_y}{K_x + K_y}$. Sai lệch nhỏ do chi phí đệm bộ nhớ, kernel chữ nhật ($L_x, L_{xx}$) và overhead cấp phát mảng trong NumPy. Tại $\sigma=8$, $L_{xx}$ đạt tăng tốc $\approx 29\times$ thực nghiệm (lý thuyết $27.9\times$), chứ không phải con số $32.5\times$ chỉ áp cho kernel vuông $K=65$ (Gauss $\sigma=8$).
+* **Giải thích:** tốc độ tăng thực tế khớp sát hệ số lý thuyết $\frac{K_x \cdot K_y}{K_x + K_y}$. Sai lệch nhỏ do chi phí đệm bộ nhớ, kernel chữ nhật ($L_x, L_{xx}$) và overhead cấp phát mảng trong NumPy. Tăng tốc cực đại thực nghiệm $31.39\times$ (l toán tử $L_x$, $\sigma=8$ trên bsds\_01); sai số số học mức $10^{-12}$.
 
 ### 6. Kiểm tra toàn vẹn bộ 435 TIFF Fiji (Macro Outputs)
 Đối chiếu bộ file thực tế với bộ kỳ vọng **423 file trong phạm vi macro hợp nhất + 12 file `edge` legacy** = 435 file, đồng thời kiểm tra manifest, runtime và định dạng từng TIFF:
@@ -250,6 +250,6 @@ Nếu cần tái sinh độc lập 220 bản đồ từ Fiji engine trong môi t
 ## 📄 Báo Cáo Khoa Học & Bản Mẫu LaTeX IEEE
 
 * Toàn bộ mã nguồn bài báo khoa học nằm trong thư mục: `docs/report_template/`
-  - `main.tex`: Báo cáo chi tiết 6 chương định dạng 2 cột chuẩn IEEE (41.800 ký tự, 488 dòng, tích hợp đầy đủ 6 hình ảnh khoa học và 8 trích dẫn BibTeX).
+  - `main.tex`: Báo cáo chi tiết 6 chương định dạng 2 cột chuẩn IEEE (**43.662 ký tự, 515 dòng**, tích hợp đầy đủ 6 hình ảnh khoa học và 8 trích dẫn BibTeX).
   - `references.bib`: 8 trích dẫn bài báo kinh điển (Witkin 1983, Lindeberg 1994, Lindeberg 1998, Canny 1986, Frangi 1998, Meijering 2004, Arbelaez 2010, Staal 2004).
-* **Gói biên dịch 1-click:** File `docs/report_overleaf.zip` (16.9 MB) được gửi kèm khi bàn giao — **không tracked trên Git** vì `.gitignore` loại `docs/*.zip`. Kéo thả trực tiếp lên **[Overleaf.com](https://www.overleaf.com/)** và nhấn *Recompile* để tạo bản in PDF hoàn chỉnh.
+* **Gói biên dịch 1-click:** File `docs/report_overleaf.zip` (**≈18.06 MB**) được gửi kèm khi bàn giao — **không tracked trên Git** vì `.gitignore` loại `docs/*.zip`. Kéo thả trực tiếp lên **[Overleaf.com](https://www.overleaf.com/)** và nhấn *Recompile* để tạo bản in PDF hoàn chỉnh.

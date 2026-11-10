@@ -40,7 +40,7 @@ def get_gaussian_kernel_1d(
     )
 
   if k is None:
-    k = get_kernel_k(order, strict=False)
+    k = get_kernel_k(order, strict=True)
 
   radius = int(np.ceil(k * sigma))
   x = np.arange(-radius, radius + 1, dtype=np.float64)

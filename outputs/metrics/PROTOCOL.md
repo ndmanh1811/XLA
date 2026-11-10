@@ -28,7 +28,7 @@ Mọi số liệu trong báo cáo, slide và DOCX workflow phải trích từ th
 
 ## 3. Empty-NMS
 
-- Ảnh không có pixel nào sau NMS vẫn nằm trong mẫu số với **F1 = 0**, precision = 0, recall = 0. Không được loại bỏ (bí gây bias mean F1 lên cao).
+- Ảnh không có pixel nào sau NMS vẫn nằm trong mẫu số với **F1 = 0**, precision = 0, recall = 0. Không được loại bỏ (loại bỏ sẽ làm bias mean F1 lên cao).
 
 ## 4. Tham chiếu FeatureJ Edges
 
@@ -46,7 +46,7 @@ Mọi số liệu trong báo cáo, slide và DOCX workflow phải trích từ th
 - Lệch tâm ≤ 2 px, bán kính sai lệch ≤ 20% so với GT.
 - `blob_05` là nhãn tự xây dựng (không phải GT chuyên gia), không được overclaim.
 
-## 7. Ngõ ràng buộc kỹ thuật
+## 7. Ràng buộc kỹ thuật
 
 - Toàn bộ xử lý hình thái học (dilation, gán nhãn thành phần liên thông) trong `src/eval/bsds_threshold_grid.py` dùng **thuần NumPy** (không `scipy.ndimage`), theo `INSTRUCTIONS.md:25`.
 - SciPy chỉ được phép trong `tests/` và benchmark thời gian (`benchmark_optimization.py`).
@@ -57,7 +57,7 @@ Mọi số liệu trong báo cáo, slide và DOCX workflow phải trích từ th
 - `rel < 1e-4` và `r > 0.9999` (strict); relaxed: `rel < 1e-2` và `r > 0.9999`.
 - Báo cáo phải giữ **35 STRICT / 185 RELAXED / 0 FAIL**; không gọi 185 RELAXED là FAIL trần.
 
-## 9. Số liệu canonical hiện tại (sau修复 đĩa Euclidean, 10 ảnh)
+## 9. Số liệu canonical hiện tại (sau khi sửa đĩa Euclidean, 10 ảnh)
 
 | σ | Python F1 | Fiji F1 | ΔF1 | p_low/p_high | FeatureJ Edges F1 (tham chiếu) |
 |---|-----------|---------|-----|--------------|--------------------------------|

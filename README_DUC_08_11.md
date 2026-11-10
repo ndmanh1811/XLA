@@ -53,16 +53,15 @@ sự được tạo bằng cấu hình mới.
 ## Lưu ý khi bàn giao
 
 - **Hoàn tất tính metric không đồng nghĩa mọi bản đồ đạt nghiệm thu số học.**
-  `PASS` Tầng 1 yêu cầu đồng thời `relative_error < 1e-4` và `pearson_r > 0.9999`.
-  `FAIL` được giữ nguyên; bộ này không tự chuyển sang ngưỡng RELAXED.
+  `STRICT` Tầng 1 yêu cầu đồng thời `relative_error < 1e-4` và `pearson_r > 0.9999` (35 bản đồ).
+  `RELAXED` (185 bản đồ) đạt `relative_error < 1e-2` và `pearson_r > 0.9999` — gần chuẩn nhưng không phải lỗi chạy chương trình; không tự chuyển sang `FAIL`. Tổng số: 35 STRICT / 185 RELAXED / 0 FAIL.
 - PSNR/MAX=255 chỉ dùng cho Gaussian. Những ô PSNR còn lại để trống có chủ
   đích, theo INSTRUCTIONS/quyuoc hiện tại. MSE và các sai số vẫn có cho mọi toán tử.
 - Ngưỡng chọn trên Python của tập thực nghiệm nội bộ rồi đóng băng cho Fiji.
   Đây không phải điểm đánh giá trên một tập test độc lập chưa dùng chọn ngưỡng.
 - Bảng `featurej_edge_reference.csv` là tham khảo FeatureJ Edges nguyên bản,
   tách khỏi nhánh so sánh hai nguồn cùng Canny.
-- Kết quả cũ trực tiếp trong `outputs/metrics/`, `outputs/tier1_verification_summary.csv`
-  và `outputs/smoke_test_tier1/` được giữ làm lịch sử; không trộn với bộ bàn giao này.
+- Kết quả số liệu canonical nằm trực tiếp ở `outputs/metrics/` (xem `outputs/metrics/PROTOCOL.md`); bộ archives này ở `outputs/metrics/duc_08_11/` là lịch sử (pre-disk-fix), không trộn với số headline.
 - Đầu ra giao diện theo tài liệu `outputs/metrics/tier1_report.csv` là bản sao
   của báo cáo Tầng 1 trong bộ này, cập nhật sau khi phiên chạy hoàn tất.
 

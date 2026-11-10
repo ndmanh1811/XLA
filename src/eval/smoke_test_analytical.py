@@ -2,7 +2,7 @@
 
 Đọc các file TIFF 32-bit float từ data/calib/ và kiểm tra:
 1. data/calib/ramp.tif: Lx = +1.0, Ly = 0.0 (kiểm tra dấu trục và đạo hàm bậc 1).
-2. data/calib/parabol.tif: Lxx = +1.0, Lyy = 0.0, Lxy = 0.0 (kiểm tra đạo hàm bậc 2).
+2. data/calib/parabola.tif: Lxx = +1.0, Lyy = 0.0, Lxy = 0.0 (kiểm tra đạo hàm bậc 2).
 3. data/calib/saddle.tif: Lxx = +1.0, Lyy = -2.0, kiểm tra thứ tự trị riêng Hessian.
 """
 
@@ -69,7 +69,7 @@ def run_smoke_test_analytical(sigma: float = 2.0, k: float = 4.0):
   err_lyy = np.max(np.abs(core_lyy - 0.0))
   err_lxy = np.max(np.abs(core_lxy - 0.0))
   print(
-      f"\n2. Ảnh parabol.tif (I = x^2 / 2):"
+      f"\n2. Ảnh parabola.tif (I = x^2 / 2):"
       f"\n   - Mean Lxx vùng lõi: {np.mean(core_lxx):.10f} (kỳ vọng: +1.0)"
       f"\n   - Sai số cực đại Lxx: {err_lxx:.2e}"
       f"\n   - Sai số cực đại Lyy: {err_lyy:.2e}"

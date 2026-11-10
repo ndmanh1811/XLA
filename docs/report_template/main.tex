@@ -52,7 +52,7 @@ Trong nghiên cứu này, nhóm thực hiện đối chuẩn chéo trực tiếp
     \item \textbf{Phát triển nhân tính toán thuần NumPy (Zero External Dependencies):} Tự cài đặt 100\% các thuật toán tích chập tách rời 2D ($O(2K)$), đạo hàm riêng Gaussian bậc 0, 1, 2, chuẩn hóa Lindeberg $\gamma$-scale, giải tích trị riêng Hessian khép kín và Ten-xơ cấu trúc, hoàn toàn không gọi các hàm có sẵn trong OpenCV hay SciPy.
     \item \textbf{Dịch ngược mã máy (Reverse-Engineering) FeatureJ:} Giải mã thành công toàn bộ các thông số ngầm của lớp \texttt{Differentiator.class} trong \texttt{imagescience.jar}, bao gồm bán kính cắt kernel $r = \lceil k\sigma \rceil$, chế độ đối xứng biên phản xạ \texttt{mirror}, và quy ước phân loại trị riêng theo thứ tự đại số (\texttt{algebraic}: $\lambda_1 \ge \lambda_2$).
     \item \textbf{Cơ chế bảo toàn Moment rời rạc Taylor:} Cài đặt và chứng minh tính ưu việt của điều kiện bảo toàn moment rời rạc bậc 0, 1, 2 theo Meijering, giúp khử triệt để sai số dịch chuyển và co cụm biên độ khi rời rạc hóa trên lưới điểm số nguyên.
-    \item \textbf{Khung đánh giá đối chuẩn 2 tầng (2-Tier Evaluation Pipeline):} Tầng 1 kiểm chứng đối chuẩn số học pixel-to-pixel với 220 bản đồ FeatureJ trên 5 ảnh hiệu chuẩn; Tầng 2 đánh giá thực nghiệm định lượng trên 25 ảnh mẫu thực tế với Ground Truth chuyên gia thuộc 3 miền bài toán đặc trưng: Biên (BSDS500), Mạch máu (DRIVE) và Đốm tế bào sinh học (Blobs).
+    \item \textbf{Khung đánh giá đối chuẩn 2 tầng (2-Tier Evaluation Pipeline):} Tầng 1 kiểm chứng đối chuẩn số học pixel-to-pixel với 220 bản đồ FeatureJ trên 5 ảnh hiệu chuẩn; Tầng 2 đánh giá thực nghiệm định lượng trên 25 ảnh mẫu thực tế với bộ nhãn Ground Truth thuộc 3 miền bài toán đặc trưng: Biên (BSDS500), Mạch máu (DRIVE) và Đốm tế bào sinh học (Blobs; trong đó \texttt{blob\_05} là nhãn nhóm tự xây dựng, đã được rà soát thủ công).
 \end{itemize}
 
 \subsection{Bố Cục của Báo Cáo Kỹ Thuật}
@@ -178,7 +178,7 @@ Kiến trúc mã nguồn được phân tầng rõ ràng trong gói \texttt{src/
     \item \texttt{src/core/derivatives.py}: Cung cấp giao diện tính toán các toán tử đạo hàm không gian: $L$ (làm mịn), $L_x, L_y$ (đạo hàm bậc nhất), $L_{xx}, L_{yy}, L_{xy}$ (đạo hàm bậc hai), độ lớn gradient $\|\nabla L\|$, và toán tử Laplace $\nabla^2 L$.
     \item \texttt{src/core/hessian.py}: Xây dựng ma trận Hessian và giải bài toán trị riêng 2D bằng công thức nghiệm giải tích khép kín, phân loại cấu trúc theo thứ tự đại số $\lambda_1 \ge \lambda_2$.
     \item \texttt{src/core/structure\_tensor.py}: Tính toán Ten-xơ cấu trúc hai tỷ lệ, trích xuất các trị riêng $\mu_1, \mu_2$, hướng cấu trúc cục bộ và độ kết hợp phương hướng (\textit{Coherence}).
-    \item \texttt{src/core/detectors.py}: Tích hợp 3 bộ phát hiện đặc trưng cấp cao: Canny Edge Detector (với triệt tiêu không cực đại 8 hướng và loang liên thông BFS Hysteresis), Frangi Vesselness Filter (dò mạch máu đa tỷ lệ), và LoG Blob Detector (dò đốm 3D Scale-Space Extrema).
+    \item \texttt{src/core/detectors.py}: Tích hợp 3 bộ phát hiện đặc trưng cấp cao: Canny Edge Detector (với triệt tiêu không cực đại 4 sector hướng và loang liên thông BFS Hysteresis), Frangi Vesselness Filter (dò mạch máu đa tỷ lệ), và LoG Blob Detector (dò đốm 3D Scale-Space Extrema).
 \end{itemize}
 
 \subsection{Cơ Sở Rời Rạc Hóa và Bảo Toàn Taylor Discrete Moments}
@@ -259,18 +259,18 @@ Bảng \ref{tab:optimization-benchmark} tóm tắt kết quả đo thực nghi�
 \hline
 Toán tử & $\sigma$ & $K_x \times K_y$ & Naive (ms) & Tách 1D (ms) & Tăng tốc thực & Lý thuyết \\
 \hline
-Gauss & 1.0 & $7 \times 7$ & 24.06 & 9.14 & 2.44 & 3.50 \\
-Gauss & 2.0 & $13 \times 13$ & 80.77 & 13.73 & 5.43 & 6.50 \\
-Gauss & 4.0 & $25 \times 25$ & 318.00 & 25.64 & 11.46 & 12.50 \\
-Gauss & 8.0 & $49 \times 49$ & 1197.77 & 47.79 & 22.89 & 24.50 \\
-$L_x$ & 1.0 & $9 \times 7$ & 30.87 & 9.42 & 2.86 & 3.94 \\
-$L_x$ & 2.0 & $17 \times 13$ & 107.32 & 15.81 & 6.34 & 7.37 \\
-$L_x$ & 4.0 & $33 \times 25$ & 409.26 & 28.07 & 14.18 & 14.22 \\
-$L_x$ & 8.0 & $65 \times 49$ & 1573.68 & 56.47 & 27.24 & 27.94 \\
-$L_{xx}$ & 1.0 & $9 \times 7$ & 31.61 & 9.04 & 3.12 & 3.94 \\
-$L_{xx}$ & 2.0 & $17 \times 13$ & 106.67 & 17.81 & 5.57 & 7.37 \\
-$L_{xx}$ & 4.0 & $33 \times 25$ & 404.20 & 28.88 & 12.76 & 14.22 \\
-$L_{xx}$ & 8.0 & $65 \times 49$ & 1580.24 & 54.99 & 28.99 & 27.94 \\
+Gauss & 1.0 & $7 \times 7$ & 26.34 & 9.59 & 2.50 & 3.50 \\
+Gauss & 2.0 & $13 \times 13$ & 95.39 & 15.47 & 5.37 & 6.50 \\
+Gauss & 4.0 & $25 \times 25$ & 330.03 & 28.73 & 11.05 & 12.50 \\
+Gauss & 8.0 & $49 \times 49$ & 1383.99 & 51.59 & 26.16 & 24.50 \\
+$L_x$ & 1.0 & $9 \times 7$ & 35.14 & 12.78 & 2.41 & 3.94 \\
+$L_x$ & 2.0 & $17 \times 13$ & 127.89 & 20.45 & 6.02 & 7.37 \\
+$L_x$ & 4.0 & $33 \times 25$ & 449.94 & 29.74 & 13.46 & 14.22 \\
+$L_x$ & 8.0 & $65 \times 49$ & 1700.54 & 59.15 & 27.06 & 27.94 \\
+$L_{xx}$ & 1.0 & $9 \times 7$ & 35.22 & 11.02 & 2.66 & 3.94 \\
+$L_{xx}$ & 2.0 & $17 \times 13$ & 117.63 & 17.70 & 6.06 & 7.37 \\
+$L_{xx}$ & 4.0 & $33 \times 25$ & 421.18 & 36.41 & 11.29 & 14.22 \\
+$L_{xx}$ & 8.0 & $65 \times 49$ & 1691.01 & 62.54 & 26.56 & 27.94 \\
 \hline
 \end{tabular}
 \end{table}
@@ -427,9 +427,9 @@ ST L2 & 1.89e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
 \subsection{Kết quả thực nghiệm Tầng 2 (So khớp Ground Truth 25 ảnh thật)}
 Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu trữ tự động tại \texttt{outputs/metrics/tier2\_results.csv}. Đánh giá tổng hợp trên 25 ảnh mẫu:
 \begin{itemize}
-    \item \textbf{BSDS500 (Canny Edge):} Thử nghiệm trên tập ảnh chuẩn BSDS500 \cite{arbelaez2010contour} đạt $F_1 = 0.516600$ (trung bình 10 ảnh, $\sigma=2.0$, quét lưới phân vị tối ưu per-$\sigma$ tại $p_{\text{low}}=67.0$, $p_{\text{high}}=91.0$, dung sai $\pm 2$ px; đối chuẩn công bằng với Fiji Canny đạt $\Delta F_1 = 0.000000$).
+    \item \textbf{BSDS500 (Canny Edge):} Thử nghiệm trên tập ảnh chuẩn BSDS500 \cite{arbelaez2010contour} đạt $F_1 = 0.477886$ (trung bình 10 ảnh, $\sigma=2.0$, quét lưới phân vị tối ưu per-$\sigma$ tại $p_{\text{low}}=67.0$, $p_{\text{high}}=91.0$, dung sai $\pm 2$ px; đối chuẩn công bằng với Fiji Canny đạt $\Delta F_1 = 0.000000$).
     \item \textbf{DRIVE (Frangi Vesselness):} Thử nghiệm trên tập ảnh mạch máu võng mạc DRIVE \cite{staal2004ridge} đạt $F_1 = 0.681$, $\text{IoU} = 0.518$ (trung bình 10 ảnh, áp dụng mặt nạ FOV xói mòn thích ứng đa tỷ lệ theo công thức $r = \lceil 4.0\sigma \rceil$ để khử nhiễu viền nhãn cầu).
-    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.4651$ (140/276 đối tượng phát hiện chính xác, Precision 0.4294, Recall 0.5072); trung bình cộng 5 ảnh đạt macro-$F_1 = 0.8930$, tính gộp toàn bộ 292 đối tượng (micro-average) đạt micro-$F_1 = 0.4921$ (do đối tượng \texttt{blob\_05} chiếm 94,5\% tổng số lượng).
+    \item \textbf{Blobs (LoG Scale-Space):} \texttt{blob\_01}--\texttt{blob\_04} đạt $F_1 = 1.000$ (100\% khớp cả tâm và bán kính); \texttt{blob\_05} (tế bào sinh học tự gán nhãn) đạt $F_1 = 0.4651$ (140/276 đối tượng phát hiện chính xác, Precision 0.4294, Recall 0.5072) trong nhánh Fiji 7σ; nhánh Python 8σ đạt $F_1 = 0.4628$ (140/329 đối tượng); trung bình cộng 5 ảnh (7σ) đạt macro-$F_1 = 0.8930$, tính gộp toàn bộ 292 đối tượng (micro-average) đạt micro-$F_1 = 0.4921$ (do đối tượng \texttt{blob\_05} chiếm 94,5\% tổng số lượng).
 \end{itemize}
 
 \subsection{Thẩm Định Chéo với OpenCV và SciPy}
@@ -457,7 +457,7 @@ Toàn bộ kết quả thực nghiệm chi tiết từng ảnh được lưu tr�
 \subsection{Phân Tích Chuyên Sâu Từng Bài Toán Thực Nghiệm}
 
 \subsubsection{Bài toán dò biên BSDS500 (Canny)}
-Đánh giá trên tập dữ liệu chuẩn mực Berkeley Segmentation Dataset 500 \cite{arbelaez2010contour} với dung sai không gian $\pm 2$ pixel so với tập nhãn người vẽ tay đa annotator. Kết quả $F_1 = 0.516600$ (tại $\sigma=2.0$ với lưới ngưỡng tối ưu $p_{\text{low}}=67.0, p_{\text{high}}=91.0$) là chỉ số rất tốt cho một mô hình phát hiện biên cục bộ hoàn toàn không sử dụng học máy hay mạng nơ-ron sâu; kết quả giữa Python và Fiji Canny hoàn toàn trùng khớp ($\Delta F_1 = 0.000000$). 
+Đánh giá trên tập dữ liệu chuẩn mực Berkeley Segmentation Dataset 500 \cite{arbelaez2010contour} với dung sai không gian $\pm 2$ pixel so với tập nhãn người vẽ tay đa annotator. Kết quả $F_1 = 0.477886$ (tại $\sigma=2.0$ với lưới ngưỡng tối ưu $p_{\text{low}}=67.0, p_{\text{high}}=91.0$) là chỉ số rất tốt cho một mô hình phát hiện biên cục bộ hoàn toàn không sử dụng học máy hay mạng nơ-ron sâu; kết quả giữa Python và Fiji Canny hoàn toàn trùng khớp ($\Delta F_1 = 0.000000$). 
 
 \begin{figure}[htbp]
 \centering
@@ -490,7 +490,7 @@ Trên các ảnh tổng hợp giải tích (\texttt{blob_01} đến \texttt{blob
 \begin{enumerate}
     \item \textbf{Làm chủ thuật toán lõi from-scratch:} Xây dựng thành công thư viện toán học thuần NumPy xử lý không gian tỷ lệ Gaussian 2D, chứng minh tính khả thi của nguyên tắc không phụ thuộc thư viện thị giác ngoài.
     \item \textbf{Tái lập và đối chuẩn thành công 220/220 bản đồ Tầng 1:} Toàn bộ 220 bản đồ vi phân FeatureJ đã được xuất độc lập qua Batch Java Exporter và đạt mức tương quan Pearson gần như tuyệt đối ($r = 0.99999710$).
-    \item \textbf{Nghiệm thu thực nghiệm Tầng 2 trên 25 ảnh chuẩn:} Đạt chỉ số định lượng xuất sắc trên cả 3 miền bài toán đặc trưng hình học: Canny Edge ($F_1 = 0.516600$ tại $\sigma=2.0$), Frangi Vessel ($F_1 = 0.681$, $\text{IoU} = 0.518$) và Blob LoG ($F_1 = 1.000$ cho đốm chuẩn, macro-$F_1 = 0.893$ toàn tập).
+    \item \textbf{Nghiệm thu thực nghiệm Tầng 2 trên 25 ảnh chuẩn:} Đạt chỉ số định lượng xuất sắc trên cả 3 miền bài toán đặc trưng hình học: Canny Edge ($F_1 = 0.477886$ tại $\sigma=2.0$), Frangi Vessel ($F_1 = 0.681$, $\text{IoU} = 0.518$) và Blob LoG ($F_1 = 1.000$ cho đốm chuẩn, macro-$F_1 = 0.893$ toàn tập).
     \item \textbf{Minh bạch hóa học thuật:} Đóng gói dữ liệu đối chuẩn vào tệp nén \texttt{outputs/fiji_java_tier1.zip} kèm bảng mã băm toàn vẹn SHA256 \texttt{outputs/metrics/fiji_java_manifest.csv}, đảm bảo khả năng tái lập độc lập 100\% trên mọi môi trường thử nghiệm.
 \end{enumerate}
 

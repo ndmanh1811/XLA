@@ -297,7 +297,7 @@ def create_presentation():
         ("Nền tảng tham chiếu chuẩn hóa (Fiji / FeatureJ):", "Khảo sát toàn diện thuật toán đạo hàm Gaussian của Erik Meijering; tự động hóa workflow sản xuất 435 bản đồ TIFF 32-bit float không nén."),
         ("Cài đặt thuần Python từ số 0 (Zero-Dependencies):", "Tự xây dựng trọn vẹn bộ lọc đạo hàm Gauss bậc 0, 1, 2, Hessian, Canny NMS/Hysteresis, Frangi Vesselness và LoG bằng NumPy thuần."),
         ("Quy trình thẩm định đa tầng nghiêm ngặt:", "Xây dựng 2 tầng kiểm chứng: Tier 1 (220 bản đồ toán học sai số tuyệt đối/tương đối) & Tier 2 (F1-score trên BSDS500, DRIVE võng mạc, Blobs tế bào)."),
-        ("Tối ưu hóa thuật toán vượt bậc:", "Áp dụng tích chập khả tách 1D (Separable 1D), chứng minh tăng tốc thực tế lên tới 29.0x với sai số bảo toàn cấp độ 10^-12.")
+        ("Tối ưu hóa thuật toán vượt bậc:", "Áp dụng tích chập khả tách 1D (Separable 1D), chứng minh tăng tốc thực tế lên tới 31.4x với sai số số học ở mức 10^-12.")
     ]
     for b_title, b_body in bullets_c2:
         p_t = tf_c2.add_paragraph()
@@ -373,7 +373,7 @@ def create_presentation():
     p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = COLOR_NAVY
     
     t3_text = [
-        ("Canny Edge Detector:", "• Khử cực đại không cực trị (NMS 8 hướng)\n• Phân ngưỡng hysteresis liên kết biên kép\n(T_low, T_high) loại bỏ biên giả."),
+        ("Canny Edge Detector:", "• Khử cực đại không cực trị (NMS 4 sector hướng)\n• Phân ngưỡng hysteresis liên kết biên kép\n(T_low, T_high) loại bỏ biên giả."),
         ("Frangi Vesselness (Lọc mạch máu):", "V_0 = 0 nếu λ₂ > 0; ngược lại:\nexp(-R_B² / 2β²) · (1 - exp(-S² / 2c²))\nvới R_B = |λ₁/λ₂|, S = √(λ₁² + λ₂²)."),
         ("Multiscale LoG Blob Detector:", "Cực trị không gian-tỷ lệ của toán tử Laplace chuẩn hóa: ∇²_norm L = σ² (L_xx + L_yy).\nTâm đốm sáng tại (x, y), bán kính r = √2 σ.")
     ]
@@ -474,7 +474,7 @@ def create_presentation():
 
     opt_bullets = [
         ("Nguyên lý Tách chập Khả tách (Separable 1D):", "Toán tử Gauss 2D tách thành tích hai nhân 1D: G(x, y) = g(x) · g(y).\nChuyển chập 2D kích thước K×K thành 2 lần chập 1D:\n→ Độ phức tạp giảm từ O(K²) xuống O(2K), lý thuyết tăng tốc K/2 lần."),
-        ("Kết quả Đo lường Thực nghiệm (36 trường hợp):", "Đo trên 3 ảnh (bsds_01, drive_01, blob_01) × 4 σ (1, 2, 4, 8) × 3 toán tử:\n  • σ=1 (K=9): Tăng tốc 2.4× - 4.1×\n  • σ=2 (K=17): Tăng tốc 7.8× - 8.3×\n  • σ=4 (K=33): Tăng tốc 14.9× - 16.2×\n  • σ=8 (K=65): Tăng tốc cực đại 27.5× - 29.0×!"),
+        ("Kết quả Đo lường Thực nghiệm (36 trường hợp):", "Đo trên 3 ảnh (bsds_01, drive_01, blob_01) × 4 σ (1, 2, 4, 8) × 3 toán tử (reps = 5):\n  • σ=1 (K=7..9): Tăng tốc 1.4× - 3.6×\n  • σ=2 (K=13..17): Tăng tốc 3.9× - 7.2×\n  • σ=4 (K=25..33): Tăng tốc 9.4× - 15.4×\n  • σ=8 (K=49..65): Tăng tốc cực đại 21.9× - 31.4×!"),
         ("Kiểm chứng Đúng đắn Tuyệt đối (Sanity Check):", "Sai số tuyệt đối tối đa giữa Naive 2D và Separable 1D trên mọi trường hợp chỉ là 1.28 × 10^-12 (bảo toàn độ chính xác cấp float64).")
     ]
     for b_title, b_body in opt_bullets:
@@ -557,9 +557,9 @@ def create_presentation():
     p.font.size = Pt(13); p.font.bold = True; p.font.color.rgb = COLOR_PRIMARY_BLUE
 
     b_bullets = [
-        ("Giao thức Quét Lưới Ngưỡng Động (Percentile Grid):", "Duyệt 100 cặp ngưỡng phân vị (p_low, p_high) từ 50% đến 99% kết hợp 4 tỷ lệ σ ∈ {1, 2, 4, 8} nhằm thích ứng hoàn hảo với phân phối cường độ sáng từng ảnh."),
+        ("Giao thức Quét Lưới Ngưỡng Động (Percentile Grid):", "Lưới phân vị riêng cho từng σ: p_low ∈ [5, 85], p_high ∈ [50, 95] (bước 5), rồi lưới tinh ±2 điểm, bước 1; kết hợp 4 tỷ lệ σ ∈ {1, 2, 4, 8} nhằm thích ứng hoàn hảo với phân phối cường độ sáng từng ảnh."),
         ("Sự trùng khớp tuyệt đối (Fair Canny):", "Cùng áp dụng thuật toán Canny trên gradient do Python và Fiji tính toán, cả hai đạt đỉnh F1 = 0.477886 tại cùng tọa độ ngưỡng (p_low=67.0, p_high=91.0, σ=2.0) với ΔF1 = 0.000000!"),
-        ("Phân định minh bạch với FeatureJ Edges:", "Module 'FeatureJ Edges' tích hợp sẵn của tác giả Meijering đạt đỉnh F1 = 0.5436 tại σ=1.0 do sử dụng tiêu chuẩn zero-crossing của đạo hàm hướng bậc 2 thay vì Canny chuẩn."),
+        ("Phân định minh bạch với FeatureJ Edges:", "Module 'FeatureJ Edges' của Meijering dùng tiêu chuẩn zero-crossing đạo hàm bậc 2 (tham chiếu riêng, không trộn với Fair Canny): F1 tham chiếu 0.488766 (σ=1.0), 0.500818 (σ=2.0), 0.464873 (σ=4.0), 0.354292 (σ=8.0)."),
         ("Đường cong Precision-Recall:", "Xác nhận khả năng cân bằng vượt trội giữa độ nhạy biên và khả năng triệt tiêu nhiễu nền kết cấu tự nhiên.")
     ]
     for b_title, b_body in b_bullets:
@@ -825,9 +825,9 @@ def create_presentation():
 
     sum_points = [
         ("Thực nghiệm quy mô lớn:", "Hoàn thành toàn diện 435 bản đồ Fiji + 415 bản đồ Python, 369 phép đo thời gian và 25 ảnh benchmark."),
-        ("Chuẩn xác toán học tuyệt đối:", "Đạt 220/220 SHA-256 match, chứng minh bản chất sai số 185 RELAXED là do bảo toàn moment rời rạc; Pearson r = 0.99999710."),
-        ("Hiệu năng đỉnh cao ứng dụng:", "Peak Canny F1 = 0.477886 (ΔF1 = 0.000000 vs Fiji), Frangi DRIVE F1 = 0.6806, Blobs F1 = 1.0000 (synthetic)."),
-        ("Tối ưu hóa tách chập 1D thực tế:", "Tăng tốc thực nghiệm lên tới 29.0x với sai số số học ở mức 10^-12.")
+        ("Chuẩn xác toàn vẹn dữ liệu:", "Đã kiểm tra toàn vẹn 220/220 SHA-256 cho bản đồ Fiji; sai số 185 RELAXED là do bảo toàn moment rời rạc Taylor so với xấp xỉ liên tục FeatureJ, không phải lỗi Logic; Pearson r = 0.99999710."),
+        ("Hiệu năng đỉnh cao ứng dụng:", "Peak Canny F1 = 0.477886 (ΔF1 = 0.000000 vs Fiji), Frangi DRIVE F1 = 0.6806, Blobs: blob_01–04 = 1.0000, blob_05 = 0.463."),
+        ("Tối ưu hóa tách chập 1D thực tế:", "Tăng tốc thực nghiệm lên tới 31.4x với sai số số học ở mức 10^-12.")
     ]
     for b_title, b_body in sum_points:
         p_t = tf_sum.add_paragraph()

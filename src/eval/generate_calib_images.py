@@ -3,7 +3,7 @@
 Bao gồm:
 1. ramp.tif: Ảnh dốc I(x, y) = x (256x256, gốc tại tâm [-128, 127], TIFF 32-bit float).
    Dùng để kiểm tra: cờ tự nhân sigma của Derivatives (Lx = 1 hay sigma) và dấu trục (+1).
-2. parabol.tif: Ảnh parabol I(x, y) = x^2 / 2 (256x256, gốc tại tâm, TIFF 32-bit float).
+2. parabola.tif: Ảnh parabol I(x, y) = x^2 / 2 (256x256, gốc tại tâm, TIFF 32-bit float).
    Dùng để kiểm tra: cờ tự nhân sigma^2 của Laplacian và Hessian (Lxx = 1 hay sigma^2).
 3. saddle.tif: Ảnh yên ngựa I(x, y) = x^2 / 2 - y^2 (256x256, gốc tại tâm, TIFF 32-bit float).
    Dùng để phân biệt: thứ tự trị riêng Hessian là đại số (1, -2) hay trị tuyệt đối (-2, 1).
@@ -39,8 +39,8 @@ def generate_all_calib_images():
 
   # (b) Parabol: I = x^2 / 2
   parabol = ((x**2) / 2.0).astype(np.float32)
-  tifffile.imwrite(CALIB_DIR / "parabol.tif", parabol)
-  print("[OK] Tạo data/calib/parabol.tif (256x256, float32)")
+  tifffile.imwrite(CALIB_DIR / "parabola.tif", parabol)
+  print("[OK] Tạo data/calib/parabola.tif (256x256, float32)")
 
   # (c) Saddle: I = x^2 / 2 - y^2
   saddle = ((x**2) / 2.0 - (y**2)).astype(np.float32)

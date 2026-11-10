@@ -50,7 +50,7 @@ def compute_hessian_eigenvalues(
       (lambda_1, lambda_2): Hai mảng trị riêng cùng kích thước với lxx.
   """
   if sort_order is None:
-    sort_order = get_eigen_order(strict=False)
+    sort_order = get_eigen_order(strict=True)
   sort_order = sort_order.lower().strip()
 
   trace = lxx + lyy
