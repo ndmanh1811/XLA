@@ -1,0 +1,463 @@
+\documentclass[conference]{IEEEtran}
+% Compile with XeLaTeX (UTF-8 Vietnamese text).
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Phát Hiện Đặc Trưng Ảnh Đa Tỷ Lệ Bằng Đạo Hàm Gaussian: Cài Đặt Thuần NumPy và Thẩm Định Đối Chuẩn với FeatureJ / Fiji}
+
+\author{\IEEEauthorblockN{Nguyễn Đức Mạnh, Bùi Trung Đức, Phạm Bảo Lộc, Nguyễn Tiến Hưng}
+\IEEEauthorblockA{\textit{Khoa Công nghệ Thông tin - Môn Xử lý ảnh số (XLA)}}
+}
+
+\maketitle
+
+\begin{abstract}
+Báo cáo trình bày cơ sở toán học, cài đặt NumPy và đánh giá hệ thống phát hiện đặc trưng ảnh đa tỷ lệ dựa trên đạo hàm Gaussian; FeatureJ/Fiji được dùng làm tham chiếu cho các bản đồ vi phân. Tầng 1 đối chiếu 220 bản đồ liên tục trên 5 ảnh: 35 bản đồ đạt đồng thời ngưỡng gốc $\mathrm{rel\_err}<10^{-4}$ và Pearson $r>0.9999$, còn 185 bản đồ đạt tiêu chí nới lỏng đã định trước. Tầng 2 đánh giá trên 25 ảnh BSDS500, DRIVE và Blobs; snapshot canonical tại commit \texttt{58bdfd8} cho F1 Python/Fiji ở BSDS $\sigma=2$ là 0.477886/0.477886, DRIVE macro là 0.680633/0.681651 và Blob macro là 0.893023/0.891901. Blob micro F1 là 0.492114/0.486656. Benchmark 36 trường hợp, 5 lần lặp, ghi nhận tốc độ chập tách rời cao hơn 1.375738--31.392971 lần và sai khác tuyệt đối tối đa $1.279\times10^{-12}$. Giao thức BSDS dùng dung sai đĩa Euclidean bán kính 2 pixel; ngưỡng được chọn trên tập ảnh thực nghiệm nên kết quả không được diễn giải như điểm kiểm tra độc lập.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Scale-space, Gaussian Derivatives, FeatureJ, Edge Detection, Ridge Detection, Blob Detection, Frangi Vesselness, Structure Tensor.
+\end{IEEEkeywords}
+
+\section{Chương 1: Giới Thiệu Chung}
+
+\subsection{Bối Cảnh và Thách Thức của Xử Lý Ảnh Đa Tỷ Lệ}
+Trong thị giác máy tính và xử lý ảnh y sinh hiện đại, các đối tượng hình thái học như đường biên (edges), mạng lưới mạch máu hình ống (ridges/vessels) và các cụm tế bào (blobs) xuất hiện ở vô số kích thước vật lý khác nhau tùy thuộc vào khoảng cách chụp, độ phân giải cảm biến và bản chất giải phẫu học. Một trong những nghịch lý cơ bản của xử lý ảnh là: \textit{không tồn tại một kích thước cửa sổ lọc cố định nào có thể đồng thời làm nổi bật mọi chi tiết từ nhỏ li ti đến các cấu trúc bao quát toàn cục}.
+
+Nếu dùng bộ lọc cục bộ quá nhỏ, nhiễu tần số cao có thể ảnh hưởng rõ đến đáp ứng. Một cửa sổ quá lớn lại làm nhòe ranh giới và giảm các chi tiết nhỏ. Vì thế cần khảo sát đáp ứng ở nhiều tỷ lệ thay vì dựa vào một kích thước lọc cố định.
+
+\subsection{Hạn Chế của Các Toán Tử Rời Rạc Cổ Điển}
+Trong các giáo trình xử lý ảnh truyền thống, các bộ vi phân hữu hạn như Sobel, Prewitt, Roberts hay toán tử Laplace rời rạc $3 \times 3$ thường được sử dụng do chi phí tính toán thấp. Tuy nhiên, các toán tử này có một số hạn chế khi cần phân tích đa tỷ lệ:
+\begin{enumerate}
+    \item \textbf{Tính bất đẳng hướng và nhạy cảm với hướng trục:} Các mặt nạ $3 \times 3$ xấp xỉ đạo hàm theo sai phân hữu hạn làm biến dạng đáp ứng theo các góc chéo ($45^\circ, 135^\circ$), làm sai lệch góc hướng gradient $\theta = \arctan(L_y / L_x)$.
+    \item \textbf{Thiếu vắng tham số tỷ lệ thực sự:} Các toán tử vi phân rời rạc không có cơ chế điều chỉnh độ rộng dải thông một cách liên tục và chặt chẽ về mặt vật lý.
+    \item \textbf{Khuếch đại nhiễu bậc cao:} Phép vi phân bản chất là bộ lọc thông cao, do đó việc tính đạo hàm bậc 2 trực tiếp trên ảnh số rời rạc mà không có bộ lọc Gaussian tiền trạm sẽ làm bùng nổ phương sai của nhiễu nền, có thể làm các đáp ứng Hessian nhiễu và kém ổn định.
+\end{enumerate}
+
+\subsection{Cơ Sở Thiết Kế và Động Lực Nghiên Cứu}
+Lý thuyết không gian tỷ lệ tuyến tính (Linear Scale-Space Theory) cung cấp khuôn khổ để khảo sát ảnh ở các độ mịn khác nhau. Dưới các giả thiết chuẩn về tính tuyến tính, bất biến tịnh tiến và tính nhất quán theo tỷ lệ, họ Gaussian có tính chất không tăng cường cực trị cục bộ theo diễn giải khuếch tán khi tăng mức làm mịn \cite{witkin1983scale,lindeberg1994scale}.
+
+Trong nghiên cứu này, FeatureJ (ImageScience trong Fiji/ImageJ) được chọn làm bộ cài đặt tham chiếu để đối chiếu các bản đồ đạo hàm. Nhân Python được viết từ các công thức toán học bằng NumPy; các phép đo tập trung vào mức độ tương đồng, sai số còn lại và ảnh hưởng của cách rời rạc hóa. Phạm vi đối chiếu này không xem FeatureJ là nhãn chân lý cho chất lượng phát hiện, vì hai câu hỏi đó được đánh giá riêng bằng Ground Truth ở Tầng 2.
+
+\subsection{Mục Tiêu và Nội Dung Kỹ Thuật của Đề Tài}
+Báo cáo tập trung vào bốn nội dung kỹ thuật:
+\begin{itemize}
+    \item \textbf{Nhân toán học NumPy:} Trong \texttt{src/core/}, tự cài đặt tích chập tách trục, đạo hàm Gaussian bậc 0--2, chuẩn hóa tỷ lệ, trị riêng Hessian và ten-xơ cấu trúc; phần lõi không thay các phép toán này bằng bộ lọc OpenCV hoặc SciPy.
+    \item \textbf{Đối chiếu tham số rời rạc hóa của FeatureJ:} Khảo sát bán kính kernel, cách xử lý biên, chuẩn hóa tỷ lệ và thứ tự trị riêng bằng cấu hình plugin và phép đo trên các ảnh hiệu chuẩn.
+    \item \textbf{Bảo toàn moment rời rạc Taylor:} Cài đặt kernel bậc 0, 1, 2 với các ràng buộc moment phù hợp, sau đó đo sai số còn lại khi so với FeatureJ thay vì giả định hai bộ cài đặt phải trùng tuyệt đối.
+    \item \textbf{Khung đánh giá hai tầng:} Tầng 1 đối chiếu 220 bản đồ với FeatureJ trên 5 ảnh; Tầng 2 đánh giá trên 25 ảnh BSDS500, DRIVE và Blobs bằng nhãn tham chiếu (trong đó bốn ảnh Blobs là ảnh tổng hợp).
+\end{itemize}
+
+\subsection{Bố Cục của Báo Cáo Kỹ Thuật}
+Nội dung báo cáo được cấu trúc thành 6 chương:
+\begin{itemize}
+    \item \textbf{Chương 1:} Giới thiệu tổng quan, đặt vấn đề và mục tiêu đề tài.
+    \item \textbf{Chương 2:} Cơ sở lý thuyết không gian tỷ lệ Gaussian, đạo hàm vi phân chuẩn hóa, ma trận Hessian và các thuật toán phát hiện đặc trưng mức cao.
+    \item \textbf{Chương 3:} Khảo sát FeatureJ, quy trình xuất bản đồ và tự động hóa bằng Fiji Macro / Java exporter.
+    \item \textbf{Chương 4:} Thiết kế kiến trúc và giải pháp cài đặt hệ thống lõi Python thuần NumPy from scratch.
+    \item \textbf{Chương 5:} Thực nghiệm định lượng, phân tích sai số đối chuẩn Tầng 1 và đánh giá Tầng 2 trên nhãn tham chiếu.
+    \item \textbf{Chương 6:} Kết luận, đánh giá mức độ hoàn thành và định hướng mở rộng hệ thống.
+\end{itemize}
+
+\input{sections/theory}
+
+\section{Chương 3: Khảo Sát Nền Tảng Tham Chiếu FeatureJ / Fiji}
+
+\subsection{Kiến Trúc Module FeatureJ và Gói Thư Viện ImageScience}
+Plugin \textbf{FeatureJ} là tập công cụ ImageJ để trích xuất đặc trưng ảnh; trong Fiji, có thể cài qua update site ImageScience \cite{meijeringFeatureJ}. Các thao tác Derivatives, Edges, Hessian và Structure cung cấp các bản đồ dùng trong đối chiếu. Phần triển khai tham chiếu được đóng gói cùng thư viện ImageScience.
+
+Kiến trúc bên trong của ImageScience bao gồm các lớp đối tượng chính:
+\begin{itemize}
+    \item \texttt{imagescience.image.Image}: Cấu trúc dữ liệu ImageScience hỗ trợ ảnh nhiều chiều (đến 5D) và cho phép xử lý dữ liệu dấu chấm động; lớp này giao tiếp với đối tượng ảnh ImageJ.
+    \item \texttt{imagescience.feature.Differentiator}: Trái tim của toàn bộ giải thuật vi phân. Lớp này chịu trách nhiệm sinh hạt nhân Gaussian 1D, thực hiện tích chập tách rời theo các trục tọa độ không gian và áp dụng các điều kiện biên.
+    \item \texttt{imagescience.feature.Hessian}: Tính toán các đạo hàm bậc 2 $L_{xx}, L_{yy}, L_{xy}$, xây dựng ma trận Hessian tại từng pixel và tính toán các trị riêng $\lambda_1, \lambda_2$ bằng phép chiếu giải tích.
+    \item \texttt{imagescience.feature.Structure}: Tính toán Ten-xơ cấu trúc với cặp tỷ lệ vi phân - tích phân $(\sigma_d, \sigma_i)$ và trích xuất độ định hướng cục bộ (\textit{coherence}).
+\end{itemize}
+
+\subsection{Các quy ước tham số cần đối chiếu}
+Cấu hình và các bộ xuất trong repo xác định những quy ước dùng cho lần đối chiếu này. Bảng sau mô tả cấu hình thực nghiệm của dự án; không suy rộng chúng thành mặc định của mọi phiên bản FeatureJ \cite{xlaRepository}.
+
+\begin{table*}[t]
+\caption{Ánh xạ tham số dùng trong cấu hình đối chiếu của dự án}
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{lll}
+\toprule
+\textbf{Tham số hệ thống} & \textbf{Quy ước FeatureJ} & \textbf{Cài đặt Python Core} \\
+\midrule
+Bán kính cắt kernel bậc 0 & $r = \lceil 3.0\sigma \rceil$ & $r = \lceil 3.0\sigma \rceil$ (\texttt{kernel\_k.gauss=3.0}) \\
+Bán kính cắt kernel bậc 1, 2 & $r = \lceil 4.0\sigma \rceil$ & $r = \lceil 4.0\sigma \rceil$ (\texttt{kernel\_k.lx=4.0}) \\
+Điều kiện biên không gian & \texttt{mirror} (không lặp biên) & \texttt{mode='reflect'} (NumPy) \\
+Thứ tự trị riêng Hessian & Đại số ($\lambda_1 \ge \lambda_2$) & Đại số (\texttt{algebraic}) \\
+Chuẩn hóa biên độ $\sigma^\gamma$ & Thô (\texttt{normalized=false}) & Thô theo FeatureJ / Chuẩn hóa khi dò \\
+Biểu diễn trao đổi & TIFF float32 & float64 tính toán, TIFF float32 \\
+Định dạng file xuất đĩa & TIFF 32-bit Float & TIFF 32-bit Float (\texttt{tifffile}) \\
+\bottomrule
+\end{tabular}}
+\label{tab:featurej_mapping}
+\end{table*}
+
+\subsection{Phân Tích Bản Chất Khác Biệt Rời Rạc Hóa: Taylor Moments vs. Continuous Sampling}
+Một quan sát trong quá trình thẩm định là sai khác có hệ thống giữa các toán tử bậc cao của Python Core và FeatureJ. Các phép đo phù hợp với khác biệt trong cách xây dựng kernel rời rạc; đây là giải thích cho sai số quan sát được, không phải khẳng định rằng hai phương pháp luôn có cùng quy ước nội bộ:
+\begin{itemize}
+    \item \textbf{Phương pháp FeatureJ:} Các bản đồ xuất từ phiên bản được khảo sát có sai khác biên độ nhỏ so với Python, rõ hơn ở đạo hàm bậc hai. Phép đo không cho thấy sai khác hình học lớn; tuy nhiên không thể suy ra toàn bộ chi tiết nội bộ chỉ từ các bản đồ đầu ra.
+    \item \textbf{Phương pháp Python Core (Discrete Taylor Conditions):} Bộ sinh kernel áp dụng các ràng buộc moment Taylor rời rạc theo cấu hình của dự án \cite{xlaRepository}. Các hệ số lọc được xác định để moment bậc $0,1,2$ tiến tới giá trị mục tiêu trên lưới rời rạc:
+    \begin{equation}
+    \sum_{n=-r}^r n^p g^{(m)}[n] = (-1)^m m! \cdot \delta_{p, m}
+    \end{equation}
+\end{itemize}
+Trong bộ dữ liệu kiểm tra, sai số tương đối trung bình của các toán tử bậc hai xấp xỉ $0.3$--$0.4\%$, trong khi Pearson vẫn lớn hơn $0.9999$. Vì vậy báo cáo trình bày riêng sai số biên độ và tương quan hình dạng, không diễn giải tương quan cao thành đồng nhất số học.
+
+\input{sections/workflow}
+
+\section{Chương 4: Thiết Kế và Cài Đặt Hệ Thống Python Core (From Scratch)}
+
+\subsection{Triết Lý Thiết Kế và Kiến Trúc Mô-đun Hệ Thống}
+Trong phạm vi \texttt{src/core/}, các toán tử tích chập, đạo hàm, Hessian, ten-xơ cấu trúc và bộ dò đặc trưng được cài đặt bằng NumPy. Nhân này không gọi các phép lọc OpenCV như \texttt{cv2.filter2D}/\texttt{cv2.Canny} hoặc bộ lọc Gaussian của SciPy; các thư viện ngoài lõi được dùng trong một số tiện ích kiểm thử và đánh giá.
+
+Kiến trúc mã nguồn được phân tầng rõ ràng trong gói \texttt{src/core/}:
+\begin{itemize}
+    \item \texttt{src/config.py}: Trung tâm cấu hình tham số toàn cục. Định nghĩa chuẩn hóa các siêu tham số hệ thống: dãy tỷ lệ chuẩn $\sigma \in \{1.0, 2.0, 4.0, 8.0\}$, các cặp tỷ lệ vi phân - tích phân $(\sigma_d, \sigma_i) \in \{(1.0, 3.0), (2.0, 6.0)\}$ cho Ten-xơ cấu trúc, hệ số bán kính cắt hạt nhân theo bậc vi phân, và tiêu chuẩn định dạng dữ liệu (tính toán nội suy \texttt{float64}, xuất ảnh TIFF \texttt{float32}).
+    \item \texttt{src/core/kernel.py}: Chịu trách nhiệm sinh các hạt nhân (kernel) Gaussian 1D cho các bậc đạo hàm $0, 1, 2$, tuân thủ nghiệm giải tích và điều kiện bảo toàn moment rời rạc.
+    \item \texttt{src/core/convolution.py}: Thực thi tích chập 1D tách trục (\textit{Separable 1D Convolution}) kết hợp cơ chế phản xạ đối xứng qua gương (\textit{mirror reflection}).
+    \item \texttt{src/core/derivatives.py}: Cung cấp giao diện tính toán các toán tử đạo hàm không gian: $L$ (làm mịn), $L_x, L_y$ (đạo hàm bậc nhất), $L_{xx}, L_{yy}, L_{xy}$ (đạo hàm bậc hai), độ lớn gradient $\|\nabla L\|$, và toán tử Laplace $\nabla^2 L$.
+    \item \texttt{src/core/hessian.py}: Xây dựng ma trận Hessian và giải bài toán trị riêng 2D bằng công thức nghiệm giải tích khép kín, phân loại cấu trúc theo thứ tự đại số $\lambda_1 \ge \lambda_2$.
+    \item \texttt{src/core/structure\_tensor.py}: Tính toán Ten-xơ cấu trúc hai tỷ lệ, trích xuất các trị riêng $\mu_1, \mu_2$, hướng cấu trúc cục bộ và độ kết hợp phương hướng (\textit{Coherence}).
+    \item \texttt{src/core/detectors.py}: Tích hợp 3 bộ phát hiện đặc trưng cấp cao: Canny Edge Detector (với triệt tiêu không cực đại 8 hướng và loang liên thông BFS Hysteresis), Frangi Vesselness Filter (dò mạch máu đa tỷ lệ), và LoG Blob Detector (dò đốm 3D Scale-Space Extrema).
+\end{itemize}
+
+\subsection{Cơ Sở Rời Rạc Hóa và Bảo Toàn Taylor Discrete Moments}
+Trong không gian liên tục $\mathbb{R}$, hàm mật độ Gaussian 1D và các đạo hàm bậc 1, bậc 2 của nó được xác định bởi:
+\begin{align}
+g(x; \sigma) &= \frac{1}{\sqrt{2\pi}\sigma} \exp\left(-\frac{x^2}{2\sigma^2}\right) \label{eq:gauss0} \\
+g'(x; \sigma) &= -\frac{x}{\sigma^2} g(x; \sigma) \label{eq:gauss1} \\
+g''(x; \sigma) &= \frac{x^2 - \sigma^2}{\sigma^4} g(x; \sigma) \label{eq:gauss2}
+\end{align}
+Nếu chỉ đơn thuần lấy mẫu các hàm liên tục trên tại các điểm tọa độ nguyên $x \in \mathbb{Z}$ và cắt cụt trong cửa sổ $[-r, r]$, trên lưới rời rạc tổng trọng số sẽ không bảo toàn năng lượng và gây ra sai số làm lệch độ dốc cục bộ.
+
+Để xử lý sai khác do rời rạc hóa, bộ sinh kernel của dự án áp dụng các ràng buộc moment Taylor cho tín hiệu ảnh $I(x)$ quanh điểm $x_0$ \cite{xlaRepository}:
+\begin{equation}
+I(x_0 - n) = I(x_0) - n I'(x_0) + \frac{n^2}{2} I''(x_0) - \frac{n^3}{6} I^{(3)}(x_0) + \dots
+\end{equation}
+Khi thực hiện tích chập rời rạc $(I * h)[x_0] = \sum_{n=-r}^r h[n] I(x_0 - n)$, ta có:
+\begin{align}
+(I * h)[x_0] &= I(x_0) \sum_{n=-r}^r h[n] - I'(x_0) \sum_{n=-r}^r n h[n] \nonumber \\
+&\quad + \frac{I''(x_0)}{2} \sum_{n=-r}^r n^2 h[n] - \dots
+\end{align}
+Để phép chập tái lập hoàn hảo đạo hàm bậc tương ứng của tín hiệu mà không bị nhiễu bởi các bậc khác, các hạt nhân rời rạc $g_0, g_1, g_2$ trong \texttt{kernel.py} được chuẩn hóa để thỏa mãn hệ phương trình moment nghiêm ngặt:
+\begin{itemize}
+    \item \textbf{Hạt nhân bậc 0 ($g_0$):} Bảo toàn độ sáng một chiều (Zero DC Bias):
+    \begin{equation}
+    \sum_{n=-r}^r g_0[n] = 1.0, \quad \sum_{n=-r}^r n \cdot g_0[n] = 0.0
+    \end{equation}
+    Tổng kernel bằng 1 giúp giữ một ảnh hằng trong vùng hợp lệ, trong giới hạn làm tròn. Điều này không đồng nghĩa mọi kiểu đệm biên đều bảo toàn đúng trung bình toàn ảnh hữu hạn.
+    \item \textbf{Hạt nhân bậc 1 ($g_1$):} Tái lập độ dốc giải tích trên tín hiệu dốc phẳng $I[x] = ax + b$:
+    \begin{equation}
+    \sum_{n=-r}^r g_1[n] = 0.0, \quad \sum_{n=-r}^r n \cdot g_1[n] = -1.0
+    \end{equation}
+    Dấu âm xuất phát từ định nghĩa tích chập rời rạc. Do $g_1[n]$ là một hàm lẻ đối xứng phản xạ qua gốc tọa độ ($g_1[-n] = -g_1[n]$), tất cả các moment bậc chẵn tự động triệt tiêu.
+    \item \textbf{Hạt nhân bậc 2 ($g_2$):} Tái lập độ cong giải tích trên tín hiệu parabol $I[x] = \frac{1}{2} c x^2 + bx + a$:
+    \begin{equation}
+    \sum_{n=-r}^r g_2[n] = 0.0, \quad \sum_{n=-r}^r n^2 \cdot g_2[n] = 2.0
+    \end{equation}
+    Do $g_2[n]$ là hàm chẵn ($g_2[-n] = g_2[n]$), moment bậc một tự động triệt tiêu: $\sum n \cdot g_2[n] = 0.0$.
+\end{itemize}
+
+\textbf{Quy tắc chọn bán kính cắt hạt nhân thích nghi:} Để loại bỏ hiện tượng răng cưa biên (Gibbs phenomenon) và sai số cắt cụt đuôi Gaussian, bán kính cửa sổ lọc được xác định thích ứng theo bậc vi phân:
+\begin{equation}
+r = \lceil k \cdot \sigma \rceil, \quad k = \begin{cases} 3.0 & \text{với bậc 0 (Gauss)} \\ 4.0 & \text{với bậc 1, 2 (Đạo hàm)} \end{cases}
+\end{equation}
+Việc mở rộng hệ số $k=4.0$ cho các toán tử vi phân bậc cao là then chốt để bao quát toàn bộ phần dao động âm của đạo hàm Gaussian, đảm bảo kết quả trùng khớp hoàn hảo với thư viện chuẩn FeatureJ.
+
+\subsection{Thuật Toán Tích Chập Tách Trục 1D và Xử Lý Biên Phản Xạ}
+\subsubsection{Nguyên lý phân rã tách trục 1D (Separable Convolution)}
+Do hàm Gaussian hai chiều có tính đối xứng tròn và khả năng phân rã biến số:
+\begin{equation}
+G_\sigma(x, y) = g_\sigma(x) \cdot g_\sigma(y)
+\end{equation}
+Một phép chập 2D kích thước $(2r+1) \times (2r+1)$ trên ảnh kích thước $H \times W$ được phân rã thành hai phép chập 1D nối tiếp theo từng trục tọa độ:
+\begin{equation}
+(I * G_\sigma)(x, y) = \left( (I *_x g_\sigma) *_y g_\sigma \right)(x, y)
+\end{equation}
+Các đạo hàm riêng không gian được thực thi thông qua việc kết hợp nhân chập vi phân 1D dọc theo trục cần lấy đạo hàm và nhân chập làm mịn $g_0$ dọc theo trục trực giao:
+\begin{align}
+L_x &= (I *_x g_1) *_y g_0 \label{eq:lx} \\
+L_y &= (I *_x g_0) *_y g_1 \label{eq:ly} \\
+L_{xx} &= (I *_x g_2) *_y g_0 \label{eq:lxx} \\
+L_{yy} &= (I *_x g_0) *_y g_2 \label{eq:lyy} \\
+L_{xy} &= (I *_x g_1) *_y g_1 \label{eq:lxy}
+\end{align}
+
+\textit{Đánh giá hiệu năng tính toán:} Phép chập 2D trực tiếp tiêu tốn $\mathcal{O}(K^2 \cdot HW)$ phép tính nhân-cộng (với $K = 2r+1$). Khi phân rã thành hai phép chập 1D, độ phức tạp giảm xuống $\mathcal{O}(2K \cdot HW)$. Hệ số tăng tốc lý thuyết đạt được:
+\begin{equation}
+\text{Speedup} = \frac{K^2 \cdot HW}{2K \cdot HW} = \frac{K}{2} = \frac{2\lceil k\sigma \rceil + 1}{2} \approx k\sigma
+\end{equation}
+Tại quy mô tỷ lệ lớn ($\sigma = 8.0, k = 4.0 \Rightarrow r = 32, K = 65$), phương pháp phân rã 1D giúp tăng tốc độ xử lý hơn \textbf{32.5 lần} so với phép chập 2D trực tiếp.
+
+\subsubsection{Cơ chế xử lý biên phản xạ đối xứng (Mirror Reflection)}
+Khi thực hiện tích chập tại các điểm ảnh sát biên, cửa sổ lọc đòi hỏi dữ liệu vượt ra ngoài phạm vi biên một khoảng đúng bằng bán kính $r$. Hệ thống triển khai cơ chế phản xạ đối xứng qua biên không lặp điểm mép (\textit{mirror}):
+\begin{equation}
+I_{\text{padded}}[x] = \begin{cases}
+I[-x] & \text{nếu } -r \le x < 0 \\
+I[x] & \text{nếu } 0 \le x < W \\
+I[2W - 2 - x] & \text{nếu } W \le x < W + r
+\end{cases}
+\end{equation}
+Trong \texttt{src/core/convolution.py}, đệm phản xạ được thực hiện bằng \texttt{np.pad(..., mode=reflect)}. Cách này giảm gián đoạn ở biên so với zero-padding; ảnh hưởng vùng biên vẫn phụ thuộc vào kích thước kernel và cách chấm điểm.
+
+\subsection{Cài Đặt Các Toán Tử Vi Phân và Ten-xơ Cấu Trúc}
+\subsubsection{Gradient và Ma trận Hessian}
+Độ lớn Gradient biểu diễn cường độ thay đổi mức xám cục bộ:
+\begin{equation}
+\|\nabla L(x, y; \sigma)\| = \sqrt{L_x^2(x, y; \sigma) + L_y^2(x, y; \sigma)}
+\end{equation}
+Ma trận Hessian bậc hai thu nhận độ cong không gian tại mỗi tọa độ $(x, y)$:
+\begin{equation}
+\mathcal{H}(x, y; \sigma) = \begin{bmatrix} L_{xx} & L_{xy} \\ L_{xy} & L_{yy} \end{bmatrix}
+\end{equation}
+Nhằm tối ưu hóa tốc độ xử lý trên ma trận hàng triệu phần tử, chúng tôi không sử dụng vòng lặp để gọi hàm đại số tuyến tính mà tính toán trực tiếp nghiệm giải tích khép kín dựa trên Vết (Trace) và Định thức (Determinant):
+\begin{align}
+T &= L_{xx} + L_{yy} \\
+D &= L_{xx} L_{yy} - L_{xy}^2 \\
+\Delta &= \sqrt{\max(0, T^2 - 4D)} \\
+\lambda_1 &= \frac{T + \Delta}{2}, \quad \lambda_2 = \frac{T - \Delta}{2}
+\end{align}
+Khi tính căn trong công thức trị riêng, giá trị biệt thức được chặn dưới bằng 0 để xử lý sai số làm tròn âm rất nhỏ. Phép chặn này áp dụng cho biểu thức dưới căn, không áp dụng cho các trị riêng Hessian: trị riêng âm vẫn được giữ để phân tích cực tính.
+
+\subsubsection{Ten-xơ Cấu trúc Hai Tỷ Lệ (Structure Tensor)}
+Ten-xơ cấu trúc (ma trận moment bậc hai) mô tả định hướng kết cấu cục bộ thông qua sự phân tách giữa tỷ lệ vi phân $\sigma_d$ và tỷ lệ tích phân $\sigma_i$:
+\begin{equation}
+\mathcal{S}_{\sigma_d, \sigma_i} = G_{\sigma_i} * \begin{bmatrix} L_x^2(\sigma_d) & L_x L_y(\sigma_d) \\ L_x L_y(\sigma_d) & L_y^2(\sigma_d) \end{bmatrix}
+\end{equation}
+Bán kính cắt hiệu dụng cho Ten-xơ cấu trúc được tính gộp từ hai giai đoạn chập:
+\begin{equation}
+r_{\text{total}} = \lceil 4.0 \sigma_d \rceil + \lceil 3.0 \sigma_i \rceil
+\end{equation}
+Các trị riêng $\mu_1, \mu_2$ ($\mu_1 \ge \mu_2 \ge 0$) của $\mathcal{S}$ định lượng năng lượng phân bố theo hướng chính và phụ. Chỉ số độ kết hợp phương hướng (\textit{Coherence}) được xác định:
+\begin{equation}
+C = \frac{\mu_1 - \mu_2}{\mu_1 + \mu_2 + \epsilon}
+\end{equation}
+với hằng số $\epsilon = 10^{-6}$ nhằm ổn định số học tại các vùng ảnh đồng nhất ($\mu_1 \approx \mu_2 \approx 0$).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.48\textwidth]{figures/showcase_scientific_diverging_maps.png}
+\caption{Ví dụ các bản đồ đạo hàm trên ảnh BSDS500 tại $\sigma=2$: $L_x$, $L_y$, $L_{xx}$ và $\nabla^2L$. Màu phân kỳ biểu diễn dấu và biên độ của đáp ứng.}
+\label{fig:derivative_maps}
+\end{figure}
+
+\subsection{Thiết Kế và Cài Đặt 3 Bộ Dò Đặc Trưng Mức Cao}
+
+\subsubsection{Bộ dò biên đa tỷ lệ Canny (Canny Edge Detector)}
+Quy trình phát hiện biên Canny \cite{canny1986computational} được xây dựng độc lập gồm 3 công đoạn chính:
+\begin{enumerate}
+    \item \textbf{Làm mịn và Gradient đa tỷ lệ:} Sử dụng cặp đạo hàm $L_x, L_y$ tại tỷ lệ $\sigma$ xác định.
+    \item \textbf{Triệt tiêu không cực đại (NMS):} Góc pháp tuyến $\theta = \operatorname{arctan2}(L_y, L_x)$ được lượng tử hóa thành bốn hướng không phân biệt chiều: $0^\circ$, $45^\circ$, $90^\circ$ và $135^\circ$. Một pixel được giữ nếu độ lớn gradient không nhỏ hơn hai điểm lân cận dọc theo hướng gradient.
+    \item \textbf{Phân ngưỡng kép và loang liên thông BFS (hysteresis):} Điểm ảnh được chia thành biên mạnh, biên yếu và nền theo hai ngưỡng. BFS dùng hàng đợi thay cho đệ quy, tránh phụ thuộc vào giới hạn độ sâu đệ quy; từ mỗi điểm mạnh, thuật toán lan theo 8 lân cận để giữ các điểm yếu liên thông.
+\end{enumerate}
+
+\subsubsection{Bộ lọc mạch máu đa tỷ lệ Frangi (Frangi Vesselness Filter)}
+Dựa trên phân tích hình học ma trận Hessian \cite{frangi1998multiscale}, ridge có một trị riêng nhỏ theo hướng dọc thân và một trị riêng lớn theo hướng ngang thân. Sau khi sắp theo độ lớn, ký hiệu $|\lambda_1|\leq|\lambda_2|$; dấu của $\lambda_2$ phân biệt ridge sáng và rãnh tối. Với ảnh DRIVE kênh Green, mạch máu là rãnh tối trên nền sáng nên phép dò giữ đáp ứng có $\lambda_2>0$.
+Hệ thống cài đặt bộ lọc Frangi với chuẩn hóa tỷ lệ theo Lindeberg \cite{lindeberg1998feature} ($\gamma = 1.0$):
+\begin{align}
+\mathcal{R}_B &= \frac{|\lambda_1|}{|\lambda_2|} \quad \text{(Độ đo dạng đốm/blobness)} \\
+\mathcal{S} &= \sqrt{\lambda_1^2 + \lambda_2^2} \quad \text{(Độ đo cấu trúc Frobenius)}
+\end{align}
+Hàm đáp ứng mạch máu tại tỷ lệ $\sigma$ được tính theo công thức:
+\begin{equation}
+V_0(x, y; \sigma) = \begin{cases}
+    0 & \text{nếu } \lambda_2 \leq 0 \\
+    \exp\left(-\frac{\mathcal{R}_B^2}{2\beta^2}\right) \left[ 1 - \exp\left(-\frac{\mathcal{S}^2}{2c^2}\right) \right] & \text{nếu } \lambda_2 > 0
+\end{cases}
+\end{equation}
+với $\beta = 0.5$ và ngưỡng cấu trúc thích nghi $c = 0.5 \cdot \max_{(x,y)} \mathcal{S}(x, y; \sigma)$.
+Bản đồ mạch máu hoàn chỉnh được tổng hợp thông qua nguyên lý chọn tỷ lệ cực đại xuyên suốt không gian scale:
+\begin{equation}
+V_{\text{final}}(x, y) = \max_{\sigma \in \Sigma} V_0(x, y; \sigma)
+\end{equation}
+
+\subsubsection{Bộ dò đốm đa tỷ lệ LoG (Laplacian of Gaussian Blob Detector)}
+Đốm (Blob) là các cấu trúc lồi/lõm tròn đối xứng có mức xám tương phản cục bộ.
+Hệ thống sử dụng toán tử Laplace chuẩn hóa tỷ lệ (Normalized Laplacian of Gaussian):
+\begin{equation}
+\nabla_{\text{norm}}^2 L(x, y; \sigma) = \sigma^2 |L_{xx}(x, y; \sigma) + L_{yy}(x, y; \sigma)|
+\end{equation}
+Nhân tử $\sigma^2$ hỗ trợ so sánh đáp ứng bậc hai giữa các tỷ lệ. Độ nhạy thực tế vẫn phụ thuộc hình dạng đối tượng, lưới tỷ lệ, tương phản và ngưỡng.
+\begin{itemize}
+    \item \textbf{Lưới tỷ lệ hình học:} Xây dựng không gian tỷ lệ 3D gồm tập hợp các tỷ lệ tăng theo cấp số nhân bước $k = \sqrt{2}$: $\Sigma = \{\sigma_0, \sqrt{2}\sigma_0, 2\sigma_0, 2\sqrt{2}\sigma_0, \dots, 8.0\}$.
+    \item \textbf{Triệt tiêu không cực đại 3D (3D Non-Maximum Suppression):} Một điểm $(y, x, \sigma)$ được xác định là tâm đốm nếu đáp ứng $\nabla_{\text{norm}}^2 L(y, x; \sigma)$ lớn hơn ngưỡng cường độ tối thiểu $T_{\text{blob}}$ và là cực đại tuyệt đối so với toàn bộ $26$ lân cận trong khối cầu $3 \times 3 \times 3$ (8 lân cận không gian cùng lớp scale và $9 \times 2 = 18$ lân cận tại hai lớp scale liền kề $\sigma_{i-1}, \sigma_{i+1}$).
+    \item \textbf{Ước lượng kích thước:} Repo dùng quy ước $R\approx\sqrt2\sigma$ trong 2D để biểu diễn bán kính từ tỷ lệ đặc trưng; quan hệ này phụ thuộc mô hình đối tượng, không phải bán kính thật chính xác của mọi tế bào.
+\end{itemize}
+
+\input{sections/calibration}
+
+\subsection{Chiến Lược Tối Ưu Hóa và Phân Tích Độ Phức Tạp Thuật Toán}
+\subsubsection{Vector hóa toàn phần bằng NumPy (Array Broadcasting)}
+Các phép tính theo pixel được biểu diễn dưới dạng phép toán mảng NumPy thay cho vòng lặp Python lồng nhau. NumPy gọi các thư viện số học native của môi trường cài đặt; tốc độ thực tế phụ thuộc vào phiên bản NumPy, thư viện BLAS và phần cứng, nên báo cáo không suy ra hiệu năng SIMD cụ thể nếu chưa đo.
+
+\subsubsection{Quản lý độ chính xác số học và Bộ nhớ}
+Quá trình tính toán trung gian được duy trì ở kiểu số thực dấu chấm động độ chính xác kép \texttt{float64} (64-bit). Điều này ngăn ngừa sai số tích lũy từ các phép nhân dồn và phép trừ ma trận có độ lệch giá trị nhỏ. Chỉ tại bước cuối cùng khi xuất file ảnh lưu trữ đĩa (TIFF 32-bit), dữ liệu mới được ép kiểu an toàn sang \texttt{float32}.
+
+\subsubsection{Bảng tổng hợp độ phức tạp thuật toán}
+\begin{table}[htbp]
+\caption{Độ phức tạp thời gian và không gian của các mô-đun lõi}
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Mô-đun / Thuật toán} & \textbf{Độ phức tạp thời gian} & \textbf{Độ phức tạp bộ nhớ} \\
+\midrule
+Gaussian Smoothing 2D tách trục & $\mathcal{O}(2K \cdot HW)$ & $\mathcal{O}(HW)$ \\
+Gradient $(L_x,L_y)$ & $\mathcal{O}(4K \cdot HW)$ & $\mathcal{O}(HW)$ \\
+Ma trận Hessian \& Trị riêng & $\mathcal{O}(6K \cdot HW)$ & $\mathcal{O}(HW)$ \\
+Structure Tensor $(\sigma_d, \sigma_i)$ & $\mathcal{O}((4K_d + 6K_i) \cdot HW)$ & $\mathcal{O}(HW)$ \\
+Canny NMS \& Hysteresis BFS & $\mathcal{O}(HW)$ & $\mathcal{O}(HW)$ \\
+Frangi Filter ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot 6K \cdot HW)$ & $\mathcal{O}(HW)$ \\
+LoG Extrema 3D ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot HW)$ & $\mathcal{O}(|\Sigma| \cdot HW)$ \\
+\bottomrule
+\end{tabular}
+\label{tab:complexity}
+\end{table}
+
+\section{Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích}
+\subsection{Thiết kế đánh giá}
+Đánh giá được chia thành hai câu hỏi. Tầng 1 đo độ tương đồng số học giữa các bản đồ liên tục của Python Core và FeatureJ trên năm ảnh đại diện; vùng biên bị crop theo bán kính kernel trước khi tính sai số tương đối và Pearson $r$. Bản đồ được xếp \texttt{STRICT} nếu $\mathrm{rel\_err}<10^{-4}$ và $r>0.9999$, \texttt{RELAXED} nếu $\mathrm{rel\_err}<10^{-2}$ và $r>0.9999$.
+
+Tầng 2 đo chất lượng phát hiện so với nhãn tham chiếu: BSDS500 dùng dung sai biên $\pm2$ pixel; DRIVE tính F1/IoU bên trong FOV đã xói mòn với bán kính phụ thuộc $\sigma$; Blobs ghép tâm trong 2 pixel và bán kính trong sai số 20\%. Ngưỡng Canny được chọn từ lưới trên cùng 10 ảnh BSDS500; tại $\sigma=2$, cặp đã chọn là $p_{\mathrm{low}}=67$ và $p_{\mathrm{high}}=91$. Việc chọn và đánh giá trên cùng tập có thể làm F1 lạc quan hơn. Điểm F1 trong bảng tổng hợp là trung bình theo ảnh, trừ khi ghi rõ micro-average.
+
+\input{sections/metrics}
+
+\subsection{Kết quả thẩm định Tầng 1 (So khớp Python Core với FeatureJ / Fiji)}
+\begin{table*}[t]
+\caption{Kết quả đối chuẩn định lượng trên 220 bản đồ liên tục}
+\centering
+\resizebox{\textwidth}{!}{\begin{tabular}{lcccc}
+\toprule
+\textbf{Toán tử} & \textbf{Sai số TB} & \textbf{Sai số tương đối} & \textbf{Pearson $r$ (Min)} & \textbf{Pearson $r$ (TB)} \\
+\midrule
+Gauss & 3.98e-07 & 7.32e-08 & 1.00000000 & 1.00000000 \\
+$L_x$ & 2.74e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+$L_y$ & 3.39e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+Grad & 4.91e-04 & 5.01e-04 & 1.00000000 & 1.00000000 \\
+$L_{xx}$ & 5.79e-03 & 4.21e-03 & 0.99998026 & 0.99999453 \\
+$L_{yy}$ & 5.80e-03 & 4.40e-03 & 0.99996770 & 0.99999324 \\
+$L_{xy}$ & 8.56e-05 & 1.00e-03 & 1.00000000 & 1.00000000 \\
+Laplacian & 1.15e-02 & 4.44e-03 & 0.99996553 & 0.99999157 \\
+Hessian L1 & 6.15e-03 & 4.43e-03 & 0.99997419 & 0.99999379 \\
+Hessian L2 & 5.43e-03 & 3.33e-03 & 0.99997964 & 0.99999493 \\
+ST L1 & 6.18e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
+ST L2 & 1.89e-03 & 4.40e-04 & 1.00000000 & 1.00000000 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\textbf{Diễn giải:} Có 35/220 bản đồ đạt \texttt{STRICT} (20 bản đồ Gauss và 15 bản đồ đạo hàm bậc nhất tại $\sigma=1$); 185/220 chưa đạt tiêu chí gốc và chỉ được xếp \texttt{RELAXED} theo ngưỡng nới lỏng mang tính tham khảo; ngưỡng này không thay thế tiêu chí nghiệm thu gốc. Pearson trung bình toàn hệ thống là $0.99999710$, thấp nhất $0.99996553$. Sai số tương đối của đạo hàm bậc hai xấp xỉ $0.3$--$0.4\%$. Tương quan cao cho thấy hình dạng đáp ứng gần nhau, nhưng không có nghĩa biên độ của mọi bản đồ trùng nhau.
+
+\subsection{Kết quả thực nghiệm Tầng 2 (so khớp Ground Truth)}
+Các số liệu dưới đây được đồng bộ với metric snapshot canonical của repo tại commit \texttt{58bdfd8} và các CSV trong \texttt{outputs/metrics/}. Snapshot \texttt{duc\_08\_11} là dữ liệu lịch sử trước khi sửa dung sai BSDS từ ô vuông 5$\times$5 sang đĩa Euclidean 13 pixel.
+Tập đánh giá gồm 10 ảnh BSDS500, 10 ảnh DRIVE và 5 ảnh Blob (bốn ảnh tổng hợp cùng một ảnh tế bào sinh học). Kết quả nhánh Python:
+\begin{itemize}
+    \item \textbf{BSDS500 (Canny Edge):} Theo giao thức canonical trên 10 ảnh BSDS500 \cite{arbelaez2010contour,xlaRepository}, ở $\sigma=2.0$ đạt $F_1=0.477886$ với $p_{\text{low}}=67$, $p_{\text{high}}=91$ và dung sai đĩa Euclidean bán kính 2 px (13 pixel). Ngưỡng được chọn trên chính tập ảnh này, không phải ước lượng độc lập trên tập kiểm tra.
+    \item \textbf{DRIVE (Frangi Vesselness):} Thử nghiệm trên 10 ảnh mạch máu võng mạc DRIVE \cite{staal2004ridge,xlaRepository} đạt macro-$F_1=0.680633$, $\text{IoU}=0.5184$ trong vùng FOV xói mòn thích ứng đa tỷ lệ với bán kính $r=\lceil4\sigma\rceil$.
+    \item \textbf{Blobs (LoG Scale-Space):} Macro-$F_1$ canonical Python/Fiji trên năm ảnh là $0.893023/0.891901$ \cite{xlaRepository}. Với \texttt{blob\_05}, kết quả Python chính thức ở lưới 8 mức là 140 cặp ghép đúng trong 329 phát hiện ($F_1=0.4628$); Fiji fair ở lưới 7 mức là 139/329 ($F_1=0.4595$). Hai lưới khác nhau; nhãn tế bào do nhóm xây dựng, không phải nhãn chuyên gia của nhà cung cấp.
+\end{itemize}
+
+Bảng~\ref{tab:tier2_cross} dùng cấu hình chung để đối chiếu Python--Fiji. Với Blobs, cả hai nhánh dùng bảy mức $\sigma=\{1,1.4,2,2.8,4,5.7,8\}$. Kết quả Python chính thức ở lưới 8 mức được lấy riêng từ \texttt{tier2\_results.csv}; không trộn với bảng so sánh 7 mức \cite{xlaRepository}.
+\begin{table}[htbp]
+\caption{Đối chiếu F1 macro Python--Fiji theo cấu hình so sánh chung 7 mức cho Blobs}
+\label{tab:tier2_cross}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Tác vụ} & \textbf{$N$} & \textbf{Python} & \textbf{Fiji} & \textbf{$\Delta F_1$} \\
+\midrule
+BSDS500 / Canny, $\sigma=2$ & 10 & 0.4779 & 0.4779 & $0.0000$ \\
+DRIVE / Frangi & 10 & 0.6806 & 0.6816 & $+0.0010$ \\
+Blobs / LoG (7 mức) & 5 & 0.8930 & 0.8919 & $-0.0011$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+Với DRIVE, IoU trung bình lần lượt là $0.5184$ (Python) và $0.5195$ (Fiji). Micro-$F_1$ trong bảng được tính lại từ tổng GT, số phát hiện và số ghép đúng ở CSV so sánh chung theo công thức trong Mục~\ref{sec:metrics}. Macro Python--Fiji của Blobs dùng lưới chung 7 mức; kết quả Python chính thức cho \texttt{blob\_05} ở lưới 8 mức được nêu riêng, nên hai giá trị per-image không phải so sánh cùng lưới. Chênh lệch F1 không thay thế đánh giá với Ground Truth.
+
+\subsection{Kiểm tra tham chiếu ngoài nhân tính toán}
+Phép hình thái học và gán nhãn thành phần trong bộ đánh giá BSDS hiện dùng NumPy thuần. SciPy chỉ được phép trong kiểm thử và benchmark thời gian; OpenCV được dùng làm tham chiếu trực quan bổ sung. Đầu ra Canny phụ thuộc vào kernel gradient, NMS và ngưỡng. Vì vậy, khác biệt hình ảnh giữa các thư viện không được diễn giải thành xếp hạng chất lượng nếu chưa cố định cùng dữ liệu, ngưỡng và tiêu chí chấm. Nhân toán học trong \texttt{src/core/} vẫn được triển khai bằng NumPy.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/showcase_multiscale_frangi.png}
+\caption{Đáp ứng Frangi trên ảnh DRIVE ở các tỷ lệ $\sigma\in\{1,2,3,4\}$. Phản ứng mạnh ở viền trường nhìn cho thấy vì sao benchmark loại vùng biên bằng mặt nạ FOV xói mòn trước khi tính điểm.}
+\label{fig:multiscale_frangi}
+\end{figure*}
+
+\subsection{Phân Tích Chuyên Sâu Từng Bài Toán Thực Nghiệm}
+
+\subsubsection{Bài toán dò biên BSDS500 (Canny)}
+Đánh giá trên BSDS500 \cite{arbelaez2010contour} dùng đĩa Euclidean bán kính 2 pixel để ghép biên với nhãn đa annotator; các góc của ô vuông 5$\times$5 nằm ngoài dung sai. Trong lưới đã khảo sát, cấu hình $\sigma=2$, $p_{\mathrm{low}}=67$, $p_{\mathrm{high}}=91$ đạt F1 trung bình $0.477886$. Ngưỡng được chọn trên cùng tập ảnh dùng để báo cáo điểm, nên kết quả cần được xem là thực nghiệm thăm dò.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.48\textwidth]{figures/tier2_bsds_f1_heatmap.png}
+\caption{Độ nhạy F1 trung bình trên BSDS500 theo hai phân vị ngưỡng tại $\sigma=2$. Cặp $p_{\mathrm{low}}=67$, $p_{\mathrm{high}}=91$ được cố định khi đối chiếu Python--Fiji ở tỷ lệ này.}
+\label{fig:bsds_thresholds}
+\end{figure}
+
+\subsubsection{Bài toán dò mạch máu võng mạc DRIVE (Frangi)}
+Trên 10 ảnh mạch máu đáy mắt DRIVE \cite{staal2004ridge}, pipeline đạt $F_1=0.6806$ và $\text{IoU}=0.5184$. Bước đánh giá áp dụng mặt nạ FOV xói mòn thích ứng đa tỷ lệ:
+\begin{equation}
+\mathcal{M}_{\text{FOV}}^{(\sigma)} = \mathcal{M}_{\text{FOV}} \ominus \mathcal{B}_{r(\sigma)}, \quad r(\sigma) = \lceil 4.0\sigma \rceil
+\end{equation}
+Mặt nạ xói mòn giảm ảnh hưởng của phản ứng giả gần đường viền nhãn cầu; phần đánh giá DRIVE chỉ tính trên vùng FOV còn lại.
+
+
+\subsubsection{Bài toán dò đốm tế bào đa tỷ lệ (Blob LoG)}
+Trên bốn ảnh tổng hợp \texttt{blob\_01}--\texttt{blob\_04}, phép dò đạt $F_1=1.000$ theo tiêu chí ghép của repo. Với \texttt{blob\_05}, kết quả Python chính thức ở lưới 8 mức là $F_1=0.4628$; Fiji fair ở lưới 7 mức đạt $F_1=0.4595$. Python 7 mức $0.4651$ là hàng trong CSV so sánh chung, không phải kết quả Python chính thức. Khoảng cách giữa ảnh tổng hợp và ảnh sinh học cho thấy mô hình blob lý tưởng chưa bao quát được chồng lấp, nền không đều và độ không chắc chắn của nhãn thủ công.
+
+\input{sections/sample_results}
+
+\input{sections/gui_evidence}
+
+\input{sections/discussion}
+
+\input{sections/repo_update_39e4d02}
+
+\section{Chương 6: Kết Luận và Hướng Phát Triển}
+
+\subsection{Tổng Kết Các Kết Quả Chính}
+Đề tài xây dựng một pipeline phân tích đặc trưng đa tỷ lệ bằng đạo hàm Gaussian, gồm nhân NumPy, bản đồ tham chiếu FeatureJ và bộ đánh giá theo Ground Truth. Các kết quả chính:
+\begin{enumerate}
+    \item \textbf{Đối chiếu số học:} 220 bản đồ gồm 35 đạt ngưỡng gốc và 185 chưa đạt ngưỡng gốc, dù các bản đồ này nằm trong mức \texttt{RELAXED} để tham khảo; Pearson trung bình là $0.99999710$. Sai số tương đối bậc hai khoảng $0.3$--$0.4\%$, vì vậy tương quan cao không được đồng nhất với sai số bằng không.
+    \item \textbf{Đánh giá tác vụ:} Python đạt $F_1=0.477886$ trên BSDS500 tại $\sigma=2$ và $F_1=0.680633$ trên DRIVE ($IoU=0.5184$). Macro-$F_1$ Blob là $0.893023$ (Python) và $0.891901$ (Fiji); riêng \texttt{blob\_05}, Python 8 mức đạt $0.4628$.
+    \item \textbf{Đối chiếu Python--Fiji:} Theo metric snapshot canonical tại commit \texttt{58bdfd8}, F1 macro Python--Fiji lần lượt là $0.477886/0.477886$ ở BSDS $\sigma=2$, $0.680633/0.681651$ trên DRIVE và $0.893023/0.891901$ trên Blobs. Đây là kết quả của pipeline và tập ảnh đã chọn, không phải bằng chứng rằng một nguồn vượt trội hoặc điểm kiểm tra độc lập.
+    \item \textbf{Tối ưu tích chập:} Benchmark 36 trường hợp, 5 lần lặp, đo mức tăng tốc $1.375738$--$31.392971$ lần cho tích chập tách rời so với tích chập 2D trực tiếp; sai khác tối đa là $1.279\times10^{-12}$. Đây là số đo trên ba ảnh mẫu, không phải bảo đảm cho mọi ảnh hay máy tính.
+    \item \textbf{Giới hạn:} Kết quả phụ thuộc vào lưới tỷ lệ, ngưỡng, tiêu chí ghép và bộ nhãn. Đặc biệt, blob tổng hợp không đại diện đầy đủ cho độ khó của ảnh sinh học.
+\end{enumerate}
+\subsection{Bài Học Kinh Nghiệm}
+Quá trình nghiên cứu và triển khai gợi ra hai điểm cần lưu ý:
+\begin{itemize}
+    \item \textbf{Tầm quan trọng của điều kiện bảo toàn moment rời rạc:} Không thể lấy mẫu hàm Gaussian liên tục một cách tùy tiện trên lưới điểm rời rạc. Việc thỏa mãn các điều kiện moment Taylor là chìa khóa để bảo toàn đặc tính vi phân giải tích.
+    \item \textbf{Xử lý hiệu ứng biên trong không gian đa tỷ lệ:} Ở các tỷ lệ lớn ($\sigma \ge 4.0$), hạt nhân lọc có kích thước lên tới hàng chục pixel. Việc thiết lập chiến lược xói mòn mặt nạ thích ứng là bắt buộc để ngăn chặn các cực trị biên giả mạo.
+\end{itemize}
+
+\subsection{Hướng Phát Triển Tiếp Theo}
+Trong các giai đoạn tiếp theo, hệ thống có thể được mở rộng theo các hướng nghiên cứu giàu tiềm năng:
+\begin{enumerate}
+    \item \textbf{Tăng tốc phần cứng GPU:} Chuyển đổi các mảng NumPy sang CuPy hoặc Tensor của PyTorch để thực thi các phép tích chập tách rời 2D song song trên kiến trúc nhân CUDA, phục vụ các luồng xử lý video thời gian thực.
+    \item \textbf{Mở rộng sang không gian tỷ lệ thể tích 3D ($x, y, z$):} Áp dụng trực tiếp ma trận Hessian 3D ($3 \times 3$) và Ten-xơ cấu trúc 3D để phân đoạn tự động các mạng lưới mạch máu não và khối u trên ảnh chụp cắt lớp vi tính (CT) và cộng hưởng từ (MRI) y tế.
+\end{enumerate}
+
+\clearpage
+\input{sections/reproduction}
+
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

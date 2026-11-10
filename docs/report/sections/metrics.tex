@@ -1,0 +1,69 @@
+\subsection{Định nghĩa các thước đo và cách tổng hợp}
+\label{sec:metrics}
+\subsubsection{Sai số trên bản đồ liên tục}
+Gọi $P_i$ và $F_i$ là giá trị Python và FeatureJ sau khi đã cắt vùng biên, với $N$ pixel còn lại. Các thước đo có trong CSV gồm
+\begin{align}
+E_{\max}&=\max_i|P_i-F_i|,\\
+\mathrm{MAE}&=\frac1N\sum_i|P_i-F_i|,\\
+\mathrm{RMSE}&=\sqrt{\frac1N\sum_i(P_i-F_i)^2}.
+\end{align}
+Trong verify\_tier1.py của repo, sai số tương đối được định nghĩa cụ thể là
+\begin{equation}
+E_{\mathrm{rel}}=\frac{E_{\max}}{\max_i|F_i|+10^{-12}}.
+\label{eq:relmax}
+\end{equation}
+Đây là sai số cực đại chuẩn hóa theo đỉnh của bản đồ tham chiếu, không phải sai số tương đối theo chuẩn $L_2$. Định nghĩa phải đi kèm con số phần trăm vì các cách chuẩn hóa khác nhau có thể cho giá trị rất khác.
+
+Hệ số Pearson đo sự đồng biến tuyến tính:
+\begin{equation}
+r=\frac{\sum_i(P_i-\overline P)(F_i-\overline F)}
+{\sqrt{\sum_i(P_i-\overline P)^2\sum_i(F_i-\overline F)^2}}.
+\end{equation}
+Nếu $P=aF+b$ với $a>0$ và $F$ không hằng, Pearson bằng 1 dù có sai số biên độ hoặc độ lệch nền. Vì thế phải đọc Pearson cùng MAE, RMSE và $E_{\mathrm{rel}}$. Với ảnh gần hằng, phương sai rất nhỏ làm Pearson kém ổn định; trường hợp này cần xử lý riêng theo evaluator thay vì tự gán một giá trị tương quan có ý nghĩa.
+
+PSNR cho ảnh Gaussian trong miền cường độ 8-bit được tính bằng $20\log_{10}(255/\mathrm{RMSE})$. Repo không dùng cách diễn giải này cho mọi bản đồ có dấu: đạo hàm và trị riêng không còn có cùng miền vật lý $[0,255]$. Chọn một đỉnh cố định không phù hợp có thể làm PSNR lớn nhưng khó diễn giải.
+
+\subsubsection{Precision, recall, F1 và IoU}
+Với phát hiện nhị phân, gọi TP, FP và FN lần lượt là số dương tính đúng, dương tính sai và âm tính sai. Ta có
+\begin{align}
+\mathrm{Precision}&=\frac{\mathrm{TP}}{\mathrm{TP}+\mathrm{FP}},\\
+\mathrm{Recall}&=\frac{\mathrm{TP}}{\mathrm{TP}+\mathrm{FN}},\\
+F_1&=\frac{2\mathrm{TP}}{2\mathrm{TP}+\mathrm{FP}+\mathrm{FN}},\\
+\mathrm{IoU}&=\frac{\mathrm{TP}}{\mathrm{TP}+\mathrm{FP}+\mathrm{FN}}.
+\end{align}
+Trong triển khai cần xử lý mẫu số bằng 0. Precision cao phản ánh ít phát hiện nhầm, recall cao phản ánh ít bỏ sót. F1 cân bằng hai đại lượng nhưng không thể hiện đầy đủ vị trí lỗi, độ dày mạch hoặc chất lượng định vị tâm.
+
+Với cùng một ma trận nhầm lẫn, $F_1=2\,\mathrm{IoU}/(1+\mathrm{IoU})$. Tuy nhiên, không nên lấy IoU trung bình của nhiều ảnh rồi biến đổi để khẳng định đó là F1 trung bình, vì phép biến đổi phi tuyến không giao hoán với phép lấy trung bình.
+
+\subsubsection{Macro và micro}
+Macro-$F_1$ là trung bình $F_{1,j}$ theo ảnh, còn micro-$F_1$ gộp TP/FP/FN trước khi tính:
+\begin{equation}
+\begin{aligned}
+F_{1,\mathrm{macro}} &= \frac{1}{M}\sum_{j=1}^{M}F_{1,j}, \\
+F_{1,\mathrm{micro}} &=
+\frac{2\sum_j\mathrm{TP}_j}
+{2\sum_j\mathrm{TP}_j+\sum_j\mathrm{FP}_j+\sum_j\mathrm{FN}_j}.
+\end{aligned}
+\end{equation}
+Bốn ảnh Blob tổng hợp có ít đối tượng và đạt điểm cao, trong khi ảnh sinh học có hàng trăm đối tượng. Macro cho mỗi ảnh trọng số bằng nhau; micro bị ảnh có nhiều đối tượng chi phối. Cần ghi rõ cách tổng hợp, không dùng một giá trị macro cao để bỏ qua lỗi trên ảnh sinh học.
+
+\subsection{Giao thức đánh giá riêng cho ba bài toán}
+\subsubsection{Đường biên BSDS500}
+Đường biên chỉ dày một vài pixel nên một dịch chuyển nhỏ có thể làm giảm điểm nếu yêu cầu trùng pixel tuyệt đối. Repo dùng phần tử cấu trúc là đĩa Euclidean bán kính 2 pixel (13 pixel trong ô 5$\times$5), không gồm các góc, và xử lý nhiều nhãn annotator. Ảnh không có pixel sau NMS vẫn nằm trong mẫu số với F1 bằng 0. Báo cáo mô tả đây là giao thức evaluator của dự án, không mặc nhiên đồng nhất với toàn bộ benchmark BSDS500 chính thức hoặc các điểm ODS/OIS trong tài liệu khác.
+
+Phân vị $p$ không phải một ngưỡng cường độ cố định: giá trị số tương ứng phụ thuộc phân bố đáp ứng của ảnh và tập pixel được dùng để tính phân vị. Khi so sánh Python với Fiji cần dùng cùng thuật toán tính phân vị và cùng bước hậu xử lý. Chọn riêng ngưỡng tối ưu cho mỗi nhánh sẽ đồng thời thay đổi toán tử và cách ra quyết định, làm kết luận về độ tương đương khó xác định.
+
+\subsubsection{Vùng mạch máu DRIVE}
+Vùng đánh giá phải nằm trong trường nhìn hợp lệ. Viền giữa đĩa võng mạc và nền đen có tương phản mạnh, dễ tạo đáp ứng Hessian lớn dù không phải mạch. Repo áp dụng FOV xói mòn phụ thuộc tỷ lệ để giảm ảnh hưởng này. Cần ghi rõ mặt nạ dùng trong điểm số: một phương pháp được chấm trên vùng nhỏ hơn không thể so sánh trực tiếp với phương pháp chấm trên toàn FOV.
+
+F1/IoU ở đây phản ánh phân đoạn vùng mạch, không phải độ đúng của một bộ đường tâm ridge đã skeleton hóa. Mạch nhỏ, nhánh giao nhau và các đoạn tương phản yếu là các trường hợp cần đọc trên hình ngoài điểm số.
+
+\subsubsection{Danh sách đối tượng Blob}
+Mỗi dự đoán gồm tọa độ tâm và kích thước. Repo ghép tâm với dung sai 2 pixel, đồng thời yêu cầu sai số bán kính tương đối không quá 20\%. Mỗi nhãn chỉ được ghép một lần; các dự đoán thừa xung quanh cùng một tế bào không được tính là nhiều TP. Ngoài điểm F1, cần xem độ nhạy của phép ghép đối với các nhãn tâm gần nhau và kích thước do người gán nhãn xác định.
+
+Theo kết quả canonical, blob\_05 có 276 đối tượng nhãn; Python chính thức ở lưới 8 mức phát hiện 329 và ghép đúng 140, nên FP=189, FN=136 và $F_1=280/(280+189+136)\approx0.4628$. Fiji fair ở lưới 7 mức cũng có 329 phát hiện nhưng ghép đúng 139, cho $F_1\approx0.4595$. Hai lưới scale khác nhau. Hàng Python 7 mức, 326 phát hiện và $F_1=0.4651$ nằm trong CSV so sánh chung nhưng không phải kết quả Python chính thức. Ví dụ này cho thấy recall $140/276$ không phải F1; chỉ nêu tỷ lệ bắt trúng sẽ bỏ qua phát hiện thừa.
+
+\subsection{Thiết kế tái lập và trạng thái minh chứng}
+Các bảng định lượng trong báo cáo được tổng hợp từ CSV của nhóm trong repo, không được trình bày như kết quả vừa chạy mới trên máy biên tập. Phương án thực hành bổ sung là chạy ba ảnh mẫu trên Fiji và nhân Python, lưu vào thư mục riêng và lập CSV mới. Lần chạy mẫu mới đã có đủ 72 TIFF mỗi nhánh và CSV đối chiếu; các kết quả này được trình bày ở mục tái chạy mẫu. Chúng không thay thế bảng F1 tổng hợp của nhóm.
+
+Khi thực hiện lần chạy bổ sung, cần lưu tên ảnh, mã phiên bản repo, config.yaml, phiên bản phần mềm và nguồn của từng TIFF. Nếu có sai khác so với bảng nhóm, kiểm tra cấu hình và nguồn file trước khi thay đổi nhận định. Một tập ba ảnh chỉ xác nhận thao tác và hành vi trên mẫu, không đủ để ước lượng lại F1 trung bình của tập 25 ảnh.

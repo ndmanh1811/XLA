@@ -1,0 +1,149 @@
+\appendices
+\section{Hồ Sơ và Cách Tái Lập Lần Chạy Mẫu}
+Mã chạy kèm báo cáo gồm \texttt{SampleFeatureJ.java}, \texttt{run\_fiji\_api\_sample.py},
+\texttt{run\_sample.py} và \texttt{sample\_featurej.ijm}.
+Hai chương trình đầu tạo bản đồ qua API ImageScience; chương trình Python dùng
+nhân repo để tính và chấm; macro dành cho thực hành qua lệnh plugin trong GUI.
+Hướng dẫn thao tác và lệnh đầy đủ nằm trong tệp \texttt{HUONG\_DAN\_THUC\_NGHIEM.md}.
+
+Repo tại máy biên tập là bản shallow/sparse đúng commit gốc, gồm mã nguồn,
+25 ảnh raw và CSV cần thiết. Các bộ TIFF, archive lớn và phần ground truth ngoài
+phạm vi mẫu chưa được tải đầy đủ. Vì thế không coi lần chạy mẫu là một lần
+tái lập benchmark toàn bộ 25 ảnh; các bảng F1 tổng hợp vẫn có nguồn là CSV nhóm.
+
+\subsection{Các bước thực hiện}
+\begin{enumerate}
+\item Kiểm tra commit, config.yaml và ba PNG gốc; không chuyển màu lần nữa.
+\item Chạy exporter API với ImageScience được cài trong Fiji; lưu TIFF và log nguồn.
+\item Chạy chương trình Python với cùng repo, tỷ lệ và toán tử.
+\item Kiểm tra đủ 72 cặp, float32, kích thước, giá trị hữu hạn và dải crop.
+\item Lưu CSV và tạo hình từ chính TIFF; giữ các file nhóm trong outputs riêng.
+\end{enumerate}
+
+\subsection{Minh chứng GUI bổ sung}
+Đã bổ sung bốn hộp thoại plugin thật và một cửa sổ kết quả Laplacian,
+được trình bày tại Mục~\ref{sec:gui_evidence}. Phiên GUI được tự động hóa
+qua điều khiển AWT, xuất sáu TIFF float32 sang
+\texttt{experiments/gui\_evidence}, tách khỏi 72 cặp API ở
+\texttt{experiments/sample\_local}. Nhật ký và kiểm tra TIFF nằm trong
+\texttt{metrics/gui\_capture\_log.csv} và
+\texttt{metrics/gui\_verification.json}. Các ảnh kết quả bị vẽ thiếu nội dung
+đã bị loại khỏi báo cáo sau kiểm tra trực quan.
+Macro \texttt{sample\_featurej.ijm} vẫn được cung cấp để chạy thêm
+72 bản đồ qua plugin; chưa coi bộ macro đầy đủ này là đã thực thi.
+
+\subsection{Nguồn và phiên bản thư viện}
+Các JAR cục bộ được biên dịch từ nguồn chính thức ImageScience/FeatureJ, không
+chỉnh sửa thuật toán vi phân. Tệp \texttt{metrics/local\_build\_provenance.json}
+ghi phiên bản, mã băm nguồn và SHA256 JAR. Bản build này phục vụ thí nghiệm tại chỗ;
+không được diễn giải như cùng tệp nhị phân với bộ tham chiếu nhóm.
+
+\section{Sai Số Chi Tiết của 72 Cặp Mẫu}
+Các bảng sau ghi sai số từng bản đồ mới. MAE, RMSE và sai số tương đối được
+tính sau crop; cột R/S lần lượt chỉ RELAXED/STRICT. Các hàng chưa làm tròn trong
+CSV là nguồn để tính các giá trị tổng hợp.
+\begin{table*}[p]
+\centering
+\caption{Sai số mẫu bsds\_01 (24 bản đồ)}
+\begin{tabular}{lrrrrrr}
+\toprule
+Toán tử & $\sigma$ & MAE & RMSE & Rel max & Pearson & Loại\\
+\midrule
+Gauss & 1 & 1.045e-06 & 3.182e-06 & 6.544e-08 & 1.00000000 & S \\
+$L_x$ & 1 & 2.199e-04 & 3.371e-04 & 7.502e-05 & 1.00000000 & S \\
+$L_y$ & 1 & 3.028e-04 & 4.400e-04 & 7.500e-05 & 1.00000000 & S \\
+$L_{xx}$ & 1 & 6.887e-03 & 7.540e-03 & 6.374e-04 & 0.99999977 & R \\
+$L_{xy}$ & 1 & 2.270e-04 & 3.298e-04 & 1.499e-04 & 1.00000000 & R \\
+$L_{yy}$ & 1 & 6.971e-03 & 7.861e-03 & 5.861e-04 & 0.99999988 & R \\
+Gauss & 2 & 7.323e-07 & 2.660e-06 & 7.302e-08 & 1.00000000 & S \\
+$L_x$ & 2 & 5.872e-04 & 9.035e-04 & 3.644e-04 & 1.00000000 & R \\
+$L_y$ & 2 & 8.241e-04 & 1.229e-03 & 3.645e-04 & 1.00000000 & R \\
+$L_{xx}$ & 2 & 8.234e-03 & 8.918e-03 & 4.042e-03 & 0.99999560 & R \\
+$L_{xy}$ & 2 & 2.937e-04 & 4.307e-04 & 7.290e-04 & 1.00000000 & R \\
+$L_{yy}$ & 2 & 8.337e-03 & 9.228e-03 & 3.930e-03 & 0.99999804 & R \\
+Gauss & 4 & 5.176e-07 & 2.228e-06 & 7.903e-08 & 1.00000000 & S \\
+$L_x$ & 4 & 6.542e-04 & 9.944e-04 & 6.764e-04 & 1.00000000 & R \\
+$L_y$ & 4 & 9.646e-04 & 1.399e-03 & 6.764e-04 & 1.00000000 & R \\
+$L_{xx}$ & 4 & 3.777e-03 & 4.100e-03 & 7.536e-03 & 0.99999142 & R \\
+$L_{xy}$ & 4 & 1.580e-04 & 2.312e-04 & 1.353e-03 & 1.00000000 & R \\
+$L_{yy}$ & 4 & 3.825e-03 & 4.211e-03 & 4.622e-03 & 0.99999600 & R \\
+Gauss & 8 & 3.578e-07 & 1.800e-06 & 8.537e-08 & 1.00000000 & S \\
+$L_x$ & 8 & 5.068e-04 & 7.134e-04 & 8.866e-04 & 1.00000000 & R \\
+$L_y$ & 8 & 8.434e-04 & 1.172e-03 & 8.866e-04 & 1.00000000 & R \\
+$L_{xx}$ & 8 & 1.227e-03 & 1.347e-03 & 8.616e-03 & 0.99999246 & R \\
+$L_{xy}$ & 8 & 6.781e-05 & 9.397e-05 & 1.774e-03 & 1.00000000 & R \\
+$L_{yy}$ & 8 & 1.291e-03 & 1.434e-03 & 7.557e-03 & 0.99999734 & R \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[p]
+\centering
+\caption{Sai số mẫu drive\_01 (24 bản đồ)}
+\begin{tabular}{lrrrrrr}
+\toprule
+Toán tử & $\sigma$ & MAE & RMSE & Rel max & Pearson & Loại\\
+\midrule
+Gauss & 1 & 7.960e-07 & 2.748e-06 & 5.984e-08 & 1.00000000 & S \\
+$L_x$ & 1 & 9.331e-05 & 3.057e-04 & 7.499e-05 & 1.00000000 & S \\
+$L_y$ & 1 & 9.734e-05 & 2.723e-04 & 7.496e-05 & 1.00000000 & S \\
+$L_{xx}$ & 1 & 6.189e-03 & 7.322e-03 & 7.001e-04 & 0.99999885 & R \\
+$L_{xy}$ & 1 & 8.033e-05 & 1.947e-04 & 1.501e-04 & 1.00000000 & R \\
+$L_{yy}$ & 1 & 6.180e-03 & 7.311e-03 & 9.357e-04 & 0.99999866 & R \\
+Gauss & 2 & 5.859e-07 & 2.350e-06 & 5.984e-08 & 1.00000000 & S \\
+$L_x$ & 2 & 3.175e-04 & 1.028e-03 & 3.645e-04 & 1.00000000 & R \\
+$L_y$ & 2 & 3.191e-04 & 8.974e-04 & 3.645e-04 & 1.00000000 & R \\
+$L_{xx}$ & 2 & 7.704e-03 & 9.008e-03 & 2.681e-03 & 0.99999002 & R \\
+$L_{xy}$ & 2 & 1.388e-04 & 3.663e-04 & 7.291e-04 & 1.00000000 & R \\
+$L_{yy}$ & 2 & 7.663e-03 & 8.928e-03 & 3.901e-03 & 0.99998580 & R \\
+Gauss & 4 & 4.171e-07 & 1.966e-06 & 6.005e-08 & 1.00000000 & S \\
+$L_x$ & 4 & 4.200e-04 & 1.172e-03 & 6.764e-04 & 1.00000000 & R \\
+$L_y$ & 4 & 4.436e-04 & 1.121e-03 & 6.765e-04 & 1.00000000 & R \\
+$L_{xx}$ & 4 & 3.736e-03 & 4.235e-03 & 4.940e-03 & 0.99998026 & R \\
+$L_{xy}$ & 4 & 9.510e-05 & 2.279e-04 & 1.353e-03 & 1.00000000 & R \\
+$L_{yy}$ & 4 & 3.735e-03 & 4.226e-03 & 8.179e-03 & 0.99997591 & R \\
+Gauss & 8 & 3.220e-07 & 1.718e-06 & 6.166e-08 & 1.00000000 & S \\
+$L_x$ & 8 & 3.707e-04 & 8.694e-04 & 8.866e-04 & 1.00000000 & R \\
+$L_y$ & 8 & 4.293e-04 & 9.480e-04 & 8.865e-04 & 1.00000000 & R \\
+$L_{xx}$ & 8 & 1.312e-03 & 1.426e-03 & 7.388e-03 & 0.99998031 & R \\
+$L_{xy}$ & 8 & 4.728e-05 & 9.822e-05 & 1.774e-03 & 1.00000000 & R \\
+$L_{yy}$ & 8 & 1.311e-03 & 1.421e-03 & 8.416e-03 & 0.99998107 & R \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[p]
+\centering
+\caption{Sai số mẫu blob\_01 (24 bản đồ)}
+\begin{tabular}{lrrrrrr}
+\toprule
+Toán tử & $\sigma$ & MAE & RMSE & Rel max & Pearson & Loại\\
+\midrule
+Gauss & 1 & 2.122e-08 & 5.340e-07 & 6.936e-08 & 1.00000000 & S \\
+$L_x$ & 1 & 2.406e-05 & 2.960e-04 & 7.502e-05 & 1.00000000 & S \\
+$L_y$ & 1 & 2.406e-05 & 2.959e-04 & 7.502e-05 & 1.00000000 & S \\
+$L_{xx}$ & 1 & 1.908e-04 & 1.857e-03 & 7.965e-04 & 0.99999991 & R \\
+$L_{xy}$ & 1 & 1.881e-05 & 2.128e-04 & 1.500e-04 & 1.00000000 & R \\
+$L_{yy}$ & 1 & 1.908e-04 & 1.857e-03 & 7.965e-04 & 0.99999991 & R \\
+Gauss & 2 & 1.586e-08 & 3.632e-07 & 6.936e-08 & 1.00000000 & S \\
+$L_x$ & 2 & 1.165e-04 & 9.959e-04 & 3.645e-04 & 1.00000000 & R \\
+$L_y$ & 2 & 1.165e-04 & 9.958e-04 & 3.645e-04 & 1.00000000 & R \\
+$L_{xx}$ & 2 & 3.187e-04 & 2.476e-03 & 2.325e-03 & 0.99999934 & R \\
+$L_{xy}$ & 2 & 4.995e-05 & 3.955e-04 & 7.291e-04 & 1.00000000 & R \\
+$L_{yy}$ & 2 & 3.187e-04 & 2.476e-03 & 2.325e-03 & 0.99999934 & R \\
+Gauss & 4 & 2.855e-08 & 4.857e-07 & 8.048e-08 & 1.00000000 & S \\
+$L_x$ & 4 & 1.988e-04 & 1.140e-03 & 6.765e-04 & 1.00000000 & R \\
+$L_y$ & 4 & 1.988e-04 & 1.140e-03 & 6.765e-04 & 1.00000000 & R \\
+$L_{xx}$ & 4 & 3.247e-04 & 1.646e-03 & 4.017e-03 & 0.99999950 & R \\
+$L_{xy}$ & 4 & 5.744e-05 & 2.898e-04 & 1.353e-03 & 1.00000000 & R \\
+$L_{yy}$ & 4 & 3.247e-04 & 1.646e-03 & 4.017e-03 & 0.99999950 & R \\
+Gauss & 8 & 2.501e-08 & 2.499e-07 & 8.917e-08 & 1.00000000 & S \\
+$L_x$ & 8 & 2.197e-04 & 6.823e-04 & 8.866e-04 & 1.00000000 & R \\
+$L_y$ & 8 & 2.199e-04 & 6.823e-04 & 8.866e-04 & 1.00000000 & R \\
+$L_{xx}$ & 8 & 2.070e-04 & 5.958e-04 & 5.164e-03 & 0.99999974 & R \\
+$L_{xy}$ & 8 & 4.000e-05 & 1.089e-04 & 1.774e-03 & 1.00000000 & R \\
+$L_{yy}$ & 8 & 2.081e-04 & 5.959e-04 & 5.164e-03 & 0.99999974 & R \\
+\bottomrule
+\end{tabular}
+\end{table*}
+

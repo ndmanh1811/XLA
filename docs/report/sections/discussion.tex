@@ -1,0 +1,58 @@
+\subsection{Ảnh hưởng của tỷ lệ đến kết quả BSDS500}
+\begin{table*}[t]
+\centering
+\caption{Kết quả BSDS500 canonical theo tỷ lệ: ngưỡng chọn trên Python và giữ cho Fiji; dung sai là đĩa Euclidean bán kính 2 px, còn FeatureJ Edges là pipeline tham chiếu riêng}
+\begin{tabular}{crrrrr}
+\toprule
+$\sigma$ & $p_l/p_h$ & Python F1 & Fiji fair F1 & $\Delta F_1$ & FeatureJ Edges F1\\
+\midrule
+1 & 76/94 & 0.455418 & 0.455478 & 0.000060 & 0.488766\\
+2 & 67/91 & 0.477886 & 0.477886 & 0.000000 & 0.500818\\
+4 & 49/80 & 0.441491 & 0.441491 & 0.000000 & 0.464873\\
+8 & 23/50 & 0.343340 & 0.343340 & 0.000000 & 0.354292\\
+\bottomrule
+\end{tabular}
+\label{tab:bsds_scales_detailed}
+\end{table*}
+Bảng~\ref{tab:bsds_scales_detailed} cho thấy $\sigma=2$ tốt nhất trong bốn mức đã khảo sát, với điều kiện bộ ngưỡng được chọn riêng tại mỗi mức \cite{xlaRepository}. Kết quả này không chứng minh $\sigma=2$ tối ưu cho mọi ảnh: độ phân giải, kích thước đối tượng và tiêu chí nhãn đều có thể thay đổi tỷ lệ thích hợp.
+
+Ở $\sigma=1$, nhiều chi tiết kết cấu còn rõ nên số ứng viên biên có thể nhiều hơn. Ở $\sigma=8$, các biên nhỏ có thể mất, các đường gần nhau có thể nhập lại, làm khả năng khớp nhãn giảm. Mức trung gian đạt cân bằng tốt hơn trên tập đang dùng. Vì cả $\sigma$ và ngưỡng đều thay đổi trong bảng, không quy toàn bộ chênh lệch F1 cho riêng độ làm mịn.
+
+Các điểm fair gần như trùng nhau cho thấy thay nguồn đạo hàm trong cùng bộ hậu xử lý chỉ làm thay đổi nhỏ điểm số ở cấu hình này. Cột FeatureJ Edges có điểm khác vì sử dụng NMS và ngưỡng theo nhánh tham chiếu riêng. Không dùng cột này để kết luận một nhân đạo hàm tốt hơn nhân còn lại.
+
+\subsection{Cách đọc sai khác giữa các bản đồ}
+Nếu hai bản đồ có Pearson gần 1 nhưng $E_{\mathrm{rel}}$ khác 0, trước hết kiểm tra hệ số tỷ lệ: chuẩn hóa $\sigma^n$, chuẩn moment và miền cường độ. Nếu chỉ sai vùng gần mép ảnh, kiểm tra bán kính hỗ trợ và kiểu đệm. Nếu sai khác có cấu trúc bị xoay hoặc hoán đổi hướng, kiểm tra trục x/y. Nếu đạo hàm bậc lẻ đổi dấu trên hầu hết ảnh còn bậc chẵn gần trùng, kiểm tra tích chập so với tương quan.
+
+Hình sai khác nên được biểu diễn từ $D=P-F$ với thang màu đối xứng quanh 0; đồng thời cung cấp $|D|$ khi cần xem độ lớn lỗi. Tự động giãn thang màu riêng cho mỗi bản đồ có thể làm hai đầu ra khác biên độ trông giống nhau. Ngược lại, một bản đồ sai khác có màu rực không nhất thiết mang sai số lớn nếu thang hiển thị rất hẹp.
+
+\subsection{Các tình huống lỗi dự kiến và cách giải thích}
+\begin{table*}[t]
+\centering
+\caption{Tình huống cần phân tích trên hình và các giả thuyết cần kiểm tra}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+Bài toán & Biểu hiện quan sát & Cách kiểm tra và diễn giải\\
+\midrule
+Biên & Nhiều nét ở vùng kết cấu & Kiểm tra ngưỡng, mức làm mịn và nhãn đường bao; chưa đủ cơ sở quy cho lỗi đạo hàm\\
+Biên & Biên bị ngắt hoặc mất chi tiết & Kiểm tra ngưỡng cao, $\sigma$ lớn và liên thông hysteresis\\
+Mạch & Viền FOV sáng hơn mạch & Kiểm tra mặt nạ và vùng tính điểm, tránh tăng ngưỡng chỉ để che lỗi viền\\
+Mạch & Mất mạch nhỏ hoặc dính vùng giao & Kiểm tra lưới tỷ lệ, ngưỡng và hạn chế mô hình ridge cục bộ\\
+Blob & Nhiều vòng quanh một đối tượng & Kiểm tra cực trị 3D, plateau và khử trùng theo vị trí/kích thước\\
+Blob & Tâm đúng nhưng không được ghép & Kiểm tra ngưỡng sai số bán kính và tính không chắc chắn của nhãn\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+Các dòng trong bảng là giả thuyết phân tích, không phải thống kê lỗi đã được đo riêng trên tập dữ liệu. Muốn kết luận nguyên nhân, cần chọn ví dụ thực tế, lưu cấu hình và thay đổi một yếu tố có kiểm soát.
+
+\subsection{Giới hạn và thiết kế thí nghiệm tiếp theo}
+Thứ nhất, tập đánh giá nhỏ: 10 ảnh mỗi bộ BSDS500 và DRIVE, cùng 5 ảnh Blob. Các giá trị trung bình mô tả tập con đang dùng; chưa có cơ sở coi chúng là hiệu năng trên toàn bộ dữ liệu hoặc ảnh chụp trong điều kiện khác.
+
+Thứ hai, ngưỡng BSDS được lựa chọn và đánh giá trên cùng ảnh. Một thiết kế chặt chẽ hơn cần tách tập chọn tham số và tập đánh giá cuối, cố định $\sigma$, ngưỡng và các tham số Frangi/LoG trước khi xem nhãn tập cuối. Khi đó điểm số có thể giảm nhưng phản ánh khả năng tổng quát hóa rõ hơn.
+
+Thứ ba, nhãn đa annotator, độ rộng mạch do người vẽ và bán kính tế bào đều có sai khác chủ quan. Báo cáo dung sai ghép và phân tích ảnh lỗi giúp người đọc hiểu ý nghĩa của TP/FP/FN, thay vì coi nhãn là một mô hình hình học hoàn toàn chính xác.
+
+Thứ tư, chưa có khoảng tin cậy hay phép kiểm định thống kê cho chênh lệch F1 rất nhỏ. Các chênh lệch khoảng $10^{-3}$ được dùng như mô tả tính nhất quán của hai pipeline trên tập này, không phải bằng chứng về khác biệt chất lượng có ý nghĩa thống kê.
+
+Thứ năm, thời gian chạy chỉ có ý nghĩa khi cùng phạm vi công việc: đọc/ghi ảnh, khởi động JVM, thời gian plugin và hậu xử lý phải được xác định rõ. Cần bỏ lần khởi động, chạy lặp lại, báo cáo trung vị và phần cứng thực tế. Vì chưa tái chạy phép đo trên máy biên tập, bản báo cáo không thêm một hệ số tăng tốc mới từ suy luận độ phức tạp.
+
+Cuối cùng, ảnh Blob tổng hợp giúp kiểm tra đúng đắn hình học nhưng có hình dạng và nền đơn giản. Khoảng cách giữa F1=1 trên ảnh tổng hợp và F1 khoảng 0.465 trên ảnh sinh học nhấn mạnh nhu cầu đánh giá trên cấu trúc chồng lấp, nền không đều và nhiều dạng kích thước.

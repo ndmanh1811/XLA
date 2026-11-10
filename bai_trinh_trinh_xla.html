@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTL XLA - Đạo Hàm Gaussian &amp; Thẩm Định Đối Chuẩn FeatureJ/Fiji</title>
+    <script src="https://revealjs.com/dist/reveal.js"></script>
+    <link rel="stylesheet" href="https://revealjs.com/dist/reveal.css">
+    <link rel="stylesheet" href="https://revealjs.com/dist/theme/serif.css">
+    <style>
+        :root {
+            --r-primary: #2c3e50;
+            --r-secondary: #34495e;
+            --r-main-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        }
+        body { font-family: var(--r-main-font); }
+        .small { font-size: 0.85em; opacity: 0.9; }
+        .role-box {
+            display: flex; gap: 1rem; margin-top: 1rem;
+        }
+        .role-item {
+            flex: 1; border: 1px solid #bdc3c7; border-radius: 6px;
+            padding: 0.8rem; background: #f8f9fa;
+        }
+        .role-name { font-weight: bold; color: #2c3e50; }
+        .role-desc { font-size: 0.8em; color: #555; margin-top: 0.3rem; }
+        .formula { font-family: "Courier New", monospace; }
+        .eq-box {
+            background: #f4f6f7; border-left: 4px solid #2c3e50;
+            padding: 0.8rem; margin: 0.8rem 0; border-radius: 0 6px 6px 0;
+        }
+        .metric-card {
+            display: inline-block; border: 1px solid #34495e; border-radius: 8px;
+            padding: 0.6rem 1rem; margin: 0.3rem; background: #ecf0f1;
+        }
+        table { font-size: 0.85em; }
+        th, td { padding: 4px 8px; border: 1px solid #bdc3c7; }
+        th { background: #2c3e50; color: white; }
+        tr:nth-child(even) td { background: #f4f6f7; }
+        .footer-note { position: absolute; bottom: 0.5rem; right: 1rem;
+            font-size: 0.7em; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- Slide 1: Bìa & Phân công -->
+<section>
+    <h1>Phát Hiện Đặc Trưng Ảnh Đa Tỷ Lệ<br>Bằng Đạo Hàm Gaussian</h1>
+    <h3>Cài Đặt Thuần NumPy và Thẩm Định Đối Chuẩn với FeatureJ / Fiji</h3>
+    <p class="small">Môn Xử lý ảnh số &nbsp;|&nbsp; GVHD: ............ &nbsp;|&nbsp; Mã nhóm: ............</p>
+
+    <div class="role-box">
+        <div class="role-item">
+            <div class="role-name">Nguyễn Đức Mạnh</div>
+            <div class="role-desc">Lead &amp; Python Core Engine (NumPy from-scratch, Tối ưu, Tier 1)</div>
+        </div>
+        <div class="role-item">
+            <div class="role-name">Nguyễn Tiến Hưng</div>
+            <div class="role-desc">Cơ sở lý thuyết &amp; Báo cáo LaTeX</div>
+        </div>
+        <div class="role-item">
+            <div class="role-name">Phạm Bảo Lộc</div>
+            <div class="role-desc">Fiji Workflow &amp; Macro Exporter</div>
+        </div>
+        <div class="role-item">
+            <div class="role-name">Bùi Trung Đức</div>
+            <div class="role-desc">Dữ liệu Ground Truth &amp; Metric Benchmark</div>
+        </div>
+    </div>
+
+    <div class="footer-note">Slide 1/11</div>
+</section>
+
+<!-- Slide 2: Đặt vấn đề -->
+<section>
+    <h2>Đặt Vấn Đề &amp; Mục Tiêu Nghiên Cứu</h2>
+
+    <div style="display:flex; gap:1rem;">
+        <div style="flex:1;">
+            <h3>Nghịch lý xử lý ảnh</h3>
+            <ul>
+                <li>Cửa sổ lọc nhỏ: nhạy cảm với nhiễu</li>
+                <li>Cửa sổ lớn: làm nhòe cấu trúc mảnh</li>
+                <li class="small">→ Cần không gian tỷ lệ (Scale-space)</li>
+            </ul>
+        </div>
+        <div style="flex:1;">
+            <h3>Hạn chế bộ lọc cổ điển</h3>
+            <ul>
+                <li>Sobel/Prewitt: nhạy cảm với hướng trục, không có tham số tỷ lệ vật lý σ</li>
+                <li class="small">→ Cần phương pháp có tham số tỷ lệ</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 class="small" style="margin-top:1rem;">Mục tiêu</h3>
+    <ul>
+        <li>Cài đặt <b>from-scratch</b> bằng Python thuần NumPy</li>
+        <li>Xây dựng khung kiểm chuẩn <b>2 tầng</b> (Two-Tier Evaluation) đối chiếu với chuẩn mực công nghiệp <b>FeatureJ</b> (Erik Meijering)</li>
+    </ul>
+
+    <div class="footer-note">Slide 2/11</div>
+</section>
+
+<!-- Slide 3: Cơ sở lý thuyết -->
+<section>
+    <h2>Cơ Sở Lý Thuyết &amp; Mô Hình Toán Học</h2>
+
+    <div class="eq-box">
+        <p><b>Tiên đề thang đo Tony Lindeberg</b> và phương trình truyền nhiệt vi phân:</p>
+        <p class="formula" style="font-size:1.4em; text-align:center;">∂L/∂t = ½ ∇²L</p>
+    </div>
+
+    <div class="eq-box">
+        <p><b>Nguyên lý đạo hàm chuẩn hóa γ-normalized:</b></p>
+        <p class="formula" style="font-size:1.4em; text-align:center;">∂ξ = σ^γ ∂x</p>
+    </div>
+
+    <h3 class="small">Mô hình toán 3 bài toán đặc trưng</h3>
+    <table>
+        <tr><th>Bài toán</th><th>Phương pháp</th><th>Toán tử chính</th></tr>
+        <tr><td>Biên Canny</td><td>Gradient</td><td>Lx, Ly</td></tr>
+        <tr><td>Mạch máu / Gờ Frangi</td><td>Hessian Eigenvalues</td><td>λ₁, λ₂</td></tr>
+        <tr><td>Đốm Blobs</td><td>Extrema LoG</td><td>∇²L (3D)</td></tr>
+    </table>
+
+    <div class="footer-note">Slide 3/11</div>
+</section>
+
+<!-- Slide 4: Khảo sát FeatureJ & Fiji Workflow -->
+<section>
+    <h2>Khảo Sát FeatureJ &amp; Tự Động Hóa Fiji Workflow</h2>
+
+    <h3 class="small">Khảo sát tham số thực nghiệm</h3>
+    <ul>
+        <li>Bán kính cắt kernel: <b>r = ⌈k·σ⌉</b> với k = 3.0 (Gaussian làm mịn), k = 4.0 (đạo hàm bậc 1, bậc 2)</li>
+        <li>Xử lý biên <b>Mirror</b> (phản xạ, không lặp pixel mép)</li>
+        <li>Cờ chuẩn hóa: <b>không tự nhân σ</b> ở FeatureJ</li>
+    </ul>
+
+    <h3 class="small">Tự động hóa Macro (<i>batch_process.ijm</i>)</h3>
+    <ul>
+        <li>Xuất tự động <b>435 bản đồ TIFF 32-bit float</b> (423 macro + 12 legacy)</li>
+        <li>Đo đạc runtime chuẩn xác <b>369 dòng</b> (303 single-output + 66 double-output)</li>
+    </ul>
+
+    <div class="small">
+        <i>Hình ảnh minh họa: giao diện FeatureJ (Laplacian, Structure Tensor)</i>
+    </div>
+
+    <div class="footer-note">Slide 4/11</div>
+</section>
+
+<!-- Slide 5: Python Core & Tối ưu -->
+<section>
+    <h2>Cài Đặt Python Core Engine &amp; Tối Ưu Hóa Tính Toán</h2>
+
+    <h3 class="small">Triết lý From-scratch</h3>
+    <ul>
+        <li>100% NumPy, không phụ thuộc OpenCV / SciPy ndimage</li>
+        <li>Đảm bảo điều kiện bảo toàn moment vi phân rời rạc (Discrete Moment Conservation)</li>
+    </ul>
+
+    <h3 class="small">Tối ưu hóa tăng tốc</h3>
+    <ul>
+        <li>Phân rã tích chập 2D <i>O(Kx·Ky·HW)</i> thành 2 phép chập 1D tách rời <i>O((Kx+Ky)·HW)</i></li>
+        <li>Tách NMS tính 1 lần, Fast BFS Hysteresis</li>
+    </ul>
+
+    <h3 class="small">Bảng đo thực nghiệm Naive vs Separable</h3>
+    <table>
+        <tr><th>Chỉ số</th><th>Kết quả</th></tr>
+        <tr><td>Sai số số học tuyệt đối</td><td>∼10⁻¹³ (đồng nhất số học tuyệt đối)</td></tr>
+        <tr><td>Tốc độ tăng tốc thực tế</td><td>2.4× (σ=1) → 29× (σ=8, Lxx)</td></tr>
+        <tr><td>Hệ số lý thuyết</td><td>Kx·Ky / (Kx+Ky)</td></tr>
+    </table>
+
+    <div class="footer-note">Slide 5/11</div>
+</section>
+
+<!-- Slide 6: Tier 1 -->
+<section>
+    <h2>Nghiệm Thu Tầng 1 — Đối Chuẩn Số Học Vi Phân</h2>
+
+    <p>Đối chiếu pixel-to-pixel trên <b>220 bản đồ vi phân</b> giữa Python và Fiji.</p>
+
+    <div style="font-size:1.2em; margin:1rem 0;">
+        <span class="metric-card">35 STRICT</span>
+        <span class="metric-card">185 RELAXED</span>
+        <span class="metric-card" style="background:#e74c3c; color:white;">0 FAIL</span>
+    </div>
+
+    <ul>
+        <li><b>STRICT:</b> rel &lt; 10⁻⁴ và r &gt; 0.9999 (Gauss, bậc 1 tại σ=1.0)</li>
+        <li><b>RELAXED:</b> rel &lt; 10⁻² và r &gt; 0.9999 (đạo hàm bậc 2, Hessian, Structure Tensor)</li>
+        <li>Pearson correlation trung bình toàn hệ thống: <b>r = 0.99999710</b> (xấp xỉ tuyệt đối)</li>
+        <li>Sai số tương đối lớn nhất: <b>0.00928702</b> (bsds_02, hess-l1, σ=8.0)</li>
+    </ul>
+
+    <p class="small">Giải thích: khác biệt rời rạc hóa bù moment Lindeberg (Python) vs lấy mẫu liên tục (FeatureJ), hình dạng phân bố không gian trùng khớp tuyệt đối.</p>
+
+    <div class="footer-note">Slide 6/11</div>
+</section>
+
+<!-- Slide 7: Tier 2 Phần 1 -->
+<section>
+    <h2>Nghiệm Thu Tầng 2 (Phần 1) — Dò Biên Canny BSDS500</h2>
+
+    <ul>
+        <li>10 ảnh BSDS500 với 56 bộ nhãn đa annotator (dung sai 2 px)</li>
+        <li>Quét lưới ngưỡng phân vị per-σ (1.172 cấu hình)</li>
+        <li><b>Tối ưu tại σ = 2.0</b> (p_low = 67.0, p_high = 91.0) đạt đỉnh <b>F1 = 0.477886</b></li>
+    </ul>
+
+    <h3 class="small">Tương đương thuật toán công bằng (Fair Canny)</h3>
+    <ul>
+        <li>Tại σ ∈ {2.0, 4.0, 8.0}: ΔF1 = 0.000000 (trùng khít tuyệt đối Python ↔ Fiji Canny)</li>
+    </ul>
+
+    <h3 class="small">Phân định rạch ròi</h3>
+    <ul>
+        <li>Tách biệt bảng Fair Canny (đỉnh 0.477886, σ=2.0) với bảng tham chiếu FeatureJ Edges (F1: 0.488766 tại σ=1.0; 0.500818 tại σ=2.0; không trộn với fair Canny)</li>
+    </ul>
+
+    <div class="small">
+        <i>Hình ảnh: tier2_bsds_pr_curves.png và tier2_bsds_f1_heatmap.png</i>
+    </div>
+
+    <div class="footer-note">Slide 7/11</div>
+</section>
+
+<!-- Slide 8: Tier 2 Phần 2 -->
+<section>
+    <h2>Nghiệm Thu Tầng 2 (Phần 2) — Dò Gờ DRIVE &amp; Dò Đốm Blobs</h2>
+
+    <h3 class="small">DRIVE (Frangi Vesselness)</h3>
+    <ul>
+        <li>10 ảnh mạch máu võng mạc, mặt nạ FOV xói mòn thích ứng ⌈4σ⌉</li>
+        <li>Python F1 = 0.6806 vs Fiji F1 = 0.6817 (ΔF1 = +0.0010)</li>
+    </ul>
+
+    <h3 class="small">Blobs (LoG Extrema)</h3>
+    <ul>
+        <li>4 ảnh tổng hợp đạt tuyệt đối <b>F1 = 1.0000</b></li>
+        <li>Ảnh tế bào thực tế blob_05: phát hiện đúng 140/276 tế bào (F1 = 0.4651 vs Fiji 0.4595)</li>
+        <li>Macro F1 = 0.8930, Micro F1 = 0.4921</li>
+    </ul>
+
+    <div class="small">
+        <i>Hình ảnh: overlay của Đức trong docs/09_11/ground_truth_figures/</i>
+    </div>
+
+    <div class="footer-note">Slide 8/11</div>
+</section>
+
+<!-- Slide 9: Benchmark hiệu năng -->
+<section>
+    <h2>Benchmark Hiệu Năng Thời Gian Thực Thi</h2>
+
+    <ul>
+        <li>Đo đạc vi mô (micro-benchmarking) 369 lần chạy giữa Python Core và Fiji Java Engine</li>
+        <li>Phân tích đánh đổi thời gian thực thi theo từng toán tử và theo thang đo σ</li>
+    </ul>
+
+    <div class="small">
+        <i>Hình ảnh: figures/tier2_runtime_comparison.png</i>
+    </div>
+
+    <div class="footer-note">Slide 9/11</div>
+</section>
+
+<!-- Slide 10: Kết luận -->
+<section>
+    <h2>Bài Học Kinh Hiệm &amp; Đóng Góp Vượt Chỉ Tiêu</h2>
+
+    <h3 class="small">Bài học kinh nghiệm</h3>
+    <ul>
+        <li>Bảo toàn moment vi phân rời rạc, xử lý hiệu ứng biên ở σ lớn</li>
+        <li>Hiện tượng giao thoa tỷ lệ ở các cụm tế bào dính nhau</li>
+    </ul>
+
+    <h3 class="small">Điểm vượt chỉ tiêu</h3>
+    <ul>
+        <li>Xây dựng hệ thống không gian tỷ lệ hoàn chỉnh (không chỉ 1 bộ lọc đơn lẻ)</li>
+        <li>Khung kiểm chuẩn 2 tầng (toán vi phân số học + thị giác máy tính GT)</li>
+        <li>Quy mô công nghiệp: 435 TIFF, 369 dòng runtime, 20/20 bài test tự động PASS</li>
+    </ul>
+
+    <div class="footer-note">Slide 10/11</div>
+</section>
+
+<!-- Slide 11: Cảm ơn & Q&A -->
+<section>
+    <h2>Lời Cảm Ơn &amp; Hỏi Đáp (Q&A)</h2>
+
+    <p>Cảm ơn Thầy và Hội đồng.</p>
+
+    <h3 class="small">Công khai mã nguồn</h3>
+    <p style="font-size:1.1em; font-family:monospace;">https://github.com/ndmanh1811/XLA.git</p>
+    <p class="small">(nhánh main, tag v1.0-release)</p>
+
+    <p class="small">Sẵn sàng trả lời câu hỏi bảo vệ.</p>
+
+    <div class="footer-note">Slide 11/11</div>
+</section>
+
+</div>
+</div>
+
+<script src="https://revealjs.com/dist/reveal.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'slide',
+        controls: true,
+        progress: true,
+        center: true,
+        slideNumber: 'c / t',
+        math: {
+            mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js',
+            config: 'TeX-AMS_HTML-full'
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1468 @@
+{
+  "schema_version": 1,
+  "task": "21",
+  "deadline": "2026-11-05",
+  "coordinates": "zero-based x=column y=row; pixel units",
+  "images": [
+    {
+      "image": "bsds_01",
+      "kind": "bsds",
+      "input": "data/raw/bsds_01.png",
+      "input_sha256": "03cd4f8e2deed64f1494746485ba9aaca7356514ae01dba4305bdc99c430b73a",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 6,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_01.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "5db3747183055395991cc2bebc4915774630abe41c8f93551c2853ad4e628497"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "9201b7c286ac56003da9f5d3083f000ab7cad2983995bbf5f784e21b5406287a"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "4cf35c4bd7eb9713b60c9fb543e207644fc1bde0388e8043c1272e91be7a7465"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "e50fb51d17d4184f5af9bd2cdedc3a4e52484efdc7bbc7dc98c4dfa480d26329"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "a52eb01b676d6dcf5106e99491b5c79c39315f7175a10b8726182b937363876d"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "879654ba490f3bef32bb2ab25066b5444cf022d5dd5b880b785a71d422a3c2a3"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "f687444a6b6c6eb88c4fa11e142615152dbe41c2ff5d460d99ce127f1ba9a7e6"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "51a598ac8e5790e5b5aa340bc99487a3fe8edb4d488a10ad155ca7b1843f3584"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "4e4ee802f5ccb68f924053ee586e267230db584d10f710340bd17d9dde309823"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "d85844a89364beb288b4b964600106b07a58b970c9944de8ed7aff1a614f2abf"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "61cc8b5e408d5f0fb0d83ce6d10e884e48e70bacd9427940515eccc6cee130f4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_06_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "1b86797ca1fa87d91dd3b23a64b05abd73ae7cc06a82a5c29562370fc9cef4af"
+        },
+        {
+          "path": "data/gt/bsds/bsds_01/annotator_06_segments.tif",
+          "role": "region_labels",
+          "sha256": "745fb19ce1cdd62ce34297ec0b10b925ee8cd48c9d726211b258a07e0e6349d2"
+        },
+        {
+          "path": "data/gt/previews/bsds_01_overlay.png",
+          "role": "preview_only",
+          "sha256": "760302314749f14a6b7914494b3715bf3154f8e345d83ccd0f3cea5e4321ba92"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/100075.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_02",
+      "kind": "bsds",
+      "input": "data/raw/bsds_02.png",
+      "input_sha256": "44475f8591069f5f13dc97a24b6c94ecd5aacb95dc5c717b94c76c21abd2e540",
+      "shape": [
+        481,
+        321
+      ],
+      "status": "READY",
+      "annotators": 5,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_02.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "2255c875480a8cd43de468098d584f436df15075f1fddc2472db98b3322d896c"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "075665ef52addd221027cc169f161b8567c4a721048594dda364455c6b18da8b"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "cd8cf012add72e65341f4903b1f1acc8caf3905fed9b55a14ccbb21ef3ce6c41"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "b44dc48780878ad993ee61ca09852cf15c0e7abd88bac3db2a3c857a925f2031"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "6180822c7df96340e9dcaa67f38afec15c6263dfa917111e0794215abf34766f"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "d9f5098ffdeeb9d4540fc7f614c4122fbbec41e94a02ca2d7f8b8c59d527ba2e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "8ccdd4d7884f6790f4257e15125d959024f7ad7f1e1768969672584a072f2162"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "2172051886aceedf85e287a6bffd49b5774c9b2570645a341bda39617862c779"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "7f6a6eebee8a0af08754ddf4b025f65af0fee862e77abe07b73916e4604c69e2"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "4624c5cf953bbe7037b56fbe66ae3af4998877e41a2f13329ce08b4aed17e078"
+        },
+        {
+          "path": "data/gt/bsds/bsds_02/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "96eb273dc9b5379741b715ab6b1b4a9ad4bd31258ad01a225ffa4e49271628cf"
+        },
+        {
+          "path": "data/gt/previews/bsds_02_overlay.png",
+          "role": "preview_only",
+          "sha256": "40f999ee3fc50a534c03f6f0183dfa066435e39a77266fada83ce7d728c60abd"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/100080.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_03",
+      "kind": "bsds",
+      "input": "data/raw/bsds_03.png",
+      "input_sha256": "fbe6a63e9f8688972658d5586caf8e80fa58a265c1d290daef6dac4c1c9d6cdc",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 5,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_03.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "870b2c487ec1217bfa2636bc223edd1893fc4a3d50cc0d48c6fb60f944ce38cb"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "7a33ef7491453054b754a54f0886deb0573949db79bd0182187d81b08540322e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "784d9d68121ccfe591a4341f2356f544d08988d766de477e09cd6da715d93bef"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "70675b5de35b8fd2a748f02e9b76e01a21552028dac72203a994b43e93fb8f19"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "9d432d6626e679a7f2c0836cfbb99fa78f600b0012f9fa198299020b5fb485b5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "072fcfa8c267e9b1a32423bbc64a3c63ae96fdfaa11d04103ac92f16151dfcf1"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "fcf86dc3c67575172f9788788a104e75d96842a462c025517742759ae61c2ea0"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "24a8ffe53d0584b84746b7e897caa3029f2d11d7abc55dfc7015033f766a53b3"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "a9871739d89c3769592045d91de593e0fda46f8ff0609971ec237585b147807d"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "c7f86bf736d38b277259bd6ca589596046c36426d09cefaef3a03e331382bbec"
+        },
+        {
+          "path": "data/gt/bsds/bsds_03/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "efbd23a7b874b158e19c546f38719abc7508aa40cb0eaaff5dc27c8c3a7c7f3d"
+        },
+        {
+          "path": "data/gt/previews/bsds_03_overlay.png",
+          "role": "preview_only",
+          "sha256": "e1ab2d145bbc80aa698e1ca32b440ddce09d4c9168defe87164212c3b88db221"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/100098.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_04",
+      "kind": "bsds",
+      "input": "data/raw/bsds_04.png",
+      "input_sha256": "2b62a018c399de16511705200e10e9706ada6a7623fcf4bd06e1143069ee20a8",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 6,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_04.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "500c86a4979c9a8e92c9b2f2c6a68d4cd6759dbe4d05b3f3f28f13dbd98b06a6"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "75f016cf41cf83731a7376d5fb439c510002f5c8e51e25e5747b16dc069dcb5e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "530eeb7f36c7f8418d594e122a33b3144c5313200973eafcd8e8d5c015adda49"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "6568a072b481b95341c037b7c53889dbd9aa672d0cd83566992cc2d11a87d072"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "7b03932ac4cec677f352f8e20f27bce357fd38696aa7cf82e1c245949b5b5dbe"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "4f6543bdf2bfbad05984d2acde123bd9b1bbbe35fcbfeeb6ca6a24cf2fa054e4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "65379e25994c09749a5c8d4f3080b2c7ee6b1b465f1e9513ead39783e8086e68"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "c0025d3239ac2c620da4a881363337fbc5f28e62bd0bf8c6865ca5cb093f278e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "8b767cd0e864c3ddb1ae615858ce26508587a87c6f0377fdfb8b017ba0bf3465"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "2061c388ffbe22bb38bac12cdf0b5a035def98bf94467d4635a04ff0c6759f2b"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "8c25661a285d83af863ac8ec9f3ffa8b4232d1f2abce89068054acd4c5b29868"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_06_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "46583762aeb5dfc186e617f28ac58916ae067228d7b451ba27795a659f93c1ab"
+        },
+        {
+          "path": "data/gt/bsds/bsds_04/annotator_06_segments.tif",
+          "role": "region_labels",
+          "sha256": "ab46ed8f9a6b6c1781e738f1e62012c2a60b117c4c692a2c402560643c8c56f7"
+        },
+        {
+          "path": "data/gt/previews/bsds_04_overlay.png",
+          "role": "preview_only",
+          "sha256": "83da665d4ad3b0e101753b4fe1cc4af24a1396a1781e43aa13200e2ebbffb4de"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/103041.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_05",
+      "kind": "bsds",
+      "input": "data/raw/bsds_05.png",
+      "input_sha256": "88120dd7dc06d8fc6a5bc08abcd7917bf0389adf5264eb2036c96b648c90c570",
+      "shape": [
+        481,
+        321
+      ],
+      "status": "READY",
+      "annotators": 7,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_05.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "7cf46cb9be18d6289a5678734c3c092aa12c9795586620132acc02a60db453e7"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "e868619f739556e6e2ebf7f4d467402b691dd51fcc3f5e327730237d7cd63553"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "068811c11c376101c496e6b27cbcd44105668498e9d6c8b27248e39811587698"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "d00ab91a9730e611c376a9825e69a5cb89f5cb087f90ca70d4df837a66da90f2"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "e6bdd35b6abe1dceb2b98c99a254dd6b234b2f53549fa5f0d800af096039eb6b"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "c699847df8d24673552aba0b998491d6c656e5fcd0d322d7cb26b5d20440111f"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "7585469d9c1701928c50c5a18d609297799e5bdb9be4e6981eff621f97923e96"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "7ea5d83e903d0c65de733c153b6fb94aa7731ba8a32a93496c07b6bf900e5849"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "f800afc6d729ef4f78dd9ac16d6de39636b737863540e5aa4ce7c7b3739f6f1c"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "242c4ce864ca721076a2ddde13af450a4dde776a05440517b19e141e137f8e95"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "b4e9177b2cd9485a21a16c8cdfe72ebfb75fa33dc1a457b951a4dc528e012819"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_06_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "08631db4c501bab43785036e13d5874e7eb2052c2e67aad9721eddaeecb5bba1"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_06_segments.tif",
+          "role": "region_labels",
+          "sha256": "ee22b59b69075e03153bfd209d7eab38660c81d227d8763267b90e5f307ba142"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_07_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "20405b0e51f1e8700185e43f1a1515dd4aeabee5303588b9784276c662d45f0d"
+        },
+        {
+          "path": "data/gt/bsds/bsds_05/annotator_07_segments.tif",
+          "role": "region_labels",
+          "sha256": "dda590891e9490b74374e4fc327393a61141583ee71c302b09e2df84e47d1e50"
+        },
+        {
+          "path": "data/gt/previews/bsds_05_overlay.png",
+          "role": "preview_only",
+          "sha256": "ee26da2c64c8bc27199a5a1f672da7f6726b96c0968c2cc6c37ffc0f4bc5dd20"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/104022.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_06",
+      "kind": "bsds",
+      "input": "data/raw/bsds_06.png",
+      "input_sha256": "1319c0a111f1c7225a4f00c0b51aec8b3e1f23cb34f9b6990d44166bf01cb547",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 6,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_06.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "9b933829ea5ad1b7892561e5a950d085563793695be46551c0b15607aa5ad5a6"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "b468740bdad5101afefa67a2ebfb17b30d43ae6491a2d766932bb5ceca0273b7"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "7845f0a61bd1187d8ed48929016644f85096bb484705c9bfe38a3bad16fee9e5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "760898e7a0d5627addea7f2c8a62b6f2da645c7969bbaf24a3b5b99ad1de6671"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "e3c77845f4a8470eece12e212eea933720859c922eb453fb64989ee1f7175015"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "c7a7af5308d8e0f8939885b775daaf86623e3eca37a2864da39ecc1a8d68f0a4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "103561255385cd6bafcb53cb8f3f87f0f1da08ef180fe59265da0d3b40e6f952"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "5b25396b086bcfe2fd9c00b133de55adb950c33f00ce6a10f40831d6222b430e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "d5df81ee0c627862eab28313e3f03cfb651cb420e6cf7ccf0d9801e39388181a"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "ca160f0e1a3bcc790f262e52e7fa14b5d525a2a8e8a2322336adf788941401e1"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "f35bb9c34b960a709fd6dbbf91d4d88c7574c32a9f618d31922b835d09e5dbf5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_06_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "0ac8a9dee1fbf82898d78eb7bb61d683e8be64ad94eeb533c5070179bd440044"
+        },
+        {
+          "path": "data/gt/bsds/bsds_06/annotator_06_segments.tif",
+          "role": "region_labels",
+          "sha256": "2f60302e1fb6bedc3368a435160b66f32fa609605dc55a10805d96b2451fc28c"
+        },
+        {
+          "path": "data/gt/previews/bsds_06_overlay.png",
+          "role": "preview_only",
+          "sha256": "0823163e7c8990cd1e5dd66e6a92d5085346bffc9658cf2c27590056e8109479"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/105019.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_07",
+      "kind": "bsds",
+      "input": "data/raw/bsds_07.png",
+      "input_sha256": "0f1f93e5819c1f7dda35dfb511aee265c313a76c8ca2539890711853069ceb52",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 5,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_07.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "cbf9d5e1cd04abfc79d86cd069162b12df91a65a8ad2e580ebaaa75d11245207"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "3568e71fd6965724108402b94128b2e95af3a4b335736317a3f659eed453c4a5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "a3efb2d6f91ade8f7fcc156060d4435b4c38725fb13c22ae94575e86ec8d629b"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "de7071a556ac30669c391e7ff3af7c78f9817a2177a47d2fee8bd907ca1d2cb6"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "9a0690b202b27e207d7d368a13e57f66437d029725ee5621fb606d1a937526c5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "3ca8b111e7073c99dfdff470ecd8c863806bdbeee369d0e1a7502ba7af56894d"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "8ddc7276c0a9a68babd92c1b7ac799768eca48d9b3fb216247e30411dbcc6156"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "5e5f0620a221d7f4cb702e611f0d1dce6d82794bbfe103692db9395b58f19dcd"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "ab9956e7925558ce972171a39b13cf1f016671f253c12974dadef1d36746c175"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "73de8337712f70c20534acae7aa9b4c1af1c0ad61cd8745706aca296d1b3e08a"
+        },
+        {
+          "path": "data/gt/bsds/bsds_07/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "c412acb652f54922ebfad99c8bd32dc0cdaf02cbc88846e0ce2b6f9924ec26e5"
+        },
+        {
+          "path": "data/gt/previews/bsds_07_overlay.png",
+          "role": "preview_only",
+          "sha256": "a030274d88f6f1c8a8384549389c493ceac63299978ff89ed351787104af891a"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/105053.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_08",
+      "kind": "bsds",
+      "input": "data/raw/bsds_08.png",
+      "input_sha256": "ef12a108672eedc5da7b1a05a0bcc978efd58eadd0709d44b94994ed74b7b6fe",
+      "shape": [
+        321,
+        481
+      ],
+      "status": "READY",
+      "annotators": 5,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_08.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "8afe47fcc4e5dc21fef93a2cdbf3222e05c67c9c7577a3ec78fb161d51383773"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "6a8447387a8e77a2b48a4f53b440db88aa51815b7c9b07cc814325f61a1e30a7"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "faeb500d1d5083cc6614e1a016296caf3480c1e84cf0bfc8401f05af04d0afa4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "8c824575f29ef5c5ec14c92e15b14e8983d1216b19b390a1471a8c3e04b08b12"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "68b45cd4a4493e5698b45fe523996d26a6aa589da11808019571beda0274bd35"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "27451ea7a17ffcde30a835b59fe12b3d9b5d06c7df9a71e19bcaa542ab9601a5"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "3f3312987b86f207ede4b48a2406c95fd658049b8666d79c7e2ac181f4dedc0e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "775be8541e188d2595e4c30e523b4896637514779df20aaf63c80154e34d8f6c"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "a51155d397a8470e48d7cec9fb8866c9d8a3d1f30160137011069764a852d58e"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "61777c8714a1d6d84a9e555c14c38d4b32db14120b4909b34ee3b3ebb06de14b"
+        },
+        {
+          "path": "data/gt/bsds/bsds_08/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "951dbdca2019ae7745b57c758c17432dff6faf64d857dee15548e2d1a731b099"
+        },
+        {
+          "path": "data/gt/previews/bsds_08_overlay.png",
+          "role": "preview_only",
+          "sha256": "50c769490041209fa23496a3bdd3dc2fb79419275eee0b67c0d95bc0d9e45c06"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/106020.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_09",
+      "kind": "bsds",
+      "input": "data/raw/bsds_09.png",
+      "input_sha256": "f854aec9e0880774c386a1abaa496c9a22115f1a8fbe5d3ed29f1b0a86042ce7",
+      "shape": [
+        481,
+        321
+      ],
+      "status": "READY",
+      "annotators": 6,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_09.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "55f273224176fd49f3bc0f48a0807a9717a2dcf7dd390b3dd199f68fcc83501f"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "2ff6128fa06d45d53479022ba3d847f6ca4a0e2d4b85152c56191e38f3717ebc"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "03723e666e05e18b59348219b2066d28c4f6fa27fd83acdea6d958bcf3b3007f"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "dcbd06586877cf626322b1917c8f4311fdfac299cfeab7e825f5eabb1213faf2"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "baf23bb7c9a4e3852739cad7b3c2c634ca04024eb1f99f5818b1f8a436b8913d"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "7032f921074323223974aa9de1ddbb2c2a57db33ec6c167922312634390d0c5a"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "43485fb15fc2229dd91b563edc35252126df3708d4f6b8e1580b67c8e3108530"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "cd4207c4f6bf6aa1a6d2d152d335d819ecdad06d657f1d1b61e646cc7784c1fa"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "9695114fedc618381d9982fc9bfed723696dd2a204ccb6af686f508ce1a152fd"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "3d21a90e1b8fc8ad95c8ec1dc157f869f4b68dda541cac8c653699647a361626"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "f7b1bc00691e25e5ccf8e00ad4b45e03e461dc2d72f59370239bb49e62ce7f72"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_06_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "7238c507617abb891f3f5919184585c7347c1e546e056dd04bace50ed937058c"
+        },
+        {
+          "path": "data/gt/bsds/bsds_09/annotator_06_segments.tif",
+          "role": "region_labels",
+          "sha256": "fe26dd4864f3ecce182221e598e4030989b54ce2124552d397c7a0dccf1178e8"
+        },
+        {
+          "path": "data/gt/previews/bsds_09_overlay.png",
+          "role": "preview_only",
+          "sha256": "87f5abbfae0219ce2ed062190fd7043b7ef5c7eb51a84887195c5a31bdaf65c1"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/106025.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "bsds_10",
+      "kind": "bsds",
+      "input": "data/raw/bsds_10.png",
+      "input_sha256": "1a4ba261688d43ce8ecf57b028fb27aa399659e79d1e3cb36f8fab6ae0550c47",
+      "shape": [
+        481,
+        321
+      ],
+      "status": "READY",
+      "annotators": 5,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/bsds/bsds_10.mat",
+          "role": "original_mat_all_annotators",
+          "sha256": "cbedd3447dc44371bc5cd73d91a7e2bf84efcdabc8e0fa1cdf18e23efa61fb38"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_01_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "b1bc3f38adddb004649986f3057cdab50113d9e8754eae7e7f1bbc430dea1711"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_01_segments.tif",
+          "role": "region_labels",
+          "sha256": "0dcdc41642561292a6c454d3312f883e3fecb1eefa607a2f14cd055ba6b8a5cf"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_02_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "1b683a7c6702ae46e558ca749347c81863bd668b88996a0e9605db48b5875721"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_02_segments.tif",
+          "role": "region_labels",
+          "sha256": "35fbf96a6f22eb3d6d2b32c4371a805cf8d043b76ada0b5c4f4512fc3a61d5e9"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_03_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "d9ee44d0e25aca994a44c4cea0bd035ae38c909f13dad1359f3c79ec5fe189c4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_03_segments.tif",
+          "role": "region_labels",
+          "sha256": "5de9e37fedd66d26107480b06bddee1152c03270bafc761c5c6308f28e4d0bd0"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_04_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "e7b78483c1ae3cc256bbea4874d97010bbf913cea031be566a24360e3d649eb4"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_04_segments.tif",
+          "role": "region_labels",
+          "sha256": "e6130966b4c6e83a6b711e4d199eb5e6d3ad456befb63c42195cd482a9e48c08"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_05_boundaries.png",
+          "role": "boundary_mask",
+          "sha256": "ca11750287b48e97ed60909103c0fb99f7ba526c5afae416b9239b6491b36471"
+        },
+        {
+          "path": "data/gt/bsds/bsds_10/annotator_05_segments.tif",
+          "role": "region_labels",
+          "sha256": "c9e721f167f14b1355d7457bb1ba87bdf68b0a623ad5ba86a9b7ccc1c6077f80"
+        },
+        {
+          "path": "data/gt/previews/bsds_10_overlay.png",
+          "role": "preview_only",
+          "sha256": "e457b17850d37e874d4611a0460d22d2f6d99e90e4f0a91de4ee40cd5559ea0a"
+        }
+      ],
+      "sources": [
+        {
+          "archive": "data/sources/bsds500/archives/BSR_bsds500.tgz",
+          "archive_sha256": "97e49d31764f3912f0c4122707d53062ac9e783ba0f095e447a4d53c1a41af8e",
+          "member": "BSR/BSDS500/data/groundTruth/train/108041.mat"
+        }
+      ],
+      "notes": "All annotators preserved separately; preview shows annotator 01 only"
+    },
+    {
+      "image": "drive_01",
+      "kind": "drive",
+      "input": "data/raw/drive_01.png",
+      "input_sha256": "f886c825da140ca9bdbbda18465d50d9a00e1c7968faee5bd86ad29f18caf04d",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_01_vessels.png",
+          "role": "vessels",
+          "sha256": "3c95eee77132a5700101a1bab404f54375cd79ecbdc39c4c027dc8b41f36f3e8"
+        },
+        {
+          "path": "data/gt/drive/drive_01_fov.png",
+          "role": "fov",
+          "sha256": "68a6597e7b43508ca10c9d5037efede17a84cdeb70ddda0435367e6ec3975ecf"
+        },
+        {
+          "path": "data/gt/previews/drive_01_overlay.png",
+          "role": "preview_only",
+          "sha256": "565be8c995687f6f87fa561f02b527b759b104615488dde6dbffdb519fa9c96b"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/21_manual1.gif",
+          "sha256": "8b91ecd3ad91b3d7111f8f22e29913eb69502f8bfd4a1339db6508d73f52b8bb"
+        },
+        {
+          "path": "data/sources/drive/mask/21_training_mask.gif",
+          "sha256": "acf23eeef91bd7c59624b9c2bb014703bcb37ef65cc8da2c0d221f3ca43dadc7"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=8"
+    },
+    {
+      "image": "drive_02",
+      "kind": "drive",
+      "input": "data/raw/drive_02.png",
+      "input_sha256": "3978fea07fbbb0d0debe3cdb733c4900c018a572ac517d8fc2401687494b3171",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_02_vessels.png",
+          "role": "vessels",
+          "sha256": "5bb7a00a42ab5cee996aaed11bc53b9634a5603de4e5190669bf5f684684f4a6"
+        },
+        {
+          "path": "data/gt/drive/drive_02_fov.png",
+          "role": "fov",
+          "sha256": "df08da2951a2a1bc18faafe3ff32cb50aeb1ba690d05434e9470dbbfa5048c85"
+        },
+        {
+          "path": "data/gt/previews/drive_02_overlay.png",
+          "role": "preview_only",
+          "sha256": "f45fc435273087efde5a66205fe9d0db6e3080a6721e8aeb21a1a9cbcc7a9045"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/22_manual1.gif",
+          "sha256": "3e24a5eab43676e8f9a7149984e4c7477f3b3829c4a5241d733eb43719e67967"
+        },
+        {
+          "path": "data/sources/drive/mask/22_training_mask.gif",
+          "sha256": "067f41ac14c4e08fa981e24baa16f11f1044f8479ba750e7ff282a66e6aebe28"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=9"
+    },
+    {
+      "image": "drive_03",
+      "kind": "drive",
+      "input": "data/raw/drive_03.png",
+      "input_sha256": "dd41c91a1fe99de9a5d0e78116e6a7064a8c1a9610e60bb38a2d0065edad66fa",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_03_vessels.png",
+          "role": "vessels",
+          "sha256": "f5202b540c491e64ea66f32499cddd03a31ab212a5324427406ca14c026cf3b0"
+        },
+        {
+          "path": "data/gt/drive/drive_03_fov.png",
+          "role": "fov",
+          "sha256": "799f2529209bece5c0e7ed6684b4c1ce543f02cda381fbdab800f3f5e89bc80f"
+        },
+        {
+          "path": "data/gt/previews/drive_03_overlay.png",
+          "role": "preview_only",
+          "sha256": "801974cdc147cff272ba332710913c3992f529d8ddfdea21b54d1b76ab633f56"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/23_manual1.gif",
+          "sha256": "f9fc8da936de5e21effbd66b76f33ea6c529661ad8c49b4314c6a89d907461a0"
+        },
+        {
+          "path": "data/sources/drive/mask/23_training_mask.gif",
+          "sha256": "68fb437ac43d39aba36e180f5ce6bee17950b355475744650fc88e8b23ef4a40"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=9"
+    },
+    {
+      "image": "drive_04",
+      "kind": "drive",
+      "input": "data/raw/drive_04.png",
+      "input_sha256": "25f0c367974529772085f2f014e698d372b9c317732b1b31cc9f250d61ff4884",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_04_vessels.png",
+          "role": "vessels",
+          "sha256": "f5423e7270186edf3b2d49fdbc07aba4b00f092d8dd1f1b5dcfa0c6444929093"
+        },
+        {
+          "path": "data/gt/drive/drive_04_fov.png",
+          "role": "fov",
+          "sha256": "856ceeb4655842fe38d6944db44d7796c369f68b2964d84a261355f477d720df"
+        },
+        {
+          "path": "data/gt/previews/drive_04_overlay.png",
+          "role": "preview_only",
+          "sha256": "f2ab95c0b57ee6a5c887ac1e08131b093725c1423a5ccf772421440a3b5a96b3"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/24_manual1.gif",
+          "sha256": "ed400fb8471f272ad5e9d2693336cbedb7c437e299b918edeae8498d07c647fb"
+        },
+        {
+          "path": "data/sources/drive/mask/24_training_mask.gif",
+          "sha256": "e2d16844e3f895cb9dffe8c568c34fb75c1fc02ef01bd072c8dd3199f85e655c"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=14"
+    },
+    {
+      "image": "drive_05",
+      "kind": "drive",
+      "input": "data/raw/drive_05.png",
+      "input_sha256": "b05e4ed3442d60f30f61308343522e4b1dfbba521063dbf63dcfdef35e45b07f",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_05_vessels.png",
+          "role": "vessels",
+          "sha256": "801f15313182ae8578d2b43f50b1b465ade0d663e08436ed69d89f82676210c1"
+        },
+        {
+          "path": "data/gt/drive/drive_05_fov.png",
+          "role": "fov",
+          "sha256": "7d1bc9018f61b8520618034449b5bf61be73f86ca0f04817c7f39053406a63c9"
+        },
+        {
+          "path": "data/gt/previews/drive_05_overlay.png",
+          "role": "preview_only",
+          "sha256": "087214532e97304af71945546cdc3c8a791d0e0b6ee7c5ed18ceedc0c8425d04"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/25_manual1.gif",
+          "sha256": "64410317c2f901643da575c7871dc972c9585220466cd81545d30ced922d5159"
+        },
+        {
+          "path": "data/sources/drive/mask/25_training_mask.gif",
+          "sha256": "caf18b23eb9f52fc0f214daa74c876b817aed1184192b9a0a99c75f3475acb24"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=5"
+    },
+    {
+      "image": "drive_06",
+      "kind": "drive",
+      "input": "data/raw/drive_06.png",
+      "input_sha256": "13e6b0df09c19001b98d93627a2ed802f1763ed719a331fa645b96b4a6319df3",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_06_vessels.png",
+          "role": "vessels",
+          "sha256": "b99ea9269c1dcad7accef393cf5dd565495ac99d818b2bf2d83d18535152f632"
+        },
+        {
+          "path": "data/gt/drive/drive_06_fov.png",
+          "role": "fov",
+          "sha256": "77b1efcc3b1566a78e5ad7664be7224c4afc47255aca861138bcaa30ca950ef1"
+        },
+        {
+          "path": "data/gt/previews/drive_06_overlay.png",
+          "role": "preview_only",
+          "sha256": "1a306ef37866106b464e8bc842f6b2aafda5c2e235b753f137e0a2f70a2a2044"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/26_manual1.gif",
+          "sha256": "e42498f4273217982cd90536d9900cc757a62c8358af0485df716fa89d04407c"
+        },
+        {
+          "path": "data/sources/drive/mask/26_training_mask.gif",
+          "sha256": "ea9358a2ff36b865b7971ccdc55e39098e3540845e9981e20c445b39c160a759"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=77"
+    },
+    {
+      "image": "drive_07",
+      "kind": "drive",
+      "input": "data/raw/drive_07.png",
+      "input_sha256": "41a60c5fe7b14c53d4bdae716b64190eb4f53a1e202bdb21c03cdf0881e78476",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_07_vessels.png",
+          "role": "vessels",
+          "sha256": "440d684bd7fe83df744ea8400410ec89a71867252a1dddcf1e6ea591c347a579"
+        },
+        {
+          "path": "data/gt/drive/drive_07_fov.png",
+          "role": "fov",
+          "sha256": "15b6cc19771d6ba4e04eb44b5fc42bf04354fa828f82dea0cb5e470ffc26f510"
+        },
+        {
+          "path": "data/gt/previews/drive_07_overlay.png",
+          "role": "preview_only",
+          "sha256": "9e322a4f9fac45294243c637d7e21f9f2a909e0be2046bf55a76133d86e961c2"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/27_manual1.gif",
+          "sha256": "a38ad76f19ef68bce461b493f9987142e9185982ee5517ff97cdbb57b7a57420"
+        },
+        {
+          "path": "data/sources/drive/mask/27_training_mask.gif",
+          "sha256": "bce99f57f8125a4855dcbcd857f42bea59a076cc03368e2c7a41ab39d577fba7"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=2"
+    },
+    {
+      "image": "drive_08",
+      "kind": "drive",
+      "input": "data/raw/drive_08.png",
+      "input_sha256": "a1ca45dd0ce5520df6a57c7ded1607078284fad068865361a11573b8afda82dc",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_08_vessels.png",
+          "role": "vessels",
+          "sha256": "a5a6b2426eeee9b5573e9cdb07a54d5d2379044ae577952c122d5c094a6b54e5"
+        },
+        {
+          "path": "data/gt/drive/drive_08_fov.png",
+          "role": "fov",
+          "sha256": "4c152d3cb88730576e11d2295b3cdd5bc994c6f23b50d74ad017ddf7306f03e8"
+        },
+        {
+          "path": "data/gt/previews/drive_08_overlay.png",
+          "role": "preview_only",
+          "sha256": "f0cb8f9eaa6189e2e5fe850366dc27e1c8cc57acb5051fc74eb1b991034462aa"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/28_manual1.gif",
+          "sha256": "7469ed6208d32bc150bf66866fdc11d548201585ca32eec3b5130e9cffebb8a7"
+        },
+        {
+          "path": "data/sources/drive/mask/28_training_mask.gif",
+          "sha256": "0da824999724bcf89dd522f0657082e4aa6be1dee86c72c3feee4c1d0ea01aff"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=19"
+    },
+    {
+      "image": "drive_09",
+      "kind": "drive",
+      "input": "data/raw/drive_09.png",
+      "input_sha256": "5b1d28dfd7928802a358259fde160ea1f701fe1b24f82cddfbd11177ae8b20af",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_09_vessels.png",
+          "role": "vessels",
+          "sha256": "9b7a9a57bf328d5cea1516328df8ff07dec6a289c77bce4701c1e42806ddf1f5"
+        },
+        {
+          "path": "data/gt/drive/drive_09_fov.png",
+          "role": "fov",
+          "sha256": "e2c6f53926a02a32934987b5e63f10f9bfaf780574fd55daa6e491402cf21a94"
+        },
+        {
+          "path": "data/gt/previews/drive_09_overlay.png",
+          "role": "preview_only",
+          "sha256": "4a123a846e67d21974b82097828e1252ccf9da45ddd2a06d896cb96cc89fe0a8"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/29_manual1.gif",
+          "sha256": "6e91d5b87ab1a73f6f510e86745307a5e0e5af0ca9b8e629e947cc30f4caca07"
+        },
+        {
+          "path": "data/sources/drive/mask/29_training_mask.gif",
+          "sha256": "2c2140dcb15bb4a3a0a855ec1f12c3be3fc64439ffb3db5c083ba42221b6b66a"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=13"
+    },
+    {
+      "image": "drive_10",
+      "kind": "drive",
+      "input": "data/raw/drive_10.png",
+      "input_sha256": "fe156c77715fed891697ecdaa4f3c8b81d68a0834e0c3e5dda71a3f140b7c409",
+      "shape": [
+        584,
+        565
+      ],
+      "status": "READY",
+      "annotators": 1,
+      "objects": 0,
+      "files": [
+        {
+          "path": "data/gt/drive/drive_10_vessels.png",
+          "role": "vessels",
+          "sha256": "1661127818cdf3b86400dc05703710a9c63546b841a5840dedaec56f7e3b4dd5"
+        },
+        {
+          "path": "data/gt/drive/drive_10_fov.png",
+          "role": "fov",
+          "sha256": "e8803c9fc5f3c33bf4ace929684f13877cab4fa17e80bf4be931d80015c53e2f"
+        },
+        {
+          "path": "data/gt/previews/drive_10_overlay.png",
+          "role": "preview_only",
+          "sha256": "8ef862cd3c24e6623c45f38417853e53bed66740d24d019b66bc5e121166fd17"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/drive/1st_manual/30_manual1.gif",
+          "sha256": "bdad759b5f833156dcf52115ba77736706d50be3e1d6e44adaf6ef0170d1a4a8"
+        },
+        {
+          "path": "data/sources/drive/mask/30_training_mask.gif",
+          "sha256": "d5f71ebfff75c5ccd8657400b144d047379c3aa4223c0a359540a699d32848e5"
+        }
+      ],
+      "notes": "Original masks, no erosion; vessel pixels outside FOV=7"
+    },
+    {
+      "image": "blob_01",
+      "kind": "synthetic_blob",
+      "input": "data/raw/blob_01.png",
+      "input_sha256": "e588a1cad6d24ebd46b8a24755a37ae1d79ce7a25341f8315b35041f49faf081",
+      "shape": [
+        256,
+        256
+      ],
+      "status": "READY",
+      "annotators": 0,
+      "objects": 4,
+      "files": [
+        {
+          "path": "data/gt/blob/blob_01.json",
+          "role": "blob_centers_radii",
+          "sha256": "c50f8aca764683b4dd6cd039f4eff51ecbb0043405b51548c501ff335b803c2f"
+        },
+        {
+          "path": "data/gt/previews/blob_01_overlay.png",
+          "role": "preview_only",
+          "sha256": "a7e72bac833ff7b9b5dce9cef03af1f8acc8e08d0b2ebd3908bb80a1e913c0ec"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/eval/prepare_data.py",
+          "sha256": "70a53cd6f7aa3894e9cddb81cbe11d9b9ba5635649e07149e2221485bda6b1ce"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "image": "blob_02",
+      "kind": "synthetic_blob",
+      "input": "data/raw/blob_02.png",
+      "input_sha256": "b0582688cd5d2b1db019e65bfdc5254225b2710637cc9387cfdbde526084bb55",
+      "shape": [
+        256,
+        256
+      ],
+      "status": "READY",
+      "annotators": 0,
+      "objects": 4,
+      "files": [
+        {
+          "path": "data/gt/blob/blob_02.json",
+          "role": "blob_centers_radii",
+          "sha256": "02e984d9928aad4f6d638111462a6a5c6e90deefd406d2865a0123657a88d6a7"
+        },
+        {
+          "path": "data/gt/previews/blob_02_overlay.png",
+          "role": "preview_only",
+          "sha256": "8379f798cd1231971d1fcc8fed78b5a650c77476342130b6d3c6c0e50ee6820c"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/eval/prepare_data.py",
+          "sha256": "70a53cd6f7aa3894e9cddb81cbe11d9b9ba5635649e07149e2221485bda6b1ce"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "image": "blob_03",
+      "kind": "synthetic_blob",
+      "input": "data/raw/blob_03.png",
+      "input_sha256": "0e6fb8ab30715e3569e6d2a07b8e7b8ca28fd19ae7a4938d09a87a232b3fb43f",
+      "shape": [
+        256,
+        256
+      ],
+      "status": "READY",
+      "annotators": 0,
+      "objects": 4,
+      "files": [
+        {
+          "path": "data/gt/blob/blob_03.json",
+          "role": "blob_centers_radii",
+          "sha256": "c2b122020346e2014bca1d7465f45ee33e91b62c501ee4e2dcd644b1a902dbd0"
+        },
+        {
+          "path": "data/gt/previews/blob_03_overlay.png",
+          "role": "preview_only",
+          "sha256": "9e9ed2540052d93e964cd6026fb8e30a9fc964b0f0397d486bfc2f43520d86b9"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/eval/prepare_data.py",
+          "sha256": "70a53cd6f7aa3894e9cddb81cbe11d9b9ba5635649e07149e2221485bda6b1ce"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "image": "blob_04",
+      "kind": "synthetic_blob",
+      "input": "data/raw/blob_04.png",
+      "input_sha256": "87508ad810c3a96e1fe29dea323e0f324f716bc0c1bdccdad2a8f0dfeb0ddd22",
+      "shape": [
+        256,
+        256
+      ],
+      "status": "READY",
+      "annotators": 0,
+      "objects": 4,
+      "files": [
+        {
+          "path": "data/gt/blob/blob_04.json",
+          "role": "blob_centers_radii",
+          "sha256": "96aca9dee5082ca1a145797c6a348e6890efde547c8e04343be9fdd815a2e578"
+        },
+        {
+          "path": "data/gt/previews/blob_04_overlay.png",
+          "role": "preview_only",
+          "sha256": "56aa24daa8f57cad37728532f290bf6b03672ef891f3d27324a9ce57d3a62938"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/eval/prepare_data.py",
+          "sha256": "70a53cd6f7aa3894e9cddb81cbe11d9b9ba5635649e07149e2221485bda6b1ce"
+        }
+      ],
+      "notes": ""
+    },
+    {
+      "image": "blob_05",
+      "kind": "blob",
+      "input": "data/raw/blob_05.png",
+      "input_sha256": "40b323f8d2b24a1723d71a545302a31627b460d3e25712e17d8e54b54dde3a92",
+      "shape": [
+        512,
+        512
+      ],
+      "status": "READY",
+      "annotators": 0,
+      "objects": 276,
+      "files": [
+        {
+          "path": "data/gt/blob/blob_05.json",
+          "role": "blob_centers_radii",
+          "sha256": "efb48be44407af7bf158ed587d4ae06e1dac8420d5ca6f000f11ed61fc64665d"
+        },
+        {
+          "path": "data/gt/previews/blob_05_overlay.png",
+          "role": "preview_only",
+          "sha256": "fe768a63f1b8dc9d1cca2f74446cfac3e78446d0519bf4819d094a6020d14610"
+        }
+      ],
+      "sources": [
+        {
+          "path": "data/sources/biological/mitosis.tif",
+          "annotation_origin": "manual_with_component_suggestions"
+        }
+      ],
+      "notes": "Manual review required; pending suggestions=0; empty/draft labels excluded from evaluation"
+    }
+  ]
+}

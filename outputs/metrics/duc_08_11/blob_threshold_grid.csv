@@ -1,0 +1,5 @@
+﻿threshold,mean_f1,selected_on,n_images,selected
+0.5,0.8922570016474465,python,5,False
+1.0,0.8973913043478261,python,5,False
+2.0,0.8982456140350876,python,5,False
+5.0,0.893023,python,5,True

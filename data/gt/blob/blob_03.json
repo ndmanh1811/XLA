@@ -1,0 +1,44 @@
+{
+  "image": "blob_03",
+  "image_sha256": "0e6fb8ab30715e3569e6d2a07b8e7b8ca28fd19ae7a4938d09a87a232b3fb43f",
+  "shape": [
+    256,
+    256
+  ],
+  "coordinate_system": "zero-based; x=column; y=row; pixel units",
+  "origin": "analytic_generator",
+  "status": "READY",
+  "polarity": "bright",
+  "model": "gaussian",
+  "radius_definition": "disk radius; Gaussian equivalent LoG radius=sqrt(2)*sigma",
+  "objects": [
+    {
+      "id": 1,
+      "x": 52,
+      "y": 64,
+      "radius": 2.8284271247461903,
+      "gaussian_sigma": 2.0
+    },
+    {
+      "id": 2,
+      "x": 132,
+      "y": 70,
+      "radius": 3.9597979746446663,
+      "gaussian_sigma": 2.8
+    },
+    {
+      "id": 3,
+      "x": 80,
+      "y": 170,
+      "radius": 5.656854249492381,
+      "gaussian_sigma": 4.0
+    },
+    {
+      "id": 4,
+      "x": 188,
+      "y": 180,
+      "radius": 8.061017305526642,
+      "gaussian_sigma": 5.7
+    }
+  ]
+}

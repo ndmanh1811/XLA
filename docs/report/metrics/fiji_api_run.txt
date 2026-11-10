@@ -1,0 +1,4 @@
+ImageJ 1.54p, ImageScience 3.1.0
+Computed 72 fresh maps via direct ImageScience API.
+Producer is API export; no GUI screenshots were captured.
+

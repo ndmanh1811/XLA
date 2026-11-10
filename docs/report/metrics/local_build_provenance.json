@@ -1,0 +1,20 @@
+[
+  {
+    "library": "imagescience31",
+    "version": "3.1.0",
+    "jar": "D:\\Dev PTIT\\X\u1eed l\u00ed \u1ea3nh\\fiji-latest-win64-jdk\\Fiji\\jars\\imagescience-3.1.0-local.jar",
+    "sha256": "94401b00652d6c29fa5d641546c6e6a83a35b35806ed16273511609e089d7751",
+    "source_files": 72,
+    "origin": "official ImageScience GitHub source, compiled locally",
+    "source_tree": "e57c3f3e6d74727a3690f441b34c54a00aa115ff"
+  },
+  {
+    "library": "featurej",
+    "version": "2.0.1-SNAPSHOT-local",
+    "jar": "D:\\Dev PTIT\\X\u1eed l\u00ed \u1ea3nh\\fiji-latest-win64-jdk\\Fiji\\plugins\\FeatureJ_-local.jar",
+    "sha256": "f167b514ecaf5cab3e566f0501b1f6f56b963f16d41eef52bbe2bf331e6f3ebd",
+    "source_files": 11,
+    "origin": "official ImageScience GitHub source, compiled locally",
+    "source_tree": "9c47659ea7ca773548f667d01ee7e35d16341f79"
+  }
+]

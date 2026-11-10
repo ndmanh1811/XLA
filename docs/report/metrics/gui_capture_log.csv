@@ -1,0 +1,5 @@
+command,image,scale,integration,outputs,bit_depth,capture_method,interaction,timestamp_utc
+Derivatives,bsds_01,2.0,,1,32,PrintWindow;PrintWindow,AWT-control-events,2026-11-08T18:43:06.821373200Z
+Hessian,drive_01,2.0,,2,32,PrintWindow;PrintWindow,AWT-control-events,2026-11-08T18:43:11.390674Z
+Laplacian,blob_01,2.0,,1,32,PrintWindow;PrintWindow,AWT-control-events,2026-11-08T18:43:15.619286200Z
+Structure,bsds_01,1.0,3.0,2,32,PrintWindow;PrintWindow,AWT-control-events,2026-11-08T18:43:19.899442600Z
