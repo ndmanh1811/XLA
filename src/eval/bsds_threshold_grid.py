@@ -10,9 +10,10 @@ Mục tiêu là triển khai đúng yêu cầu tại ``INSTRUCTIONS.md:128``:
 - Nhánh tham chiếu FeatureJ Edges dùng ngưỡng tuyệt đối (đơn vị đầu ra của
   plugin), không dùng chung lưới phân vị với nhánh fair.
 
-Phần lõi toán học vẫn nằm trong ``src/core`` và chỉ dùng NumPy. Module này là
-mã đánh giá nên được phép dùng SciPy cho phép dựng nhãn liên thông 8-láng giềng
-và giãn nở hình thái học.
+Phần lõi toán học vẫn nằm trong ``src/core`` và chỉ dùng NumPy. Toàn bộ xử lý
+hình thái học (dilation, gán nhãn thành phần liên thông) trong module này cũng
+đã được viết lại bằng thuần NumPy, không dùng ``scipy.ndimage``, tuân thủ
+ràng buộc tại ``INSTRUCTIONS.md:25``.
 """
 
 from dataclasses import dataclass
@@ -22,10 +23,124 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import numpy as np
 from PIL import Image
-from scipy.ndimage import binary_dilation, label
 
-STRUCT_2PX = np.ones((5, 5), dtype=bool)
-STRUCT_8 = np.ones((3, 3), dtype=np.uint8)
+# Toàn bộ xử lý hình thái học trong module này dùng thuần NumPy (không dùng
+# scipy.ndimage) theo ràng buộc tại INSTRUCTIONS.md:25 (SciPy chỉ được phép trong
+# unit test / benchmark thời gian).
+
+_STRUCT_DISK_R2 = np.zeros((5, 5), dtype=bool)
+_dy_disk, _dx_disk = np.mgrid[-2:3, -2:3]
+_STRUCT_DISK_R2[_dx_disk**2 + _dy_disk**2 <= 4] = True
+
+# Các tọa độ sai dịch của phần tử cấu trúc đĩa bán kính 2 px (13 pixel), dùng
+# cho phép dilation vectơ hóa.
+_DISK_OFFSETS = [
+    (dy, int(dx))
+    for dy in range(-2, 3)
+    for dx in range(-2, 3)
+    if _STRUCT_DISK_R2[dy + 2, dx + 2]
+]
+
+STRUCT_2PX = _STRUCT_DISK_R2
+STRUCT_8 = np.ones((3, 3), dtype=bool)
+
+
+def _find(label_val: int, parent: Dict[int, int]) -> int:
+    """Tìm đại diện của tập hợp với nén đường dẫn (union-find)."""
+    root = label_val
+    while parent[root] != root:
+        root = parent[root]
+    while parent[label_val] != root:
+        nxt = parent[label_val]
+        parent[label_val] = root
+        label_val = nxt
+    return root
+
+
+def binary_dilation(image: np.ndarray, structure: np.ndarray) -> np.ndarray:
+    """Phãn nở nhị phân vectơ hóa với phần tử cấu trúc arbitrary (kernel_bool).
+
+    Thay thế trực tiếp ``scipy.ndimage.binary_dilation``. Chỉ xử lý mảng bool 2D
+    và phần tử cấu trúc bool 2D; pixel ngoài biên được coi là False (không wrap).
+    """
+    h, w = image.shape
+    out = np.zeros((h, w), dtype=bool)
+    sh, sw = structure.shape
+    cy, cx = sh // 2, sw // 2
+    for dy in range(-cy, cy + 1):
+        for dx in range(-cx, cx + 1):
+            if not structure[dy + cy, dx + cx]:
+                continue
+            ys = max(0, -dy)
+            ye = min(h, h - dy)
+            xs = max(0, -dx)
+            xe = min(w, w - dx)
+            if ys >= ye or xs >= xe:
+                continue
+            out[ys + dy : ye + dy, xs + dx : xe + dx] |= image[ys:ye, xs:xe]
+    return out
+
+
+def label(image: np.ndarray, structure: np.ndarray | None = None) -> Tuple[np.ndarray, int]:
+    """Gán nhãn thành phần liên thông 8-láng giềng (union-find thuần NumPy).
+
+    Thay thế trực tiếp ``scipy.ndimage.label`` với ``structure`` 3x3 toàn 1.
+    Trả về ``(labels, num_labels)`` trong đó ``labels`` có kiểu int64, giá trị 0
+    là nền, các thành phần được đánh số từ 1 đến ``num_labels``.
+
+    Chỉ duyệt qua các pixel nền (foreground), nên nhanh với bản đồ biên thưa.
+    """
+    h, w = image.shape
+    if structure is None:
+        structure = STRUCT_8
+
+    labels = np.zeros((h, w), dtype=np.int64)
+    parent: Dict[int, int] = {}
+    next_label = 1
+
+    # Các láng giềng đã duyệt trước theo thứ tự quét (trên, trên-trái, trên-phải, trái)
+    prev_offsets = [(-1, -1), (-1, 0), (-1, 1), (0, -1)]
+
+    ys, xs = np.where(image)
+    for y, x in zip(ys.tolist(), xs.tolist()):
+        neighbor_labels: List[int] = []
+        for dy, dx in prev_offsets:
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w:
+                nl = int(labels[ny, nx])
+                if nl > 0:
+                    neighbor_labels.append(nl)
+
+        if not neighbor_labels:
+            labels[y, x] = next_label
+            parent[next_label] = next_label
+            next_label += 1
+        else:
+            m = min(neighbor_labels)
+            labels[y, x] = m
+            root_m = _find(m, parent)
+            for nl in neighbor_labels:
+                root_nl = _find(nl, parent)
+                if root_m != root_nl:
+                    parent[root_nl] = root_m
+                    root_m = _find(m, parent)
+
+    # Duyệt qua lần hai: làm cháng labels về đại diện cùng lúc nén đường dẫn.
+    for y, x in zip(ys.tolist(), xs.tolist()):
+        lv = int(labels[y, x])
+        if lv > 0:
+            labels[y, x] = _find(lv, parent)
+
+    # Giọp nhãn lại thành dãy liên tiếp từ 1.
+    unique = np.unique(labels)
+    unique = unique[unique > 0]
+    num_labels = int(unique.size)
+    if num_labels > 0:
+        remap = np.zeros(int(unique.max()) + 1, dtype=np.int64)
+        remap[unique] = np.arange(1, num_labels + 1, dtype=np.int64)
+        labels = remap[labels]
+
+    return labels, num_labels
 
 
 @dataclass
@@ -181,6 +296,14 @@ def evaluate_percentile_grid(
             continue
         nonzero = nms[nms > 0]
         if len(nonzero) == 0:
+            # Ảnh không có cạnh nào sau NMS: vẫn tính vào mẫu số với F1 = 0
+            # (không được loại bỏ như hiện tại, gây bias mean F1 lên cao).
+            for (lo, hi) in pairs:
+                acc = accum[(lo, hi)]
+                acc["precision"] += 0.0
+                acc["recall"] += 0.0
+                acc["f1"] += 0.0
+                acc["count"] += 1
             continue
 
         t_lows = {round(lo, 6): float(np.percentile(nonzero, lo)) for lo, _ in pairs}
@@ -253,16 +376,49 @@ def evaluate_absolute_grid(
         if nms is None:
             continue
         if not np.any(nms > 0):
+            # Ảnh không có pixel cạnh nào: vẫn tính vào mẫu số với F1 = 0.
+            for (lo, hi) in pairs:
+                acc = accum[(lo, hi)]
+                acc["precision"] += 0.0
+                acc["recall"] += 0.0
+                acc["f1"] += 0.0
+                acc["count"] += 1
             continue
 
+        # Gom các t_low duy nhất; tính nhãn liên thông đúng 1 lần cho mỗi t_low
+        # thay vì gọi lại hysteresis_absolute (và label) cho từng cặp (lo, hi).
+        lows_needed = sorted({lo for lo, _ in pairs})
+        t_low_candidates: Dict[float, Tuple[np.ndarray, int]] = {}
+        for lo in lows_needed:
+            candidate = (nms >= lo) & (nms > 0)
+            labels, num_labels = label(candidate, structure=STRUCT_8)
+            if num_labels == 0:
+                continue
+            t_low_candidates[lo] = (labels, num_labels)
+
+        highs_by_low: Dict[float, List[float]] = {}
         for lo, hi in pairs:
-            pred = hysteresis_absolute(nms, t_low=lo, t_high=hi)
-            metrics = evaluate_prediction(pred, item)
-            acc = accum[(lo, hi)]
-            acc["precision"] += metrics["precision"]
-            acc["recall"] += metrics["recall"]
-            acc["f1"] += metrics["f1"]
-            acc["count"] += 1
+            highs_by_low.setdefault(lo, []).append(hi)
+
+        for lo, highs in highs_by_low.items():
+            if lo not in t_low_candidates:
+                continue
+            labels, num_labels = t_low_candidates[lo]
+            for hi in highs:
+                strong = (nms >= hi) & (nms > 0)
+                if not strong.any():
+                    pred = np.zeros(nms.shape, dtype=bool)
+                else:
+                    keep = np.zeros(num_labels + 1, dtype=bool)
+                    keep[np.unique(labels[strong])] = True
+                    keep[0] = False
+                    pred = keep[labels]
+                metrics = evaluate_prediction(pred, item)
+                acc = accum[(lo, hi)]
+                acc["precision"] += metrics["precision"]
+                acc["recall"] += metrics["recall"]
+                acc["f1"] += metrics["f1"]
+                acc["count"] += 1
 
     rows: List[Dict[str, float]] = []
     for (lo, hi), acc in sorted(accum.items()):

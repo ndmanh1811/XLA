@@ -153,10 +153,10 @@ python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p
 
 | $\sigma$ | Python $p_{low}/p_{high}$ | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ | FeatureJ Edges $F_1$ (tham chiếu) |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| 1.0 | 80 / 94 | 0.490868 | 0.490909 | **+0.000041** | 0.527289 |
-| 2.0 | 67 / 91 | 0.516600 | 0.516600 | **+0.000000** | 0.543644 |
-| 4.0 | 49 / 80 | 0.490542 | 0.490542 | **+0.000000** | 0.519099 |
-| 8.0 | 23 / 50 | 0.395759 | 0.395759 | **+0.000000** | 0.413642 |
+| 1.0 | 76 / 94 | 0.455418 | 0.455478 | **+0.000060** | 0.488766 |
+| 2.0 | 67 / 91 | 0.477886 | 0.477886 | **+0.000000** | 0.500818 |
+| 4.0 | 49 / 80 | 0.441491 | 0.441491 | **+0.000000** | 0.464873 |
+| 8.0 | 23 / 50 | 0.343340 | 0.343340 | **+0.000000** | 0.354292 |
 
 | Bài toán khác | Python $F_1$ | Fiji $F_1$ | $\Delta F_1$ |
 | :--- | :---: | :---: | :---: |
@@ -171,7 +171,7 @@ python src/eval/benchmark_tier2.py --source both --bsds-threshold-mode fixed --p
   - Sai lệch $|\Delta F_1| \le 0.0012$ đến từ xấp xỉ rời rạc của đạo hàm bậc 2 và cách NMS nội bộ khác nhau giữa FeatureJ và NumPy, không phải lỗi logic (Tầng 1 đã chứng minh $r > 0.9999$ cho mọi toán tử).
   - Ghi nhận ràng buộc chọn ngưỡng: ngưỡng được điều chỉnh và đánh giá trên cùng 10 ảnh BSDS; coi đây là một hạn chế và báo cáo trong Limitations của bài cáo.
 * **Hiệu năng định lượng đạt được (nhánh Python chính thức):**
-  - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** F1 cao nhất tại $\sigma=2.0$ là **0.516600** ($p_{low}=67$, $p_{high}=91$); số $0.494$ tại $p60/p85$, $\sigma=2.0$ chỉ là kết quả lịch sử (chế độ `fixed`).
+  - **Bài toán Biên (BSDS500 - Canny Edge, 10 ảnh):** F1 cao nhất tại $\sigma=2.0$ là **0.477886** ($p_{low}=67$, $p_{high}=91$); số $0.494$ tại $p60/p85$, $\sigma=2.0$ chỉ là kết quả lịch sử (chế độ `fixed`).
   - **Bài toán Mạch máu (DRIVE - Frangi Vesselness, 10 ảnh):** $F_1 = 0.681$, $\text{IoU} = 0.518$ (trong vùng FOV xói mòn thích ứng).
   - **Bài toán Đốm (Blobs - LoG Scale-Space, 5 ảnh):**
     - `blob_01` đến `blob_04` (đốm giải tích): **$F_1 = 1.000$ tuyệt đối** (khớp 100% tâm và bán kính).

@@ -1,5 +1,8 @@
 # Kết quả công việc 4 — Đức — 08/11/2026
 
+> [!ARCHIVED]
+> Bản ghi này là **lịch sử (pre-disk-fix)**: sinh bởi mã cũ trước khi sửa dung sai BSDS từ ô vuông 5×5 thành đĩa Euclidean bán kính 2 px (`src/eval/bsds_threshold_grid.py`). Số BSDS ở đây (ví dụ 0.516600 tại σ=2.0) **không còn canonical**. Dùng `outputs/metrics/` làm nguồn chính (BSDS σ=2.0 = 0.477886). `tier2_summary.csv` đã được tính lại từ `tier2_results_both.csv` để nội bộ nhất quán.
+
 Đã tính lại từ raw/config và nhãn READY hiện tại; xem run_manifest.json để xác minh phiên chạy.
 
 ## Fiji so với Python

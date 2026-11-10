@@ -1,5 +1,8 @@
 # Đức — Công việc 4: Tính metric định lượng
 
+> [!ARCHIVED]
+> Bộ metric này là **lịch sử (pre-disk-fix)**: sinh trước khi sửa dung sai BSDS từ ô vuông 5×5 thành đĩa Euclidean bán kính 2 px. Số BSDS ở đây (ví dụ 0.516600 tại σ=2.0) **không còn canonical**. Dùng `outputs/metrics/` làm nguồn chính (xem `outputs/metrics/PROTOCOL.md` và `outputs/metrics/tier2_bsds_by_sigma.csv`).
+
 > Công việc 5 đã được tách riêng tại
 > [README_DUC_CONG_VIEC_5.md](README_DUC_CONG_VIEC_5.md). Các file bên dưới
 > vẫn là bộ metric công việc 4, không bị thay thế bởi bộ biểu đồ.
@@ -22,7 +25,7 @@
 | Precision/Recall/F1 của 25 ảnh, hai nguồn | [tier2_results_both.csv](outputs/metrics/duc_08_11/tier2_results_both.csv) | Excel, lọc `source`, `task`, `image`, `sigma` |
 | Đối sánh Python/Fiji cùng ảnh và sigma | [tier2_comparison.csv](outputs/metrics/duc_08_11/tier2_comparison.csv) | Excel |
 | Tổng hợp P/R/F1 theo bài toán và sigma | [tier2_summary.csv](outputs/metrics/duc_08_11/tier2_summary.csv) | Excel |
-| Phiên chạy đã hoàn tất hay chưa | [run_manifest.json](outputs/metrics/duc_08_11/run_manifest.json) | VS Code; `status` phải là `COMPLETE` |
+| Phiên chạy đã hoàn tất hay chưa | [run_manifest.json](outputs/metrics/duc_08_11/run_manifest.json) | VS Code; `status` phải là `ARCHIVED_HISTORICAL` |
 | Hướng dẫn chạy và đọc từng cột | [01_HUONG_DAN_METRIC.md](docs/08_11/01_HUONG_DAN_METRIC.md) | VS Code Markdown Preview |
 
 Các CSV dùng UTF-8 có BOM. Nếu Excel mở dồn vào một cột: **Data → From

@@ -56,8 +56,8 @@ def run_smoke_test_analytical(sigma: float = 2.0, k: float = 4.0):
   assert err_ly < 1e-10, f"Ly sai lệch quá lớn: {err_ly}"
   print("   -> [PASS] Đạo hàm bậc 1 và dấu trục x hoàn toàn chính xác!")
 
-  # 2. Kiểm tra trên parabol.tif
-  parabol_path = CALIB_DIR / "parabol.tif"
+  # 2. Kiểm tra trên parabola.tif
+  parabol_path = CALIB_DIR / "parabola.tif"
   parabol = tifffile.imread(parabol_path).astype(np.float64)
 
   lxx, lyy, lxy = compute_derivatives_2nd(parabol, sigma=sigma, k=k)

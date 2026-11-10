@@ -83,8 +83,8 @@ class TestBsdsGrid(unittest.TestCase):
     pred[24, 10:50] = True
     metrics = evaluate_prediction(pred, item)
     self.assertAlmostEqual(metrics["precision"], 1.0)
-    self.assertAlmostEqual(metrics["recall"], 0.6875)
-    expected_f1 = 2 * 1.0 * 0.6875 / (1.0 + 0.6875)
+    self.assertAlmostEqual(metrics["recall"], 0.671875)
+    expected_f1 = 2 * 1.0 * 0.671875 / (1.0 + 0.671875)
     self.assertAlmostEqual(metrics["f1"], expected_f1)
     self.assertEqual(int(metrics["predicted_count"]), 40)
 
@@ -124,6 +124,36 @@ class TestBsdsGrid(unittest.TestCase):
       self.assertLess(row["t_low"], row["t_high"])
       self.assertGreaterEqual(row["mean_f1"], 0.0)
       self.assertLessEqual(row["mean_f1"], 1.0)
+
+  def test_struct_2px_is_euclidean_disk_not_square(self):
+    """Dung sai biên 2 px phải là đĩa Euclidean: không chứa 4 góc (±2, ±2)."""
+    self.assertTrue(STRUCT_2PX[2, 2])  # tâm
+    self.assertTrue(STRUCT_2PX[0, 2])  # trên 2 px
+    self.assertTrue(STRUCT_2PX[2, 0])  # trái 2 px
+    self.assertFalse(STRUCT_2PX[0, 0])  # góc trên-trái (−2, −2) ngoài bán kính 2
+    self.assertFalse(STRUCT_2PX[0, 4])  # góc trên-phải (−2, +2)
+    self.assertFalse(STRUCT_2PX[4, 0])  # góc dưới-trái (+2, −2)
+    self.assertFalse(STRUCT_2PX[4, 4])  # góc dưới-phải (+2, +2)
+    # Tổng 13 pixel (bán kính Euclidean 2), không phải 25 (ô vuông 5×5).
+    self.assertEqual(int(np.sum(STRUCT_2PX)), 13)
+
+  def test_empty_nms_still_counts_in_grid_mean(self):
+    """Ảnh không có cạnh sau NMS vẫn nằm trong mẫu số với F1 = 0 (không bị loại)."""
+    item = _make_item()
+    # NMS toàn 0: không có pixel ứng viên nào.
+    nms = np.zeros((48, 64), dtype=np.float64)
+    rows = evaluate_percentile_grid(
+        {item.stem: nms},
+        [item],
+        grid_low=[10, 30, 60],
+        grid_high=[50, 80, 95],
+    )
+    self.assertTrue(rows, "Phải có dòng kết quả cho mỗi cặp ngưỡng")
+    for row in rows:
+      self.assertEqual(row["n_images"], 1)
+      self.assertEqual(row["mean_f1"], 0.0)
+      self.assertEqual(row["mean_precision"], 0.0)
+      self.assertEqual(row["mean_recall"], 0.0)
 
 
 if __name__ == "__main__":

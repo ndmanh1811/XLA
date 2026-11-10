@@ -12,7 +12,7 @@ from __future__ import annotations
 import csv
 import time
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Tuple
 
 import numpy as np
 
@@ -56,20 +56,19 @@ def naive_convolve_2d(
     return out
 
 
-def measure(fn: Callable[[], float | None], reps: int = 5, min_total_s: float = 0.2) -> float:
-    """Median thời gian (ms) sau 1 lần warm-up, lặp ít nhất `reps` lần."""
+def measure(fn: Callable[[], float | None], reps: int = 5) -> Tuple[float, int]:
+    """Median thời gian (ms) sau 1 lần warm-up, chạy đủ `reps` lần (không dừng sớm).
+
+    Trả về (median_ms, so_lan_chay) để ghi lại số thực tế vào CSV.
+    """
     fn()  # warm-up
     times = []
-    total = 0.0
-    for _ in range(max(reps, 3)):
+    for _ in range(reps):
         t0 = time.perf_counter()
         fn()
         dt = time.perf_counter() - t0
         times.append(dt)
-        total += dt
-        if len(times) >= 3 and total >= min_total_s:
-            break
-    return float(np.median(times)) * 1000.0
+    return float(np.median(times)) * 1000.0, len(times)
 
 
 def main() -> None:
@@ -100,8 +99,8 @@ def main() -> None:
                 got = naive_convolve_2d(img, kx, ky, mode)
                 max_diff = float(np.max(np.abs(ref - got)))
 
-                sep_ms = measure(separable_fn)
-                naive_ms = measure(naive_fn)
+                sep_ms, sep_reps = measure(separable_fn)
+                naive_ms, naive_reps = measure(naive_fn)
 
                 kx_len = int(kx.shape[0])
                 ky_len = int(ky.shape[0])
@@ -115,6 +114,7 @@ def main() -> None:
                         "sigma": sigma,
                         "kx_len": kx_len,
                         "ky_len": ky_len,
+                        "reps": sep_reps,
                         "naive_ms": round(naive_ms, 6),
                         "separable_ms": round(sep_ms, 6),
                         "speedup": round(speedup, 6),
@@ -125,7 +125,7 @@ def main() -> None:
 
     OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
-        "operator", "image", "sigma", "kx_len", "ky_len",
+        "operator", "image", "sigma", "kx_len", "ky_len", "reps",
         "naive_ms", "separable_ms", "speedup", "theory_speedup", "max_abs_diff",
     ]
     with open(OUTPUT_CSV, "w", newline="", encoding="utf-8-sig") as f:

@@ -23,7 +23,7 @@ def load_config() -> Dict[str, Any]:
   return cfg or {}
 
 
-def get_kernel_k(order: int = 0, strict: bool = False) -> float:
+def get_kernel_k(order: int = 0, strict: bool = True) -> float:
   """Lấy hệ số bán kính cắt kernel k = r / sigma cho từng bậc đạo hàm.
 
   Args:
@@ -49,7 +49,7 @@ def get_kernel_k(order: int = 0, strict: bool = False) -> float:
   return float(val)
 
 
-def get_border_mode(strict: bool = False) -> str:
+def get_border_mode(strict: bool = True) -> str:
   """Lấy kiểu xử lý biên ('reflect' hoặc 'mirror' theo định nghĩa SciPy)."""
   cfg = load_config()
   mode = cfg.get("border_mode")
@@ -63,7 +63,7 @@ def get_border_mode(strict: bool = False) -> str:
   return str(mode).strip().lower()
 
 
-def is_featurej_normalized(command: str, strict: bool = False) -> bool:
+def is_featurej_normalized(command: str, strict: bool = True) -> bool:
   """Kiểm tra xem lệnh FeatureJ tương ứng đã tự động nhân sigma^n hay chưa.
 
   Args:
@@ -83,7 +83,7 @@ def is_featurej_normalized(command: str, strict: bool = False) -> bool:
   return bool(val)
 
 
-def get_eigen_order(strict: bool = False) -> str:
+def get_eigen_order(strict: bool = True) -> str:
   """Lấy quy tắc sắp xếp trị riêng Hessian: 'algebraic' hay 'absolute'."""
   cfg = load_config()
   order = cfg.get("eigen_order")
