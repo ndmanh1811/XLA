@@ -1,0 +1,21 @@
+﻿category,item,sigma,measured,expected,conclusion,evidence
+normalization,grad,1;2;4,0.999925017;0.999635696;0.999323964,raw analytical response independent of sigma,RAW_NO_SIGMA; NMS_OFF,measurement_results.csv
+normalization,hess-l1,1;2;4,1.01146964;1.01153103;1.00128747,raw analytical response independent of sigma,RAW_SIGNED_ALGEBRAIC_LARGEST; NO_SIGMA_SQUARED,measurement_results.csv
+normalization,hess-l2,1;2;4,-1.98594998;-1.97814373;-1.98112167,raw analytical response independent of sigma,RAW_SIGNED_ALGEBRAIC_SMALLEST; NO_SIGMA_SQUARED,measurement_results.csv
+normalization,lap,1;2;4,0.974480105;0.966612538;0.9798343,raw analytical response independent of sigma,RAW_NO_SIGMA_SQUARED,measurement_results.csv
+normalization,lx,1;2;4,0.999925017;0.999635696;0.999323964,raw analytical response independent of sigma,RAW_NO_SIGMA; POSITIVE_X_SIGN,measurement_results.csv
+normalization,lxx,1;2;4,0.986809949;0.981585365;0.986985359,raw analytical response independent of sigma,RAW_NO_SIGMA_SQUARED,measurement_results.csv
+normalization,st-l1,1;2,0.999850035;0.999271512,raw analytical response independent of sigma,RAW_STRUCTURE_EIGENVALUE; NO_SCALE_NORMALIZATION,measurement_results.csv
+normalization,st-l2,1;2,0;0,raw analytical response independent of sigma,RAW_STRUCTURE_EIGENVALUE; NO_SCALE_NORMALIZATION,measurement_results.csv
+kernel_support,gauss,1.0,rx=3; ry=3; sum2d=0.999999971966,rx=3; ry=3,SUPPORT_PASS; derivative_x_radius=3; smoothing_y_radius=3,calib_dirac_gauss_s1.0.tif
+kernel_support,gauss,2.0,rx=6; ry=6; sum2d=0.999999987513,rx=6; ry=6,SUPPORT_PASS; derivative_x_radius=6; smoothing_y_radius=6,calib_dirac_gauss_s2.0.tif
+kernel_support,gauss,4.0,rx=12; ry=12; sum2d=1.00000000445,rx=12; ry=12,SUPPORT_PASS; derivative_x_radius=12; smoothing_y_radius=12,calib_dirac_gauss_s4.0.tif
+kernel_support,lx,1.0,rx=4; ry=3; sum2d=0,rx=4; ry=3,SUPPORT_PASS; derivative_x_radius=4; smoothing_y_radius=3,calib_dirac_lx_s1.0.tif
+kernel_support,lx,2.0,rx=8; ry=6; sum2d=0,rx=8; ry=6,SUPPORT_PASS; derivative_x_radius=8; smoothing_y_radius=6,calib_dirac_lx_s2.0.tif
+kernel_support,lx,4.0,rx=16; ry=12; sum2d=0,rx=16; ry=12,SUPPORT_PASS; derivative_x_radius=16; smoothing_y_radius=12,calib_dirac_lx_s4.0.tif
+kernel_support,lxx,1.0,rx=4; ry=3; sum2d=-7.20183816156e-05,rx=4; ry=3,SUPPORT_PASS; derivative_x_radius=4; smoothing_y_radius=3,calib_dirac_lxx_s1.0.tif
+kernel_support,lxx,2.0,rx=8; ry=6; sum2d=-8.66882696755e-05,rx=8; ry=6,SUPPORT_PASS; derivative_x_radius=8; smoothing_y_radius=6,calib_dirac_lxx_s2.0.tif
+kernel_support,lxx,4.0,rx=16; ry=12; sum2d=-4.00395193338e-05,rx=16; ry=12,SUPPORT_PASS; derivative_x_radius=16; smoothing_y_radius=12,calib_dirac_lxx_s4.0.tif
+border_mode,gauss_edge_pixel,1.0,observed=0.399050266; err_mirror=1.3403233e-08; err_reflect=0.242036245,mirror=0.399050279; reflect=0.64108651,MIRROR_NON_REPEATING,calib_bright_border_gauss_s1.0.tif
+border_mode,gauss_edge_pixel,2.0,observed=0.199675635; err_mirror=9.02642108e-09; err_reflect=0.176213123,mirror=0.199675644; reflect=0.375888757,MIRROR_NON_REPEATING,calib_bright_border_gauss_s2.0.tif
+border_mode,gauss_edge_pixel,4.0,observed=0.0999083593; err_mirror=5.42505156e-09; err_reflect=0.0968344954,mirror=0.0999083539; reflect=0.196742855,MIRROR_NON_REPEATING,calib_bright_border_gauss_s4.0.tif

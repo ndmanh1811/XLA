@@ -44,4 +44,4 @@ Nguồn số liệu chính là **duc_10_11**, không dùng bảng cũ chứa DRI
 
 415 TIFF bàn giao vẫn ở [3 ZIP ảnh](outputs/archives/duc_08_11/README_BAN_GIAO.md). Tên ZIP giữ nguyên để tránh đổi gói đã trao đổi; nội dung được kiểm tra với TIFF hiện có. Metric và biểu đồ gửi riêng theo hai thư mục duc_10_11 ở trên.
 
-PDF báo cáo cuối vẫn cần Hưng biên dịch, rà font/số trang và hoàn thiện lý thuyết. Hồ sơ hiệu chuẩn của Lộc, việc chuẩn bị bảo vệ và kiểm tra link LMS là phần nhóm tiếp tục chốt; sửa pipeline không tự hoàn thành những việc này.
+PDF báo cáo cuối vẫn cần Hưng biên dịch, rà font/số trang và hoàn thiện lý thuyết. Lộc đã bổ sung hồ sơ hiệu chuẩn định lượng tại `docs/fiji/calibration` ngày 11/11; còn ảnh chụp hộp thoại/phiên bản để chốt bằng chứng giao diện. Việc chuẩn bị bảo vệ và kiểm tra link LMS vẫn là phần nhóm tiếp tục hoàn thiện.
