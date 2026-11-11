@@ -9,14 +9,14 @@ kernel_k:                 # Bán kính cắt kernel r = ceil(k * sigma) khớp t
 
 border_mode: mirror     # Kiểu phản xạ biên theo SciPy: 'mirror' (không lặp pixel biên x[-1] = x[1], tương ứng mode='reflect' của NumPy)
 
-featurej_normalized:       # Cờ xác nhận FeatureJ có tự động nhân thêm sigma^n không
-  derivatives: false      # ĐÃ ĐO: value=0.9996 (~1.0) -> FeatureJ xuất đạo hàm thô, CHƯA nhân sigma
-  laplacian: false        # ĐÃ XÁC MINH: FeatureJ tính Lxx + Lyy trực tiếp, CHƯA nhân sigma^2
-  hessian: false          # ĐÃ ĐO: largest=1.9968 (~2.0), smallest=1.0 -> CHƯA nhân sigma^2
-  edges: false            # FeatureJ Edges = sqrt(Lx^2 + Ly^2) thô
-  structure: false        # Structure Tensor thô
+featurej_normalized:       # Hồ sơ: docs/fiji/calibration/CALIBRATION_RESULTS.md
+  derivatives: false      # Ramp Lx sigma 1/2/4 = 0.999925/0.999636/0.999324: đầu ra thô, chưa nhân sigma
+  laplacian: false        # Parabola Lap sigma 1/2/4 = 0.974480/0.966613/0.979834: chưa nhân sigma^2
+  hessian: false          # Saddle: largest xấp xỉ +1, smallest xấp xỉ -2 ở mọi sigma: signed/raw, chưa nhân sigma^2
+  edges: false            # Ramp gradient sigma 1/2/4 bằng Lx xấp xỉ 1; NMS tắt khi đo
+  structure: false        # Ramp: mu1 xấp xỉ 1, mu2 = 0 tại (1,3) và (2,6): tensor thô
 
-eigen_order: algebraic      # Mặc định FeatureJ (false = algebraic: l1 >= l2) khớp với BatchTier1Fiji.java
+eigen_order: algebraic      # Saddle signed: Largest xấp xỉ +1, Smallest xấp xỉ -2; Absolute comparison tắt
 
 sigmas: [1.0, 2.0, 4.0, 8.0] # Dãy tỷ lệ chuẩn theo cấp số nhân cơ số 2
 

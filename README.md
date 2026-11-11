@@ -65,4 +65,4 @@ python tools/verify_delivery_10_11.py
 - DRIVE: giao FOV hợp lệ qua scale; blob: một–một và ignore, cùng 7 sigma.
 - Timing Java đo API headless, không gồm GUI/I/O; không suy ra ưu thế phổ quát.
 - Đánh giá nội bộ trên tập dùng chọn ngưỡng; chưa có thực nghiệm biến thể nhiễu/kích thước.
-- PDF báo cáo ~30 trang, hồ sơ đo hiệu chuẩn của Lộc, câu hỏi bảo vệ và quyền link LMS vẫn cần cả nhóm chốt. Hạn chính thức theo đề **19/11**, mục tiêu nội bộ nộp trước 18/11.
+- PDF báo cáo ~30 trang, ảnh chụp giao diện bổ sung cho [hồ sơ hiệu chuẩn định lượng của Lộc](docs/fiji/calibration/CALIBRATION_RESULTS.md), câu hỏi bảo vệ và quyền link LMS vẫn cần cả nhóm chốt. Hạn chính thức theo đề **19/11**, mục tiêu nội bộ nộp trước 18/11.

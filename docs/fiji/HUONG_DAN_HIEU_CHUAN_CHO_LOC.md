@@ -1,5 +1,10 @@
 # Bảo Lộc — Bổ sung hồ sơ đo hiệu chuẩn FeatureJ
 
+> **Cập nhật 11/11/2026:** phép đo định lượng đã hoàn tất tại
+> `docs/fiji/calibration/`: 40 TIFF, 40 dòng ROI, 2.682 điểm profile và manifest
+> SHA-256. Kết quả xác nhận config hiện hành; xem `CALIBRATION_RESULTS.md`.
+> Phần còn lại là lưu screenshot hộp thoại/phiên bản vào `screenshots/`.
+
 ## Mục đích
 
 Lưu bằng chứng cho các thông số đang dùng trong `config.yaml`: bán kính cắt kernel theo bậc, cách xử lý biên, cờ chuẩn hóa theo sigma và thứ tự trị riêng.
@@ -90,7 +95,9 @@ Nếu đáp ứng khác giả định, trọng số không như kỳ vọng ho�
 
 ## 5. Hồ sơ cần bàn giao
 
-Đề xuất gom vào `docs/fiji/calibration/` trong dự án:
+Bộ khung tái hiện đã được tạo tại `docs/fiji/calibration/` trong dự án. Các CSV
+ban đầu chỉ có schema/trạng thái `NOT_RUN`; chúng chưa phải bằng chứng thực đo
+cho đến khi Lộc chạy `reproduce.ijm` trên Fiji và bổ sung ảnh chụp/phiên bản:
 
 ```text
 calibration/
@@ -103,7 +110,8 @@ calibration/
 └── outputs/                  # TIFF float32 của phép hiệu chuẩn
 ```
 
-Đây là **cấu trúc đề xuất**, chưa có nghĩa các file đo trên đã được tạo.
+Các file khung đã có không có nghĩa phép đo đã hoàn tất. Chỉ kết luận sau khi
+CSV có giá trị thực, TIFF calibration tồn tại và tùy chọn/phiên bản được ghi lại.
 
 CSV số đo nên có các cột:
 

@@ -1,0 +1,19 @@
+key,value,notes
+measurement_status,MEASURED_REVIEWED_SCREENSHOTS_PENDING,40 measurements and 40 TIFFs analyzed successfully
+imagej_version,2.16.0/1.54p,Recorded by reproduce.ijm and confirmed from Fiji window
+fiji_version,Fiji 2.16.0 / ImageJ 1.54p,Confirmed from running Fiji window
+featurej_version,2.0.0,Read from FeatureJ_.jar manifest
+imagescience_version,3.0.0,Read from imagescience.jar manifest
+operator,Phạm Bảo Lộc,Calibration owner
+measurement_date,2026-11-11 20:46:32 +07:00,Asia/Saigon; derived from completed output timestamps
+machine,LAPTOP-SCDMQ2G5 / Windows 11 Home Single Language 64-bit,OS build 10.0.26200
+java_version,OpenJDK 1.8.0_452 64-bit,Zulu 8.86.0.25 bundled with Fiji
+fiji_path,D:/XLA_Tools/fiji-stable-win64-jdk/Fiji.app,Local measurement installation
+featurej_jar_sha256,EAEEC2B2B61E8DD0C44DC4307ECA4171E98F1CB0541931261D65DF5A39E52C2F,FeatureJ_.jar
+imagescience_jar_sha256,FAB07A46F0F5EB24335671736357A5ECCEB301BA7FA50258D69EE5367AB4566A,imagescience.jar
+input_bright_border_sha256,7CDF11ACA7630DA2B04D0C159D59F9CCA6E6CB2AF2574CD5C93499F1C016FD0E,data/calib/bright_border.tif
+input_dirac_sha256,20818B09B62EB315B358E09D1A0836F20A9B23764D00E6AD59853DDC070E8CE9,data/calib/dirac.tif
+input_parabola_sha256,50A5729145B83F8DF058E0CFF5127803E8CF092775F418F55688ADE06F0D5516,data/calib/parabola.tif
+input_ramp_sha256,92C1F9B69C75A821E7E4D49FA8FE3C78D342B887D2A2B1F299DB51D9600EC4A8,data/calib/ramp.tif
+input_saddle_sha256,0A86C2702DE8A942AB718E89786B4A99C0FE449D30EA3B42A3EFAD3406A7D095,data/calib/saddle.tif
+screenshots_status,PENDING,Add Fiji dialog and version screenshots before final handoff

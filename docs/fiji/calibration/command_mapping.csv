@@ -1,0 +1,14 @@
+code,featurej_command,options,output_window_or_rule,scale_normalization,evidence_status
+gauss,FeatureJ Derivatives,"x-order=0 y-order=0 z-order=0 smoothing={sigma}",active result,DC normalized; support measured directly,MEASURED_DIRAC
+lx,FeatureJ Derivatives,"x-order=1 y-order=0 z-order=0 smoothing={sigma}",active result signed,raw; no sigma multiplication,MEASURED_RAMP_AND_DIRAC
+ly,FeatureJ Derivatives,"x-order=0 y-order=1 z-order=0 smoothing={sigma}",active result signed,raw; inferred from same first-order command,INFERRED_FROM_LX
+lxx,FeatureJ Derivatives,"x-order=2 y-order=0 z-order=0 smoothing={sigma}",active result signed,raw; no sigma squared multiplication,MEASURED_PARABOLA_AND_DIRAC
+lxy,FeatureJ Derivatives,"x-order=1 y-order=1 z-order=0 smoothing={sigma}",active result signed,raw; inferred from same second-order command,INFERRED_FROM_LX_LXX
+lyy,FeatureJ Derivatives,"x-order=0 y-order=2 z-order=0 smoothing={sigma}",active result signed,raw; inferred from same second-order command,INFERRED_FROM_LXX
+grad,FeatureJ Edges,"compute smoothing={sigma} lower=[] higher=[]",gradient magnitude with NMS disabled,raw; no sigma multiplication,MEASURED_RAMP
+edge,FeatureJ Edges,"compute smoothing={sigma} suppress lower=[] higher=[]",NMS reference map not binary hysteresis,raw; NMS does not add scale normalization,INFERRED_FROM_SAME_EDGES_COMMAND
+lap,FeatureJ Laplacian,"compute smoothing={sigma}",signed Laplacian with zero crossings disabled,raw; no sigma squared multiplication,MEASURED_PARABOLA
+hess-l1,FeatureJ Hessian,"largest smallest smoothing={sigma}",largest signed eigenvalue with Absolute disabled,raw signed algebraic largest,MEASURED_SADDLE
+hess-l2,FeatureJ Hessian,"largest smallest smoothing={sigma}",smallest signed eigenvalue with Absolute disabled,raw signed algebraic smallest,MEASURED_SADDLE
+st-l1,FeatureJ Structure,"largest smallest smoothing={sd} integration={si}",largest structure eigenvalue,raw; no scale normalization,MEASURED_RAMP
+st-l2,FeatureJ Structure,"largest smallest smoothing={sd} integration={si}",smallest structure eigenvalue,raw; no scale normalization,MEASURED_RAMP
