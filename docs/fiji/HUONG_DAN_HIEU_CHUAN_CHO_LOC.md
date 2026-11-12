@@ -3,7 +3,8 @@
 > **Cập nhật 11/11/2026:** phép đo định lượng đã hoàn tất tại
 > `docs/fiji/calibration/`: 40 TIFF, 40 dòng ROI, 2.682 điểm profile và manifest
 > SHA-256. Kết quả xác nhận config hiện hành; xem `CALIBRATION_RESULTS.md`.
-> Phần còn lại là lưu screenshot hộp thoại/phiên bản vào `screenshots/`.
+> Phần screenshot hộp thoại/phiên bản đã hoàn tất ngày 12/11/2026; xem
+> `calibration/screenshots/README.md` để truy vết từng PNG tới lệnh và TIFF.
 
 ## Mục đích
 
