@@ -47,6 +47,12 @@ test_perfect_gaussian_psnr_is_infinite (test_metrics.MetricTests.test_perfect_ga
 test_signed_mse_and_psnr_scope (test_metrics.MetricTests.test_signed_mse_and_psnr_scope) ... ok
 test_st_crop_sums_two_rounded_supports (test_metrics.MetricTests.test_st_crop_sums_two_rounded_supports) ... ok
 test_zero_reference_and_constant_correlation_not_pass (test_metrics.MetricTests.test_zero_reference_and_constant_correlation_not_pass) ... ok
+test_components_exclude_background_even_for_empty_mask (test_reference_comparison.ReferenceComparisonTests.test_components_exclude_background_even_for_empty_mask) ... ok
+test_constant_map_does_not_get_perfect_pearson (test_reference_comparison.ReferenceComparisonTests.test_constant_map_does_not_get_perfect_pearson) ... ok
+test_image_summary_reflects_actual_negative_correlation (test_reference_comparison.ReferenceComparisonTests.test_image_summary_reflects_actual_negative_correlation) ... ok
+test_invalid_arrays_are_rejected (test_reference_comparison.ReferenceComparisonTests.test_invalid_arrays_are_rejected) ... ok
+test_mask_overlap_is_computed_from_both_masks (test_reference_comparison.ReferenceComparisonTests.test_mask_overlap_is_computed_from_both_masks) ... ok
+test_perfect_correlation_does_not_hide_amplitude_error (test_reference_comparison.ReferenceComparisonTests.test_perfect_correlation_does_not_hide_amplitude_error) ... ok
 test_accuracy_aggregation_uses_mean_f1_not_f1_of_means (test_task5_analysis.Task5Tests.test_accuracy_aggregation_uses_mean_f1_not_f1_of_means) ... ok
 test_fidelity_summary_counts_both_criteria_from_measured_status (test_task5_analysis.Task5Tests.test_fidelity_summary_counts_both_criteria_from_measured_status) ... ok
 test_runtime_cases_cover_both_structure_pairs_and_no_legacy (test_task5_analysis.Task5Tests.test_runtime_cases_cover_both_structure_pairs_and_no_legacy) ... ok
@@ -55,6 +61,6 @@ test_timing_summary_requires_positive_multiple_samples (test_task5_analysis.Task
 test_warmup_is_excluded_and_missing_iteration_is_rejected (test_task5_analysis.Task5Tests.test_warmup_is_excluded_and_missing_iteration_is_rejected) ... ok
 
 ----------------------------------------------------------------------
-Ran 52 tests in 0.699s
+Ran 58 tests in 0.948s
 
 OK

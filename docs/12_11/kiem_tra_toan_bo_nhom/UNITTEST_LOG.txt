@@ -1,0 +1,60 @@
+test_absolute_grid_returns_valid_rows (test_bsds_grid.TestBsdsGrid.test_absolute_grid_returns_valid_rows) ... ok
+test_absolute_hysteresis_matches_core_when_thresholds_match (test_bsds_grid.TestBsdsGrid.test_absolute_hysteresis_matches_core_when_thresholds_match) ... ok
+test_empty_nms_still_counts_in_grid_mean (test_bsds_grid.TestBsdsGrid.test_empty_nms_still_counts_in_grid_mean)
+Ảnh không có cạnh sau NMS vẫn nằm trong mẫu số với F1 = 0 (không bị loại). ... ok
+test_evaluate_prediction_matches_manual_formula (test_bsds_grid.TestBsdsGrid.test_evaluate_prediction_matches_manual_formula) ... ok
+test_fast_hysteresis_matches_core_bfs (test_bsds_grid.TestBsdsGrid.test_fast_hysteresis_matches_core_bfs) ... ok
+test_percentile_grid_returns_valid_rows (test_bsds_grid.TestBsdsGrid.test_percentile_grid_returns_valid_rows) ... ok
+test_struct_2px_is_euclidean_disk_not_square (test_bsds_grid.TestBsdsGrid.test_struct_2px_is_euclidean_disk_not_square)
+Dung sai biên 2 px phải là đĩa Euclidean: không chứa 4 góc (±2, ±2). ... ok
+test_border_objects_not_suggested_as_complete_cells (test_cell_proposals.CellProposalTests.test_border_objects_not_suggested_as_complete_cells) ... ok
+test_constant_input_has_no_suggestions (test_cell_proposals.CellProposalTests.test_constant_input_has_no_suggestions) ... ok
+test_distinct_objects_and_original_coordinates (test_cell_proposals.CellProposalTests.test_distinct_objects_and_original_coordinates) ... ok
+test_existing_labels_and_ignores_not_duplicated_or_mutated (test_cell_proposals.CellProposalTests.test_existing_labels_and_ignores_not_duplicated_or_mutated) ... ok
+test_invalid_input_rejected (test_cell_proposals.CellProposalTests.test_invalid_input_rejected) ... ok
+test_large_touching_component_flagged (test_cell_proposals.CellProposalTests.test_large_touching_component_flagged) ... ok
+test_unreviewed_suggestions_block_completion (test_cell_proposals.CellProposalTests.test_unreviewed_suggestions_block_completion) ... ok
+test_blob_evaluator_uses_one_to_one_and_ignore_for_both_sources (test_delivery_pipeline.DeliveryPipelineTests.test_blob_evaluator_uses_one_to_one_and_ignore_for_both_sources) ... ok
+test_drive_evaluation_support_follows_config_not_sigma2 (test_delivery_pipeline.DeliveryPipelineTests.test_drive_evaluation_support_follows_config_not_sigma2) ... ok
+test_fiji_normalization_flag_is_honored_at_map_loader (test_delivery_pipeline.DeliveryPipelineTests.test_fiji_normalization_flag_is_honored_at_map_loader) ... ok
+test_matching_finds_assignment_when_greedy_order_would_lose_a_match (test_delivery_pipeline.DeliveryPipelineTests.test_matching_finds_assignment_when_greedy_order_would_lose_a_match) ... ok
+test_required_scale_lists_do_not_fall_back (test_delivery_pipeline.DeliveryPipelineTests.test_required_scale_lists_do_not_fall_back) ... ok
+test_all_matlab_annotators_preserved (test_ground_truth.GroundTruthTests.test_all_matlab_annotators_preserved) ... ok
+test_analytic_disk_and_gaussian_labels (test_ground_truth.GroundTruthTests.test_analytic_disk_and_gaussian_labels) ... ok
+test_annotation_for_another_image_is_rejected (test_ground_truth.GroundTruthTests.test_annotation_for_another_image_is_rejected) ... ok
+test_coordinate_and_radius_consistency (test_ground_truth.GroundTruthTests.test_coordinate_and_radius_consistency) ... ok
+test_empty_cell_template_is_pending (test_ground_truth.GroundTruthTests.test_empty_cell_template_is_pending) ... ok
+test_ignore_overlap_and_duplicates_are_rejected (test_ground_truth.GroundTruthTests.test_ignore_overlap_and_duplicates_are_rejected) ... ok
+test_masks_reject_nonbinary_or_wrong_shape (test_ground_truth.GroundTruthTests.test_masks_reject_nonbinary_or_wrong_shape) ... ok
+test_review_requires_objects_and_reviewer (test_ground_truth.GroundTruthTests.test_review_requires_objects_and_reviewer) ... ok
+test_unreviewed_labels_cannot_be_ready (test_ground_truth.GroundTruthTests.test_unreviewed_labels_cannot_be_ready) ... ok
+test_user_annotations_not_overwritten_by_default (test_ground_truth.GroundTruthTests.test_user_annotations_not_overwritten_by_default) ... ok
+test_components_and_hysteresis_against_oracles (test_metrics.MetricTests.test_components_and_hysteresis_against_oracles) ... ok
+test_empty_nms_still_counts_in_grid_mean (test_metrics.MetricTests.test_empty_nms_still_counts_in_grid_mean) ... ok
+test_euclidean_two_pixel_tolerance (test_metrics.MetricTests.test_euclidean_two_pixel_tolerance) ... ok
+test_ignore_region_and_radius_gate (test_metrics.MetricTests.test_ignore_region_and_radius_gate) ... ok
+test_invalid_continuous_inputs_rejected (test_metrics.MetricTests.test_invalid_continuous_inputs_rejected) ... ok
+test_live_dataset_checksums_and_ready (test_metrics.MetricTests.test_live_dataset_checksums_and_ready) ... ok
+test_matching_uses_augmenting_paths (test_metrics.MetricTests.test_matching_uses_augmenting_paths) ... ok
+test_missing_config_or_null_or_bool_normalization_rejected (test_metrics.MetricTests.test_missing_config_or_null_or_bool_normalization_rejected) ... ok
+test_missing_files_get_explicit_records (test_metrics.MetricTests.test_missing_files_get_explicit_records) ... Tier 1: 220 maps, 0 PASS (strict), 0 FAIL
+ok
+test_normalization_avoids_double_scaling (test_metrics.MetricTests.test_normalization_avoids_double_scaling) ... ok
+test_numpy_morphology_against_independent_scipy (test_metrics.MetricTests.test_numpy_morphology_against_independent_scipy) ... ok
+test_one_prediction_cannot_match_two_gt (test_metrics.MetricTests.test_one_prediction_cannot_match_two_gt) ... ok
+test_perfect_correlation_does_not_override_error (test_metrics.MetricTests.test_perfect_correlation_does_not_override_error) ... ok
+test_perfect_gaussian_psnr_is_infinite (test_metrics.MetricTests.test_perfect_gaussian_psnr_is_infinite) ... ok
+test_signed_mse_and_psnr_scope (test_metrics.MetricTests.test_signed_mse_and_psnr_scope) ... ok
+test_st_crop_sums_two_rounded_supports (test_metrics.MetricTests.test_st_crop_sums_two_rounded_supports) ... ok
+test_zero_reference_and_constant_correlation_not_pass (test_metrics.MetricTests.test_zero_reference_and_constant_correlation_not_pass) ... ok
+test_accuracy_aggregation_uses_mean_f1_not_f1_of_means (test_task5_analysis.Task5Tests.test_accuracy_aggregation_uses_mean_f1_not_f1_of_means) ... ok
+test_fidelity_summary_counts_both_criteria_from_measured_status (test_task5_analysis.Task5Tests.test_fidelity_summary_counts_both_criteria_from_measured_status) ... ok
+test_runtime_cases_cover_both_structure_pairs_and_no_legacy (test_task5_analysis.Task5Tests.test_runtime_cases_cover_both_structure_pairs_and_no_legacy) ... ok
+test_runtime_wrong_median_and_warmup_flag_rejected (test_task5_analysis.Task5Tests.test_runtime_wrong_median_and_warmup_flag_rejected) ... ok
+test_timing_summary_requires_positive_multiple_samples (test_task5_analysis.Task5Tests.test_timing_summary_requires_positive_multiple_samples) ... ok
+test_warmup_is_excluded_and_missing_iteration_is_rejected (test_task5_analysis.Task5Tests.test_warmup_is_excluded_and_missing_iteration_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 52 tests in 4.807s
+
+OK

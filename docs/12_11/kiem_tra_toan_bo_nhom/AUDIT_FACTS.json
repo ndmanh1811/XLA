@@ -1,0 +1,123 @@
+{
+  "UNITTEST": {
+    "returncode": 0,
+    "tail": [
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 52 tests in 4.807s",
+      "",
+      "OK"
+    ]
+  },
+  "CORE": {
+    "returncode": 0,
+    "tail": [
+      "[OK] 4. Kiểm tra Structure Tensor & Coherence trên gradient chuẩn",
+      "[OK] 5. Smoke test 3 hàm dò mức cao (Canny, Frangi, Blob LoG)",
+      "============================================================",
+      "KẾT QUẢ: 5/5 bài test đạt chuẩn!",
+      "============================================================"
+    ]
+  },
+  "FIJI": {
+    "returncode": 0,
+    "tail": [
+      "[3/5] Manifest: 435 dòng, 435 tên duy nhất",
+      "[4/5] Runtime: 369 dòng (303 một đầu ra + 66 hai đầu ra)",
+      "[5/5] Định dạng: đã đọc 435/435 TIFF float32",
+      "--------------------------------------------------------------------",
+      "=> PASS: 435/435 file đúng bộ kỳ vọng, manifest, runtime và định dạng."
+    ]
+  },
+  "ANALYTICAL": {
+    "returncode": 0,
+    "tail": [
+      "   - Chế độ 'absolute':  lambda_1 = -2.0000, lambda_2 = 1.0000",
+      "   -> [PASS] Cả 2 chế độ sắp xếp trị riêng Hessian hoạt động hoàn hảo!",
+      "=================================================================",
+      "KẾT LUẬN: BƯỚC 1 SMOKE TEST GIẢI TÍCH ĐẠT 100%!",
+      "================================================================="
+    ]
+  },
+  "gt_ready": 25,
+  "metric_verification": "ValueError: Task 23 dependency changed: config.yaml; regenerate metrics first",
+  "runtime_verification": "ValueError: Runtime config/protocol mismatch; use --remeasure-runtime",
+  "metric_changed_dependencies": [
+    "config.yaml"
+  ],
+  "changed_metric_outputs": [],
+  "changed_maps": [],
+  "runtime_changed_dependencies": [
+    "config.yaml"
+  ],
+  "runtime_changed_samples": [],
+  "analysis_changed_outputs": [],
+  "analysis_matches_metric_manifest": true,
+  "tier2_internal_errors": 0,
+  "tier2_rows": 110,
+  "tier1": {
+    "PASS": 35,
+    "FAIL": 185
+  },
+  "previous_config_proof": [],
+  "calibration": {
+    "tiffs": 40,
+    "measurements": 40,
+    "profiles": 2682,
+    "issues": [],
+    "screenshots": 0
+  },
+  "slides": {
+    "count": 10,
+    "corrupt_entry": null
+  },
+  "report": {
+    "lines": 472,
+    "section_tokens": {
+      "Chương 1: Giới Thiệu Chung": 1084,
+      "Chương 2: Cơ Sở Lý Thuyết Scale-Space và Đạo Hàm Gaussian": 266,
+      "Chương 3: Khảo Sát Nền Tảng Tham Chiếu FeatureJ / Fiji": 878,
+      "Chương 4: Thiết Kế và Cài Đặt Hệ Thống Python Core (From Scratch)": 3113,
+      "Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích": 758,
+      "Chương 6: Kết Luận và Hướng Phát Triển": 97
+    },
+    "missing_figures": [],
+    "compilers": {
+      "pdflatex": null,
+      "xelatex": null,
+      "lualatex": null,
+      "latexmk": null
+    },
+    "missing_refs": [],
+    "missing_citations": [],
+    "bib_entries": 8
+  },
+  "report_pdfs": [],
+  "archives": {
+    "maps": 415,
+    "source_maps": 415,
+    "complete": true,
+    "issues": []
+  },
+  "workbook_tasks": 29,
+  "slide_current_scores_present": {
+    "0.477886": true,
+    "0.477382": true,
+    "0.473863": true,
+    "0.492091": true,
+    "0.486865": true
+  },
+  "optimization": {
+    "rows": 36,
+    "repeats": {
+      "5": 36
+    },
+    "maximum_error": 1.279e-12
+  },
+  "cross_library_calibration": {
+    "cases": 40,
+    "identical_arrays": 40,
+    "max_abs_error": 0.0,
+    "max_relative_error": 0.0
+  }
+}

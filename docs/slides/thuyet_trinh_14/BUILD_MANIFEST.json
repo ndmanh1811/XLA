@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "built_at_utc": "2026-11-12T05:11:08.387039+00:00",
+  "slides": 14,
+  "file": "BTL_XLA_ThuyetTrinh_14_Slide.pptx",
+  "pptx_sha256": "bd0eb267338e46b44bfd4d8cc119fc59e267ea15a2ce4e6daec58c29199fe4e5",
+  "all_native_text_black": true,
+  "embedded_images": true,
+  "style": "white/light gray background; black Arial text; 16:9",
+  "input_sha256": {
+    "config.yaml": "4de0c6bdf246c079de41c332048dbdcffc7611087310e6d701b4d19ecfe0bc2d",
+    "data\\gt\\blob\\blob_05.json": "efb48be44407af7bf158ed587d4ae06e1dac8420d5ca6f000f11ed61fc64665d",
+    "data\\raw\\blob_05.png": "40b323f8d2b24a1723d71a545302a31627b460d3e25712e17d8e54b54dde3a92",
+    "data\\raw\\bsds_01.png": "03cd4f8e2deed64f1494746485ba9aaca7356514ae01dba4305bdc99c430b73a",
+    "data\\raw\\drive_01.png": "f886c825da140ca9bdbbda18465d50d9a00e1c7968faee5bd86ad29f18caf04d",
+    "docs\\slides\\build_presentation_14.py": "21b146f15b91c4df74eaa731a783bf26fea78352bcdadad20eb444f545a0ab28",
+    "outputs\\analysis\\duc_task5_10_11\\analysis_manifest.json": "7ad029275bdd65752feacec98302b991a35ab173db9ac4a1482ccf116f10786f",
+    "outputs\\analysis\\duc_task5_10_11\\runtime\\runtime_paired.csv": "9178ee6ebbcd7bc1e0dbe8e6a26892351701bccb5a4a0af09cdefad0eaa446be",
+    "outputs\\analysis\\duc_task5_10_11\\tables\\edge_by_sigma.csv": "96d60ca4a588a1b68f4d80938dacdae885e35284cb36ac4bd49692a54afb7197",
+    "outputs\\metrics\\duc_10_11\\run_manifest.json": "23cfcd6ffaff84ed0ee4611c1110155561232105e6d6bf5d9a379e855cf7d00b",
+    "outputs\\metrics\\duc_10_11\\tier1_report.csv": "703bc75e4a7518cc873aa9e783e1b58c0905941834b0c06992a39fe6357cf891",
+    "outputs\\metrics\\duc_10_11\\tier2_results_both.csv": "484444a2d7f844d64f87421152c30319933d2e4f76a03f80e11f6eb70bca6edd",
+    "outputs\\metrics\\duc_10_11\\tier2_summary.csv": "564d18ccfe2dd06bd64e01bc3d858a68f337c52545375f71a61de502d4450fd8",
+    "outputs\\python\\py_bsds_01_gauss_s1.0.tif": "7335d256612072599cc2cb67586cb31445d055b100cc8643848afbd0424ee896",
+    "outputs\\python\\py_bsds_01_gauss_s2.0.tif": "e8d65142e6ca9734f9c1b2372845e41bff0e05d0a1f0a3504fa88a0791e7ba7a",
+    "outputs\\python\\py_bsds_01_gauss_s4.0.tif": "15d28e89a3ef24d785aabccc709d589acb1193c0e9fba6bf2ed94bdf254382f2",
+    "outputs\\python\\py_bsds_01_gauss_s8.0.tif": "242db812735250d3264022b343cfe957f1a6bc86a59d5a8362645b4712368028",
+    "outputs\\python\\py_bsds_01_grad_s2.0.tif": "503ce322f944633f1f6410adf51f833dc6ec4989d79162b7617db9343eb1bd59",
+    "outputs\\python\\py_bsds_01_lxx_s2.0.tif": "64e179a00c265dfafe593986f92c87ca3b377f9185851b095933e0f30e8c0a73"
+  },
+  "metric_manifest_sha256": "23cfcd6ffaff84ed0ee4611c1110155561232105e6d6bf5d9a379e855cf7d00b",
+  "analysis_manifest_sha256": "7ad029275bdd65752feacec98302b991a35ab173db9ac4a1482ccf116f10786f"
+}

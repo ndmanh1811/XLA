@@ -72,19 +72,19 @@ Nguồn Java là **ImageJ 1.53k / ImageScience 3.0.0**, gọi API headless trên
 
 | Lệnh | Case | Median Python (ms) | Median engine (ms) | Median tỷ số từng case Python/engine |
 | --- | ---: | ---: | ---: | ---: |
-| edge | 40 | 46.658 | 12.442 | 3.947 |
-| gauss | 20 | 19.188 | 2.916 | 5.580 |
-| gradient | 20 | 38.985 | 6.828 | 4.616 |
-| hessian | 56 | 80.048 | 26.168 | 3.449 |
-| laplacian | 47 | 46.565 | 6.344 | 8.826 |
-| lx | 52 | 18.262 | 3.764 | 4.893 |
-| lxx | 20 | 16.776 | 3.064 | 5.896 |
-| lxy | 20 | 16.914 | 3.167 | 5.396 |
-| ly | 52 | 18.854 | 4.114 | 4.854 |
-| lyy | 20 | 13.769 | 3.044 | 4.509 |
-| structure | 10 | 73.889 | 14.071 | 4.950 |
+| edge | 40 | 102.418 | 13.311 | 8.181 |
+| gauss | 20 | 35.124 | 2.822 | 9.875 |
+| gradient | 20 | 75.431 | 7.694 | 10.936 |
+| hessian | 56 | 173.494 | 26.050 | 7.747 |
+| laplacian | 47 | 99.021 | 6.144 | 17.212 |
+| lx | 52 | 39.753 | 3.522 | 10.973 |
+| lxx | 20 | 34.220 | 3.133 | 12.124 |
+| lxy | 20 | 37.148 | 3.701 | 11.207 |
+| ly | 52 | 38.700 | 3.929 | 11.080 |
+| lyy | 20 | 38.430 | 2.998 | 10.992 |
+| structure | 10 | 193.275 | 16.510 | 12.021 |
 
-Median tỷ số Python/engine trên toàn bộ 357 case là **4.710**. Tỷ số >1 nghĩa là Python mất nhiều thời gian hơn ở case đó; <1 nghĩa là ngược lại. Không gọi đây là tốc độ chung cho mọi ảnh/máy hoặc mọi lệnh. Median tỷ số từng case khác với tỷ số hai median và không được tráo hai phép tổng hợp.
+Median tỷ số Python/engine trên toàn bộ 357 case là **10.668**. Tỷ số >1 nghĩa là Python mất nhiều thời gian hơn ở case đó; <1 nghĩa là ngược lại. Không gọi đây là tốc độ chung cho mọi ảnh/máy hoặc mọi lệnh. Median tỷ số từng case khác với tỷ số hai median và không được tráo hai phép tổng hợp.
 
 Biểu đồ theo sigma giữ cùng 5 ảnh Tầng 1, tránh thay đổi số ảnh/kích thước khi tăng sigma. Python tích chập hữu hạn theo support tăng với sigma; xu hướng thời gian còn phụ thuộc số phép tích chập của từng toán tử, bộ nhớ, JVM JIT và nhiễu hệ thống. Không dùng một lần chạy để suy ra độ phức tạp tiệm cận.
 

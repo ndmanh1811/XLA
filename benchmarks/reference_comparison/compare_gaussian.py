@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.core.derivatives import gaussian_smooth
 from src.config import get_sigmas, get_border_mode, get_kernel_k
+from benchmarks.reference_comparison.report_metrics import continuous_metrics, fmt_r, opencv_border_mode
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -59,7 +60,7 @@ def run_gaussian_comparison(image_path: str = "data/raw/bsds_01.png"):
         t0 = time.perf_counter()
         for _ in range(3):
             opencv_smooth = cv2.GaussianBlur(
-                img, (ksize, ksize), sigmaX=sigma, sigmaY=sigma, borderType=cv2.BORDER_REFLECT_101
+                img, (ksize, ksize), sigmaX=sigma, sigmaY=sigma, borderType=opencv_border_mode(mode)
             )
         t_cv = (time.perf_counter() - t0) / 3 * 1000
 
@@ -67,13 +68,15 @@ def run_gaussian_comparison(image_path: str = "data/raw/bsds_01.png"):
         diff_scipy = np.abs(custom_smooth - scipy_smooth)
         max_scipy = np.max(diff_scipy)
         mae_scipy = np.mean(diff_scipy)
-        r_scipy = np.corrcoef(custom_smooth.ravel(), scipy_smooth.ravel())[0, 1]
+        stats_scipy = continuous_metrics(custom_smooth, scipy_smooth)
+        r_scipy = stats_scipy['pearson_r']
 
         # Đo sai số NumPy vs OpenCV
         diff_cv = np.abs(custom_smooth - opencv_smooth)
         max_cv = np.max(diff_cv)
         mae_cv = np.mean(diff_cv)
-        r_cv = np.corrcoef(custom_smooth.ravel(), opencv_smooth.ravel())[0, 1]
+        stats_cv = continuous_metrics(custom_smooth, opencv_smooth)
+        r_cv = stats_cv['pearson_r']
 
         records.append({
             "sigma": sigma,
@@ -91,17 +94,20 @@ def run_gaussian_comparison(image_path: str = "data/raw/bsds_01.png"):
             "t_custom": t_custom,
             "t_scipy": t_scipy,
             "t_cv": t_cv,
+            "metrics_scipy": stats_scipy,
+            "metrics_cv": stats_cv,
         })
 
-        print(f"σ = {sigma:<3.1f} | NumPy vs SciPy        | {max_scipy:<13.3e} | {mae_scipy:<13.3e} | {r_scipy:<12.8f} | {t_custom:<5.1f} / {t_scipy:<4.1f}")
-        print(f"        | NumPy vs OpenCV (C++) | {max_cv:<13.3e} | {mae_cv:<13.3e} | {r_cv:<12.8f} | {t_custom:<5.1f} / {t_cv:<4.1f}")
+        print(f"σ = {sigma:<3.1f} | NumPy vs SciPy        | {max_scipy:<13.3e} | {mae_scipy:<13.3e} | {fmt_r(r_scipy):<12} | {t_custom:<5.1f} / {t_scipy:<4.1f}")
+        print(f"        | NumPy vs OpenCV (C++) | {max_cv:<13.3e} | {mae_cv:<13.3e} | {fmt_r(r_cv):<12} | {t_custom:<5.1f} / {t_cv:<4.1f}")
         print("-" * 85)
 
     print("=" * 85)
     print("NHẬN XÉT ĐỐI CHUẨN GAUSSIAN:")
-    print("✓ Tương quan Pearson r = 1.00000000 tuyệt đối với cả SciPy và OpenCV.")
-    print("✓ Sai số chênh lệch tối đa chỉ ở mức ~ 10^-13 (giới hạn làm tròn dấu phẩy động của CPU).")
-    print("✓ Chứng minh: Thuật toán tách rời 1D thuần NumPy hoạt động chính xác 100% so với C++!")
+    largest=max(r[key]['max_error'] for r in records for key in ('metrics_scipy','metrics_cv'))
+    print(f"Sai số cực đại thực đo trên {2*len(records)} cặp: {largest:.9g}.")
+    print("Kết quả áp dụng cho ảnh/scale/cấu hình vừa chạy; Pearson được tính từ mảng, không gõ cứng.")
+    print("Thời gian ở đây là trung bình 3 lượt thăm dò; bộ timing bàn giao có protocol warm-up/median riêng.")
     return records
 
 

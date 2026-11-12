@@ -1,0 +1,103 @@
+{
+  "status": "COMPLETE",
+  "recorded_at_utc": "2026-11-12T04:48:38.329669+00:00",
+  "command": [
+    "benchmarks/reference_comparison/run_all_comparisons.py"
+  ],
+  "parameters": {
+    "image": "data/raw/bsds_01.png",
+    "sigma": 2.0,
+    "p_low": 60.0,
+    "p_high": 85.0
+  },
+  "config": {
+    "kernel_k": {
+      "gauss": 3.0,
+      "lx": 4.0,
+      "lxx": 4.0
+    },
+    "border_mode": "mirror",
+    "featurej_normalized": {
+      "derivatives": false,
+      "laplacian": false,
+      "hessian": false,
+      "edges": false,
+      "structure": false
+    },
+    "eigen_order": "algebraic",
+    "sigmas": [
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "sigmas_blob": [
+      1.0,
+      1.4,
+      2.0,
+      2.8,
+      4.0,
+      5.7,
+      8.0
+    ],
+    "structure_pairs": [
+      [
+        1.0,
+        3.0
+      ],
+      [
+        2.0,
+        6.0
+      ]
+    ],
+    "tier1_images": [
+      "bsds_01",
+      "bsds_02",
+      "drive_01",
+      "blob_01",
+      "blob_02"
+    ]
+  },
+  "continuous_pairs": 16,
+  "mask_pairs": 2,
+  "components": {
+    "custom": {
+      "components": 143,
+      "mean_pixels_per_component": 52.88111888111888
+    },
+    "opencv_smoothed": {
+      "components": 2399,
+      "mean_pixels_per_component": 12.368070029178824
+    }
+  },
+  "packages": {
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "opencv-python": "4.13.0.92",
+    "matplotlib": "3.11.1"
+  },
+  "input_code_sha256": {
+    "benchmarks\\reference_comparison\\compare_canny.py": "c1a6e37abe67009b581b1ace480324ce5febf65629e0910e968eb1317cae7f28",
+    "benchmarks\\reference_comparison\\compare_derivatives.py": "4d892502ca1e67d10fe952ce59d2724999b3b3e02cb05def8a275576797bd0e8",
+    "benchmarks\\reference_comparison\\compare_gaussian.py": "526f1ec950bc593dc1eff97de320a63cfa7493f919678739631737b884a597ad",
+    "benchmarks\\reference_comparison\\report_metrics.py": "b9d3d8451d5924f23eded8cb2c55393a2c576748635b0bc5bed0c6ba36e091d3",
+    "benchmarks\\reference_comparison\\run_all_comparisons.py": "56e2465a42991e10c493c5ccdb3c0bf21f79bc7bb6e28405ab33486e9fec7a41",
+    "src\\core\\__init__.py": "5bd334b4a1c5e75dba3450453cf30b4a8dc82ec92720be75ac46465d13a2fe68",
+    "src\\core\\batch_runner.py": "048cdb8acc5578dd3e278f5690d54d9f03a43d784259e318b54650a37d6caf29",
+    "src\\core\\convolution.py": "891f27b7f22619726847d90452d9c029014c0df82fd0f6e845a864900c8a79df",
+    "src\\core\\derivatives.py": "4203b7a10d3cdf7690ade501039f913de54657bc97d36ed2a8a65eb683decb63",
+    "src\\core\\detectors.py": "42f0a5ea404e90e53ab2d14fa7387ec1592862e28bf16fb244fe8eac10ae6eff",
+    "src\\core\\hessian.py": "34fd56311eac85eee6e1bb890426c753cbda71ab1389777772dd6d1edaf94df0",
+    "src\\core\\kernel.py": "c53272e197d8c2c536ef15b9ebc5bf39b4eed51834fdce1374352b39ae909df4",
+    "src\\core\\structure_tensor.py": "a6b4cd3b1346b050705c438ea4cfd9dfd8456af75f53adc6a9b888fb0e18c939",
+    "src\\config.py": "fadb7a4e7d18afe77968bf09def230b8d95d790d225f8f9eeefe25be29bd1f28",
+    "config.yaml": "4de0c6bdf246c079de41c332048dbdcffc7611087310e6d701b4d19ecfe0bc2d",
+    "data\\raw\\bsds_01.png": "03cd4f8e2deed64f1494746485ba9aaca7356514ae01dba4305bdc99c430b73a"
+  },
+  "outputs": {
+    "outputs\\benchmarks\\reference_comparison\\continuous_comparison.csv": "c6113e2602224aca4853ecc9ae239c5aa3d75cf0afd71fa8d977a4268cdb0435",
+    "outputs\\benchmarks\\reference_comparison\\canny_mask_agreement.csv": "3d707f87dbcfb884cb3c599ed89a40a39d8525a4b13dfa8ef440755e05dd04ad",
+    "outputs\\benchmarks\\reference_comparison\\KET_QUA_DOI_CHIEU.md": "4061765ffee17d4e93884c909ceb1146212f78ca644e6e7deae7fbe12fef5039",
+    "outputs\\comparison_custom_vs_libs.png": "80d5a79dede66ac8a5419ed91f536abcfe264ad4726b457be8e6b222a92b54aa"
+  }
+}

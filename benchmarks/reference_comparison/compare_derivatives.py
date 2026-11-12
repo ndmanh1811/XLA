@@ -24,6 +24,7 @@ from src.core.derivatives import (
     gaussian_smooth,
 )
 from src.config import get_border_mode, get_kernel_k
+from benchmarks.reference_comparison.report_metrics import continuous_metrics, fmt_r, opencv_border_mode
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -56,8 +57,8 @@ def run_derivatives_comparison(image_path: str = "data/raw/bsds_01.png", sigma: 
 
     # OpenCV Sobel trên ảnh đã làm mịn (ksize=3, chuẩn hóa scale=1/8)
     img_smooth = gaussian_smooth(img, sigma=sigma, mode=mode)
-    sobel_x = cv2.Sobel(img_smooth, cv2.CV_64F, 1, 0, ksize=3, scale=1.0 / 8.0, borderType=cv2.BORDER_REFLECT_101)
-    sobel_y = cv2.Sobel(img_smooth, cv2.CV_64F, 0, 1, ksize=3, scale=1.0 / 8.0, borderType=cv2.BORDER_REFLECT_101)
+    sobel_x = cv2.Sobel(img_smooth, cv2.CV_64F, 1, 0, ksize=3, scale=1.0 / 8.0, borderType=opencv_border_mode(mode))
+    sobel_y = cv2.Sobel(img_smooth, cv2.CV_64F, 0, 1, ksize=3, scale=1.0 / 8.0, borderType=opencv_border_mode(mode))
     grad_opencv = np.sqrt(sobel_x**2 + sobel_y**2)
 
     # 2. ĐẠO HÀM BẬC 2: Lxx, Lyy, Lxy, Laplacian
@@ -86,25 +87,24 @@ def run_derivatives_comparison(image_path: str = "data/raw/bsds_01.png", sigma: 
         diff = np.abs(arr1 - arr2)
         max_d = np.max(diff)
         mae = np.mean(diff)
-        r = np.corrcoef(arr1.ravel(), arr2.ravel())[0, 1]
-        status = "XUẤT SẮC" if r > 0.999 else ("RẤT TỐT" if r > 0.99 else "ĐẠT")
-        print(f"{name:<10} | {desc:<24} | {max_d:<13.3e} | {mae:<13.3e} | {r:<12.8f} | {status}")
+        stats = continuous_metrics(arr1, arr2)
+        r = stats['pearson_r']
+        print(f"{name:<10} | {desc:<24} | {max_d:<13.3e} | {mae:<13.3e} | {fmt_r(r):<12} | MEASURED")
         results[f"{name}_{desc}"] = {
             "arr_custom": arr1,
             "arr_ref": arr2,
             "max_diff": max_d,
             "mae": mae,
             "r": r,
+            "metrics": stats,
         }
 
     print("=" * 90)
     print("PHÂN TÍCH CHUYÊN SÂU DÀNH CHO BẢO VỆ ĐỒ ÁN:")
-    print("1. Hệ số tương quan Pearson với SciPy đạt r > 0.99999 (gần như trùng khít tuyệt đối).")
-    print("2. Sự chênh lệch nhẹ tuyệt đối (~ 10^-2) xuất phát từ việc NumPy core sử dụng chuẩn hóa")
-    print("   moment Taylor của FeatureJ (sum(x * g1) = -1.0), trong khi SciPy dùng phép lấy mẫu")
-    print("   rời rạc thuần túy của hàm liên tục.")
-    print("3. So với OpenCV (Sobel 3x3): Pearson r đạt > 0.999, nhưng thuật toán của nhóm có ưu điểm")
-    print("   vượt trội về tính đẳng hướng (rotational invariance) nhờ bán kính kernel k=4*sigma.")
+    defined=[r['r'] for r in results.values() if r['r'] is not None]
+    if defined: print(f"Khoảng Pearson thực đo: [{min(defined):.8f}, {max(defined):.8f}].")
+    print("SciPy và NumPy có thể khác support trục làm mịn và chuẩn hóa moment; Sobel là toán tử khác.")
+    print("Sai khác mô tả đáp ứng của các bộ lọc; không tự chứng minh bộ nào chính xác hơn hoặc bất biến quay hơn.")
     return results
 
 

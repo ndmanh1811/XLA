@@ -204,6 +204,6 @@
       "notes": "one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only"
     }
   ],
-  "metric_manifest_sha256": "668feed0b2503aa54a6cc44905ad49f8ef13e3f7508607d56a89660ac09c1614",
-  "analysis_manifest_sha256": "4bd39f022e973289adace06171cccf8c28a688aeab8681c4494afc51029c644d"
+  "metric_manifest_sha256": "23cfcd6ffaff84ed0ee4611c1110155561232105e6d6bf5d9a379e855cf7d00b",
+  "analysis_manifest_sha256": "7ad029275bdd65752feacec98302b991a35ab173db9ac4a1482ccf116f10786f"
 }

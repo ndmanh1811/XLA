@@ -2,6 +2,8 @@
 
 **Đọc file này trước.** Đây là luồng hiện hành của công việc 4–5, chuẩn hóa ngày 10/11/2026. Dữ liệu/GT ngày 02/11 và 05/11 được giữ nguyên.
 
+**Cập nhật 12/11:** đã chạy lại metric và timing với config sau hiệu chuẩn, sửa bảng đối chiếu thư viện của Mạnh và kiểm tra 58/58 test. Xem [bàn giao Đức + Mạnh](docs/12_11/sau_hoan_thien_duc_manh/KET_QUA_HOAN_THIEN_DUC_MANH.md) và [checklist 29 công việc mới nhất](docs/12_11/sau_hoan_thien_duc_manh/CHECKLIST_29_CONG_VIEC.csv). Bản kiểm tra đầu ngày 12/11 là bằng chứng trước khi xử lý hai vấn đề này.
+
 ## Mở file nào?
 
 | Cần xem | File | Cách mở |
@@ -14,7 +16,7 @@
 | Gallery 10 biểu đồ | [index.html](outputs/analysis/duc_task5_10_11/index.html) | Trình duyệt; hoặc MO_BIEU_DO_DUC.cmd |
 | Nhận xét thực nghiệm | [PHAN_TICH_KET_QUA.md](outputs/analysis/duc_task5_10_11/PHAN_TICH_KET_QUA.md) | Markdown Preview |
 | Đã sửa gì, số liệu bàn giao, việc nhóm còn lại | [BAN_GIAO_SAU_SUA.md](docs/10_11/sau_sua_loi/BAN_GIAO_SAU_SUA.md) | Markdown Preview |
-| Trạng thái 29 đầu việc sau sửa | [CHECKLIST_29_CONG_VIEC.csv](docs/10_11/sau_sua_loi/CHECKLIST_29_CONG_VIEC.csv) | Excel/VS Code |
+| Trạng thái 29 đầu việc hiện hành | [CHECKLIST_29_CONG_VIEC.csv](docs/12_11/sau_hoan_thien_duc_manh/CHECKLIST_29_CONG_VIEC.csv) | Excel/VS Code |
 | Bằng chứng kiểm tra bàn giao | [KIEM_TRA_SAU_SUA.json](docs/10_11/sau_sua_loi/KIEM_TRA_SAU_SUA.json) | VS Code; status phải PASS |
 | Slide | [BTL_XLA_Nhom_BaoCao.pptx](docs/slides/BTL_XLA_Nhom_BaoCao.pptx) | PowerPoint; HTML offline ở bai_trinh_trinh_xla.html |
 

@@ -1,5 +1,5 @@
 {
-  "started_or_recorded_at_utc": "2026-11-10T15:03:50.163128+00:00",
+  "started_or_recorded_at_utc": "2026-11-12T04:47:02.401345+00:00",
   "platform": "Windows-10-10.0.26200-SP0",
   "cpu": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
   "logical_cpu_count": 16,
@@ -13,7 +13,7 @@
     "C:\\Users\\admin\\Documents\\ki1nam4\\XuLyAnh-thayThang\\ij153-win-java8\\ImageJ\\plugins\\jars\\imagescience.jar": "6975dcc17d4d9e0dc618060e93266c816dc62764379fe46bae2f7c6eaecfe134"
   },
   "java_source_sha256": "e2c746a284bf9f02ae20eedb0da7cd28e0cb33313f1fa174d2d62a60d0b3f1b5",
-  "config_sha256": "b17cd7e9f21635ab65dac3108ba18511d9d563be84db910be55b4e7bd36e6196",
+  "config_sha256": "4de0c6bdf246c079de41c332048dbdcffc7611087310e6d701b4d19ecfe0bc2d",
   "cases": 357,
   "measured_repeats": 5,
   "warmup_discarded": 1,
@@ -51,7 +51,7 @@
     "data\\raw\\drive_08.png": "a1ca45dd0ce5520df6a57c7ded1607078284fad068865361a11573b8afda82dc",
     "data\\raw\\drive_09.png": "5b1d28dfd7928802a358259fde160ea1f701fe1b24f82cddfbd11177ae8b20af",
     "data\\raw\\drive_10.png": "fe156c77715fed891697ecdaa4f3c8b81d68a0834e0c3e5dda71a3f140b7c409",
-    "config.yaml": "b17cd7e9f21635ab65dac3108ba18511d9d563be84db910be55b4e7bd36e6196",
+    "config.yaml": "4de0c6bdf246c079de41c332048dbdcffc7611087310e6d701b4d19ecfe0bc2d",
     "src\\config.py": "fadb7a4e7d18afe77968bf09def230b8d95d790d225f8f9eeefe25be29bd1f28",
     "src\\eval\\benchmark_runtime.py": "8f52805dae90e5481b2b65f15eae5f13fa1a9dc510d6bf27ac876bb7f2fb6837",
     "src\\eval\\task5_runtime.py": "0edb713e6f6e7e91c96ec88562b8947cb5bfc30ee3e2868305185e1fa5eb090a",
@@ -64,11 +64,11 @@
   "comparability": "edge is gradient+NMS, not full hysteresis/GT detector; measure complete Hessian/ST calls once per two outputs",
   "caution": "Single host/session; no claim of universal speed advantage; per-case warm-up may leave JVM JIT effects",
   "sample_files_sha256": {
-    "python_samples.csv": "a3596b8bac4acd1660ac38458e376a49514bc7b7ccf47e0a24375f118bd67b61",
-    "fiji_engine_samples.csv": "4f6b049c54036dc26a94aefca53ffca8e03068cb566fb1ab47d249ed90c74ed5",
+    "python_samples.csv": "0dd244ebcc90ea8053ff48141cf791999683e4e17c82c4a47a4d4301fe7eb231",
+    "fiji_engine_samples.csv": "90762bc50f59a8530be9e041cb3d1e42cf35dc6a6052f9dc85104649ab8576ba",
     "runtime_cases.csv": "1a8925103759615e34d2b7367faa8007b09f733b831a526cacf3b9c13768cf24",
-    "runtime_case_summary.csv": "df23488718dfb8b86f6a54816e27ddecc58c0a95b317f9b95dc5c193247784ce",
-    "runtime_paired.csv": "e4d5cdcce1584315bd4c1bbb6b10f7aeb3353607ba7bfd317c170b901b8b9038",
+    "runtime_case_summary.csv": "b9f04945f0aff0f2e4b4a0be8726858473d7d48a9b829acbfb138778b7fd22fc",
+    "runtime_paired.csv": "9178ee6ebbcd7bc1e0dbe8e6a26892351701bccb5a4a0af09cdefad0eaa446be",
     "java_engine_log.txt": "b9fe82514e187ec1bbc7ff98089b65280f880e318c6ff645db45cd29f079eda7"
   }
 }

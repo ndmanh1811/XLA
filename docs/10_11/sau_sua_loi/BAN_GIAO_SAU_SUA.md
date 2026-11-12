@@ -1,5 +1,7 @@
 # Bàn giao sau sửa lỗi — phiên 10/11/2026
 
+**Cập nhật 12/11:** metric/timing đã chạy lại theo checksum config hiện tại; đối chiếu thư viện đã dùng số đo thực tế. Xem [bàn giao Đức + Mạnh](../../12_11/sau_hoan_thien_duc_manh/KET_QUA_HOAN_THIEN_DUC_MANH.md). Thư mục kết quả vẫn giữ tên `duc_10_11` để giữ đường dẫn bàn giao.
+
 ## Nguồn số liệu chính
 
 - Metric: `outputs/metrics/duc_10_11`; manifest phải là COMPLETE và checksum phải hợp lệ.
@@ -49,6 +51,6 @@ Phép thử giữ ngưỡng cũ 7.65 cho blob_05 từng cho F1 0.493827/0.488576
 ## Còn cần nhóm hoàn thiện
 
 - Hưng mở rộng lý thuyết, rà nguồn/trích dẫn, biên dịch và nghiệm thu PDF ~30 trang. Mã LaTeX cập nhật chưa đồng nghĩa đã có PDF cuối.
-- Lộc bổ sung hồ sơ đo k/border/normalization theo từng lệnh để bảo vệ giải thích sai số tầng 1.
+- Lộc đã bổ sung hồ sơ đo định lượng k/border/normalization ngày 11/11; còn ảnh chụp phiên bản, hộp thoại và profile của đúng phiên đo trong `docs/fiji/calibration/screenshots`.
 - Cả nhóm kiểm tra trình chiếu, chuẩn bị câu hỏi bảo vệ và xác minh quyền link LMS trước nộp.
 - Baseline 25 ảnh; chưa kết luận về nhiễu/đổi kích thước khi chưa có thí nghiệm bổ sung.

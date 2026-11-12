@@ -18,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 from src.core.derivatives import compute_derivatives_1st, gaussian_smooth
 from src.core.detectors import detect_canny
 from src.config import get_border_mode
+from benchmarks.reference_comparison.report_metrics import mask_agreement, component_summary
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -51,8 +52,8 @@ def run_canny_comparison(
     # 2. Ngưỡng tương đương cho OpenCV
     mag = np.sqrt(lx**2 + ly**2)
     non_zero = mag[mag > 0]
-    th_high = float(np.percentile(non_zero, p_high))
-    th_low = float(np.percentile(non_zero, p_low))
+    th_high = float(np.percentile(non_zero, p_high)) if non_zero.size else 0.0
+    th_low = float(np.percentile(non_zero, p_low)) if non_zero.size else 0.0
 
     # Cấu hình A: OpenCV Canny trên ảnh gốc (Mặc định chuẩn)
     canny_cv_raw = cv2.Canny(img_u8, int(th_low * 1.5), int(th_high * 1.5), L2gradient=True)
@@ -84,25 +85,32 @@ def run_canny_comparison(
 
     # Phân tích độ liên tục biên (Connected Components)
     # Biên tốt là biên có ít đoạn vụn vặt và chiều dài trung bình mỗi nhánh dài hơn
-    num_cc_custom, _ = cv2.connectedComponents(canny_custom)
-    num_cc_cv, _ = cv2.connectedComponents(canny_cv_smooth)
-    avg_len_custom = np.sum(mask_custom) / max(1, num_cc_custom)
-    avg_len_cv = np.sum(mask_cv_smooth) / max(1, num_cc_cv)
+    cc_custom = component_summary(mask_custom)
+    cc_cv = component_summary(mask_cv_smooth)
+    num_cc_custom, num_cc_cv = cc_custom['components'], cc_cv['components']
+    avg_len_custom, avg_len_cv = cc_custom['mean_pixels_per_component'], cc_cv['mean_pixels_per_component']
 
     print("PHÂN TÍCH CHẤT LƯỢNG ĐƯỜNG BIÊN (MORPHOLOGY & CONTINUITY):")
     print(f"- Số đoạn biên phân mảnh: NumPy Core = {num_cc_custom} đoạn | OpenCV = {num_cc_cv} đoạn")
     print(f"- Chiều dài trung bình mỗi đoạn biên: NumPy Core = {avg_len_custom:.1f} px | OpenCV = {avg_len_cv:.1f} px")
     print("-" * 85)
     print("KẾT LUẬN VÀ GIÁ TRỊ HỌC THUẬT:")
-    print("✓ Canny tự lập trình bằng NumPy thuần cho đường biên trơn tru, liền mạch hơn")
-    print("  nhờ sử dụng bộ lọc Gaussian giải tích liên tục (k=4) và thuật toán loang BFS chuẩn.")
-    print("✓ OpenCV cv2.Canny sử dụng xấp xỉ Sobel 3x3 rời rạc nên dễ bị gãy, đứt đoạn tại các góc nghiêng.")
+    print("Số thành phần liên thông đã trừ nhãn nền; không dùng riêng số đoạn để kết luận chất lượng.")
+    print("IoU/Dice ở đây là độ giao hai mặt nạ thuật toán, không phải accuracy so với GT chuyên gia.")
+    print("Giữ phép ánh xạ ngưỡng minh họa cũ (raw x1.5; smoothed x1), không gọi là cùng ngưỡng vật lý.")
+    print("Không kết luận bên nào ưu việt khi chưa có đối chứng GT và protocol so sánh phù hợp.")
     return {
         "canny_custom": canny_custom,
         "canny_cv_raw": canny_cv_raw,
         "canny_cv_smooth": canny_cv_smooth,
         "metrics_raw": (iou_raw, p_raw, r_raw, f1_raw),
         "metrics_smooth": (iou_sm, p_sm, r_sm, f1_sm),
+        "agreement_raw": mask_agreement(mask_custom, mask_cv_raw),
+        "agreement_smooth": mask_agreement(mask_custom, mask_cv_smooth),
+        "components_custom": cc_custom,
+        "components_smooth": cc_cv,
+        "opencv_thresholds_raw": [int(th_low*1.5), int(th_high*1.5)],
+        "opencv_thresholds_smooth": [int(th_low), int(th_high)],
     }
 
 

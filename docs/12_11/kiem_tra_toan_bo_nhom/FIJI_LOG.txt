@@ -1,0 +1,10 @@
+====================================================================
+      KIỂM TRA TOÀN VẸN BỘ TIFF FIJI / IMAGEJ MACRO
+====================================================================
+[1/5] Bộ kỳ vọng: 423 macro + 12 legacy = 435 file
+[2/5] File trên đĩa: 435 TIFF
+[3/5] Manifest: 435 dòng, 435 tên duy nhất
+[4/5] Runtime: 369 dòng (303 một đầu ra + 66 hai đầu ra)
+[5/5] Định dạng: đã đọc 435/435 TIFF float32
+--------------------------------------------------------------------
+=> PASS: 435/435 file đúng bộ kỳ vọng, manifest, runtime và định dạng.

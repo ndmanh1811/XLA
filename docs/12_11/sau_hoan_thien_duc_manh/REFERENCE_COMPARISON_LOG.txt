@@ -1,0 +1,73 @@
+================================================================================
+  KHỞI CHẠY TỔNG HỢP HỆ THỐNG ĐỐI CHUẨN: NUMPY THUẦN vs SCIPY & OPENCV
+================================================================================
+
+>>> BÀI TEST 1: ĐỐI CHUẨN BỘ LỌC LÀM MỊN GAUSSIAN
+Ảnh đầu vào: bsds_01.png (481x321) - Chuẩn float64 [0, 255]
+=====================================================================================
+Sigma   | Mục so sánh            | Max Diff      | MAE           | Pearson r    | Time (ms) 
+-------------------------------------------------------------------------------------
+σ = 1.0 | NumPy vs SciPy        | 1.137e-13     | 1.539e-14     | 1.00000000   | 6.1   / 1.4 
+        | NumPy vs OpenCV (C++) | 1.421e-13     | 2.086e-14     | 1.00000000   | 6.1   / 0.7 
+-------------------------------------------------------------------------------------
+σ = 2.0 | NumPy vs SciPy        | 1.421e-13     | 2.198e-14     | 1.00000000   | 8.8   / 2.4 
+        | NumPy vs OpenCV (C++) | 1.705e-13     | 4.145e-14     | 1.00000000   | 8.8   / 1.2 
+-------------------------------------------------------------------------------------
+σ = 4.0 | NumPy vs SciPy        | 1.137e-13     | 1.320e-14     | 1.00000000   | 13.3  / 3.0 
+        | NumPy vs OpenCV (C++) | 1.990e-13     | 3.726e-14     | 1.00000000   | 13.3  / 3.1 
+-------------------------------------------------------------------------------------
+σ = 8.0 | NumPy vs SciPy        | 1.421e-13     | 1.854e-14     | 1.00000000   | 23.9  / 6.8 
+        | NumPy vs OpenCV (C++) | 1.990e-13     | 2.159e-14     | 1.00000000   | 23.9  / 4.8 
+-------------------------------------------------------------------------------------
+=====================================================================================
+NHẬN XÉT ĐỐI CHUẨN GAUSSIAN:
+Sai số cực đại thực đo trên 8 cặp: 1.98951966e-13.
+Kết quả áp dụng cho ảnh/scale/cấu hình vừa chạy; Pearson được tính từ mảng, không gõ cứng.
+Thời gian ở đây là trung bình 3 lượt thăm dò; bộ timing bàn giao có protocol warm-up/median riêng.
+
+>>> BÀI TEST 2: ĐỐI CHUẨN ĐẠO HÀM VI PHÂN (Lx, Ly, Grad, Lxx, Lyy, Lxy, Laplacian)
+Ảnh đầu vào: bsds_01.png (481x321) - Thử nghiệm tại tỷ lệ σ = 2.0
+==========================================================================================
+Toán tử    | Mục đối chuẩn            | Max Diff      | MAE           | Pearson r    | Đánh giá
+------------------------------------------------------------------------------------------
+Lx         | NumPy vs SciPy (order=1) | 2.533e-02     | 2.300e-03     | 0.99999963   | MEASURED
+Ly         | NumPy vs SciPy (order=1) | 3.482e-02     | 2.353e-03     | 0.99999976   | MEASURED
+Grad Mag   | NumPy vs SciPy           | 3.870e-02     | 2.982e-03     | 0.99999965   | MEASURED
+Grad Mag   | NumPy vs OpenCV (Sobel)  | 1.474e+00     | 1.363e-01     | 0.99888419   | MEASURED
+Lxx        | NumPy vs SciPy (order=2) | 3.540e-02     | 8.360e-03     | 0.99999598   | MEASURED
+Lyy        | NumPy vs SciPy (order=2) | 4.613e-02     | 8.500e-03     | 0.99999759   | MEASURED
+Lxy        | NumPy vs SciPy (order=2) | 3.970e-03     | 2.768e-04     | 1.00000000   | MEASURED
+Laplacian  | NumPy vs SciPy (Laplace) | 6.946e-02     | 1.663e-02     | 0.99999544   | MEASURED
+==========================================================================================
+PHÂN TÍCH CHUYÊN SÂU DÀNH CHO BẢO VỆ ĐỒ ÁN:
+Khoảng Pearson thực đo: [0.99888419, 1.00000000].
+SciPy và NumPy có thể khác support trục làm mịn và chuẩn hóa moment; Sobel là toán tử khác.
+Sai khác mô tả đáp ứng của các bộ lọc; không tự chứng minh bộ nào chính xác hơn hoặc bất biến quay hơn.
+
+>>> BÀI TEST 3: ĐỐI CHUẨN THUẬT TOÁN CANNY EDGE DETECTION
+Ảnh đầu vào: bsds_01.png (481x321) | Tham số: σ=2.0, p_low=60.0%, p_high=85.0%
+=====================================================================================
+Mục so sánh                         | IoU      | Dice / F1  | Pixel Custom  | Pixel OpenCV 
+-------------------------------------------------------------------------------------
+NumPy vs cv2.Canny (Ảnh gốc)        | 0.0731   | 0.1362     | 7562          | 54816        
+NumPy vs cv2.Canny (Cùng Gaussian)  | 0.2198   | 0.3603     | 7562          | 29671        
+=====================================================================================
+PHÂN TÍCH CHẤT LƯỢNG ĐƯỜNG BIÊN (MORPHOLOGY & CONTINUITY):
+- Số đoạn biên phân mảnh: NumPy Core = 143 đoạn | OpenCV = 2399 đoạn
+- Chiều dài trung bình mỗi đoạn biên: NumPy Core = 52.9 px | OpenCV = 12.4 px
+-------------------------------------------------------------------------------------
+KẾT LUẬN VÀ GIÁ TRỊ HỌC THUẬT:
+Số thành phần liên thông đã trừ nhãn nền; không dùng riêng số đoạn để kết luận chất lượng.
+IoU/Dice ở đây là độ giao hai mặt nạ thuật toán, không phải accuracy so với GT chuyên gia.
+Giữ phép ánh xạ ngưỡng minh họa cũ (raw x1.5; smoothed x1), không gọi là cùng ngưỡng vật lý.
+Không kết luận bên nào ưu việt khi chưa có đối chứng GT và protocol so sánh phù hợp.
+
+>>> BÀI TEST 4: TỰ ĐỘNG XUẤT ẢNH TRỰC QUAN ĐỐI CHIẾU 300 DPI
+findfont: Failed to find font weight heavy, now using 700.
+
+-> Đã xuất ảnh so sánh trực quan 300 DPI ra: outputs\comparison_custom_vs_libs.png
+CSV/JSON evidence: C:\Users\admin\Documents\ki1nam4\XuLyAnh-thayThang\XLA-dev-NguyenDucManh\outputs\benchmarks\reference_comparison
+
+================================================================================
+  HOÀN THÀNH TẤT CẢ CÁC BÀI ĐỐI CHUẨN THAM CHIẾU NGOÀI!
+================================================================================

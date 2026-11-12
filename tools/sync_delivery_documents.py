@@ -60,7 +60,7 @@ def main():
             'Phép thử giữ ngưỡng cũ 7.65 cho blob_05 từng cho F1 0.493827/0.488576. Phiên bàn giao chọn ngưỡng trong lưới đã công bố, nên không thay F1 hiện tại bằng các số kiểm chứng đó.','',
             '## Còn cần nhóm hoàn thiện','',
             '- Hưng mở rộng lý thuyết, rà nguồn/trích dẫn, biên dịch và nghiệm thu PDF ~30 trang. Mã LaTeX cập nhật chưa đồng nghĩa đã có PDF cuối.',
-            '- Lộc bổ sung hồ sơ đo k/border/normalization theo từng lệnh để bảo vệ giải thích sai số tầng 1.',
+            '- Lộc đã bổ sung hồ sơ đo định lượng k/border/normalization ngày 11/11; còn ảnh chụp phiên bản, hộp thoại và profile của đúng phiên đo trong `docs/fiji/calibration/screenshots`.',
             '- Cả nhóm kiểm tra trình chiếu, chuẩn bị câu hỏi bảo vệ và xác minh quyền link LMS trước nộp.',
             '- Baseline 25 ảnh; chưa kết luận về nhiễu/đổi kích thước khi chưa có thí nghiệm bổ sung.','']
     (out/'BAN_GIAO_SAU_SUA.md').write_text('\n'.join(lines),encoding='utf-8')
