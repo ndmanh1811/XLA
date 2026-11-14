@@ -1,5 +1,5 @@
 ﻿stem,title,caption
-01_doi_chuan_tang1,Đối chuẩn số học Tầng 1,"220 cặp; relative error <1e-4 và Pearson >0.9999. ST chỉ có hai cặp scale, ô trống không phải thiếu file."
+01_doi_chuan_tang1,Đối chuẩn số học Tầng 1,"35/220 đạt STRICT (relative error <1e-4 và Pearson >0.9999); 185/220 RELAXED chưa đạt ngưỡng gốc 1e-4 (Pearson vẫn >0.9999); 0 FAIL. ST chỉ có hai cặp scale, ô trống không phải thiếu file."
 02_sai_so_bien_va_loi,Sai số vùng biên,"Mỗi điểm là một cặp TIFF. Cùng peak lõi trên cả hai trục; phía trên đường chéo là RMSE biên lớn hơn. Thang symlog tuyến tính gần 0 (<=1e-8), giữ cả điểm bằng 0; không bỏ các biên ảnh tổng hợp có sai số cực nhỏ."
 03_psnr_gaussian,PSNR Gaussian,"20 bản đồ Gaussian, chấm vùng lõi. PSNR cao phản ánh sai số nhỏ; không áp dụng chỉ số này cho đạo hàm có dấu."
 04_f1_theo_sigma,Cạnh: F1 theo sigma,Canny dùng ngưỡng chọn trên Python rồi đóng băng cho Fiji tại từng σ. Native Edges có thuật toán/ngưỡng riêng.
