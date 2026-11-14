@@ -13,7 +13,8 @@ import os
 from pathlib import Path
 import sys
 import time
-from typing import Any, Dict, List, Optional, Tuple
+from uuid import uuid4
+from typing import Optional
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 if str(ROOT_DIR) not in sys.path:
@@ -23,19 +24,16 @@ from flask import Flask, jsonify, render_template, request, send_from_directory
 from flask_cors import CORS
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image, ImageDraw
-import tifffile
+from PIL import Image, ImageDraw, UnidentifiedImageError
 
 from src.core.derivatives import (
     compute_derivatives_1st,
     compute_derivatives_2nd,
     compute_gradient_magnitude,
-    compute_laplacian,
     gaussian_smooth,
 )
-from src.core.detectors import detect_blob, detect_canny, detect_ridge
+from src.core.detectors import detect_blob, detect_canny, detect_ridge, hysteresis_from_nms
 from src.core.hessian import compute_hessian_eigenvalues
 from src.core.structure_tensor import (
     compute_structure_coherence,
@@ -48,7 +46,10 @@ from src.eval.bsds_threshold_grid import (
     evaluate_prediction,
     load_bsds_items,
 )
-from src.eval.metric_utils import ROOT, RESULTS, erode_square, match_blobs, scores
+from src.eval.metric_utils import ROOT, RESULTS, erode_square, match_blobs, scores, normalize_scale, sha256
+from src.eval.analyze_task5 import verify_metric_delivery
+from src.web.parameters import web_settings, validate_request
+from src.web.comparison import build_reference, compare_maps, shared_limits
 
 app = Flask(
     __name__,
@@ -102,6 +103,7 @@ def array_to_base64_png(
             norm = np.clip((norm - mn) / (mx - mn), 0.0, 1.0)
         else:
             norm = np.zeros_like(norm)
+        norm = np.nan_to_num(norm, nan=0.0, posinf=1.0, neginf=0.0)
 
         if cmap == "gray":
             img = Image.fromarray((norm * 255.0).astype(np.uint8))
@@ -172,57 +174,6 @@ def make_overlay_masks(
     return (rgb * 255.0).clip(0, 255).astype(np.uint8)
 
 
-def get_fiji_path(
-    image_id: str,
-    algo: str,
-    sigma: float,
-    dtype: Optional[str] = None,
-    sigma_d: Optional[float] = None,
-    sigma_i: Optional[float] = None,
-) -> Optional[Path]:
-    """Resolve exact Fiji reference TIFF path in outputs/fiji."""
-    if image_id.startswith("custom_"):
-        return None
-    fiji_dir = ROOT / "outputs/fiji"
-    if algo == "gaussian":
-        p = fiji_dir / f"fiji_{image_id}_gauss_s{sigma:.1f}.tif"
-    elif algo == "gradient":
-        if dtype == "lx":
-            p = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
-        elif dtype == "ly":
-            p = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
-        else:
-            p = fiji_dir / f"fiji_{image_id}_grad_s{sigma:.1f}.tif"
-    elif algo == "canny":
-        p = fiji_dir / f"fiji_{image_id}_edge_s{sigma:.1f}.tif"
-    elif algo == "second_order":
-        if dtype == "lxx":
-            p = fiji_dir / f"fiji_{image_id}_lxx_s{sigma:.1f}.tif"
-        elif dtype == "lyy":
-            p = fiji_dir / f"fiji_{image_id}_lyy_s{sigma:.1f}.tif"
-        elif dtype == "lxy":
-            p = fiji_dir / f"fiji_{image_id}_lxy_s{sigma:.1f}.tif"
-        else:
-            p = fiji_dir / f"fiji_{image_id}_lap_s{sigma:.1f}.tif"
-    elif algo == "hessian":
-        if dtype == "l1":
-            p = fiji_dir / f"fiji_{image_id}_hess-l1_s{sigma:.1f}.tif"
-        else:
-            p = fiji_dir / f"fiji_{image_id}_hess-l2_s{sigma:.1f}.tif"
-    elif algo == "frangi":
-        p = fiji_dir / f"fiji_{image_id}_hess-l2_s{sigma:.1f}.tif"
-    elif algo == "blob":
-        p = fiji_dir / f"fiji_{image_id}_lap_s{sigma:.1f}.tif"
-    elif algo == "structure_tensor":
-        sd = sigma_d if sigma_d is not None else 1.0
-        si = sigma_i if sigma_i is not None else 3.0
-        p = fiji_dir / f"fiji_{image_id}_st-l2_sd{sd:.1f}_si{si:.1f}.tif"
-    else:
-        p = None
-
-    return p if (p and p.is_file()) else None
-
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -249,7 +200,25 @@ def list_images():
 
 @app.route("/static/figures/<filename>")
 def serve_task5_figure(filename):
+    manifest_path = ROOT / 'outputs/analysis/duc_task5_10_11/analysis_manifest.json'
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+        path = ROOT / 'outputs/analysis/duc_task5_10_11/figures' / filename
+        expected = manifest['outputs'].get('figures/' + filename) or manifest['outputs'].get('figures\\' + filename)
+        if not expected or sha256(path) != expected:
+            return jsonify(error='Biểu đồ chưa khớp manifest; hãy chạy lại phân tích.'), 503
+    except (OSError, ValueError, KeyError):
+        return jsonify(error='Biểu đồ chưa được xác minh.'), 503
     return send_from_directory(str(ROOT / "outputs/analysis/duc_task5_10_11/figures"), filename)
+
+
+@app.route('/api/settings')
+def get_settings():
+    try:
+        _, settings = web_settings()
+        return jsonify(settings)
+    except (OSError, ValueError, StopIteration) as exc:
+        return jsonify(error=f'Không đọc được cấu hình: {exc}'), 503
 
 
 @app.route("/api/upload", methods=["POST"])
@@ -264,10 +233,14 @@ def upload_image():
     if ext not in (".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp"):
         return jsonify({"error": "Unsupported image format"}), 400
 
-    image_id = f"custom_{int(time.time() * 1000)}"
+    image_id = f"custom_{uuid4().hex}"
     save_path = UPLOAD_DIR / f"{image_id}.png"
-    im = Image.open(file.stream).convert("L")
-    im.save(save_path)
+    try:
+        with Image.open(file.stream) as source:
+            im = source.convert("L")
+            im.save(save_path)
+    except (UnidentifiedImageError, OSError, ValueError):
+        return jsonify({"error": "File không phải ảnh hợp lệ hoặc không đọc được."}), 400
 
     return jsonify({
         "id": image_id,
@@ -279,7 +252,14 @@ def upload_image():
 
 @app.route("/api/process", methods=["POST"])
 def process_image():
-    data = request.json or {}
+    try:
+        cfg, settings = web_settings()
+    except (OSError, ValueError, StopIteration) as exc:
+        return jsonify({"error": f"Cấu hình/tham số thực nghiệm chưa sẵn sàng: {exc}"}), 503
+    try:
+        data = validate_request(request.get_json(silent=True), settings)
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
     image_id = data.get("image_id", "bsds_01")
     algo = data.get("algorithm", "canny")
     cmap = data.get("colormap", "inferno")
@@ -293,8 +273,11 @@ def process_image():
     if not img_path.is_file():
         return jsonify({"error": f"Image not found: {image_id}"}), 404
 
-    im_pil = Image.open(img_path).convert("L")
-    raw = np.asarray(im_pil, dtype=np.float64)
+    try:
+        with Image.open(img_path) as source:
+            raw = np.asarray(source.convert("L"), dtype=np.float64)
+    except (UnidentifiedImageError, OSError, ValueError):
+        return jsonify({"error": "Không đọc được ảnh đã chọn."}), 400
     h, w = raw.shape
 
     # 2. Check Ground Truth availability
@@ -315,8 +298,8 @@ def process_image():
         fov_path = ROOT / f"data/gt/drive/{image_id}_fov.png"
         if vessel_path.is_file() and fov_path.is_file():
             has_gt = True
-            truth = np.asarray(Image.open(vessel_path)) > 128
-            fov_mask = np.asarray(Image.open(fov_path)) > 128
+            truth = np.asarray(Image.open(vessel_path)) > 0
+            fov_mask = np.asarray(Image.open(fov_path)) > 0
     elif image_id.startswith("blob"):
         blob_path = ROOT / f"data/gt/blob/{image_id}.json"
         if blob_path.is_file():
@@ -332,7 +315,6 @@ def process_image():
     sigma_i = float(data.get("sigma_i", 3.0))
 
     # 4. Run Python Core Algorithm
-    t_start = time.perf_counter()
     t_deriv = 0.0
     t_detector = 0.0
 
@@ -340,17 +322,19 @@ def process_image():
     py_pred = None
     gt_display = None
     gt_metrics = {"has_gt": has_gt}
+    angle_valid = None
+    mode = cfg['border_mode']
 
     try:
         if algo == "gaussian":
             t0 = time.perf_counter()
-            py_map = gaussian_smooth(raw, sigma=sigma, mode="mirror")
+            py_map = gaussian_smooth(raw, sigma=sigma, mode=mode)
             t_deriv = (time.perf_counter() - t0) * 1000
 
         elif algo == "gradient":
             dtype = dtype or "mag"
             t0 = time.perf_counter()
-            lx, ly = compute_derivatives_1st(raw, sigma=sigma, mode="mirror")
+            lx, ly = compute_derivatives_1st(raw, sigma=sigma, mode=mode)
             t_deriv = (time.perf_counter() - t0) * 1000
             if dtype == "lx":
                 py_map = lx
@@ -358,19 +342,21 @@ def process_image():
                 py_map = ly
             elif dtype == "angle":
                 py_map = np.arctan2(ly, lx)
+                magnitude = np.hypot(lx, ly)
+                angle_valid = magnitude > max(1e-12, float(magnitude.max()) * 1e-10)
             else:
                 py_map = compute_gradient_magnitude(lx, ly)
 
         elif algo == "canny":
             # Canonical Canny defaults for sigma=2 (selected on Python, frozen for Fiji).
-            p_low = float(data.get("p_low", 67.0))
-            p_high = float(data.get("p_high", 91.0))
+            p_low = data['p_low']
+            p_high = data['p_high']
             apply_nms = bool(data.get("nms", True))
 
             t0 = time.perf_counter()
-            lx, ly = compute_derivatives_1st(raw, sigma=sigma, mode="mirror")
-            lx = lx * sigma
-            ly = ly * sigma
+            lx, ly = compute_derivatives_1st(raw, sigma=sigma, mode=mode)
+            lx = normalize_scale(lx, sigma, 1, 'python', 'derivatives', cfg)
+            ly = normalize_scale(ly, sigma, 1, 'python', 'derivatives', cfg)
             t_deriv = (time.perf_counter() - t0) * 1000
 
             t1 = time.perf_counter()
@@ -378,7 +364,7 @@ def process_image():
             if apply_nms:
                 py_pred = detect_canny(lx, ly, p_low=p_low, p_high=p_high, return_binary=True)
             else:
-                py_pred = py_map >= float(np.percentile(py_map, p_low))
+                py_pred = hysteresis_from_nms(py_map, p_low=p_low, p_high=p_high, return_binary=True)
             t_detector = (time.perf_counter() - t1) * 1000
 
             pred_bool = (py_pred > 0).astype(bool)
@@ -405,12 +391,11 @@ def process_image():
         elif algo == "second_order":
             dtype = dtype or "laplacian"
             t0 = time.perf_counter()
-            lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=sigma, mode="mirror")
+            lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=sigma, mode=mode)
             if bool(data.get("normalized", True)):
-                s2 = sigma ** 2
-                lxx *= s2
-                lyy *= s2
-                lxy *= s2
+                lxx = normalize_scale(lxx, sigma, 2, 'python', 'derivatives', cfg)
+                lyy = normalize_scale(lyy, sigma, 2, 'python', 'derivatives', cfg)
+                lxy = normalize_scale(lxy, sigma, 2, 'python', 'derivatives', cfg)
             t_deriv = (time.perf_counter() - t0) * 1000
             if dtype == "lxx":
                 py_map = lxx
@@ -424,14 +409,13 @@ def process_image():
         elif algo == "hessian":
             dtype = dtype or "l2"
             t0 = time.perf_counter()
-            lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=sigma, mode="mirror")
-            s2 = sigma ** 2
-            lxx *= s2
-            lyy *= s2
-            lxy *= s2
+            lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=sigma, mode=mode)
+            lxx = normalize_scale(lxx, sigma, 2, 'python', 'hessian', cfg)
+            lyy = normalize_scale(lyy, sigma, 2, 'python', 'hessian', cfg)
+            lxy = normalize_scale(lxy, sigma, 2, 'python', 'hessian', cfg)
             t_deriv = (time.perf_counter() - t0) * 1000
             t1 = time.perf_counter()
-            l1, l2 = compute_hessian_eigenvalues(lxx, lyy, lxy, sort_order="algebraic")
+            l1, l2 = compute_hessian_eigenvalues(lxx, lyy, lxy, sort_order=cfg['eigen_order'])
             t_detector = (time.perf_counter() - t1) * 1000
             py_map = l1 if dtype == "l1" else l2
 
@@ -444,27 +428,32 @@ def process_image():
             use_fov = bool(data.get("use_fov", True))
 
             multiscale = bool(data.get("multiscale", True))
-            scales = [1.0, 2.0, 4.0, 8.0] if multiscale else [sigma]
+            scales = cfg['sigmas'] if multiscale else [sigma]
+            k_support = max(cfg['kernel_k'].values())
 
-            t0 = time.perf_counter()
             responses = []
             for s in scales:
-                lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=s, mode="mirror")
-                s2 = s ** 2
-                l1, l2 = compute_hessian_eigenvalues(lxx * s2, lyy * s2, lxy * s2, sort_order="algebraic")
+                t_part = time.perf_counter()
+                lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=s, mode=mode)
+                a = normalize_scale(lxx, s, 2, 'python', 'hessian', cfg)
+                b = normalize_scale(lyy, s, 2, 'python', 'hessian', cfg)
+                cross = normalize_scale(lxy, s, 2, 'python', 'hessian', cfg)
+                l1, l2 = compute_hessian_eigenvalues(a, b, cross, sort_order=cfg['eigen_order'])
+                t_deriv += (time.perf_counter() - t_part) * 1000
+                t_part = time.perf_counter()
                 resp = detect_ridge(l1, l2, sigma=s, beta=beta, c=c, polarity=polarity)
                 if use_fov and fov_mask is not None:
-                    erode_r = int(np.ceil(4 * s))
+                    erode_r = int(np.ceil(k_support * s))
                     resp[~erode_square(fov_mask, erode_r)] = 0.0
                 responses.append(resp)
+                t_detector += (time.perf_counter() - t_part) * 1000
 
+            t_part = time.perf_counter()
             py_map = np.maximum.reduce(responses)
-            t_total = (time.perf_counter() - t0) * 1000
-            t_deriv = t_total * 0.7
-            t_detector = t_total * 0.3
+            t_detector += (time.perf_counter() - t_part) * 1000
 
             if use_fov and fov_mask is not None:
-                max_r = int(np.ceil(4 * max(scales)))
+                max_r = int(np.ceil(k_support * max(scales)))
                 valid_mask = erode_square(fov_mask, max_r)
             else:
                 valid_mask = np.ones_like(raw, dtype=bool)
@@ -489,7 +478,7 @@ def process_image():
                 gt_display = make_overlay(raw, py_pred)
 
         elif algo == "blob":
-            scales = [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0]
+            scales = cfg['sigmas_blob']
             polarity = data.get("polarity", "bright")
             thresh = float(data.get("threshold", 5.0))
             show_ignore = bool(data.get("show_ignore", True))
@@ -497,8 +486,8 @@ def process_image():
             t0 = time.perf_counter()
             stack = []
             for s in scales:
-                lxx, lyy, _ = compute_derivatives_2nd(raw, sigma=s, mode="mirror")
-                lap = (lxx + lyy) * (s ** 2)
+                lxx, lyy, _ = compute_derivatives_2nd(raw, sigma=s, mode=mode)
+                lap = normalize_scale(lxx + lyy, s, 2, 'python', 'laplacian', cfg)
                 stack.append(lap)
             lap_stack = np.stack(stack, axis=0)
             t_deriv = (time.perf_counter() - t0) * 1000
@@ -551,7 +540,7 @@ def process_image():
         elif algo == "structure_tensor":
             dtype = dtype or "coherence"
             t0 = time.perf_counter()
-            j11, j22, j12 = compute_structure_tensor(raw, sigma_d=sigma_d, sigma_i=sigma_i, mode="mirror")
+            j11, j22, j12 = compute_structure_tensor(raw, sigma_d=sigma_d, sigma_i=sigma_i, mode=mode)
             t_deriv = (time.perf_counter() - t0) * 1000
             t1 = time.perf_counter()
             mu1, mu2 = compute_structure_tensor_eigenvalues(j11, j22, j12)
@@ -569,140 +558,25 @@ def process_image():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
-    # 5. Load and Process Fiji Reference TIFF / Counterpart
-    fiji_metrics = {"has_fiji": False}
-    fiji_b64 = None
+    # 5. Build only a semantically matching reference; no unrelated fallback.
+    reference_scales = cfg['sigmas_blob'] if algo == 'blob' else (cfg['sigmas'] if data['multiscale'] else [sigma])
+    fiji_map, fiji_metrics, reference_valid = build_reference(
+        image_id, algo, dtype, sigma, sigma_d, sigma_i, raw.shape, cfg,
+        normalized=data['normalized'], scales=reference_scales,
+        beta=data['beta'], c=data['c'], polarity=data['polarity'],
+        fov=fov_mask, use_fov=data['use_fov'])
     diff_map = None
-    fiji_map = None
-
-    if algo == "frangi" and not image_id.startswith("custom_"):
-        fiji_dir = ROOT / "outputs/fiji"
-        scales = [1.0, 2.0, 4.0, 8.0] if bool(data.get("multiscale", True)) else [sigma]
-        fj_responses = []
-        all_found = True
-        for s in scales:
-            p1 = fiji_dir / f"fiji_{image_id}_hess-l1_s{s:.1f}.tif"
-            p2 = fiji_dir / f"fiji_{image_id}_hess-l2_s{s:.1f}.tif"
-            if p1.is_file() and p2.is_file():
-                s2 = s ** 2
-                l1_fj = tifffile.imread(p1).astype(np.float64) * s2
-                l2_fj = tifffile.imread(p2).astype(np.float64) * s2
-                resp_fj = detect_ridge(l1_fj, l2_fj, sigma=s, beta=beta, c=c, polarity=polarity)
-                if use_fov and fov_mask is not None:
-                    erode_r = int(np.ceil(4 * s))
-                    resp_fj[~erode_square(fov_mask, erode_r)] = 0.0
-                fj_responses.append(resp_fj)
-            else:
-                all_found = False
-                break
-        if all_found and fj_responses:
-            fiji_map = np.maximum.reduce(fj_responses)
-            fiji_metrics["has_fiji"] = True
-            fiji_metrics["fiji_file"] = f"Fiji Hessian × {len(scales)} scales"
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    elif algo == "blob" and not image_id.startswith("custom_"):
-        fiji_dir = ROOT / "outputs/fiji"
-        scales = [1.0, 1.4, 2.0, 2.8, 4.0, 5.7, 8.0]
-        fj_stack = []
-        all_found = True
-        for s in scales:
-            plap = fiji_dir / f"fiji_{image_id}_lap_s{s:.1f}.tif"
-            if plap.is_file():
-                fj_stack.append(tifffile.imread(plap).astype(np.float64) * (s ** 2))
-            else:
-                all_found = False
-                break
-        if all_found and fj_stack:
-            fj_s = np.stack(fj_stack, axis=0)
-            fiji_map = np.max(np.abs(fj_s), axis=0)
-            fiji_metrics["has_fiji"] = True
-            fiji_metrics["fiji_file"] = "Fiji Laplacian × 7 scales"
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    elif algo == "canny" and not image_id.startswith("custom_"):
-        # For Canny magnitude: Compare Python gradient magnitude against Fiji grad
-        fiji_grad_path = ROOT / f"outputs/fiji/fiji_{image_id}_grad_s{sigma:.1f}.tif"
-        if fiji_grad_path.is_file():
-            # Fiji grad is raw (unscaled by sigma); Python gradient was scaled by sigma.
-            # Scale Fiji grad by sigma to align with py_map
-            fiji_map = tifffile.imread(fiji_grad_path).astype(np.float64) * sigma
-            fiji_metrics["has_fiji"] = True
-            fiji_metrics["fiji_file"] = fiji_grad_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    elif algo == "structure_tensor" and not image_id.startswith("custom_"):
-        fiji_dir = ROOT / "outputs/fiji"
-        sd = sigma_d if sigma_d is not None else 1.0
-        si = sigma_i if sigma_i is not None else 3.0
-        p1 = fiji_dir / f"fiji_{image_id}_st-l1_sd{sd:.1f}_si{si:.1f}.tif"
-        p2 = fiji_dir / f"fiji_{image_id}_st-l2_sd{sd:.1f}_si{si:.1f}.tif"
-        if p1.is_file() and p2.is_file():
-            fj_mu1 = tifffile.imread(p1).astype(np.float64)
-            fj_mu2 = tifffile.imread(p2).astype(np.float64)
-            if dtype == "mu1":
-                fiji_map = fj_mu1
-                fiji_metrics["fiji_file"] = p1.name
-            elif dtype == "mu2":
-                fiji_map = fj_mu2
-                fiji_metrics["fiji_file"] = p2.name
-            else:
-                fiji_map = compute_structure_coherence(fj_mu1, fj_mu2)
-                fiji_metrics["fiji_file"] = f"fiji_{image_id}_st-coherence_sd{sd:.1f}_si{si:.1f}"
-            fiji_metrics["has_fiji"] = True
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    elif algo == "second_order" and not image_id.startswith("custom_"):
-        fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
-        if fiji_path and fiji_path.is_file():
-            raw_fj = tifffile.imread(fiji_path).astype(np.float64)
-            if bool(data.get("normalized", True)):
-                fiji_map = raw_fj * (sigma ** 2)
-            else:
-                fiji_map = raw_fj
-            fiji_metrics["has_fiji"] = True
-            fiji_metrics["fiji_file"] = fiji_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    elif algo == "hessian" and not image_id.startswith("custom_"):
-        fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
-        if fiji_path and fiji_path.is_file():
-            fiji_map = tifffile.imread(fiji_path).astype(np.float64) * (sigma ** 2)
-            fiji_metrics["has_fiji"] = True
-            fiji_metrics["fiji_file"] = fiji_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    if fiji_map is None:
-        fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
-        if fiji_path and fiji_path.is_file():
-            try:
-                fiji_map = tifffile.imread(fiji_path)
-                fiji_metrics["has_fiji"] = True
-                fiji_metrics["fiji_file"] = fiji_path.name
-                fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-            except Exception as e:
-                print("Warning reading Fiji TIFF:", e)
-
-    if fiji_map is not None and py_map is not None and fiji_map.shape == py_map.shape:
-        try:
-            diff_map = np.abs(py_map - fiji_map)
-            mae = float(np.mean(diff_map))
-            rmse = float(np.sqrt(np.mean(diff_map ** 2)))
-            f_flat = fiji_map.flatten()
-            p_flat = py_map.flatten()
-            std_f, std_p = float(np.std(f_flat)), float(np.std(p_flat))
-            if std_f > 1e-12 and std_p > 1e-12:
-                r_val = float(np.corrcoef(f_flat, p_flat)[0, 1])
-            else:
-                r_val = 1.0 if np.allclose(f_flat, p_flat) else 0.0
-
-            fiji_metrics.update({
-                "mae": round(mae, 6),
-                "rmse": round(rmse, 6),
-                "pearson": round(r_val, 6),
-            })
-        except Exception as e:
-            print("Warning computing metrics:", e)
+    fiji_b64 = None
+    angular = algo == 'gradient' and dtype == 'angle'
+    if fiji_map is not None:
+        valid = angle_valid & reference_valid if angular else None
+        diff_map, measured = compare_maps(py_map, fiji_map, angular=angular, valid=valid)
+        fiji_metrics.update(measured)
+    signed = (algo == 'gradient' and dtype in ('lx', 'ly')) or algo in ('second_order', 'hessian')
+    vmin, vmax = shared_limits(py_map, fiji_map, angular=angular, signed=signed)
+    if fiji_map is not None:
+        fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap, vmin=vmin, vmax=vmax)
+    fiji_metrics['display_range'] = [vmin, vmax]
 
     # 6. Resolve 4th View (Ground Truth OR Error Difference Map)
     gt_raw_b64 = None
@@ -718,7 +592,7 @@ def process_image():
 
     diff_b64 = None
     if diff_map is not None:
-        diff_b64 = array_to_base64_png(diff_map, cmap="magma")
+        diff_b64 = array_to_base64_png(diff_map, cmap="magma", vmin=0.0, vmax=max(float(diff_map.max()), 1e-12))
 
     if gt_display is None:
         if diff_map is not None:
@@ -738,9 +612,9 @@ def process_image():
         gt_title = "4. Nhãn Ground Truth & Đối chuẩn"
 
     # Convert images to base64
-    img_orig_b64 = array_to_base64_png(raw, cmap="gray")
+    img_orig_b64 = array_to_base64_png(raw, cmap="gray", vmin=0, vmax=255)
 
-    py_resp_b64 = array_to_base64_png(py_map, cmap=cmap) if py_map is not None else img_orig_b64
+    py_resp_b64 = array_to_base64_png(py_map, cmap=cmap, vmin=vmin, vmax=vmax)
     py_bin_b64 = array_to_base64_png(py_pred) if py_pred is not None else None
 
     if gt_cmap:
@@ -752,9 +626,11 @@ def process_image():
         "derivative_ms": round(t_deriv, 2),
         "detector_ms": round(t_detector, 2),
         "total_ms": round(t_deriv + t_detector, 2),
+        "scope": "Python filters + detector, single request; excludes GT, Fiji loading and rendering",
     }
 
     return jsonify({
+        "request_context": {"image_id": image_id, "algorithm": algo},
         "img_original": img_orig_b64,
         "img_python_response": py_resp_b64,
         "img_python_binary": py_bin_b64,
@@ -773,6 +649,10 @@ def process_image():
 
 @app.route("/api/benchmarks", methods=["GET"])
 def get_benchmarks():
+    try:
+        verify_metric_delivery()
+    except (OSError, ValueError, KeyError) as exc:
+        return jsonify(error=f'Metric chưa hợp lệ: {exc}'), 503
     tier1_path = RESULTS / "tier1_report.csv"
     tier2_path = RESULTS / "tier2_summary.csv"
     comp_path = RESULTS / "tier2_comparison.csv"
@@ -783,10 +663,25 @@ def get_benchmarks():
         with p.open(encoding="utf-8-sig") as f:
             return list(csv.DictReader(f))
 
+    tier1 = read_csv_rows(tier1_path)
+    tier2 = read_csv_rows(tier2_path)
+    strict = sum(r['status'] == 'PASS' for r in tier1)
+    relaxed = sum(r['status'] == 'FAIL' and float(r['relative_error']) < 1e-2 and float(r['pearson_r']) > .9999 for r in tier1)
+    python_rows = [r for r in tier2 if r['source'] == 'python']
+    headline = {
+        'edge': max((r for r in python_rows if r['task'] == 'edge_bsds'), key=lambda r: float(r['macro_f1'])),
+        'ridge': next(r for r in python_rows if r['task'] == 'ridge_drive'),
+        'blob': next(r for r in python_rows if r['task'] == 'blob_log'),
+    }
     return jsonify({
-        "tier1": read_csv_rows(tier1_path),
-        "tier2_summary": read_csv_rows(tier2_path),
+        "tier1": tier1,
+        "tier2_summary": tier2,
         "tier2_comparison": read_csv_rows(comp_path),
+        "headlines": headline,
+        "tier1_counts": dict(total=len(tier1), strict=strict, strict_failed=len(tier1)-strict,
+                              relaxed=relaxed, outside_relaxed=len(tier1)-strict-relaxed),
+        "provenance": dict(status='VALID', scope='canonical', source=str(RESULTS.relative_to(ROOT)),
+                           manifest_sha256=sha256(RESULTS/'run_manifest.json')),
     })
 
 
@@ -794,6 +689,16 @@ def get_benchmarks():
 def get_figures():
     fig_dir = ROOT / "outputs/analysis/duc_task5_10_11/figures"
     catalog_path = ROOT / "outputs/analysis/duc_task5_10_11/figure_catalog.csv"
+    try:
+        verify_metric_delivery()
+        analysis = json.loads((fig_dir.parent/'analysis_manifest.json').read_text(encoding='utf-8'))
+        if analysis['status'] != 'COMPLETE' or analysis['metric_manifest_sha256'] != sha256(RESULTS/'run_manifest.json'):
+            raise ValueError('Phiên phân tích không khớp metric hiện tại.')
+        for name, digest in analysis['outputs'].items():
+            if sha256(fig_dir.parent/name) != digest:
+                raise ValueError(f'Kết quả phân tích đã thay đổi: {name}')
+    except (OSError, ValueError, KeyError) as exc:
+        return jsonify(error=f'Biểu đồ chưa được xác minh: {exc}'), 503
 
     catalog = {}
     if catalog_path.is_file():

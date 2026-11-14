@@ -62,12 +62,12 @@ tại cột có đáp ứng đạo hàm cực đại vì cột tâm của kernel
 biên giữa hàng, cả ba sigma cho sai số so với mô hình mirror nhỏ hơn rõ rệt so
 với reflect lặp pixel; chi tiết nằm trong `calibration_summary.csv`.
 
-## Giới hạn và bằng chứng giao diện
+## Giới hạn và phần còn bổ sung
 
 - `FeatureJ Edges` được đo ở chế độ gradient magnitude, NMS tắt và ngưỡng trống;
   NMS không thay đổi hệ số chuẩn hóa nên cờ `edges=false` được áp cho nhánh Edge.
 - Các toán tử Ly/Lxy/Lyy dùng cùng lệnh Derivatives và cùng quy tắc theo bậc;
   kết luận của chúng được suy từ Lx/Lxx thay vì đo lặp riêng.
-- Đã lưu **15 PNG** hộp thoại, phiên bản, ROI và profile trong `screenshots/`; bảng ánh xạ nằm trong `screenshots/README.md`.
-- CSV/TIFF là bằng chứng định lượng chính; screenshot không thay thế số đo.
+- Cần lưu ảnh chụp hộp thoại/phiên bản vào `screenshots/` để hoàn tất bằng chứng
+  giao diện. CSV/TIFF là bằng chứng định lượng, không thay thế ảnh hộp thoại.
 - Hồ sơ này giải thích config; không biến 185 cặp chưa đạt STRICT thành STRICT.

@@ -4,663 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BTL XLA — So Sánh Đạo Hàm Gaussian: Python Core vs Fiji / FeatureJ</title>
-  <style>
-    :root {
-      --bg-page: #f8fafc;
-      --bg-surface: #ffffff;
-      --bg-muted: #f1f5f9;
-      --border-color: #cbd5e1;
-      --border-light: #e2e8f0;
-      --text-main: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #64748b;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --success: #15803d;
-      --danger: #b91c1c;
-      --warning: #b45309;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100vh;
-      max-height: 100vh;
-      overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-page);
-      color: var(--text-main);
-      font-size: 14px;
-      line-height: 1.35;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Top Fixed Header */
-    header {
-      height: 38px;
-      flex-shrink: 0;
-      background-color: var(--bg-surface);
-      border-bottom: 1px solid var(--border-light);
-      padding: 0 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-    }
-    .brand-title h1 {
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.01em;
-    }
-    .brand-title span {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .nav-tabs {
-      display: flex;
-      gap: 2px;
-      background-color: var(--bg-muted);
-      padding: 2px;
-      border-radius: 5px;
-      border: 1px solid var(--border-light);
-    }
-    .nav-btn {
-      padding: 3px 12px;
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      border-radius: 3px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .nav-btn:hover {
-      color: var(--text-main);
-      background-color: #e2e8f0;
-    }
-    .nav-btn.active {
-      background-color: var(--bg-surface);
-      color: var(--primary);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-    }
-
-    .meta-tag {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-    .meta-tag strong {
-      color: var(--success);
-      font-weight: 800;
-    }
-
-    /* Main Container (100% Fixed Height) */
-    main {
-      flex: 1;
-      min-height: 0;
-      padding: 4px 6px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .tab-content {
-      height: 100%;
-      min-height: 0;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .tab-content.active {
-      display: flex;
-    }
-
-    /* Sleek High-Visibility HUD Bar */
-    .hud-bar {
-      height: 34px;
-      flex-shrink: 0;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-bottom: 5px;
-    }
-    .hud-bar-compact {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .hud-card {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      padding: 2px 10px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .hud-label {
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-    .hud-val {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text-main);
-      display: flex;
-      align-items: baseline;
-      gap: 3px;
-    }
-    .hud-val span.unit {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    /* Content Area: Left Panel (240px) + Right Quad (Expanded) */
-    .content-area {
-      flex: 1;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 6px;
-      overflow: hidden;
-    }
-
-    /* Left Control Sidebar */
-    .control-sidebar {
-      height: 100%;
-      min-height: 0;
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      overflow-y: auto;
-    }
-
-    .section-title {
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-secondary);
-      border-bottom: 1px solid var(--border-light);
-      padding-bottom: 2px;
-      margin-bottom: 4px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .form-group label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text-secondary);
-      display: flex;
-      justify-content: space-between;
-    }
-    .form-group label span.val {
-      color: var(--primary);
-      font-family: monospace;
-      font-weight: 800;
-      font-size: 0.82rem;
-    }
-
-    select, input[type="text"] {
-      width: 100%;
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 4px 6px;
-      border-radius: 4px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      outline: none;
-    }
-    select:focus, input[type="text"]:focus {
-      border-color: var(--primary);
-    }
-
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .select-upload-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4px;
-    }
-
-    .btn-secondary {
-      background-color: var(--bg-muted);
-      border: 1px solid var(--border-color);
-      padding: 3px 8px;
-      border-radius: 4px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 0.78rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-secondary:hover {
-      background-color: #e2e8f0;
-      color: var(--text-main);
-    }
-
-    .preset-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 5px;
-      padding: 6px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .preset-btn {
-      width: 100%;
-      background: #ffffff;
-      border: 1px solid #bfdbfe;
-      border-radius: 4px;
-      padding: 5px 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
-    }
-    .preset-btn:hover {
-      background: #dbeafe;
-      border-color: var(--primary);
-    }
-    .preset-badge {
-      background: #2563eb;
-      color: #ffffff;
-      font-size: 0.68rem;
-      padding: 1px 5px;
-      border-radius: 3px;
-      font-family: monospace;
-      font-weight: 800;
-    }
-    .scale-btn-group {
-      display: flex;
-      gap: 3px;
-      margin-top: 2px;
-      margin-bottom: 3px;
-    }
-    .scale-btn {
-      flex: 1;
-      padding: 2px 0;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border: 1px solid var(--border-color);
-      background: var(--bg-muted);
-      border-radius: 3px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      text-align: center;
-    }
-    .scale-btn:hover {
-      background: #e2e8f0;
-      color: var(--primary);
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-    .checkbox-row input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background-color: var(--primary);
-      color: #ffffff;
-      border: none;
-      padding: 9px;
-      border-radius: 5px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      cursor: pointer;
-      text-align: center;
-      transition: background-color 0.15s ease;
-      margin-top: auto;
-      letter-spacing: 0.03em;
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
-
-    /* Right 4-View Grid: Maximum Screen Real Estate */
-    .image-quad-grid {
-      height: 100%;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      gap: 6px;
-      overflow: hidden;
-    }
-
-    .quad-cell {
-      height: 100%;
-      min-height: 0;
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 5px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .quad-header {
-      height: 28px;
-      flex-shrink: 0;
-      background-color: var(--bg-muted);
-      border-bottom: 1px solid var(--border-light);
-      padding: 0 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .quad-title {
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-    .quad-tag {
-      font-size: 0.76rem;
-      color: var(--text-secondary);
-      font-weight: 700;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
-    }
-
-    .view-switch {
-      display: flex;
-      gap: 2px;
-      background-color: #e2e8f0;
-      padding: 1px;
-      border-radius: 4px;
-    }
-    .mini-btn {
-      border: none;
-      background: transparent;
-      padding: 1px 7px;
-      font-size: 0.72rem;
-      border-radius: 3px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-weight: 700;
-    }
-    .mini-btn:hover {
-      color: var(--text-main);
-    }
-    .mini-btn.active {
-      background: var(--bg-surface);
-      color: var(--primary);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-    }
-
-    .quad-body {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #f8fafc;
-      padding: 0;
-      overflow: hidden;
-      position: relative;
-    }
-    .quad-body img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border: none;
-      display: block;
-    }
-    .quad-placeholder {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .quad-footer {
-      display: none !important;
-    }
-
-    /* Benchmarks Tab (Scrollable internally) */
-    .benchmark-container {
-      height: 100%;
-      min-height: 0;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding-right: 4px;
-    }
-
-    .table-container {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      overflow-x: auto;
-    }
-
-    .protocol-note {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-radius: 5px;
-      padding: 6px 10px;
-      font-size: 0.76rem;
-      color: var(--text-secondary);
-      line-height: 1.35;
-    }
-
-    .section-details {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      padding: 8px 10px;
-    }
-    .section-details > summary {
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    .section-details[open] > summary {
-      margin-bottom: 8px;
-    }
-
-    .advanced-box {
-      font-size: 0.78rem;
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      padding: 4px 6px;
-      background: var(--bg-muted);
-    }
-    .advanced-box summary {
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--text-secondary);
-    }
-    .advanced-box[open] summary {
-      margin-bottom: 6px;
-    }
-
-    .gallery-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .link-btn {
-      background: none;
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      padding: 2px 8px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--primary);
-      cursor: pointer;
-    }
-    .link-btn:hover {
-      border-color: var(--primary);
-      background: var(--bg-muted);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.8rem;
-      text-align: left;
-    }
-    th, td {
-      padding: 6px 10px;
-      border-bottom: 1px solid var(--border-light);
-    }
-    th {
-      background-color: var(--bg-muted);
-      color: var(--text-secondary);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-    }
-    tr:hover td { background-color: #f8fafc; }
-
-    .badge {
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-    .badge-pass { background-color: #dcfce7; color: var(--success); }
-    .badge-fiji { background-color: #fef3c7; color: var(--warning); }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 10px;
-    }
-    .gallery-card {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .gallery-card.more {
-      display: none;
-    }
-    .gallery-grid.show-all .gallery-card.more {
-      display: block;
-    }
-    .gallery-card:hover {
-      border-color: var(--primary);
-    }
-    .gallery-card img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      background-color: #ffffff;
-      border-bottom: 1px solid var(--border-light);
-    }
-    .gallery-card-body {
-      padding: 6px 8px;
-    }
-    .gallery-card-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    /* Lightbox Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.active { display: flex; }
-    .modal-box {
-      max-width: 90vw;
-      max-height: 90vh;
-      background: #ffffff;
-      border-radius: 6px;
-      padding: 12px;
-      border: 1px solid var(--border-color);
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 8px; right: 12px;
-      font-size: 1.3rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      line-height: 1;
-    }
-    .modal-box img {
-      max-width: 100%;
-      max-height: 80vh;
-      display: block;
-      margin: 0 auto;
-      border: 1px solid var(--border-light);
-    }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      bottom: 20px; right: 20px;
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 4px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      z-index: 999;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.2s ease;
-      font-size: 0.8rem;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='studio.css') }}">
 </head>
 <body>
 
@@ -677,26 +21,19 @@
     </div>
 
     <div class="meta-tag">
-      Nhóm: Hưng - Mạnh - Lộc - Đức | <strong>63/63 tests</strong>
+      Nhóm: Hưng - Mạnh - Lộc - Đức
     </div>
   </header>
 
-  <!-- Main Fixed Viewport -->
+  <!-- Readable, scrollable workspace -->
   <main>
 
     <!-- TAB 1: STUDIO -->
     <div id="tab-studio" class="tab-content active">
 
-      <!-- Top HUD Performance Bar -->
-      <div class="hud-bar hud-bar-compact">
-        <div class="hud-card">
-          <div class="hud-label">Fiji Pearson</div>
-          <div class="hud-val"><span id="hud-fiji-pearson">N/A</span></div>
-        </div>
-        <div class="hud-card">
-          <div class="hud-label">Ground Truth F1</div>
-          <div class="hud-val"><span id="hud-gt-f1">N/A</span></div>
-        </div>
+      <div class="workspace-heading">
+        <h2>Không gian thực nghiệm</h2>
+        <p>Chọn ảnh → Điều chỉnh tham số → Chạy và so sánh kết quả</p>
       </div>
 
       <!-- Content Area -->
@@ -708,28 +45,28 @@
           <!-- 1-Click Fast Demo Presets -->
           <div class="preset-box">
             <div class="section-title" style="color:var(--primary); margin-bottom:2px; display:flex; justify-content:space-between; align-items:center;">
-              <span>Preset demo</span>
-              <span style="font-size:0.68rem; color:var(--text-muted); font-weight:700;">1-click</span>
+              <span>Chọn demo</span>
+              <span style="font-size:0.68rem; color:var(--text-muted); font-weight:700;">1 lần bấm</span>
             </div>
             <button class="preset-btn" onclick="applyPreset('canny')" title="Chạy Canny trên ảnh bsds_01 với σ=2.0">
               <span class="preset-badge">BSDS-01</span>
-              <span>Biên Canny (σ=2.0)</span>
+              <span id="preset-canny-label">Canny</span>
             </button>
             <button class="preset-btn" onclick="applyPreset('frangi')" title="Chạy Frangi trên ảnh drive_08 đa tỷ lệ">
               <span class="preset-badge">DRIVE-08</span>
-              <span>Mạch Máu Frangi (Đa tỷ lệ)</span>
+              <span>Frangi</span>
             </button>
             <button class="preset-btn" onclick="applyPreset('blob')" title="Chạy LoG Blob trên ảnh blob_05 với 7 scales">
               <span class="preset-badge">BLOB-05</span>
-              <span>Đốm Tế Bào LoG (7 scales)</span>
+              <span id="preset-blob-label">Blob</span>
             </button>
           </div>
 
           <div>
-            <div class="section-title">1. Ảnh</div>
+            <div class="section-title">1. Chọn ảnh đầu vào</div>
             <div class="form-group">
               <div class="select-upload-row">
-                <select id="preset-select" onchange="onImageSelectChange()">
+                <select id="preset-select" aria-label="Chọn ảnh đầu vào" onchange="onImageSelectChange()">
                   <!-- Populated by JS -->
                 </select>
                 <label class="btn-secondary" title="Tải ảnh từ máy">
@@ -741,9 +78,9 @@
           </div>
 
           <div>
-            <div class="section-title">2. Thuật toán</div>
+            <div class="section-title">2. Chọn thuật toán</div>
             <div class="form-group">
-              <select id="algo-select" onchange="onAlgoChange()">
+              <select id="algo-select" aria-label="Chọn thuật toán" onchange="onAlgoChange()">
                 <option value="canny">Canny Edge Detector (BSDS500)</option>
                 <option value="frangi">Frangi Vesselness Filter (DRIVE)</option>
                 <option value="blob">LoG Blob Detector (Tế bào)</option>
@@ -761,6 +98,7 @@
           <div id="dynamic-controls">
             <!-- Injected by JS -->
           </div>
+          <p class="control-hint">Kéo thanh trượt hoặc nhập số trực tiếp, sau đó bấm Chạy tính toán.</p>
 
           <details style="font-size:0.78rem; border:1px solid var(--border-light); border-radius:4px; padding:4px 6px; background:var(--bg-muted);">
             <summary style="cursor:pointer; font-weight:700; color:var(--text-secondary);">Màu hiển thị</summary>
@@ -780,58 +118,79 @@
           <button class="btn-primary" onclick="runAlgorithm()">
             CHẠY TÍNH TOÁN
           </button>
+          <a class="jump-results" href="#result-grid">Đi tới ảnh kết quả ↓</a>
         </div>
+
+        <div class="result-area" id="result-grid">
+      <!-- Top HUD Performance Bar -->
+      <div class="hud-bar hud-bar-compact">
+        <div class="hud-card">
+          <div class="hud-label" id="hud-fiji-label">Fiji Pearson · toàn ảnh</div>
+          <div class="hud-val"><span id="hud-fiji-pearson">N/A</span></div>
+        </div>
+        <div class="hud-card">
+          <div class="hud-label" id="hud-gt-label">Python F1 · ảnh hiện tại</div>
+          <div class="hud-val"><span id="hud-gt-f1">N/A</span></div>
+        </div>
+      </div>
 
         <!-- Right 4-View Grid: [Ảnh gốc] | [Kết quả Python] | [Chuẩn Fiji] | [Ground Truth] -->
         <div class="image-quad-grid">
 
           <!-- Quadrant 1: Original Image -->
-          <div class="quad-cell">
+          <div class="quad-cell" data-panel="original">
             <div class="quad-header">
-              <span class="quad-title">1. Ảnh gốc</span>
+              <h3 class="quad-title">1. Ảnh gốc</h3>
               <span class="quad-tag" id="tag-size">0 x 0</span>
             </div>
+            <p class="quad-description">Ảnh đầu vào giữ nguyên dải xám 0–255.</p>
             <div class="quad-body">
-              <img id="img-original" src="" alt="Ảnh gốc">
+              <img id="img-original" src="" alt="Ảnh gốc" tabindex="0" role="button" aria-label="Phóng to ảnh gốc" onclick="openResultImage('img-original')">
+              <button class="image-expand" type="button" onclick="openResultImage('img-original')">Phóng to ảnh</button>
             </div>
           </div>
 
           <!-- Quadrant 2: Python Result -->
-          <div class="quad-cell">
+          <div class="quad-cell" data-panel="python">
             <div class="quad-header">
-              <span class="quad-title">2. Python Core</span>
+              <h3 class="quad-title">2. Kết quả Python</h3>
               <div style="display:flex; align-items:center; gap:8px;">
                 <div class="view-switch" id="py-view-switch" style="display:none;">
                   <button class="mini-btn active" id="btn-py-bin" onclick="setPyView('binary')">Nhị phân</button>
                   <button class="mini-btn" id="btn-py-resp" onclick="setPyView('response')">Đáp ứng</button>
                 </div>
                 <span class="quad-tag" id="tag-py-time" style="color:var(--primary);">0 ms</span>
+                <span class="quad-tag" id="tag-response-range" title="Python và Fiji dùng chung giới hạn thang màu."></span>
               </div>
             </div>
+            <p class="quad-description">Chuyển giữa mặt nạ nhị phân và đáp ứng của thuật toán.</p>
             <div class="quad-body">
-              <img id="img-python" src="" alt="Kết quả Python">
+              <img id="img-python" src="" alt="Kết quả Python" tabindex="0" role="button" aria-label="Phóng to kết quả Python" onclick="openResultImage('img-python')">
+              <button class="image-expand" type="button" onclick="openResultImage('img-python')">Phóng to ảnh</button>
             </div>
           </div>
 
           <!-- Quadrant 3: Fiji Reference -->
-          <div class="quad-cell">
+          <div class="quad-cell" data-panel="fiji">
             <div class="quad-header">
-              <span class="quad-title" id="tag-fiji-title">3. Fiji / FeatureJ</span>
+              <h3 class="quad-title" id="tag-fiji-title">3. Tham chiếu Fiji / FeatureJ</h3>
               <div style="display:flex; align-items:center; gap:8px;">
                 <span class="quad-tag" id="tag-fiji-file">fiji_map.tif</span>
                 <span class="quad-tag" id="fiji-stat-text" style="color:var(--primary);">MAE: N/A | r = N/A</span>
               </div>
             </div>
+            <p class="quad-description">Bản đồ Fiji cùng loại và tỷ lệ, dùng chung thang màu với Python.</p>
             <div class="quad-body">
-              <img id="img-fiji" src="" alt="Chuẩn Fiji">
+              <img id="img-fiji" src="" alt="Tham chiếu Fiji" tabindex="0" role="button" aria-label="Phóng to tham chiếu Fiji" onclick="openResultImage('img-fiji')">
               <div id="fiji-placeholder" class="quad-placeholder" style="display:none;">Không có file tham chiếu cho ảnh tải lên</div>
+              <button class="image-expand" type="button" onclick="openResultImage('img-fiji')">Phóng to ảnh</button>
             </div>
           </div>
 
           <!-- Quadrant 4: Ground Truth / Difference -->
-          <div class="quad-cell">
+          <div class="quad-cell" data-panel="gt">
             <div class="quad-header">
-              <span class="quad-title" id="tag-gt-title">4. Ground Truth</span>
+              <h3 class="quad-title" id="tag-gt-title">4. Ground Truth</h3>
               <div style="display:flex; align-items:center; gap:6px;">
                 <div class="view-switch" id="gt-view-switch" style="display:none;">
                   <button class="mini-btn active" id="btn-gt-overlay" onclick="setGtView('overlay')">So khớp</button>
@@ -845,46 +204,51 @@
                 </div>
               </div>
             </div>
+            <p class="quad-description">Xem lớp so khớp, nhãn gốc hoặc sai số giữa hai nguồn.</p>
             <div class="quad-body">
-              <img id="img-gt" src="" alt="Ground Truth">
+              <img id="img-gt" src="" alt="Ground Truth" tabindex="0" role="button" aria-label="Phóng to Ground Truth hoặc sai số" onclick="openResultImage('img-gt')">
+              <button class="image-expand" type="button" onclick="openResultImage('img-gt')">Phóng to ảnh</button>
             </div>
           </div>
 
         </div>
 
+        </div>
       </div>
 
     </div>
 
     <!-- TAB 2: BENCHMARKS -->
     <div id="tab-benchmarks" class="tab-content">
+      <div class="workspace-heading">
+        <h2>Đối chuẩn và kết quả thực nghiệm</h2>
+        <p>Chỉ số tổng hợp của bộ dữ liệu · Bấm biểu đồ để xem lớn</p>
+      </div>
       <div class="benchmark-container">
 
         <div class="hud-bar">
-          <div class="hud-card" title="35/220 đạt STRICT; 185/220 RELAXED chưa đạt ngưỡng gốc 1e-4; 0 FAIL.">
+          <div class="hud-card" id="benchmark-tier1-card">
             <div class="hud-label">Tầng 1</div>
-            <div class="hud-val">35 <span class="unit">STRICT / 220</span></div>
+            <div class="hud-val" id="benchmark-tier1">N/A</div>
           </div>
-          <div class="hud-card" title="Fair Canny, ngưỡng chọn trên Python và đóng băng cho Fiji; macro F1 tại sigma=2.">
+          <div class="hud-card" title="Macro F1 Python, ngưỡng được đóng băng cho Fiji; đọc từ CSV đã xác minh.">
             <div class="hud-label">Canny F1</div>
-            <div class="hud-val">0.4779 <span class="unit">fair, σ=2</span></div>
+            <div class="hud-val" id="benchmark-edge">N/A</div>
           </div>
-          <div class="hud-card" title="Frangi dark; macro F1 0.477382; micro F1 0.486776.">
+          <div class="hud-card" title="Macro và micro F1 Python trên DRIVE.">
             <div class="hud-label">Frangi F1</div>
-            <div class="hud-val">0.4774 <span class="unit">micro 0.4868</span></div>
+            <div class="hud-val" id="benchmark-ridge">N/A</div>
           </div>
-          <div class="hud-card" title="Macro F1 0.898418; micro F1 0.519135; gồm 4 ảnh tổng hợp và blob_05.">
+          <div class="hud-card" title="Macro và micro F1 Python trên 5 ảnh blob.">
             <div class="hud-label">Blob F1</div>
-            <div class="hud-val">0.8984 <span class="unit">micro 0.5191</span></div>
+            <div class="hud-val" id="benchmark-blob">N/A</div>
           </div>
         </div>
 
         <details class="section-details">
           <summary>Nguồn & ngưỡng</summary>
-          <div class="protocol-note" style="margin-top:8px;">
-            <strong>Nguồn:</strong> <code>outputs/metrics/duc_10_11</code> (protocol <code>duc_10_11_v1</code>).
-            35/220 đạt STRICT (relative error &lt;1e-4 và Pearson &gt;0.9999);
-            185/220 RELAXED chưa đạt ngưỡng gốc 1e-4 (Pearson vẫn &gt;0.9999); 0 FAIL.
+          <div class="protocol-note" id="benchmark-protocol" style="margin-top:8px;">
+            Đang chờ xác minh nguồn metric và ngưỡng nghiệm thu.
           </div>
         </details>
 
@@ -929,9 +293,9 @@
   </main>
 
   <!-- Modal for Lightbox Figures -->
-  <div class="modal" id="figure-modal" onclick="closeModal()">
+  <div class="modal" id="figure-modal" role="dialog" aria-modal="true" aria-label="Xem ảnh hoặc biểu đồ phóng to" onclick="closeModal()">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <button class="modal-close" type="button" aria-label="Đóng ảnh phóng to" onclick="closeModal()">&times;</button>
       <img id="modal-img" src="" alt="Biểu đồ">
       <div id="modal-caption" style="text-align:center; font-weight:600; margin-top:8px; color:var(--text-main); font-size:0.85rem;"></div>
     </div>
@@ -945,6 +309,69 @@
     let lastData = null;
     let pyView = "binary";
     let gtView = "overlay";
+    let settings = null;
+    let requestVersion = 0;
+    let activeController = null;
+    let benchmarkVersion = 0;
+    let modalOrigin = null;
+
+    function updateSidebarHeight() {
+      const sidebar = document.querySelector('.control-sidebar');
+      if (innerWidth <= 900) return;
+      const top = Math.max(sidebar.getBoundingClientRect().top, document.querySelector('header').getBoundingClientRect().bottom + 16);
+      sidebar.style.setProperty('--sidebar-max-height', Math.max(180, innerHeight - top - 16) + 'px');
+    }
+
+    function enhanceRangeControls() {
+      document.querySelectorAll('#dynamic-controls input[type="range"]').forEach(range => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'range-control';
+        range.before(wrapper);
+        wrapper.appendChild(range);
+        const number = document.createElement('input');
+        number.type = 'number';
+        number.required = true;
+        number.className = 'range-number';
+        number.id = 'number-' + range.id;
+        for (const attribute of ['min','max','step']) number.setAttribute(attribute, range.getAttribute(attribute));
+        number.value = range.value;
+        const label = range.closest('.form-group').querySelector('label');
+        if (label) {
+          label.htmlFor = range.id;
+          number.setAttribute('aria-label', 'Nhập ' + label.textContent.split(':')[0].trim());
+        }
+        range.dataset.numberId = number.id;
+        number.addEventListener('input', () => {
+          if (!number.value || !number.checkValidity()) return;
+          range.value = number.value;
+          range.dispatchEvent(new Event('input', {bubbles:true}));
+        });
+        wrapper.appendChild(number);
+      });
+      if (document.getElementById('param-sigma')) updateVal('sigma');
+    }
+
+    async function loadSettings() {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'Không đọc được cấu hình.');
+      settings = data;
+      document.getElementById('preset-canny-label').title = `Biên Canny, σ=${defaultSigma()}`;
+      document.getElementById('preset-blob-label').title = `LoG Blob, ${settings.blob_sigmas.length} scale`;
+    }
+
+    function defaultSigma() {
+      return settings.sigmas.includes(2) ? 2 : settings.sigmas[0];
+    }
+
+    function canonicalPair(sigma) {
+      const entry = Object.entries(settings.canny_thresholds).find(([key]) => Number(key) === Number(sigma));
+      return entry ? entry[1] : null;
+    }
+
+    function scaleButtons() {
+      return settings.sigmas.map(s => `<button type="button" class="scale-btn" data-sigma="${s}" onclick="setSigma(${s})">σ=${s}</button>`).join('');
+    }
 
     function showToast(msg) {
       const toast = document.getElementById("toast");
@@ -1010,7 +437,8 @@
       onAlgoChange();
     }
 
-    function onAlgoChange() {
+    function onAlgoChange(run = true) {
+      if (!settings) return;
       currentAlgo = document.getElementById("algo-select").value;
       const container = document.getElementById("dynamic-controls");
       let html = "";
@@ -1018,27 +446,24 @@
       if (currentAlgo === "canny") {
         html = `
           <div class="form-group">
-            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">2.0</span></label>
+            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">${defaultSigma()}</span></label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setSigma(1.0)">σ=1.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(2.0)">σ=2.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(4.0)">σ=4.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(8.0)">σ=8.0</button>
+              ${scaleButtons()}
             </div>
-            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="2.0" oninput="updateVal('sigma')">
+            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="${defaultSigma()}" oninput="onSigmaInput()">
           </div>
           <div class="form-group">
-            <label>Ngưỡng thấp (Low %): <span class="val" id="val-plow">67</span></label>
-            <input type="range" id="param-plow" min="0" max="100" step="1" value="67" oninput="updateVal('plow')">
+            <label>Ngưỡng thấp (Low %): <span class="val" id="val-plow">${canonicalPair(defaultSigma())[0]}</span></label>
+            <input type="range" id="param-plow" min="0" max="100" step="1" value="${canonicalPair(defaultSigma())[0]}" oninput="updateVal('plow')">
           </div>
           <div class="form-group">
-            <label>Ngưỡng cao (High %): <span class="val" id="val-phigh">91</span></label>
-            <input type="range" id="param-phigh" min="0" max="100" step="1" value="91" oninput="updateVal('phigh')">
+            <label>Ngưỡng cao (High %): <span class="val" id="val-phigh">${canonicalPair(defaultSigma())[1]}</span></label>
+            <input type="range" id="param-phigh" min="0" max="100" step="1" value="${canonicalPair(defaultSigma())[1]}" oninput="updateVal('phigh')">
           </div>
           <details class="advanced-box">
             <summary>Tùy chọn nâng cao</summary>
             <div style="font-size:0.68rem; color:var(--text-muted); line-height:1.25; margin-bottom:4px;">
-              Ngưỡng canonical: σ=1 → 76/94; σ=2 → 67/91; σ=4 → 49/80; σ=8 → 23/50.
+              Ngưỡng đóng băng: ${Object.entries(settings.canny_thresholds).map(([s,p]) => `σ=${Number(s)} → ${p.join('/')}`).join('; ')}.
             </div>
             <div class="checkbox-row">
               <span>Khử cực đại địa phương (NMS)</span>
@@ -1049,14 +474,18 @@
       } else if (currentAlgo === "frangi") {
         html = `
           <div class="form-group">
-            <label>Ngưỡng nhị phân hóa: <span class="val" id="val-thresh">0.05</span></label>
-            <input type="range" id="param-thresh" min="0.01" max="0.50" step="0.01" value="0.05" oninput="updateVal('thresh')">
+            <label>Ngưỡng nhị phân hóa: <span class="val" id="val-thresh">${settings.ridge_threshold}</span></label>
+            <input type="range" id="param-thresh" min="0.01" max="0.50" step="0.01" value="${settings.ridge_threshold}" oninput="updateVal('thresh')">
           </div>
           <details class="advanced-box">
             <summary>Tùy chọn nâng cao</summary>
             <div class="checkbox-row">
-              <span>Đa tỷ lệ [1.0, 2.0, 4.0, 8.0]</span>
+              <span>Đa tỷ lệ [${settings.sigmas.join(', ')}]</span>
               <input type="checkbox" id="param-multiscale" checked>
+            </div>
+            <div class="form-group">
+              <label>σ khi tắt đa tỷ lệ: <span class="val" id="val-sigma">${defaultSigma()}</span></label>
+              <input type="range" id="param-sigma" min="0.5" max="16" step="0.5" value="${defaultSigma()}" oninput="updateVal('sigma')">
             </div>
             <div class="form-group">
               <label>Tham số dạng ống (Beta β): <span class="val" id="val-beta">0.5</span></label>
@@ -1071,20 +500,20 @@
       } else if (currentAlgo === "blob") {
         html = `
           <div class="form-group">
-            <label>Ngưỡng LoG: <span class="val" id="val-thresh">5.0</span></label>
-            <input type="range" id="param-thresh" min="0.5" max="15.0" step="0.5" value="5.0" oninput="updateVal('thresh')">
+            <label>Ngưỡng LoG: <span class="val" id="val-thresh">${settings.blob_threshold}</span></label>
+            <input type="range" id="param-thresh" min="0.5" max="15.0" step="0.5" value="${settings.blob_threshold}" oninput="updateVal('thresh')">
           </div>
           <details class="advanced-box">
             <summary>Tùy chọn nâng cao</summary>
             <div class="form-group">
               <label>Phân cực đốm:</label>
               <select id="param-polarity">
-                <option value="bright" selected>Đốm sáng trên nền tối</option>
-                <option value="dark">Đốm tối trên nền sáng</option>
+                <option value="bright" ${settings.image_polarities[currentImageId] !== 'dark' ? 'selected' : ''}>Đốm sáng trên nền tối</option>
+                <option value="dark" ${settings.image_polarities[currentImageId] === 'dark' ? 'selected' : ''}>Đốm tối trên nền sáng</option>
               </select>
             </div>
             <div class="checkbox-row">
-              <span>${currentImageId === "blob_05" ? "Áp dụng 15 vùng Ignore" : "Áp dụng vùng Ignore (nếu có)"}</span>
+              <span>Hiện vùng ignore (luôn áp dụng khi chấm)</span>
               <input type="checkbox" id="param-ignore" checked>
             </div>
           </details>
@@ -1092,14 +521,11 @@
       } else if (currentAlgo === "gaussian") {
         html = `
           <div class="form-group">
-            <label>Độ lệch chuẩn Sigma (σ): <span class="val" id="val-sigma">2.0</span></label>
+            <label>Độ lệch chuẩn Sigma (σ): <span class="val" id="val-sigma">${defaultSigma()}</span></label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setSigma(1.0)">σ=1.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(2.0)">σ=2.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(4.0)">σ=4.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(8.0)">σ=8.0</button>
+              ${scaleButtons()}
             </div>
-            <input type="range" id="param-sigma" min="0.5" max="16.0" step="0.5" value="2.0" oninput="updateVal('sigma')">
+            <input type="range" id="param-sigma" min="0.5" max="16.0" step="0.5" value="${defaultSigma()}" oninput="onSigmaInput()">
           </div>
         `;
       } else if (currentAlgo === "gradient") {
@@ -1114,14 +540,11 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">2.0</span></label>
+            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">${defaultSigma()}</span></label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setSigma(1.0)">σ=1.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(2.0)">σ=2.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(4.0)">σ=4.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(8.0)">σ=8.0</button>
+              ${scaleButtons()}
             </div>
-            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="2.0" oninput="updateVal('sigma')">
+            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="${defaultSigma()}" oninput="onSigmaInput()">
           </div>
         `;
       } else if (currentAlgo === "second_order") {
@@ -1136,14 +559,11 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">2.0</span></label>
+            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">${defaultSigma()}</span></label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setSigma(1.0)">σ=1.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(2.0)">σ=2.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(4.0)">σ=4.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(8.0)">σ=8.0</button>
+              ${scaleButtons()}
             </div>
-            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="2.0" oninput="updateVal('sigma')">
+            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="${defaultSigma()}" oninput="onSigmaInput()">
           </div>
           <div class="checkbox-row">
             <span>Chuẩn hóa tỷ lệ (nhân σ²)</span>
@@ -1155,19 +575,16 @@
           <div class="form-group">
             <label>Thành phần hiển thị:</label>
             <select id="param-dtype" onchange="runAlgorithm()">
-              <option value="l2">Trị riêng chính λ2</option>
-              <option value="l1">Trị riêng phụ λ1</option>
+              <option value="l2">λ2 — ${settings.eigen_order === 'algebraic' ? 'nhỏ hơn theo đại số' : 'nhỏ hơn theo độ lớn'}</option>
+              <option value="l1">λ1 — ${settings.eigen_order === 'algebraic' ? 'lớn hơn theo đại số' : 'lớn hơn theo độ lớn'}</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">2.0</span></label>
+            <label>Tỷ lệ Sigma (σ): <span class="val" id="val-sigma">${defaultSigma()}</span></label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setSigma(1.0)">σ=1.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(2.0)">σ=2.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(4.0)">σ=4.0</button>
-              <button type="button" class="scale-btn" onclick="setSigma(8.0)">σ=8.0</button>
+              ${scaleButtons()}
             </div>
-            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="2.0" oninput="updateVal('sigma')">
+            <input type="range" id="param-sigma" min="0.5" max="8.0" step="0.5" value="${defaultSigma()}" oninput="onSigmaInput()">
           </div>
         `;
       } else if (currentAlgo === "structure_tensor") {
@@ -1183,23 +600,23 @@
           <div class="form-group">
             <label>Cặp Scale (σd, σi):</label>
             <div class="scale-btn-group">
-              <button type="button" class="scale-btn" onclick="setStScales(1.0, 3.0)">σd=1.0, σi=3.0</button>
-              <button type="button" class="scale-btn" onclick="setStScales(2.0, 6.0)">σd=2.0, σi=6.0</button>
+              ${settings.structure_pairs.map(([sd,si]) => `<button type="button" class="scale-btn" onclick="setStScales(${sd},${si})">σd=${sd}, σi=${si}</button>`).join('')}
             </div>
           </div>
           <div class="form-group">
-            <label>Scale vi phân (σd): <span class="val" id="val-sigmad">1.0</span></label>
-            <input type="range" id="param-sigmad" min="0.5" max="4.0" step="0.5" value="1.0" oninput="updateVal('sigmad')">
+            <label>Scale vi phân (σd): <span class="val" id="val-sigmad">${settings.structure_pairs[0][0]}</span></label>
+            <input type="range" id="param-sigmad" min="0.5" max="4.0" step="0.5" value="${settings.structure_pairs[0][0]}" oninput="updateVal('sigmad')">
           </div>
           <div class="form-group">
-            <label>Scale tích phân (σi): <span class="val" id="val-sigmai">3.0</span></label>
-            <input type="range" id="param-sigmai" min="1.0" max="8.0" step="0.5" value="3.0" oninput="updateVal('sigmai')">
+            <label>Scale tích phân (σi): <span class="val" id="val-sigmai">${settings.structure_pairs[0][1]}</span></label>
+            <input type="range" id="param-sigmai" min="1.0" max="8.0" step="0.5" value="${settings.structure_pairs[0][1]}" oninput="updateVal('sigmai')">
           </div>
         `;
       }
 
       container.innerHTML = html;
-      runAlgorithm();
+      enhanceRangeControls();
+      if (run) runAlgorithm();
     }
 
     function setSigma(v) {
@@ -1210,13 +627,7 @@
 
       // Canonical Canny thresholds are frozen per sigma on the Python grid.
       if (currentAlgo === "canny") {
-        const canonical = {
-          1.0: [76, 94],
-          2.0: [67, 91],
-          4.0: [49, 80],
-          8.0: [23, 50],
-        };
-        const pair = canonical[Number(v)];
+        const pair = canonicalPair(v);
         if (pair) {
           const pl = document.getElementById("param-plow");
           const ph = document.getElementById("param-phigh");
@@ -1228,6 +639,19 @@
       }
 
       runAlgorithm();
+    }
+
+    function onSigmaInput() {
+      const sigma = document.getElementById('param-sigma');
+      updateVal('sigma');
+      if (currentAlgo === 'canny') {
+        const pair = canonicalPair(sigma.value);
+        if (pair) {
+          document.getElementById('param-plow').value = pair[0];
+          document.getElementById('param-phigh').value = pair[1];
+          updateVal('plow'); updateVal('phigh');
+        }
+      }
     }
 
     function setStScales(sd, si) {
@@ -1243,6 +667,7 @@
     }
 
     function applyPreset(key) {
+      if (!settings) return showToast('Đang đọc cấu hình.');
       const select = document.getElementById("preset-select");
       const algoSelect = document.getElementById("algo-select");
       if (key === "canny") {
@@ -1250,23 +675,23 @@
         algoSelect.value = "canny";
         currentImageId = "bsds_01";
         currentAlgo = "canny";
-        onAlgoChange();
-        const s = document.getElementById("param-sigma"); if (s) s.value = 2.0;
-        const pl = document.getElementById("param-plow"); if (pl) pl.value = 67;
-        const ph = document.getElementById("param-phigh"); if (ph) ph.value = 91;
+        onAlgoChange(false);
+        const s = document.getElementById("param-sigma"); if (s) s.value = defaultSigma();
+        const pl = document.getElementById("param-plow"); if (pl) pl.value = canonicalPair(defaultSigma())[0];
+        const ph = document.getElementById("param-phigh"); if (ph) ph.value = canonicalPair(defaultSigma())[1];
         const nms = document.getElementById("param-nms"); if (nms) nms.checked = true;
         updateVal("sigma"); updateVal("plow"); updateVal("phigh");
         runAlgorithm();
-        showToast("Đã kích hoạt Preset Canny: bsds_01 (σ=2.0)");
+        showToast(`Đã kích hoạt Preset Canny: bsds_01 (σ=${defaultSigma()})`);
       } else if (key === "frangi") {
         select.value = "drive_08";
         algoSelect.value = "frangi";
         currentImageId = "drive_08";
         currentAlgo = "frangi";
-        onAlgoChange();
+        onAlgoChange(false);
         const ms = document.getElementById("param-multiscale"); if (ms) ms.checked = true;
         const b = document.getElementById("param-beta"); if (b) b.value = 0.5;
-        const th = document.getElementById("param-thresh"); if (th) th.value = 0.05;
+        const th = document.getElementById("param-thresh"); if (th) th.value = settings.ridge_threshold;
         const fov = document.getElementById("param-fov"); if (fov) fov.checked = true;
         updateVal("beta"); updateVal("thresh");
         runAlgorithm();
@@ -1276,13 +701,13 @@
         algoSelect.value = "blob";
         currentImageId = "blob_05";
         currentAlgo = "blob";
-        onAlgoChange();
+        onAlgoChange(false);
         const pol = document.getElementById("param-polarity"); if (pol) pol.value = "bright";
-        const th = document.getElementById("param-thresh"); if (th) th.value = 5.0;
+        const th = document.getElementById("param-thresh"); if (th) th.value = settings.blob_threshold;
         const ign = document.getElementById("param-ignore"); if (ign) ign.checked = true;
         updateVal("thresh");
         runAlgorithm();
-        showToast("Đã kích hoạt Preset LoG Blob: blob_05 (7 scales)");
+        showToast(`Đã kích hoạt Preset LoG Blob: blob_05 (${settings.blob_sigmas.length} scale)`);
       }
     }
 
@@ -1291,6 +716,11 @@
       const valEl = document.getElementById(`val-${name}`);
       if (el && valEl) {
         valEl.innerText = el.value;
+        const number = document.getElementById(el.dataset.numberId);
+        if (number) number.value = el.value;
+        if (name === 'sigma') document.querySelectorAll('[data-sigma]').forEach(button => {
+          button.classList.toggle('is-active', Number(button.dataset.sigma) === Number(el.value));
+        });
       }
     }
 
@@ -1340,6 +770,17 @@
     }
 
     async function runAlgorithm() {
+      if (!settings) return;
+      const invalid = document.querySelector('#dynamic-controls .range-number:invalid');
+      if (invalid) {
+        invalid.reportValidity();
+        showToast('Kiểm tra giá trị và bước nhảy của ô nhập tham số.');
+        return;
+      }
+      const version = ++requestVersion;
+      if (activeController) activeController.abort();
+      const controller = new AbortController();
+      activeController = controller;
       const payload = {
         image_id: currentImageId,
         algorithm: currentAlgo,
@@ -1379,18 +820,25 @@
       const sigmai = document.getElementById("param-sigmai");
       if (sigmai) payload.sigma_i = parseFloat(sigmai.value);
 
+      document.getElementById('hud-fiji-pearson').innerText = 'Đang tính…';
+      document.getElementById('hud-gt-f1').innerText = 'Đang tính…';
+      document.getElementById('tag-py-time').innerText = 'Đang tính…';
+
       try {
         const res = await fetch("/api/process", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
+          signal: controller.signal,
         });
         const data = await res.json();
-        if (data.error) {
-          showToast("Lỗi: " + data.error);
-          return;
+        if (version !== requestVersion) return;
+        if (!res.ok || data.error) throw new Error(data.error || 'Không xử lý được ảnh.');
+        if (data.request_context.image_id !== payload.image_id || data.request_context.algorithm !== payload.algorithm) {
+          throw new Error('Phản hồi không khớp lựa chọn đã gửi.');
         }
 
+        if (data.img_python_binary && (!lastData || !lastData.img_python_binary)) pyView = 'binary';
         lastData = data;
 
         // 1. Original Image
@@ -1405,8 +853,11 @@
           pySwitch.style.display = "none";
           pyView = "response";
         }
-        renderPyImage();
+        setPyView(pyView);
         document.getElementById("tag-py-time").innerText = `Thời gian: ${data.timing.total_ms} ms`;
+        document.getElementById('tag-py-time').title = data.timing.scope;
+        const range = data.fiji_metrics.display_range;
+        document.getElementById('tag-response-range').innerText = range ? `Thang chung [${range[0].toPrecision(3)}, ${range[1].toPrecision(3)}]` : '';
 
         // 3. Fiji Reference
         const fijiImg = document.getElementById("img-fiji");
@@ -1414,38 +865,36 @@
         const fijiTag = document.getElementById("tag-fiji-file");
         const fijiStat = document.getElementById("fiji-stat-text");
         const fijiTitle = document.getElementById("tag-fiji-title");
-        const fijiTitles = {
-          canny: "3. Fiji |∇L| (tham chiếu)",
-          frangi: "3. Fiji Hessian → Frangi (hybrid)",
-          blob: "3. Fiji |LoG| max (response)",
-          gaussian: "3. Fiji Gaussian",
-          gradient: "3. Fiji đạo hàm bậc 1",
-          second_order: "3. Fiji đạo hàm bậc 2",
-          hessian: "3. Fiji Hessian",
-          structure_tensor: "3. Fiji Structure Tensor"
-        };
-        fijiTitle.innerText = fijiTitles[currentAlgo] || "3. Fiji / FeatureJ";
+        fijiTitle.innerText = '3. ' + (data.fiji_metrics.title || 'Fiji / FeatureJ');
+        fijiStat.title = data.fiji_metrics.message || '';
+        document.getElementById('hud-fiji-label').innerText = data.fiji_metrics.kind === 'angular' ? 'Sai lệch góc Fiji · toàn ảnh' : 'Fiji Pearson · toàn ảnh';
 
         if (data.img_fiji) {
           fijiImg.src = data.img_fiji;
           fijiImg.style.display = "block";
           fijiPlaceholder.style.display = "none";
-          fijiTag.innerText = data.fiji_metrics.fiji_file || "fiji_map.tif";
+          fijiTag.innerText = data.fiji_metrics.files.length > 1 ? `${data.fiji_metrics.files.length} TIFF` : data.fiji_metrics.fiji_file;
+          fijiTag.title = data.fiji_metrics.fiji_file;
 
-          if (data.fiji_metrics.pearson !== undefined) {
-            document.getElementById("hud-fiji-pearson").innerText = `r = ${data.fiji_metrics.pearson.toFixed(6)}`;
-            fijiStat.innerText = `MAE: ${data.fiji_metrics.mae} | Pearson: ${data.fiji_metrics.pearson}`;
+          if (data.fiji_metrics.kind === 'angular') {
+            const degrees = data.fiji_metrics.mean_angular_error_deg;
+            document.getElementById('hud-fiji-pearson').innerText = Number.isFinite(degrees) ? `Δθ = ${degrees.toFixed(4)}°` : 'N/A · gradient bằng 0';
+            fijiStat.innerText = `Sai lệch góc tuần hoàn · ${data.fiji_metrics.valid_pixels} pixel hợp lệ`;
+          } else if (Number.isFinite(data.fiji_metrics.pearson)) {
+            document.getElementById("hud-fiji-pearson").innerText = `r = ${data.fiji_metrics.pearson.toFixed(8)}`;
+            fijiStat.innerText = `MAE: ${data.fiji_metrics.mae.toPrecision(5)} | RMSE: ${data.fiji_metrics.rmse.toPrecision(5)}`;
           } else {
-            document.getElementById("hud-fiji-pearson").innerText = "Đã nạp file Fiji";
-            fijiStat.innerText = "Tham chiếu FeatureJ";
+            document.getElementById("hud-fiji-pearson").innerText = "N/A · Pearson không xác định";
+            fijiStat.innerText = data.fiji_metrics.pearson_reason || 'Không có Pearson hợp lệ';
           }
         } else {
           fijiImg.style.display = "none";
           fijiPlaceholder.style.display = "block";
           fijiTag.innerText = "Không áp dụng";
           fijiTitle.innerText = "3. Không có tham chiếu Fiji";
-          fijiStat.innerText = "Ảnh tùy chỉnh (không có sẵn trong Fiji)";
-          document.getElementById("hud-fiji-pearson").innerText = "N/A (Ảnh tải lên)";
+          fijiStat.innerText = data.fiji_metrics.message || 'Chưa có tham chiếu tương ứng.';
+          fijiPlaceholder.innerText = fijiStat.innerText;
+          document.getElementById("hud-fiji-pearson").innerText = "N/A · thiếu tham chiếu";
         }
 
         // 4. Ground Truth View (Toggles)
@@ -1457,27 +906,36 @@
           gtSwitch.style.display = "flex";
           btnRaw.style.display = "inline-block";
           btnDiff.style.display = data.img_diff ? "inline-block" : "none";
-          document.getElementById("tag-gt-title").innerText = "4. Ground Truth";
         } else if (data.img_diff) {
           gtSwitch.style.display = "none";
-          document.getElementById("tag-gt-title").innerText = "4. Sai số đáp ứng";
         } else {
           gtSwitch.style.display = "none";
-          document.getElementById("tag-gt-title").innerText = "4. Ground Truth";
         }
 
-        renderGtImage();
+        if ((gtView === 'raw' && !data.img_gt_raw) || (gtView === 'diff' && !data.img_diff)) gtView = 'overlay';
+        document.getElementById('tag-gt-title').innerText = data.gt_title;
+        setGtView(gtView);
 
         const m = data.gt_metrics;
         if (m && m.has_gt && m.f1 !== undefined) {
+          document.getElementById('hud-gt-label').innerText = 'Python F1 · ảnh hiện tại';
           document.getElementById("hud-gt-f1").innerText = `F1 = ${m.f1.toFixed(4)}`;
         } else {
-          document.getElementById("hud-gt-f1").innerText = data.fiji_metrics.mae !== undefined ? `MAE = ${data.fiji_metrics.mae}` : "N/A";
+          document.getElementById('hud-gt-label').innerText = 'Ground Truth · ảnh hiện tại';
+          document.getElementById('hud-gt-f1').innerText = 'N/A · không chấm detector';
         }
 
       } catch (err) {
+        if (version !== requestVersion || err.name === 'AbortError') return;
         console.error("Process error:", err);
-        showToast("Lỗi kết nối");
+        lastData = null;
+        for (const id of ['img-original','img-python','img-fiji','img-gt']) document.getElementById(id).src = '';
+        document.getElementById('hud-fiji-pearson').innerText = 'N/A';
+        document.getElementById('hud-gt-f1').innerText = 'N/A';
+        document.getElementById('tag-py-time').innerText = 'Chưa có kết quả';
+        showToast('Lỗi: ' + err.message);
+      } finally {
+        if (version === requestVersion) activeController = null;
       }
     }
 
@@ -1519,9 +977,23 @@
     }
 
     async function loadBenchmarks() {
+      const version = ++benchmarkVersion;
+      for (const id of ['benchmark-tier1','benchmark-edge','benchmark-ridge','benchmark-blob']) document.getElementById(id).innerText = 'N/A';
       try {
-        const figRes = await fetch("/api/figures");
-        const figures = await figRes.json();
+        const [figRes, benchRes] = await Promise.all([fetch('/api/figures'),fetch('/api/benchmarks')]);
+        const [figures, benchmarks] = await Promise.all([figRes.json(),benchRes.json()]);
+        if (version !== benchmarkVersion) return;
+        if (!figRes.ok || figures.error) throw new Error(figures.error || 'Không đọc được biểu đồ.');
+        if (!benchRes.ok || benchmarks.error || benchmarks.provenance.status !== 'VALID') throw new Error(benchmarks.error || 'Nguồn metric chưa được xác minh.');
+        const counts = benchmarks.tier1_counts;
+        document.getElementById('benchmark-tier1').innerHTML = `${counts.strict} <span class="unit">STRICT / ${counts.total}</span>`;
+        document.getElementById('benchmark-tier1-card').title = `${counts.strict_failed} cặp chưa đạt STRICT; RELAXED <1e-2 là ngưỡng mở rộng, không phải chuẩn gốc.`;
+        const heads = benchmarks.headlines;
+        document.getElementById('benchmark-edge').innerHTML = `${Number(heads.edge.macro_f1).toFixed(4)} <span class="unit">macro, σ=${Number(heads.edge.sigma)}</span>`;
+        for (const [id,row] of [['benchmark-ridge',heads.ridge],['benchmark-blob',heads.blob]]) {
+          document.getElementById(id).innerHTML = `${Number(row.macro_f1).toFixed(4)} <span class="unit">micro ${Number(row.micro_f1).toFixed(4)}</span>`;
+        }
+        document.getElementById('benchmark-protocol').innerText = `Nguồn đã xác minh: ${benchmarks.provenance.source}. ${counts.strict}/${counts.total} đạt STRICT (relative error <1e-4 và r >0.9999); ${counts.strict_failed} chưa đạt chuẩn gốc. Trong số đó, ${counts.relaxed} đạt ngưỡng mở rộng RELAXED <1e-2; ${counts.outside_relaxed} ngoài ngưỡng mở rộng. F1 là số tổng hợp tập nội bộ, không phải F1 của ảnh đang mở ở Studio.`;
         const gallery = document.getElementById("figure-gallery");
         gallery.classList.remove("show-all");
         document.getElementById("btn-toggle-figures").innerText = "Xem tất cả 10";
@@ -1545,8 +1017,6 @@
         `;
         }).join("");
 
-        const benchRes = await fetch("/api/benchmarks");
-        const benchmarks = await benchRes.json();
         const tbody = document.querySelector("#tier2-table tbody");
         tbody.innerHTML = (benchmarks.tier2_summary || []).map(r => `
           <tr>
@@ -1562,21 +1032,62 @@
         `).join("");
 
       } catch (err) {
+        if (version !== benchmarkVersion) return;
+        for (const id of ['benchmark-tier1','benchmark-edge','benchmark-ridge','benchmark-blob']) document.getElementById(id).innerText = 'N/A';
+        document.getElementById('figure-gallery').innerHTML = '';
+        document.querySelector('#tier2-table tbody').innerHTML = '';
+        document.getElementById('benchmark-protocol').innerText = 'Chưa thể công bố kết quả: ' + err.message;
         console.error("Load benchmarks error:", err);
       }
     }
 
     function openModal(url, title) {
+      modalOrigin = document.activeElement;
       document.getElementById("modal-img").src = url;
       document.getElementById("modal-caption").innerText = title;
       document.getElementById("figure-modal").classList.add("active");
+      document.querySelector('.modal-close').focus();
     }
     function closeModal() {
+      if (!document.getElementById('figure-modal').classList.contains('active')) return;
       document.getElementById("figure-modal").classList.remove("active");
+      if (modalOrigin && modalOrigin.isConnected) modalOrigin.focus({preventScroll:true});
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      initImages();
+    function openResultImage(id) {
+      const image = document.getElementById(id);
+      if (!image.getAttribute('src') || image.style.display === 'none' || !image.naturalWidth) {
+        showToast('Chưa có ảnh để phóng to. Hãy chạy thuật toán hoặc chọn tham chiếu khác.');
+        return;
+      }
+      openModal(image.src, image.closest('.quad-cell').querySelector('.quad-title').textContent);
+    }
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+      if (event.target instanceof Element && event.target.matches('.quad-body img') && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        openResultImage(event.target.id);
+      }
+    });
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const header = document.querySelector('header');
+      new ResizeObserver(() => {
+        document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+        updateSidebarHeight();
+      }).observe(header);
+      let scrollFrame = null;
+      window.addEventListener('scroll', () => {
+        if (scrollFrame === null) scrollFrame = requestAnimationFrame(() => { updateSidebarHeight(); scrollFrame = null; });
+      }, {passive:true});
+      window.addEventListener('resize', updateSidebarHeight);
+      try {
+        await loadSettings();
+        await initImages();
+      } catch (err) {
+        showToast(err.message);
+      }
     });
   </script>
 </body>

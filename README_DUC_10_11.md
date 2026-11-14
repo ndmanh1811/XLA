@@ -2,6 +2,8 @@
 
 **Đọc file này trước.** Đây là luồng hiện hành của công việc 4–5, chuẩn hóa ngày 10/11/2026. Dữ liệu/GT ngày 02/11 và 05/11 được giữ nguyên.
 
+**Web demo 13/11:** đã sửa logic so sánh, trạng thái giao diện và nguồn chỉ số. Xem [hướng dẫn chạy app](src/web/README.md) và [bằng chứng sau sửa](docs/13_11/sau_sua_web_app/BAN_GIAO_SAU_SUA_WEB.md).
+
 **Cập nhật 12/11:** đã chạy lại metric và timing với config sau hiệu chuẩn, sửa bảng đối chiếu thư viện của Mạnh và kiểm tra 58/58 test. Xem [bàn giao Đức + Mạnh](docs/12_11/sau_hoan_thien_duc_manh/KET_QUA_HOAN_THIEN_DUC_MANH.md) và [checklist 29 công việc mới nhất](docs/12_11/sau_hoan_thien_duc_manh/CHECKLIST_29_CONG_VIEC.csv). Bản kiểm tra đầu ngày 12/11 là bằng chứng trước khi xử lý hai vấn đề này.
 
 ## Mở file nào?

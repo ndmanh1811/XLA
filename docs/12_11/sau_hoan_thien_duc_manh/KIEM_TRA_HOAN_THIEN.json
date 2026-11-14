@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "checked_at_utc": "2026-11-12T04:49:18.510328+00:00",
+  "checked_at_utc": "2026-11-12T18:21:03.083604+00:00",
   "metric_and_runtime_gate": "PASS",
   "runtime_cases_per_source": 357,
   "runtime_samples_including_warmup": 4284,
@@ -23,13 +23,13 @@
     "FIJI": "PASS",
     "ANALYTICAL": "PASS"
   },
-  "unittest_count": 58,
+  "unittest_count": 77,
   "validation_evidence_sha256": {
     "KIEM_TRA_SAU_SUA.json": "2c7ff447e519ca21226fdc6ac160fce6947596fd2059c0470230ec44d6674753",
     "ANALYTICAL_LOG.txt": "17c81a43f4bf690381af20ee3394d27607b4c1f14605b47eed6418feeb22f699",
     "CORE_LOG.txt": "ad22e308f6f1867e853b0c39764502b466221eab5e1800b48047c60eec31ce97",
     "FIJI_LOG.txt": "b06c1ef7150a0eafb764e996f64e0820b0b982c41d85fba62d440465a7f4dd45",
-    "UNITTEST_LOG.txt": "ac0da273dc60565edaecd9ceda62c023d36dbc3d073ad8b541ddd02dde27955a"
+    "UNITTEST_LOG.txt": "ad0f61d27c2568a9530182cde542eba1ccdceca7968fc94deb3bbf2efe7c0d24"
   },
   "protected_files_checked": 55,
   "protected_files_changed": [],
@@ -46,7 +46,7 @@
     "manifest_sha256": "8ab55570dda8163684aa358015eee290b88de7671b4b6bd711ac978fb299ddc2"
   },
   "metric_manifest_sha256": "23cfcd6ffaff84ed0ee4611c1110155561232105e6d6bf5d9a379e855cf7d00b",
-  "analysis_manifest_sha256": "7ad029275bdd65752feacec98302b991a35ab173db9ac4a1482ccf116f10786f",
+  "analysis_manifest_sha256": "168ec2a786f26ea403e15850137f33ab9fc6e8e517aba3f56498d0f498cbe9f7",
   "handoff_metadata": "PASS",
-  "local_document_links_checked": 29
+  "local_document_links_checked": 31
 }

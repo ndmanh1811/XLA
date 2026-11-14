@@ -27,7 +27,6 @@ OUTPUTS = HERE / "outputs"
 SUMMARY = HERE / "calibration_summary.csv"
 REPORT = HERE / "CALIBRATION_RESULTS.md"
 MANIFEST = HERE / "output_manifest.csv"
-SCREENSHOTS = HERE / "screenshots"
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -233,18 +232,6 @@ def main() -> None:
             + "; ".join(f"s={f(s,3)}: {f(v)}" for s, v in values)
             + f" | {conclusions[command]} |"
         )
-    screenshot_count = len(list(SCREENSHOTS.glob("*.png")))
-    if screenshot_count >= 15:
-        screenshot_note = (
-            f"- Đã lưu **{screenshot_count} PNG** hộp thoại, phiên bản, ROI và profile trong "
-            "`screenshots/`; bảng ánh xạ nằm trong `screenshots/README.md`."
-        )
-    else:
-        screenshot_note = (
-            f"- Screenshot giao diện chưa đủ ({screenshot_count}/15); CSV/TIFF vẫn là "
-            "bằng chứng định lượng chính."
-        )
-
     report = f"""# Kết quả hiệu chuẩn FeatureJ — Phạm Bảo Lộc
 
 Phép đo được tạo bởi `reproduce.ijm` trên 5 TIFF float32 trong `data/calib`.
@@ -294,14 +281,14 @@ tại cột có đáp ứng đạo hàm cực đại vì cột tâm của kernel
 biên giữa hàng, cả ba sigma cho sai số so với mô hình mirror nhỏ hơn rõ rệt so
 với reflect lặp pixel; chi tiết nằm trong `calibration_summary.csv`.
 
-## Giới hạn và bằng chứng giao diện
+## Giới hạn và phần còn bổ sung
 
 - `FeatureJ Edges` được đo ở chế độ gradient magnitude, NMS tắt và ngưỡng trống;
   NMS không thay đổi hệ số chuẩn hóa nên cờ `edges=false` được áp cho nhánh Edge.
 - Các toán tử Ly/Lxy/Lyy dùng cùng lệnh Derivatives và cùng quy tắc theo bậc;
   kết luận của chúng được suy từ Lx/Lxx thay vì đo lặp riêng.
-{screenshot_note}
-- CSV/TIFF là bằng chứng định lượng chính; screenshot không thay thế số đo.
+- Cần lưu ảnh chụp hộp thoại/phiên bản vào `screenshots/` để hoàn tất bằng chứng
+  giao diện. CSV/TIFF là bằng chứng định lượng, không thay thế ảnh hộp thoại.
 - Hồ sơ này giải thích config; không biến 185 cặp chưa đạt STRICT thành STRICT.
 """
     REPORT.write_text(report, encoding="utf-8")

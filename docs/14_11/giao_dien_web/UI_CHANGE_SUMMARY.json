@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "client_date": "2026-11-14",
+  "checked_at_utc": "2026-11-14T09:01:34.358763+00:00",
+  "browser_checks": 15,
+  "javascript_exceptions": 0,
+  "viewports": [
+    1440,
+    1024,
+    390
+  ],
+  "backend_python_files_unchanged": [
+    "src/web/app.py",
+    "src/web/comparison.py",
+    "src/web/parameters.py"
+  ],
+  "canonical_config_and_metric_files_unchanged": 20,
+  "source_sha256": {
+    "src/web/app.py": "3ffe318959af468a5887498903142d3ffcf3dfa6274206f0e72ae0113e6d39c4",
+    "src/web/parameters.py": "c4689dfc59039ccb189d63a034dfb8b0a1676989c2d83c0b05584b308842b73e",
+    "src/web/comparison.py": "d5183091ec572afe8255e226fe89fc5dd24ef1022be868d23c7bed26c2de6572",
+    "src/web/templates/index.html": "6fdd1cb84a2cd016e4e862ba2ed4e5cd53463fd5e39bfb21e564dfc8d711e09f",
+    "src/web/static/studio.css": "ad5a5fa4e2b695763fd5da113390982da74a96f41ce45dd54d5390118b1db1fe"
+  }
+}

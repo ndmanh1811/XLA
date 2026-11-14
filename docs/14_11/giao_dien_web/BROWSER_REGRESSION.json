@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "browser": "Microsoft Edge headless / DevTools",
+  "checks": [
+    {
+      "name": "Initial page loads settings, correct Canny and numeric HUD",
+      "status": "PASS",
+      "details": {
+        "f1": 0.4821
+      }
+    },
+    {
+      "name": "Large readable type and three precise numeric controls",
+      "status": "PASS",
+      "details": {
+        "body": 17,
+        "label": 16,
+        "numbers": 3
+      }
+    },
+    {
+      "name": "Number and slider synchronize; blank required value cannot submit",
+      "status": "PASS"
+    },
+    {
+      "name": "Image zoom and Escape close work on real result images",
+      "status": "PASS"
+    },
+    {
+      "name": "Desktop, tablet and mobile keep four distinct panels without horizontal page overflow",
+      "status": "PASS",
+      "details": [
+        {
+          "width": 1440,
+          "scroll": 1425,
+          "panels": 4,
+          "font": 17
+        },
+        {
+          "width": 1024,
+          "scroll": 1009,
+          "panels": 4,
+          "font": 17
+        },
+        {
+          "width": 390,
+          "scroll": 390,
+          "panels": 4,
+          "font": 17
+        }
+      ]
+    },
+    {
+      "name": "One preset click produces exactly one process request",
+      "status": "PASS",
+      "details": {
+        "requests": 1
+      }
+    },
+    {
+      "name": "Ignore visibility changes overlay, retains canonical scoring",
+      "status": "PASS",
+      "details": {
+        "f1": 0.4921
+      }
+    },
+    {
+      "name": "Dark blob annotation determines actual default polarity",
+      "status": "PASS",
+      "details": {
+        "image": "blob_02",
+        "f1": 1
+      }
+    },
+    {
+      "name": "Angular mode displays periodic angle error, not Pearson",
+      "status": "PASS",
+      "details": 0.000006339896893747449
+    },
+    {
+      "name": "Binary button and actual image stay synchronized after Gaussian → Canny",
+      "status": "PASS"
+    },
+    {
+      "name": "Old response cannot overwrite the newer result even when fetch ignores abort",
+      "status": "PASS",
+      "details": {
+        "image": "drive_08",
+        "f1": 0.2222,
+        "hud": "F1 = 0.2222"
+      }
+    },
+    {
+      "name": "Invalid thresholds show a specific validation error and clear old scores",
+      "status": "PASS"
+    },
+    {
+      "name": "Benchmark headlines, strict failures and 10 charts come from verified API",
+      "status": "PASS",
+      "details": "Nguồn đã xác minh: outputs\\metrics\\duc_10_11. 35/220 đạt STRICT (relative error <1e-4 và r >0.9999); 185 chưa đạt chuẩn gốc. Trong số đó, 185 đạt ngưỡng mở rộng RELAXED <1e-2; 0 ngoài ngưỡng mở rộng. F1 là số tổng hợp tập nội bộ, không phải F1 của ảnh đang mở ở Studio."
+    },
+    {
+      "name": "Show all reveals all 10 chart cards",
+      "status": "PASS"
+    },
+    {
+      "name": "Full chart modal opens and closes correctly",
+      "status": "PASS"
+    }
+  ],
+  "javascript_errors": [],
+  "source_sha256": {
+    "src/web/app.py": "3ffe318959af468a5887498903142d3ffcf3dfa6274206f0e72ae0113e6d39c4",
+    "src/web/parameters.py": "c4689dfc59039ccb189d63a034dfb8b0a1676989c2d83c0b05584b308842b73e",
+    "src/web/comparison.py": "d5183091ec572afe8255e226fe89fc5dd24ef1022be868d23c7bed26c2de6572",
+    "src/web/templates/index.html": "6fdd1cb84a2cd016e4e862ba2ed4e5cd53463fd5e39bfb21e564dfc8d711e09f",
+    "src/web/static/studio.css": "ad5a5fa4e2b695763fd5da113390982da74a96f41ce45dd54d5390118b1db1fe"
+  },
+  "process_requests": 12
+}

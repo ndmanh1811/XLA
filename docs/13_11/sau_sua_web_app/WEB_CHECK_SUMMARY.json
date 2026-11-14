@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "checked_at_utc": "2026-11-12T18:21:58.952642+00:00",
+  "unit_tests": 77,
+  "browser_checks": 11,
+  "javascript_exceptions": 0,
+  "canonical_presets": {
+    "passed": 25,
+    "total": 25
+  },
+  "verified_tiff_archives": 415,
+  "protected_files_changed": [],
+  "tier1_counts": {
+    "outside_relaxed": 0,
+    "relaxed": 185,
+    "strict": 35,
+    "strict_failed": 185,
+    "total": 220
+  },
+  "source_sha256": {
+    "src\\web\\app.py": "3ffe318959af468a5887498903142d3ffcf3dfa6274206f0e72ae0113e6d39c4",
+    "src\\web\\comparison.py": "d5183091ec572afe8255e226fe89fc5dd24ef1022be868d23c7bed26c2de6572",
+    "src\\web\\parameters.py": "c4689dfc59039ccb189d63a034dfb8b0a1676989c2d83c0b05584b308842b73e",
+    "src\\web\\templates\\index.html": "a6c1b18603731273961e4ec70fccc4b62ff8bcd24f0ffcdaf712a16ff90c3a7d",
+    "tests\\test_web.py": "3c147766ef1cc6c041be1a3591435b2de6f81ef53ccde8349409c208e28d2339"
+  }
+}

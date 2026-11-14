@@ -1,9 +1,9 @@
 # Hồ sơ hiệu chuẩn FeatureJ — Phạm Bảo Lộc
 
-> **Trạng thái 12/11/2026:** hồ sơ đã hoàn tất: 40 TIFF, 40 dòng đo ROI, 2.682
-> điểm profile và 15 screenshot giao diện/phiên bản có bảng truy vết. Xem
-> [CALIBRATION_RESULTS.md](CALIBRATION_RESULTS.md) và
-> [screenshots/README.md](screenshots/README.md).
+> **Trạng thái 11/11/2026:** phần định lượng đã chạy và được phân tích: 40
+> TIFF, 40 dòng đo ROI và 2.682 điểm profile. Xem
+> [CALIBRATION_RESULTS.md](CALIBRATION_RESULTS.md). Cấu hình hiện hành được xác
+> nhận; còn bổ sung screenshot hộp thoại/phiên bản trước khi chốt bàn giao.
 
 Thư mục này lưu bằng chứng thực nghiệm cho các giá trị FeatureJ đang dùng trong
 `config.yaml`. Hồ sơ chỉ được xem là hoàn tất sau khi `reproduce.ijm` đã chạy

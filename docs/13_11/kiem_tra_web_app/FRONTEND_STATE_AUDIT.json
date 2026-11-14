@@ -1,0 +1,24 @@
+{
+  "scope": "Node VM with controlled DOM/fetch; real inline JS; no browser CSS/layout test",
+  "requests_complete_out_of_order": {
+    "after_new_response": {
+      "image": "NEW_DRIVE_RESULT",
+      "label": "3. Fiji Hessian → Frangi (hybrid)"
+    },
+    "after_old_response": {
+      "image": "OLD_BSDS_RESULT",
+      "label": "3. Fiji Hessian → Frangi (hybrid)",
+      "f1": "F1 = 0.1111",
+      "selectedImage": "drive_08",
+      "selectedAlgorithm": "frangi"
+    },
+    "stale_overwrite_confirmed": true
+  },
+  "preset_api_requests_for_one_click": 2,
+  "binary_view_after_continuous_algorithm": {
+    "view": "response",
+    "shown": "CANNY_AFTER_GAUSSIAN_RESPONSE",
+    "note": "runAlgorithm changes pyView to response but never synchronizes the binary/response active classes"
+  },
+  "issue": "runAlgorithm has no request sequence, cancellation or response-to-selection check; preset calls twice"
+}

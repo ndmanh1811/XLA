@@ -1,0 +1,2189 @@
+{
+  "recorded_at_utc": "2026-11-12T17:11:01.636056+00:00",
+  "scope": "real Flask test_client + isolated mocks; no browser layout audit",
+  "api_cases": [
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4821,
+        "has_gt": true,
+        "precision": 0.4733,
+        "recall": 0.4912,
+        "tp": 2671
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.002285,
+        "pearson": 1.0,
+        "rmse": 0.003125
+      },
+      "timing": {
+        "derivative_ms": 20.64,
+        "detector_ms": 40.64,
+        "total_ms": 61.28
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_02",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4135,
+        "has_gt": true,
+        "precision": 0.624,
+        "recall": 0.3092,
+        "tp": 2330
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_02_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.001107,
+        "pearson": 1.0,
+        "rmse": 0.001778
+      },
+      "timing": {
+        "derivative_ms": 21.2,
+        "detector_ms": 25.02,
+        "total_ms": 46.22
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_03",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.6967,
+        "has_gt": true,
+        "precision": 0.8917,
+        "recall": 0.5717,
+        "tp": 5978
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_03_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 13.360923,
+        "pearson": 0.483984,
+        "rmse": 18.239794
+      },
+      "timing": {
+        "derivative_ms": 19.17,
+        "detector_ms": 41.36,
+        "total_ms": 60.54
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_04",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4687,
+        "has_gt": true,
+        "precision": 0.482,
+        "recall": 0.4562,
+        "tp": 2235
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_04_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 5.685742,
+        "pearson": 0.477345,
+        "rmse": 8.779549
+      },
+      "timing": {
+        "derivative_ms": 20.39,
+        "detector_ms": 33.58,
+        "total_ms": 53.97
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_05",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.6647,
+        "has_gt": true,
+        "precision": 0.6998,
+        "recall": 0.6329,
+        "tp": 3872
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_05_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 4.943077,
+        "pearson": 0.497883,
+        "rmse": 6.60118
+      },
+      "timing": {
+        "derivative_ms": 28.55,
+        "detector_ms": 57.77,
+        "total_ms": 86.32
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_06",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4296,
+        "has_gt": true,
+        "precision": 0.2921,
+        "recall": 0.8113,
+        "tp": 1587
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_06_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 3.118039,
+        "pearson": 0.488341,
+        "rmse": 4.650666
+      },
+      "timing": {
+        "derivative_ms": 22.24,
+        "detector_ms": 39.3,
+        "total_ms": 61.55
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_07",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.5365,
+        "has_gt": true,
+        "precision": 0.4593,
+        "recall": 0.645,
+        "tp": 1935
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_07_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 3.355926,
+        "pearson": 0.471369,
+        "rmse": 5.16651
+      },
+      "timing": {
+        "derivative_ms": 70.54,
+        "detector_ms": 97.97,
+        "total_ms": 168.5
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_08",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.2453,
+        "has_gt": true,
+        "precision": 0.2239,
+        "recall": 0.2714,
+        "tp": 1222
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_08_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 8.741031,
+        "pearson": 0.48424,
+        "rmse": 13.05188
+      },
+      "timing": {
+        "derivative_ms": 71.2,
+        "detector_ms": 107.54,
+        "total_ms": 178.74
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_09",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.5279,
+        "has_gt": true,
+        "precision": 0.4969,
+        "recall": 0.5631,
+        "tp": 1680
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_09_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 2.789816,
+        "pearson": 0.481207,
+        "rmse": 6.99709
+      },
+      "timing": {
+        "derivative_ms": 55.78,
+        "detector_ms": 130.01,
+        "total_ms": 185.79
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_10",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.3138,
+        "has_gt": true,
+        "precision": 0.2663,
+        "recall": 0.382,
+        "tp": 1224
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_10_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 9.069651,
+        "pearson": 0.47566,
+        "rmse": 12.410873
+      },
+      "timing": {
+        "derivative_ms": 54.2,
+        "detector_ms": 84.27,
+        "total_ms": 138.47
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_01",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4166,
+        "has_gt": true,
+        "precision": 0.8143,
+        "recall": 0.2799,
+        "tp": 5301
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 8.1e-05,
+        "pearson": 0.999972,
+        "rmse": 0.000262
+      },
+      "timing": {
+        "derivative_ms": 1054.91,
+        "detector_ms": 452.11,
+        "total_ms": 1507.02
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_02",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4689,
+        "has_gt": true,
+        "precision": 0.809,
+        "recall": 0.3302,
+        "tp": 8014
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000155,
+        "pearson": 0.999924,
+        "rmse": 0.00042
+      },
+      "timing": {
+        "derivative_ms": 1052.9,
+        "detector_ms": 451.24,
+        "total_ms": 1504.14
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_03",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.3532,
+        "has_gt": true,
+        "precision": 0.8665,
+        "recall": 0.2218,
+        "tp": 3902
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000147,
+        "pearson": 0.999883,
+        "rmse": 0.000299
+      },
+      "timing": {
+        "derivative_ms": 814.99,
+        "detector_ms": 349.28,
+        "total_ms": 1164.27
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_04",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4134,
+        "has_gt": true,
+        "precision": 0.9226,
+        "recall": 0.2663,
+        "tp": 8075
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000107,
+        "pearson": 0.999976,
+        "rmse": 0.000288
+      },
+      "timing": {
+        "derivative_ms": 1138.12,
+        "detector_ms": 487.77,
+        "total_ms": 1625.89
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_05",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4147,
+        "has_gt": true,
+        "precision": 0.7235,
+        "recall": 0.2906,
+        "tp": 7401
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.00017,
+        "pearson": 0.99997,
+        "rmse": 0.000514
+      },
+      "timing": {
+        "derivative_ms": 1014.04,
+        "detector_ms": 434.59,
+        "total_ms": 1448.62
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_06",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.6395,
+        "has_gt": true,
+        "precision": 0.6886,
+        "recall": 0.5969,
+        "tp": 11381
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000229,
+        "pearson": 0.999964,
+        "rmse": 0.000606
+      },
+      "timing": {
+        "derivative_ms": 1881.66,
+        "detector_ms": 806.43,
+        "total_ms": 2688.09
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_07",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.3997,
+        "has_gt": true,
+        "precision": 0.7771,
+        "recall": 0.269,
+        "tp": 6448
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000118,
+        "pearson": 0.999974,
+        "rmse": 0.000383
+      },
+      "timing": {
+        "derivative_ms": 789.88,
+        "detector_ms": 338.52,
+        "total_ms": 1128.39
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_08",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.642,
+        "has_gt": true,
+        "precision": 0.8755,
+        "recall": 0.5068,
+        "tp": 12308
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 0.000188,
+        "pearson": 0.999969,
+        "rmse": 0.000518
+      },
+      "timing": {
+        "derivative_ms": 1070.83,
+        "detector_ms": 458.93,
+        "total_ms": 1529.76
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_09",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.6142,
+        "has_gt": true,
+        "precision": 0.853,
+        "recall": 0.4799,
+        "tp": 10541
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 9.8e-05,
+        "pearson": 0.999969,
+        "rmse": 0.000322
+      },
+      "timing": {
+        "derivative_ms": 1229.44,
+        "detector_ms": 526.9,
+        "total_ms": 1756.35
+      }
+    },
+    {
+      "payload": {
+        "image_id": "drive_10",
+        "algorithm": "frangi",
+        "threshold": 0.05,
+        "use_fov": true,
+        "multiscale": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4117,
+        "has_gt": true,
+        "precision": 0.7813,
+        "recall": 0.2795,
+        "tp": 5926
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Hessian × 4 scales",
+        "has_fiji": true,
+        "mae": 9.1e-05,
+        "pearson": 0.999972,
+        "rmse": 0.000269
+      },
+      "timing": {
+        "derivative_ms": 1088.97,
+        "detector_ms": 466.7,
+        "total_ms": 1555.68
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_01",
+        "algorithm": "blob",
+        "threshold": 5,
+        "polarity": "bright",
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.011919,
+        "pearson": 0.999999,
+        "rmse": 0.041401
+      },
+      "timing": {
+        "derivative_ms": 311.68,
+        "detector_ms": 34.79,
+        "total_ms": 346.47
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_02",
+        "algorithm": "blob",
+        "threshold": 5,
+        "polarity": "dark",
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.596663,
+        "pearson": 0.999958,
+        "rmse": 0.607971
+      },
+      "timing": {
+        "derivative_ms": 324.5,
+        "detector_ms": 28.78,
+        "total_ms": 353.28
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_03",
+        "algorithm": "blob",
+        "threshold": 5,
+        "polarity": "bright",
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.00902,
+        "pearson": 0.999998,
+        "rmse": 0.030042
+      },
+      "timing": {
+        "derivative_ms": 326.98,
+        "detector_ms": 30.63,
+        "total_ms": 357.6
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_04",
+        "algorithm": "blob",
+        "threshold": 5,
+        "polarity": "dark",
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.597937,
+        "pearson": 0.99987,
+        "rmse": 0.606976
+      },
+      "timing": {
+        "derivative_ms": 260.51,
+        "detector_ms": 35.59,
+        "total_ms": 296.1
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_05",
+        "algorithm": "blob",
+        "threshold": 5,
+        "polarity": "bright",
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.045766,
+        "pearson": 0.999991,
+        "rmse": 0.057711
+      },
+      "timing": {
+        "derivative_ms": 1446.32,
+        "detector_ms": 309.22,
+        "total_ms": 1755.53
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gaussian",
+        "sigma": 2
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_gauss_s2.0.tif",
+        "has_fiji": true,
+        "mae": 2e-06,
+        "pearson": 1.0,
+        "rmse": 3e-06
+      },
+      "timing": {
+        "derivative_ms": 25.69,
+        "detector_ms": 0.0,
+        "total_ms": 25.69
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gradient",
+        "sigma": 2,
+        "display_type": "mag"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.001143,
+        "pearson": 1.0,
+        "rmse": 0.001562
+      },
+      "timing": {
+        "derivative_ms": 37.58,
+        "detector_ms": 0.0,
+        "total_ms": 37.58
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gradient",
+        "sigma": 2,
+        "display_type": "lx"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lx_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.000617,
+        "pearson": 1.0,
+        "rmse": 0.000984
+      },
+      "timing": {
+        "derivative_ms": 41.93,
+        "detector_ms": 0.0,
+        "total_ms": 41.93
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gradient",
+        "sigma": 2,
+        "display_type": "ly"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_ly_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.000811,
+        "pearson": 1.0,
+        "rmse": 0.001214
+      },
+      "timing": {
+        "derivative_ms": 46.85,
+        "detector_ms": 0.0,
+        "total_ms": 46.85
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "sigma": 2,
+        "display_type": "lxx"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lxx_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.033181,
+        "pearson": 0.999997,
+        "rmse": 0.036113
+      },
+      "timing": {
+        "derivative_ms": 57.12,
+        "detector_ms": 0.0,
+        "total_ms": 57.12
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "sigma": 2,
+        "display_type": "lyy"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lyy_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.033391,
+        "pearson": 0.999998,
+        "rmse": 0.036985
+      },
+      "timing": {
+        "derivative_ms": 54.81,
+        "detector_ms": 0.0,
+        "total_ms": 54.81
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "sigma": 2,
+        "display_type": "lxy"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lxy_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.001163,
+        "pearson": 1.0,
+        "rmse": 0.001712
+      },
+      "timing": {
+        "derivative_ms": 120.45,
+        "detector_ms": 0.0,
+        "total_ms": 120.45
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "hessian",
+        "sigma": 2,
+        "display_type": "l1"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_hess-l1_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.038883,
+        "pearson": 0.999997,
+        "rmse": 0.041683
+      },
+      "timing": {
+        "derivative_ms": 93.94,
+        "detector_ms": 3.63,
+        "total_ms": 97.57
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "hessian",
+        "sigma": 2,
+        "display_type": "l2"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_hess-l2_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.027659,
+        "pearson": 0.999997,
+        "rmse": 0.030404
+      },
+      "timing": {
+        "derivative_ms": 57.19,
+        "detector_ms": 4.34,
+        "total_ms": 61.53
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "structure_tensor",
+        "sigma": 2,
+        "display_type": "coherence"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_st-coherence_sd1.0_si3.0",
+        "has_fiji": true,
+        "mae": 0.0,
+        "pearson": 1.0,
+        "rmse": 0.0
+      },
+      "timing": {
+        "derivative_ms": 94.16,
+        "detector_ms": 14.48,
+        "total_ms": 108.64
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "structure_tensor",
+        "sigma": 2,
+        "display_type": "mu1"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_st-l1_sd1.0_si3.0.tif",
+        "has_fiji": true,
+        "mae": 0.006648,
+        "pearson": 1.0,
+        "rmse": 0.010471
+      },
+      "timing": {
+        "derivative_ms": 98.91,
+        "detector_ms": 5.54,
+        "total_ms": 104.45
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "structure_tensor",
+        "sigma": 2,
+        "display_type": "mu2"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_st-l2_sd1.0_si3.0.tif",
+        "has_fiji": true,
+        "mae": 0.001692,
+        "pearson": 1.0,
+        "rmse": 0.002529
+      },
+      "timing": {
+        "derivative_ms": 133.09,
+        "detector_ms": 11.86,
+        "total_ms": 144.95
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "canny",
+        "sigma": 1,
+        "p_low": 76.0,
+        "p_high": 94.0
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4522,
+        "has_gt": true,
+        "precision": 0.4198,
+        "recall": 0.4901,
+        "tp": 2841
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s1.0.tif",
+        "has_fiji": true,
+        "mae": 0.000417,
+        "pearson": 1.0,
+        "rmse": 0.000558
+      },
+      "timing": {
+        "derivative_ms": 39.23,
+        "detector_ms": 99.03,
+        "total_ms": 138.26
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "canny",
+        "sigma": 4,
+        "p_low": 49.0,
+        "p_high": 80.0
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4612,
+        "has_gt": true,
+        "precision": 0.4748,
+        "recall": 0.4484,
+        "tp": 2345
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s4.0.tif",
+        "has_fiji": true,
+        "mae": 0.005193,
+        "pearson": 1.0,
+        "rmse": 0.006916
+      },
+      "timing": {
+        "derivative_ms": 55.09,
+        "detector_ms": 94.9,
+        "total_ms": 149.99
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "canny",
+        "sigma": 8,
+        "p_low": 23.0,
+        "p_high": 50.0
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.3692,
+        "has_gt": true,
+        "precision": 0.4086,
+        "recall": 0.3368,
+        "tp": 1776
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s8.0.tif",
+        "has_fiji": true,
+        "mae": 0.008483,
+        "pearson": 1.0,
+        "rmse": 0.010823
+      },
+      "timing": {
+        "derivative_ms": 179.0,
+        "detector_ms": 69.53,
+        "total_ms": 248.53
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gradient",
+        "display_type": "angle",
+        "sigma": 2
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 3.507136,
+        "pearson": -0.001896,
+        "rmse": 4.673441
+      },
+      "timing": {
+        "derivative_ms": 38.55,
+        "detector_ms": 0.0,
+        "total_ms": 38.55
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_03",
+        "algorithm": "canny",
+        "sigma": 2,
+        "p_low": 67,
+        "p_high": 91
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.6967,
+        "has_gt": true,
+        "precision": 0.8917,
+        "recall": 0.5717,
+        "tp": 5978
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_03_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 13.360923,
+        "pearson": 0.483984,
+        "rmse": 18.239794
+      },
+      "timing": {
+        "derivative_ms": 44.48,
+        "detector_ms": 126.69,
+        "total_ms": 171.18
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "blob",
+        "threshold": 5
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+        "has_fiji": true,
+        "mae": 11.442378,
+        "pearson": -0.081333,
+        "rmse": 13.823626
+      },
+      "timing": {
+        "derivative_ms": 776.5,
+        "detector_ms": 97.82,
+        "total_ms": 874.32
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_05",
+        "algorithm": "blob",
+        "threshold": 5,
+        "show_ignore": true
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.045766,
+        "pearson": 0.999991,
+        "rmse": 0.057711
+      },
+      "timing": {
+        "derivative_ms": 1128.55,
+        "detector_ms": 215.17,
+        "total_ms": 1343.72
+      }
+    },
+    {
+      "payload": {
+        "image_id": "blob_05",
+        "algorithm": "blob",
+        "threshold": 5,
+        "show_ignore": false
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "fiji_metrics": {
+        "fiji_file": "Fiji Laplacian × 7 scales",
+        "has_fiji": true,
+        "mae": 0.045766,
+        "pearson": 0.999991,
+        "rmse": 0.057711
+      },
+      "timing": {
+        "derivative_ms": 1605.8,
+        "detector_ms": 220.72,
+        "total_ms": 1826.52
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gaussian",
+        "sigma": 2
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_gauss_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.0,
+        "pearson": 1.0,
+        "rmse": 0.0
+      },
+      "timing": {
+        "derivative_ms": 0.08,
+        "detector_ms": 0.0,
+        "total_ms": 0.08
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "display_type": "laplacian",
+        "sigma": 2,
+        "normalized": false
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.016528,
+        "pearson": 0.999996,
+        "rmse": 0.01776
+      },
+      "timing": {
+        "derivative_ms": 91.01,
+        "detector_ms": 0.0,
+        "total_ms": 91.01
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "display_type": "laplacian",
+        "sigma": 8,
+        "normalized": false
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lap_s8.0.tif",
+        "has_fiji": true,
+        "mae": 0.002494,
+        "pearson": 0.999994,
+        "rmse": 0.002657
+      },
+      "timing": {
+        "derivative_ms": 195.62,
+        "detector_ms": 0.0,
+        "total_ms": 195.62
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "second_order",
+        "display_type": "laplacian",
+        "sigma": 2
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.066113,
+        "pearson": 0.999996,
+        "rmse": 0.071042
+      },
+      "timing": {
+        "derivative_ms": 52.21,
+        "detector_ms": 0.0,
+        "total_ms": 52.21
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "unknown"
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "has_gt": true
+      },
+      "fiji_metrics": {
+        "has_fiji": false
+      },
+      "timing": {
+        "derivative_ms": 0.0,
+        "detector_ms": 0.0,
+        "total_ms": 0.0
+      }
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gaussian",
+        "sigma": "abc"
+      },
+      "status_code": 500,
+      "json": false
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "gaussian",
+        "sigma": 0
+      },
+      "status_code": 500,
+      "json": true,
+      "error": "Độ lệch chuẩn sigma phải > 0, nhận được: 0.0"
+    },
+    {
+      "payload": {
+        "image_id": "bsds_01",
+        "algorithm": "canny",
+        "p_low": 95,
+        "p_high": 10
+      },
+      "status_code": 200,
+      "json": true,
+      "gt_metrics": {
+        "f1": 0.3512,
+        "has_gt": true,
+        "precision": 0.2209,
+        "recall": 0.8552,
+        "tp": 6035
+      },
+      "fiji_metrics": {
+        "fiji_file": "fiji_bsds_01_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.002285,
+        "pearson": 1.0,
+        "rmse": 0.003125
+      },
+      "timing": {
+        "derivative_ms": 53.07,
+        "detector_ms": 239.59,
+        "total_ms": 292.67
+      }
+    }
+  ],
+  "preset_comparison": [
+    {
+      "image": "bsds_01",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.4821,
+        "has_gt": true,
+        "precision": 0.4733,
+        "recall": 0.4912,
+        "tp": 2671
+      },
+      "canonical": {
+        "precision": 0.4733297891192628,
+        "recall": 0.491223586432844,
+        "f1": 0.48211071039893916
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_02",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.4135,
+        "has_gt": true,
+        "precision": 0.624,
+        "recall": 0.3092,
+        "tp": 2330
+      },
+      "canonical": {
+        "precision": 0.6239957150508838,
+        "recall": 0.30921532645235644,
+        "f1": 0.41351640761311087
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_03",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.6967,
+        "has_gt": true,
+        "precision": 0.8917,
+        "recall": 0.5717,
+        "tp": 5978
+      },
+      "canonical": {
+        "precision": 0.8917064439140812,
+        "recall": 0.5716512197228195,
+        "f1": 0.6966787258235595
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_04",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.4687,
+        "has_gt": true,
+        "precision": 0.482,
+        "recall": 0.4562,
+        "tp": 2235
+      },
+      "canonical": {
+        "precision": 0.4819926676730645,
+        "recall": 0.4561848246764222,
+        "f1": 0.4687337787728831
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_05",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.6647,
+        "has_gt": true,
+        "precision": 0.6998,
+        "recall": 0.6329,
+        "tp": 3872
+      },
+      "canonical": {
+        "precision": 0.6998011928429424,
+        "recall": 0.6328928363230318,
+        "f1": 0.6646674361474438
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_06",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.4296,
+        "has_gt": true,
+        "precision": 0.2921,
+        "recall": 0.8113,
+        "tp": 1587
+      },
+      "canonical": {
+        "precision": 0.2921038100496963,
+        "recall": 0.8113278856997957,
+        "f1": 0.4295543938132452
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_07",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.5365,
+        "has_gt": true,
+        "precision": 0.4593,
+        "recall": 0.645,
+        "tp": 1935
+      },
+      "canonical": {
+        "precision": 0.45929266555898407,
+        "recall": 0.6450193957972261,
+        "f1": 0.5365379732288668
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_08",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.2453,
+        "has_gt": true,
+        "precision": 0.2239,
+        "recall": 0.2714,
+        "tp": 1222
+      },
+      "canonical": {
+        "precision": 0.22385052207363987,
+        "recall": 0.2713883992649059,
+        "f1": 0.2453378853330579
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_09",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.5279,
+        "has_gt": true,
+        "precision": 0.4969,
+        "recall": 0.5631,
+        "tp": 1680
+      },
+      "canonical": {
+        "precision": 0.4968944099378882,
+        "recall": 0.5631103567037633,
+        "f1": 0.5279342078513988
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "bsds_10",
+      "algorithm": "canny",
+      "web": {
+        "f1": 0.3138,
+        "has_gt": true,
+        "precision": 0.2663,
+        "recall": 0.382,
+        "tp": 1224
+      },
+      "canonical": {
+        "precision": 0.2662606047422232,
+        "recall": 0.3819756450519775,
+        "f1": 0.31379012286011376
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_01",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.4166,
+        "has_gt": true,
+        "precision": 0.8143,
+        "recall": 0.2799,
+        "tp": 5301
+      },
+      "canonical": {
+        "precision": 0.8142857142857143,
+        "recall": 0.27992818292232136,
+        "f1": 0.416630644083782
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_02",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.4689,
+        "has_gt": true,
+        "precision": 0.809,
+        "recall": 0.3302,
+        "tp": 8014
+      },
+      "canonical": {
+        "precision": 0.809004643650313,
+        "recall": 0.3301610843323858,
+        "f1": 0.4689429181661254
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_03",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.3532,
+        "has_gt": true,
+        "precision": 0.8665,
+        "recall": 0.2218,
+        "tp": 3902
+      },
+      "canonical": {
+        "precision": 0.8665334221630024,
+        "recall": 0.22181797510090387,
+        "f1": 0.35321806825382457
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_04",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.4134,
+        "has_gt": true,
+        "precision": 0.9226,
+        "recall": 0.2663,
+        "tp": 8075
+      },
+      "canonical": {
+        "precision": 0.9226462522851919,
+        "recall": 0.2663346416438537,
+        "f1": 0.4133500550280259
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_05",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.4147,
+        "has_gt": true,
+        "precision": 0.7235,
+        "recall": 0.2906,
+        "tp": 7401
+      },
+      "canonical": {
+        "precision": 0.723531136963535,
+        "recall": 0.2906227911725438,
+        "f1": 0.41467992716066676
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_06",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.6395,
+        "has_gt": true,
+        "precision": 0.6886,
+        "recall": 0.5969,
+        "tp": 11381
+      },
+      "canonical": {
+        "precision": 0.6885890609874153,
+        "recall": 0.5968951591755389,
+        "f1": 0.639471835932013
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_07",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.3997,
+        "has_gt": true,
+        "precision": 0.7771,
+        "recall": 0.269,
+        "tp": 6448
+      },
+      "canonical": {
+        "precision": 0.777148366879595,
+        "recall": 0.2690253671562083,
+        "f1": 0.39969006663567336
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_08",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.642,
+        "has_gt": true,
+        "precision": 0.8755,
+        "recall": 0.5068,
+        "tp": 12308
+      },
+      "canonical": {
+        "precision": 0.8755157205861431,
+        "recall": 0.5067731708321325,
+        "f1": 0.6419611422610509
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_09",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.6142,
+        "has_gt": true,
+        "precision": 0.853,
+        "recall": 0.4799,
+        "tp": 10541
+      },
+      "canonical": {
+        "precision": 0.8530387634539127,
+        "recall": 0.47985614785815084,
+        "f1": 0.6142058035194033
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "drive_10",
+      "algorithm": "frangi",
+      "web": {
+        "f1": 0.4117,
+        "has_gt": true,
+        "precision": 0.7813,
+        "recall": 0.2795,
+        "tp": 5926
+      },
+      "canonical": {
+        "precision": 0.7812788398154252,
+        "recall": 0.2794623909455317,
+        "f1": 0.41167071899965263
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "blob_01",
+      "algorithm": "blob",
+      "web": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "canonical": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "blob_02",
+      "algorithm": "blob",
+      "web": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "canonical": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "blob_03",
+      "algorithm": "blob",
+      "web": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "canonical": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "blob_04",
+      "algorithm": "blob",
+      "web": {
+        "f1": 1.0,
+        "has_gt": true,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "canonical": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    },
+    {
+      "image": "blob_05",
+      "algorithm": "blob",
+      "web": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "canonical": {
+        "precision": 0.4778156996587031,
+        "recall": 0.5072463768115942,
+        "f1": 0.492091388400703
+      },
+      "delta_at_four_decimals": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "match": true
+    }
+  ],
+  "checks": {
+    "canonical_provenance": "PASS",
+    "gradient_angle": {
+      "web": {
+        "fiji_file": "fiji_bsds_01_grad_s2.0.tif",
+        "has_fiji": true,
+        "mae": 3.507136,
+        "pearson": -0.001896,
+        "rmse": 4.673441
+      },
+      "correct_counterpart": "atan2(Fiji Ly, Fiji Lx)",
+      "correct_mae": 0.009561917378968906,
+      "correct_pearson": 0.9907130414403302
+    },
+    "canny_missing_gradient_fallback": {
+      "web": {
+        "fiji_file": "fiji_bsds_03_edge_s2.0.tif",
+        "has_fiji": true,
+        "mae": 13.360923,
+        "pearson": 0.483984,
+        "rmse": 18.239794
+      },
+      "correct_mae": 0.005510704753188266,
+      "correct_pearson": 0.9999999999999981
+    },
+    "blob_incomplete_stack_fallback": {
+      "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+      "has_fiji": true,
+      "mae": 11.442378,
+      "pearson": -0.081333,
+      "rmse": 13.823626
+    },
+    "ignore_toggle": {
+      "enabled": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "disabled": {
+        "f1": 0.4921,
+        "has_gt": true,
+        "precision": 0.4778,
+        "recall": 0.5072,
+        "tp": 140
+      },
+      "same_metric": true,
+      "overlay_changes": true,
+      "actual_scores_without_ignore": {
+        "precision": 0.425531914893617,
+        "recall": 0.5072463768115942,
+        "f1": 0.4628099173553719
+      }
+    },
+    "constant_pearson_isolation": {
+      "reported": {
+        "fiji_file": "fiji_bsds_01_gauss_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.0,
+        "pearson": 1.0,
+        "rmse": 0.0
+      },
+      "expected_pearson": null
+    },
+    "independent_colormap_ranges": {
+      "render_a_equals_render_2a": true
+    },
+    "live_vs_core_laplacian_sigma2": {
+      "web": {
+        "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.016528,
+        "pearson": 0.999996,
+        "rmse": 0.01776
+      },
+      "canonical_core": {
+        "crop_px": "8",
+        "mae": "0.01647546537540027",
+        "rmse": "0.01768906412320809",
+        "pearson_r": "0.9999958110519701"
+      }
+    },
+    "live_vs_core_laplacian_sigma8": {
+      "web": {
+        "fiji_file": "fiji_bsds_01_lap_s8.0.tif",
+        "has_fiji": true,
+        "mae": 0.002494,
+        "pearson": 0.999994,
+        "rmse": 0.002657
+      },
+      "canonical_core": {
+        "crop_px": "32",
+        "mae": "0.002492709650780865",
+        "rmse": "0.002654943382161943",
+        "pearson_r": "0.9999938654972889"
+      }
+    },
+    "normalized_flag_isolation": {
+      "web": {
+        "fiji_file": "fiji_bsds_01_lap_s2.0.tif",
+        "has_fiji": true,
+        "mae": 0.066113,
+        "pearson": 0.999996,
+        "rmse": 0.071042
+      },
+      "expected": "Fiji Laplacian should not be multiplied by sigma² again when flag is true"
+    },
+    "invalid_upload": {
+      "status": 500,
+      "json": false
+    },
+    "upload_grayscale": {
+      "status": 200,
+      "pixel": 150,
+      "note": "generic upload uses PIL L conversion; not dataset-specific DRIVE green extraction"
+    },
+    "data_endpoints": {
+      "benchmark_status": 200,
+      "tier1_records": 220,
+      "tier1_status": {
+        "PASS": 35,
+        "FAIL": 185
+      },
+      "tier2_summary_matches_csv": true,
+      "figures": 10,
+      "images": {
+        "blob": 5,
+        "bsds": 10,
+        "drive": 10
+      },
+      "all_figure_urls_ok": true
+    },
+    "static_benchmark_headlines": {
+      "hardcoded_in_template": true,
+      "expected_from_csv": {
+        "edge_bsds": 0.4779,
+        "ridge_drive": 0.4774,
+        "blob_log": 0.8984
+      },
+      "current_rounded_values_match": true
+    },
+    "frangi_timing_split": {
+      "reported_derivative_fractions": [
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7,
+        0.7
+      ],
+      "source_rule": "t_deriv=t_total*0.7; t_detector=t_total*0.3; not separately measured"
+    }
+  },
+  "cases_tested": 53,
+  "preset_matches": 25,
+  "preset_total": 25,
+  "protected_file_changes": [],
+  "input_sha256": {
+    "config.yaml": "4de0c6bdf246c079de41c332048dbdcffc7611087310e6d701b4d19ecfe0bc2d",
+    "src\\web\\app.py": "4a41f5ac13c326f3ff75313887802694ee6b949958a77e8a9094d39351fca3ab",
+    "src\\web\\templates\\index.html": "1fc92547e475decbff914ad3f7765d37c29fea17b474af9d44233c742712b64f",
+    "outputs\\metrics\\duc_10_11\\blob_matching_audit.json": "6329bfc1783eae61b7abb3b8b43b44f985fab2b0ad23459c0f54a4a8817052ef",
+    "outputs\\metrics\\duc_10_11\\blob_threshold_grid.csv": "7b587fe46e47536309fb2ab20b7bdc62ac6208be30bbbf66af8c467e36e6a36a",
+    "outputs\\metrics\\duc_10_11\\bsds_selected_thresholds.csv": "764b0ea68a6a64f83b8fc87a5c8fa85a70429b84249249d65071af5331aaf15e",
+    "outputs\\metrics\\duc_10_11\\bsds_threshold_grid.csv": "c7a6c67f65bb4ad487ddab22099b85caf722a50645572fd92fc0aa7939844446",
+    "outputs\\metrics\\duc_10_11\\featurej_edge_reference.csv": "3d1e8a196f778f2177e4a7ca136adf6f20048c2d94ddc429d7b2c785d0e3174a",
+    "outputs\\metrics\\duc_10_11\\featurej_edge_reference_grid.csv": "c563a5dc5024f129129d4e84fa064d8d1a426ac85549dba5eb6f9caecb5a8069",
+    "outputs\\metrics\\duc_10_11\\input_manifest.csv": "094dd5d963649b278b37a5a0588693806fd322ecbf4bf453e0aca81f90460338",
+    "outputs\\metrics\\duc_10_11\\KET_QUA_METRIC.md": "72ab4cc09637bda7ab73ae715b7fba5e29378b53eae2aecc9d7f4f106e4d8b4e",
+    "outputs\\metrics\\duc_10_11\\map_manifest.csv": "8ad13ea851ac889e69f217e12704846769fa96234cc00783d6f4d5fe94cde800",
+    "outputs\\metrics\\duc_10_11\\ridge_threshold_grid.csv": "4615f86ece9e4622b36fd1fb36aed65c010c594726d595298a8f867fe4880ffc",
+    "outputs\\metrics\\duc_10_11\\run_manifest.json": "23cfcd6ffaff84ed0ee4611c1110155561232105e6d6bf5d9a379e855cf7d00b",
+    "outputs\\metrics\\duc_10_11\\smoke_test_report.csv": "4e91c8321000413a90ede6e60c8d29c5c0f19d48714495079a6ea9bc67fcaf82",
+    "outputs\\metrics\\duc_10_11\\tier1_border_report.csv": "963f8945369db9dc0ee19538caa482f72ba3f56546fdf60eea550b1c21bfc381",
+    "outputs\\metrics\\duc_10_11\\tier1_report.csv": "703bc75e4a7518cc873aa9e783e1b58c0905941834b0c06992a39fe6357cf891",
+    "outputs\\metrics\\duc_10_11\\tier2_comparison.csv": "03fdd424793884378b258e6895b1bb8c3ad983aba5902f654742e989476dd3db",
+    "outputs\\metrics\\duc_10_11\\tier2_results_both.csv": "484444a2d7f844d64f87421152c30319933d2e4f76a03f80e11f6eb70bca6edd",
+    "outputs\\metrics\\duc_10_11\\tier2_results_fiji.csv": "b0dd6a1fd5f7c5033fa50c276251a718b0c40ab3cef81583126626249c1a03d9",
+    "outputs\\metrics\\duc_10_11\\tier2_results_python.csv": "9fdb9c0d427c286cc39f91ad4eb6176ac1af06faedc9e174a2808feabaa53a0e",
+    "outputs\\metrics\\duc_10_11\\tier2_summary.csv": "564d18ccfe2dd06bd64e01bc3d858a68f337c52545375f71a61de502d4450fd8",
+    "outputs\\analysis\\duc_task5_10_11\\analysis_manifest.json": "7ad029275bdd65752feacec98302b991a35ab173db9ac4a1482ccf116f10786f"
+  }
+}

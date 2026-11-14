@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import sys
+import unittest
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,7 +59,8 @@ def main():
             check(delivery.get(key) == 'PASS', f'Missing {key} validation')
         log = (delivery_dir / 'UNITTEST_LOG.txt').read_text(encoding='utf-8')
         count = re.search(r'Ran (\d+) tests', log)
-        check(count and int(count[1]) == 58 and re.search(r'^OK\s*$', log, re.M), 'Expected 58 passing tests')
+        expected_count = unittest.defaultTestLoader.discover(str(ROOT / 'tests')).countTestCases()
+        check(count and int(count[1]) == expected_count and re.search(r'^OK\s*$', log, re.M), 'Expected the complete current unittest suite to pass')
         proof['full_delivery'] = delivery
         proof['unittest_count'] = int(count[1])
         proof['validation_evidence_sha256'] = {

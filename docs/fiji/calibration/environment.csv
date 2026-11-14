@@ -1,5 +1,5 @@
 key,value,notes
-measurement_status,MEASURED_REVIEWED_COMPLETE,40 measurements and 40 TIFFs analyzed; 15 UI screenshots reviewed
+measurement_status,MEASURED_REVIEWED_SCREENSHOTS_PENDING,40 measurements and 40 TIFFs analyzed successfully
 imagej_version,2.16.0/1.54p,Recorded by reproduce.ijm and confirmed from Fiji window
 fiji_version,Fiji 2.16.0 / ImageJ 1.54p,Confirmed from running Fiji window
 featurej_version,2.0.0,Read from FeatureJ_.jar manifest
@@ -16,4 +16,4 @@ input_dirac_sha256,20818B09B62EB315B358E09D1A0836F20A9B23764D00E6AD59853DDC070E8
 input_parabola_sha256,50A5729145B83F8DF058E0CFF5127803E8CF092775F418F55688ADE06F0D5516,data/calib/parabola.tif
 input_ramp_sha256,92C1F9B69C75A821E7E4D49FA8FE3C78D342B887D2A2B1F299DB51D9600EC4A8,data/calib/ramp.tif
 input_saddle_sha256,0A86C2702DE8A942AB718E89786B4A99C0FE449D30EA3B42A3EFAD3406A7D095,data/calib/saddle.tif
-screenshots_status,COMPLETE,15 PNGs captured on 2026-11-12 and mapped to commands sigma and TIFF outputs
+screenshots_status,PENDING,Add Fiji dialog and version screenshots before final handoff

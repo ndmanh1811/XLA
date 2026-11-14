@@ -59,8 +59,27 @@ test_runtime_cases_cover_both_structure_pairs_and_no_legacy (test_task5_analysis
 test_runtime_wrong_median_and_warmup_flag_rejected (test_task5_analysis.Task5Tests.test_runtime_wrong_median_and_warmup_flag_rejected) ... ok
 test_timing_summary_requires_positive_multiple_samples (test_task5_analysis.Task5Tests.test_timing_summary_requires_positive_multiple_samples) ... ok
 test_warmup_is_excluded_and_missing_iteration_is_rejected (test_task5_analysis.Task5Tests.test_warmup_is_excluded_and_missing_iteration_is_rejected) ... ok
+test_angle_is_atan2_of_matching_components (test_web.WebComparisonTests.test_angle_is_atan2_of_matching_components) ... ok
+test_canny_uses_lx_ly_and_never_native_edges (test_web.WebComparisonTests.test_canny_uses_lx_ly_and_never_native_edges) ... ok
+test_constant_pearson_is_undefined_even_for_equal_arrays (test_web.WebComparisonTests.test_constant_pearson_is_undefined_even_for_equal_arrays) ... ok
+test_incomplete_blob_stack_does_not_become_single_laplacian (test_web.WebComparisonTests.test_incomplete_blob_stack_does_not_become_single_laplacian) ... ok
+test_incomplete_hessian_pair_does_not_become_frangi (test_web.WebComparisonTests.test_incomplete_hessian_pair_does_not_become_frangi) ... ok
+test_live_reference_rejects_changed_config_provenance (test_web.WebComparisonTests.test_live_reference_rejects_changed_config_provenance) ... ok
+test_live_reference_rejects_unverified_tiff_checksum (test_web.WebComparisonTests.test_live_reference_rejects_unverified_tiff_checksum) ... ok
+test_normalization_flag_applies_exactly_once_in_both_modes (test_web.WebComparisonTests.test_normalization_flag_applies_exactly_once_in_both_modes) ... ok
+test_periodic_angle_error_does_not_cross_two_pi (test_web.WebComparisonTests.test_periodic_angle_error_does_not_cross_two_pi) ... ok
+test_scale_lookup_does_not_round_to_unrequested_tiff (test_web.WebComparisonTests.test_scale_lookup_does_not_round_to_unrequested_tiff) ... ok
+test_shared_range_preserves_amplitude_difference_and_sign (test_web.WebComparisonTests.test_shared_range_preserves_amplitude_difference_and_sign) ... ok
+test_zero_gradient_angle_has_no_valid_numeric_score (test_web.WebComparisonTests.test_zero_gradient_angle_has_no_valid_numeric_score) ... ok
+test_benchmark_fails_closed_when_manifest_is_invalid (test_web.WebRouteTests.test_benchmark_fails_closed_when_manifest_is_invalid) ... ok
+test_benchmark_headlines_and_classification_are_from_csv (test_web.WebRouteTests.test_benchmark_headlines_and_classification_are_from_csv) ... ok
+test_corrupted_upload_returns_json_400 (test_web.WebRouteTests.test_corrupted_upload_returns_json_400) ... ok
+test_dark_blob_default_comes_from_annotation (test_web.WebRouteTests.test_dark_blob_default_comes_from_annotation) ... ok
+test_frangi_component_time_is_measured_not_a_fixed_split (test_web.WebRouteTests.test_frangi_component_time_is_measured_not_a_fixed_split) ... ok
+test_invalid_inputs_are_json_400 (test_web.WebRouteTests.test_invalid_inputs_are_json_400) ... ok
+test_upload_ids_are_unique_and_result_echoes_selection (test_web.WebRouteTests.test_upload_ids_are_unique_and_result_echoes_selection) ... ok
 
 ----------------------------------------------------------------------
-Ran 58 tests in 0.948s
+Ran 77 tests in 4.419s
 
 OK
