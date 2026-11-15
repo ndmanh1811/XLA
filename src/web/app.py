@@ -191,10 +191,12 @@ def get_fiji_path(
             p = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
         elif dtype == "ly":
             p = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
+        elif dtype == "angle":
+            p = None
         else:
             p = fiji_dir / f"fiji_{image_id}_grad_s{sigma:.1f}.tif"
     elif algo == "canny":
-        p = fiji_dir / f"fiji_{image_id}_edge_s{sigma:.1f}.tif"
+        p = fiji_dir / f"fiji_{image_id}_grad_s{sigma:.1f}.tif"
     elif algo == "second_order":
         if dtype == "lxx":
             p = fiji_dir / f"fiji_{image_id}_lxx_s{sigma:.1f}.tif"
@@ -209,14 +211,15 @@ def get_fiji_path(
             p = fiji_dir / f"fiji_{image_id}_hess-l1_s{sigma:.1f}.tif"
         else:
             p = fiji_dir / f"fiji_{image_id}_hess-l2_s{sigma:.1f}.tif"
-    elif algo == "frangi":
-        p = fiji_dir / f"fiji_{image_id}_hess-l2_s{sigma:.1f}.tif"
-    elif algo == "blob":
-        p = fiji_dir / f"fiji_{image_id}_lap_s{sigma:.1f}.tif"
     elif algo == "structure_tensor":
         sd = sigma_d if sigma_d is not None else 1.0
         si = sigma_i if sigma_i is not None else 3.0
-        p = fiji_dir / f"fiji_{image_id}_st-l2_sd{sd:.1f}_si{si:.1f}.tif"
+        if dtype == "mu1":
+            p = fiji_dir / f"fiji_{image_id}_st-l1_sd{sd:.1f}_si{si:.1f}.tif"
+        elif dtype == "mu2":
+            p = fiji_dir / f"fiji_{image_id}_st-l2_sd{sd:.1f}_si{si:.1f}.tif"
+        else:
+            p = None
     else:
         p = None
 
@@ -284,6 +287,47 @@ def process_image():
     algo = data.get("algorithm", "canny")
     cmap = data.get("colormap", "inferno")
 
+    # W08: Input Validation
+    valid_algos = {
+        "canny", "frangi", "blob", "gaussian", "gradient",
+        "second_order", "hessian", "structure_tensor"
+    }
+    if algo not in valid_algos:
+        return jsonify({"error": f"Thuật toán không hợp lệ: {algo}"}), 400
+
+    if not isinstance(image_id, str) or not image_id.replace("_", "").isalnum():
+        return jsonify({"error": "Mã ảnh không hợp lệ"}), 400
+
+    valid_cmaps = {"inferno", "viridis", "magma", "gray", "turbo", "coolwarm"}
+    if cmap not in valid_cmaps:
+        cmap = "inferno"
+
+    try:
+        sigma = float(data.get("sigma", 2.0))
+        if not np.isfinite(sigma) or sigma <= 0:
+            return jsonify({"error": "Sigma (σ) phải là số thực dương"}), 400
+    except (TypeError, ValueError):
+        return jsonify({"error": "Sigma (σ) không hợp lệ"}), 400
+
+    if algo == "canny":
+        try:
+            p_low = float(data.get("p_low", 67.0))
+            p_high = float(data.get("p_high", 91.0))
+            if not (0.0 <= p_low <= 100.0 and 0.0 <= p_high <= 100.0):
+                return jsonify({"error": "Ngưỡng Canny phải nằm trong khoảng [0, 100]"}), 400
+            if p_low > p_high:
+                return jsonify({"error": "Ngưỡng thấp không được lớn hơn ngưỡng cao"}), 400
+        except (TypeError, ValueError):
+            return jsonify({"error": "Ngưỡng Canny không hợp lệ"}), 400
+
+    try:
+        sigma_d = float(data.get("sigma_d", 1.0))
+        sigma_i = float(data.get("sigma_i", 3.0))
+        if not (np.isfinite(sigma_d) and sigma_d > 0 and np.isfinite(sigma_i) and sigma_i > 0):
+            return jsonify({"error": "Scale đạo hàm/tích phân phải là số dương"}), 400
+    except (TypeError, ValueError):
+        return jsonify({"error": "Scale Structure Tensor không hợp lệ"}), 400
+
     # 1. Load Input Image
     if image_id.startswith("custom_"):
         img_path = UPLOAD_DIR / f"{image_id}.png"
@@ -326,10 +370,7 @@ def process_image():
             ignore_regions = gt_data.get("ignore_regions", [])
 
     # 3. Parameters
-    sigma = float(data.get("sigma", 2.0))
     dtype = data.get("display_type", None)
-    sigma_d = float(data.get("sigma_d", 1.0))
-    sigma_i = float(data.get("sigma_i", 3.0))
 
     # 4. Run Python Core Algorithm
     t_start = time.perf_counter()
@@ -446,10 +487,15 @@ def process_image():
             multiscale = bool(data.get("multiscale", True))
             scales = [1.0, 2.0, 4.0, 8.0] if multiscale else [sigma]
 
-            t0 = time.perf_counter()
+            t_deriv = 0.0
+            t_detector = 0.0
             responses = []
             for s in scales:
+                t_d0 = time.perf_counter()
                 lxx, lyy, lxy = compute_derivatives_2nd(raw, sigma=s, mode="mirror")
+                t_deriv += (time.perf_counter() - t_d0) * 1000
+
+                t_det0 = time.perf_counter()
                 s2 = s ** 2
                 l1, l2 = compute_hessian_eigenvalues(lxx * s2, lyy * s2, lxy * s2, sort_order="algebraic")
                 resp = detect_ridge(l1, l2, sigma=s, beta=beta, c=c, polarity=polarity)
@@ -457,11 +503,9 @@ def process_image():
                     erode_r = int(np.ceil(4 * s))
                     resp[~erode_square(fov_mask, erode_r)] = 0.0
                 responses.append(resp)
+                t_detector += (time.perf_counter() - t_det0) * 1000
 
             py_map = np.maximum.reduce(responses)
-            t_total = (time.perf_counter() - t0) * 1000
-            t_deriv = t_total * 0.7
-            t_detector = t_total * 0.3
 
             if use_fov and fov_mask is not None:
                 max_r = int(np.ceil(4 * max(scales)))
@@ -493,6 +537,7 @@ def process_image():
             polarity = data.get("polarity", "bright")
             thresh = float(data.get("threshold", 5.0))
             show_ignore = bool(data.get("show_ignore", True))
+            apply_ignore = bool(data.get("apply_ignore", True))
 
             t0 = time.perf_counter()
             stack = []
@@ -528,7 +573,8 @@ def process_image():
                     draw_gt.rectangle(box, outline=(245, 158, 11), width=2)
 
             if has_gt and image_id.startswith("blob"):
-                pairs, gt_ids, pred_ids = match_blobs(blob_objects, detections, ignore_regions)
+                actual_ignore = ignore_regions if (show_ignore and apply_ignore) else []
+                pairs, gt_ids, pred_ids = match_blobs(blob_objects, detections, actual_ignore)
                 tp_val = len(pairs)
                 p_val, r_val, f_val = scores(tp_val, len(pred_ids), len(gt_ids))
                 paired_pred_ids = {p_idx for _, p_idx in pairs}
@@ -599,7 +645,6 @@ def process_image():
             fiji_map = np.maximum.reduce(fj_responses)
             fiji_metrics["has_fiji"] = True
             fiji_metrics["fiji_file"] = f"Fiji Hessian × {len(scales)} scales"
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
 
     elif algo == "blob" and not image_id.startswith("custom_"):
         fiji_dir = ROOT / "outputs/fiji"
@@ -618,18 +663,70 @@ def process_image():
             fiji_map = np.max(np.abs(fj_s), axis=0)
             fiji_metrics["has_fiji"] = True
             fiji_metrics["fiji_file"] = "Fiji Laplacian × 7 scales"
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
 
     elif algo == "canny" and not image_id.startswith("custom_"):
-        # For Canny magnitude: Compare Python gradient magnitude against Fiji grad
-        fiji_grad_path = ROOT / f"outputs/fiji/fiji_{image_id}_grad_s{sigma:.1f}.tif"
+        fiji_dir = ROOT / "outputs/fiji"
+        fiji_grad_path = fiji_dir / f"fiji_{image_id}_grad_s{sigma:.1f}.tif"
         if fiji_grad_path.is_file():
-            # Fiji grad is raw (unscaled by sigma); Python gradient was scaled by sigma.
-            # Scale Fiji grad by sigma to align with py_map
             fiji_map = tifffile.imread(fiji_grad_path).astype(np.float64) * sigma
             fiji_metrics["has_fiji"] = True
             fiji_metrics["fiji_file"] = fiji_grad_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
+        else:
+            p_lx = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
+            p_ly = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
+            if p_lx.is_file() and p_ly.is_file():
+                lx_fj = tifffile.imread(p_lx).astype(np.float64) * sigma
+                ly_fj = tifffile.imread(p_ly).astype(np.float64) * sigma
+                fiji_map = np.sqrt(lx_fj ** 2 + ly_fj ** 2)
+                fiji_metrics["has_fiji"] = True
+                fiji_metrics["fiji_file"] = f"Fiji Lx, Ly → |∇L| (σ={sigma:.1f})"
+
+    elif algo == "gradient" and not image_id.startswith("custom_"):
+        fiji_dir = ROOT / "outputs/fiji"
+        if dtype == "angle":
+            p_lx = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
+            p_ly = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
+            if p_lx.is_file() and p_ly.is_file():
+                lx_fj = tifffile.imread(p_lx).astype(np.float64)
+                ly_fj = tifffile.imread(p_ly).astype(np.float64)
+                fiji_map = np.arctan2(ly_fj, lx_fj)
+                fiji_metrics["has_fiji"] = True
+                fiji_metrics["is_angle"] = True
+                fiji_metrics["fiji_file"] = f"Fiji atan2(Ly, Lx) (σ={sigma:.1f})"
+        elif dtype == "lx":
+            p = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
+            if p.is_file():
+                fiji_map = tifffile.imread(p).astype(np.float64)
+                fiji_metrics["has_fiji"] = True
+                fiji_metrics["fiji_file"] = p.name
+        elif dtype == "ly":
+            p = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
+            if p.is_file():
+                fiji_map = tifffile.imread(p).astype(np.float64)
+                fiji_metrics["has_fiji"] = True
+                fiji_metrics["fiji_file"] = p.name
+        else:
+            p_grad = fiji_dir / f"fiji_{image_id}_grad_s{sigma:.1f}.tif"
+            if p_grad.is_file():
+                fiji_map = tifffile.imread(p_grad).astype(np.float64)
+                fiji_metrics["has_fiji"] = True
+                fiji_metrics["fiji_file"] = p_grad.name
+            else:
+                p_lx = fiji_dir / f"fiji_{image_id}_lx_s{sigma:.1f}.tif"
+                p_ly = fiji_dir / f"fiji_{image_id}_ly_s{sigma:.1f}.tif"
+                if p_lx.is_file() and p_ly.is_file():
+                    lx_fj = tifffile.imread(p_lx).astype(np.float64)
+                    ly_fj = tifffile.imread(p_ly).astype(np.float64)
+                    fiji_map = np.sqrt(lx_fj ** 2 + ly_fj ** 2)
+                    fiji_metrics["has_fiji"] = True
+                    fiji_metrics["fiji_file"] = f"Fiji Lx, Ly → |∇L| (σ={sigma:.1f})"
+
+    elif algo == "gaussian" and not image_id.startswith("custom_"):
+        p_gauss = ROOT / f"outputs/fiji/fiji_{image_id}_gauss_s{sigma:.1f}.tif"
+        if p_gauss.is_file():
+            fiji_map = tifffile.imread(p_gauss).astype(np.float64)
+            fiji_metrics["has_fiji"] = True
+            fiji_metrics["fiji_file"] = p_gauss.name
 
     elif algo == "structure_tensor" and not image_id.startswith("custom_"):
         fiji_dir = ROOT / "outputs/fiji"
@@ -650,7 +747,6 @@ def process_image():
                 fiji_map = compute_structure_coherence(fj_mu1, fj_mu2)
                 fiji_metrics["fiji_file"] = f"fiji_{image_id}_st-coherence_sd{sd:.1f}_si{si:.1f}"
             fiji_metrics["has_fiji"] = True
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
 
     elif algo == "second_order" and not image_id.startswith("custom_"):
         fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
@@ -662,7 +758,6 @@ def process_image():
                 fiji_map = raw_fj
             fiji_metrics["has_fiji"] = True
             fiji_metrics["fiji_file"] = fiji_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
 
     elif algo == "hessian" and not image_id.startswith("custom_"):
         fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
@@ -670,39 +765,56 @@ def process_image():
             fiji_map = tifffile.imread(fiji_path).astype(np.float64) * (sigma ** 2)
             fiji_metrics["has_fiji"] = True
             fiji_metrics["fiji_file"] = fiji_path.name
-            fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-
-    if fiji_map is None:
-        fiji_path = get_fiji_path(image_id, algo, sigma, dtype, sigma_d, sigma_i)
-        if fiji_path and fiji_path.is_file():
-            try:
-                fiji_map = tifffile.imread(fiji_path)
-                fiji_metrics["has_fiji"] = True
-                fiji_metrics["fiji_file"] = fiji_path.name
-                fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap)
-            except Exception as e:
-                print("Warning reading Fiji TIFF:", e)
 
     if fiji_map is not None and py_map is not None and fiji_map.shape == py_map.shape:
         try:
-            diff_map = np.abs(py_map - fiji_map)
-            mae = float(np.mean(diff_map))
-            rmse = float(np.sqrt(np.mean(diff_map ** 2)))
-            f_flat = fiji_map.flatten()
-            p_flat = py_map.flatten()
-            std_f, std_p = float(np.std(f_flat)), float(np.std(p_flat))
-            if std_f > 1e-12 and std_p > 1e-12:
-                r_val = float(np.corrcoef(f_flat, p_flat)[0, 1])
+            if fiji_metrics.get("is_angle"):
+                diff_map = np.abs((py_map - fiji_map + np.pi) % (2 * np.pi) - np.pi)
+                # Compute angular MAE where gradient magnitude is significant (> 1e-3)
+                if 'lx' in locals() and 'ly' in locals():
+                    grad_mag = np.hypot(lx, ly)
+                    sig_mask = grad_mag > 1e-3
+                    mae = float(np.mean(diff_map[sig_mask])) if np.any(sig_mask) else float(np.mean(diff_map))
+                else:
+                    mae = float(np.mean(diff_map))
+                rmse = float(np.sqrt(np.mean(diff_map ** 2)))
+                fiji_metrics.update({
+                    "mae": round(mae, 6),
+                    "rmse": round(rmse, 6),
+                    "pearson": None,
+                })
             else:
-                r_val = 1.0 if np.allclose(f_flat, p_flat) else 0.0
+                diff_map = np.abs(py_map - fiji_map)
+                mae = float(np.mean(diff_map))
+                rmse = float(np.sqrt(np.mean(diff_map ** 2)))
+                f_flat = fiji_map.flatten()
+                p_flat = py_map.flatten()
+                std_f, std_p = float(np.std(f_flat)), float(np.std(p_flat))
+                if std_f > 1e-12 and std_p > 1e-12:
+                    corr = np.corrcoef(f_flat, p_flat)[0, 1]
+                    r_val = float(corr) if np.isfinite(corr) else None
+                else:
+                    r_val = None
 
-            fiji_metrics.update({
-                "mae": round(mae, 6),
-                "rmse": round(rmse, 6),
-                "pearson": round(r_val, 6),
-            })
+                fiji_metrics.update({
+                    "mae": round(mae, 6),
+                    "rmse": round(rmse, 6),
+                    "pearson": round(r_val, 6) if r_val is not None else None,
+                })
         except Exception as e:
             print("Warning computing metrics:", e)
+
+    # Determine shared dynamic range for Python and Fiji views (W07)
+    v_min, v_max = None, None
+    if py_map is not None and fiji_map is not None:
+        fin_py = py_map[np.isfinite(py_map)]
+        fin_fj = fiji_map[np.isfinite(fiji_map)]
+        if len(fin_py) > 0 and len(fin_fj) > 0:
+            v_min = min(float(np.min(fin_py)), float(np.min(fin_fj)))
+            v_max = max(float(np.max(fin_py)), float(np.max(fin_fj)))
+
+    if fiji_map is not None:
+        fiji_b64 = array_to_base64_png(fiji_map, cmap=cmap, vmin=v_min, vmax=v_max)
 
     # 6. Resolve 4th View (Ground Truth OR Error Difference Map)
     gt_raw_b64 = None
@@ -740,7 +852,11 @@ def process_image():
     # Convert images to base64
     img_orig_b64 = array_to_base64_png(raw, cmap="gray")
 
-    py_resp_b64 = array_to_base64_png(py_map, cmap=cmap) if py_map is not None else img_orig_b64
+    py_resp_b64 = (
+        array_to_base64_png(py_map, cmap=cmap, vmin=v_min, vmax=v_max)
+        if py_map is not None
+        else img_orig_b64
+    )
     py_bin_b64 = array_to_base64_png(py_pred) if py_pred is not None else None
 
     if gt_cmap:

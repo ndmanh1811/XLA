@@ -863,19 +863,19 @@
         <div class="hud-bar">
           <div class="hud-card" title="35/220 đạt STRICT; 185/220 RELAXED chưa đạt ngưỡng gốc 1e-4; 0 FAIL.">
             <div class="hud-label">Tầng 1</div>
-            <div class="hud-val">35 <span class="unit">STRICT / 220</span></div>
+            <div class="hud-val" id="hud-bench-t1">35 <span class="unit">STRICT / 220</span></div>
           </div>
           <div class="hud-card" title="Fair Canny, ngưỡng chọn trên Python và đóng băng cho Fiji; macro F1 tại sigma=2.">
             <div class="hud-label">Canny F1</div>
-            <div class="hud-val">0.4779 <span class="unit">fair, σ=2</span></div>
+            <div class="hud-val" id="hud-bench-canny">0.4779 <span class="unit">fair, σ=2</span></div>
           </div>
           <div class="hud-card" title="Frangi dark; macro F1 0.477382; micro F1 0.486776.">
             <div class="hud-label">Frangi F1</div>
-            <div class="hud-val">0.4774 <span class="unit">micro 0.4868</span></div>
+            <div class="hud-val" id="hud-bench-frangi">0.4774 <span class="unit">micro 0.4868</span></div>
           </div>
           <div class="hud-card" title="Macro F1 0.898418; micro F1 0.519135; gồm 4 ảnh tổng hợp và blob_05.">
             <div class="hud-label">Blob F1</div>
-            <div class="hud-val">0.8984 <span class="unit">micro 0.5191</span></div>
+            <div class="hud-val" id="hud-bench-blob">0.8984 <span class="unit">micro 0.5191</span></div>
           </div>
         </div>
 
@@ -945,6 +945,8 @@
     let lastData = null;
     let pyView = "binary";
     let gtView = "overlay";
+    let currentRequestId = 0;
+    let abortController = null;
 
     function showToast(msg) {
       const toast = document.getElementById("toast");
@@ -1010,7 +1012,7 @@
       onAlgoChange();
     }
 
-    function onAlgoChange() {
+    function onAlgoChange(skipRun = false) {
       currentAlgo = document.getElementById("algo-select").value;
       const container = document.getElementById("dynamic-controls");
       let html = "";
@@ -1069,6 +1071,7 @@
           </details>
         `;
       } else if (currentAlgo === "blob") {
+        const isDarkDefault = currentImageId === "blob_02" || currentImageId === "blob_04";
         html = `
           <div class="form-group">
             <label>Ngưỡng LoG: <span class="val" id="val-thresh">5.0</span></label>
@@ -1079,12 +1082,12 @@
             <div class="form-group">
               <label>Phân cực đốm:</label>
               <select id="param-polarity">
-                <option value="bright" selected>Đốm sáng trên nền tối</option>
-                <option value="dark">Đốm tối trên nền sáng</option>
+                <option value="bright"${!isDarkDefault ? " selected" : ""}>Đốm sáng trên nền tối</option>
+                <option value="dark"${isDarkDefault ? " selected" : ""}>Đốm tối trên nền sáng</option>
               </select>
             </div>
             <div class="checkbox-row">
-              <span>${currentImageId === "blob_05" ? "Áp dụng 15 vùng Ignore" : "Áp dụng vùng Ignore (nếu có)"}</span>
+              <span>${currentImageId === "blob_05" ? "Hiện 15 vùng Ignore" : "Hiện vùng Ignore (nếu có)"}</span>
               <input type="checkbox" id="param-ignore" checked>
             </div>
           </details>
@@ -1199,7 +1202,9 @@
       }
 
       container.innerHTML = html;
-      runAlgorithm();
+      if (!skipRun) {
+        runAlgorithm();
+      }
     }
 
     function setSigma(v) {
@@ -1250,7 +1255,7 @@
         algoSelect.value = "canny";
         currentImageId = "bsds_01";
         currentAlgo = "canny";
-        onAlgoChange();
+        onAlgoChange(true);
         const s = document.getElementById("param-sigma"); if (s) s.value = 2.0;
         const pl = document.getElementById("param-plow"); if (pl) pl.value = 67;
         const ph = document.getElementById("param-phigh"); if (ph) ph.value = 91;
@@ -1263,7 +1268,7 @@
         algoSelect.value = "frangi";
         currentImageId = "drive_08";
         currentAlgo = "frangi";
-        onAlgoChange();
+        onAlgoChange(true);
         const ms = document.getElementById("param-multiscale"); if (ms) ms.checked = true;
         const b = document.getElementById("param-beta"); if (b) b.value = 0.5;
         const th = document.getElementById("param-thresh"); if (th) th.value = 0.05;
@@ -1276,7 +1281,7 @@
         algoSelect.value = "blob";
         currentImageId = "blob_05";
         currentAlgo = "blob";
-        onAlgoChange();
+        onAlgoChange(true);
         const pol = document.getElementById("param-polarity"); if (pol) pol.value = "bright";
         const th = document.getElementById("param-thresh"); if (th) th.value = 5.0;
         const ign = document.getElementById("param-ignore"); if (ign) ign.checked = true;
@@ -1294,10 +1299,16 @@
       }
     }
 
+    function updatePyViewButtons() {
+      const btnBin = document.getElementById("btn-py-bin");
+      const btnResp = document.getElementById("btn-py-resp");
+      if (btnBin) btnBin.classList.toggle("active", pyView === "binary");
+      if (btnResp) btnResp.classList.toggle("active", pyView === "response");
+    }
+
     function setPyView(mode) {
       pyView = mode;
-      document.getElementById("btn-py-bin").classList.toggle("active", mode === "binary");
-      document.getElementById("btn-py-resp").classList.toggle("active", mode === "response");
+      updatePyViewButtons();
       renderPyImage();
     }
 
@@ -1340,6 +1351,13 @@
     }
 
     async function runAlgorithm() {
+      if (abortController) {
+        abortController.abort();
+      }
+      abortController = new AbortController();
+      const requestId = ++currentRequestId;
+      const signal = abortController.signal;
+
       const payload = {
         image_id: currentImageId,
         algorithm: currentAlgo,
@@ -1384,8 +1402,12 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
+          signal: signal,
         });
         const data = await res.json();
+        if (requestId !== currentRequestId) {
+          return; // Bỏ qua response cũ bị trễ
+        }
         if (data.error) {
           showToast("Lỗi: " + data.error);
           return;
@@ -1405,6 +1427,7 @@
           pySwitch.style.display = "none";
           pyView = "response";
         }
+        updatePyViewButtons();
         renderPyImage();
         document.getElementById("tag-py-time").innerText = `Thời gian: ${data.timing.total_ms} ms`;
 
@@ -1432,20 +1455,23 @@
           fijiPlaceholder.style.display = "none";
           fijiTag.innerText = data.fiji_metrics.fiji_file || "fiji_map.tif";
 
-          if (data.fiji_metrics.pearson !== undefined) {
-            document.getElementById("hud-fiji-pearson").innerText = `r = ${data.fiji_metrics.pearson.toFixed(6)}`;
+          if (data.fiji_metrics.is_angle) {
+            document.getElementById("hud-fiji-pearson").innerText = `MAE = ${data.fiji_metrics.mae} rad`;
+            fijiStat.innerText = `MAE góc: ${data.fiji_metrics.mae} rad (quấn 2π)`;
+          } else if (data.fiji_metrics.pearson !== undefined && data.fiji_metrics.pearson !== null) {
+            document.getElementById("hud-fiji-pearson").innerText = `r = ${Number(data.fiji_metrics.pearson).toFixed(6)}`;
             fijiStat.innerText = `MAE: ${data.fiji_metrics.mae} | Pearson: ${data.fiji_metrics.pearson}`;
           } else {
-            document.getElementById("hud-fiji-pearson").innerText = "Đã nạp file Fiji";
-            fijiStat.innerText = "Tham chiếu FeatureJ";
+            document.getElementById("hud-fiji-pearson").innerText = data.fiji_metrics.mae !== undefined ? `MAE = ${data.fiji_metrics.mae}` : "Đã nạp file Fiji";
+            fijiStat.innerText = data.fiji_metrics.mae !== undefined ? `MAE: ${data.fiji_metrics.mae} | r = N/A (mảng hằng)` : "Tham chiếu FeatureJ";
           }
         } else {
           fijiImg.style.display = "none";
           fijiPlaceholder.style.display = "block";
           fijiTag.innerText = "Không áp dụng";
           fijiTitle.innerText = "3. Không có tham chiếu Fiji";
-          fijiStat.innerText = "Ảnh tùy chỉnh (không có sẵn trong Fiji)";
-          document.getElementById("hud-fiji-pearson").innerText = "N/A (Ảnh tải lên)";
+          fijiStat.innerText = "Không có file tham chiếu cho cấu hình này";
+          document.getElementById("hud-fiji-pearson").innerText = "N/A";
         }
 
         // 4. Ground Truth View (Toggles)
@@ -1476,6 +1502,9 @@
         }
 
       } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
         console.error("Process error:", err);
         showToast("Lỗi kết nối");
       }
@@ -1547,8 +1576,27 @@
 
         const benchRes = await fetch("/api/benchmarks");
         const benchmarks = await benchRes.json();
+        const summary = benchmarks.tier2_summary || [];
+
+        const cannyRow = summary.find(r => r.task && r.task.toLowerCase().includes("canny") && r.source === "python");
+        const frangiRow = summary.find(r => r.task && r.task.toLowerCase().includes("frangi") && r.source === "python");
+        const blobRow = summary.find(r => r.task && r.task.toLowerCase().includes("blob") && r.source === "python");
+
+        if (cannyRow) {
+          const el = document.getElementById("hud-bench-canny");
+          if (el) el.innerHTML = `${parseFloat(cannyRow.macro_f1).toFixed(4)} <span class="unit">fair, σ=${cannyRow.sigma}</span>`;
+        }
+        if (frangiRow) {
+          const el = document.getElementById("hud-bench-frangi");
+          if (el) el.innerHTML = `${parseFloat(frangiRow.macro_f1).toFixed(4)} <span class="unit">micro ${parseFloat(frangiRow.micro_f1).toFixed(4)}</span>`;
+        }
+        if (blobRow) {
+          const el = document.getElementById("hud-bench-blob");
+          if (el) el.innerHTML = `${parseFloat(blobRow.macro_f1).toFixed(4)} <span class="unit">micro ${parseFloat(blobRow.micro_f1).toFixed(4)}</span>`;
+        }
+
         const tbody = document.querySelector("#tier2-table tbody");
-        tbody.innerHTML = (benchmarks.tier2_summary || []).map(r => `
+        tbody.innerHTML = summary.map(r => `
           <tr>
             <td><strong>${r.task}</strong></td>
             <td><span class="badge ${r.source === 'python' ? 'badge-pass' : 'badge-fiji'}">${r.source}</span></td>
