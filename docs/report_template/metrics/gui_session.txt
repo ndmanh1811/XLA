@@ -1,0 +1,19 @@
+Captured actual app HWND using PrintWindow: ImageJ 625 110
+Captured gui_00_imagej_toolbar java.awt.Rectangle[x=30,y=30,width=625,height=110] title=ImageJ
+Captured actual app HWND using PrintWindow: FeatureJ: Derivatives 226 252
+Captured gui_01_derivatives_dialog java.awt.Rectangle[x=820,y=250,width=226,height=252] title=FeatureJ: Derivatives
+Captured actual app HWND using PrintWindow: bsds_01.png dx1 dy0 dz0 507 381
+Captured gui_01_derivatives_result java.awt.Rectangle[x=760,y=160,width=507,height=381] title=bsds_01.png dx1 dy0 dz0
+Captured actual app HWND using PrintWindow: FeatureJ: Hessian 306 267
+Captured gui_02_hessian_dialog java.awt.Rectangle[x=820,y=250,width=306,height=267] title=FeatureJ: Hessian
+Captured actual app HWND using PrintWindow: drive_01.png largest Hessian eigenvalues (75%) 449 498
+Captured gui_02_hessian_result java.awt.Rectangle[x=760,y=160,width=449,height=498] title=drive_01.png largest Hessian eigenvalues (75%)
+Captured actual app HWND using PrintWindow: FeatureJ: Laplacian 274 212
+Captured gui_03_laplacian_dialog java.awt.Rectangle[x=820,y=250,width=274,height=212] title=FeatureJ: Laplacian
+Captured actual app HWND using PrintWindow: blob_01.png Laplacian 282 316
+Captured gui_03_laplacian_result java.awt.Rectangle[x=760,y=160,width=282,height=316] title=blob_01.png Laplacian
+Captured actual app HWND using PrintWindow: FeatureJ: Structure 304 257
+Captured gui_04_structure_dialog java.awt.Rectangle[x=820,y=250,width=304,height=257] title=FeatureJ: Structure
+Captured actual app HWND using PrintWindow: bsds_01.png largest structure eigenvalues 507 381
+Captured gui_04_structure_result java.awt.Rectangle[x=760,y=160,width=507,height=381] title=bsds_01.png largest structure eigenvalues
+GUI evidence captured from real ImageJ/FeatureJ windows.

@@ -1,0 +1,111 @@
+﻿source,task,image,sigma,precision,recall,f1,iou,tp,fp,fn,predicted_count,gt_count,annotators,p_low,p_high,threshold,polarity,ignored_predictions,ignore_regions,fov_erosion_px,valid_pixels,notes
+python,edge_bsds,bsds_01,1.0,0.41976950354609927,0.4900909482758366,0.4522127181495207,,,,,6768,17724,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_02,1.0,0.5016805494666082,0.3850580972845841,0.43570032389648317,,,,,6843,15841,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_03,1.0,0.8033280922431866,0.5532383385347216,0.6552305717358374,,,,,7632,22202,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_04,1.0,0.49473684210526314,0.5610037825020097,0.5257905839156446,,,,,5985,12349,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_05,1.0,0.6979308261591904,0.6527409541483034,0.6745799238645824,,,,,6621,25076,7,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_06,1.0,0.27264718837175156,0.8657046559121929,0.4146906627494073,,,,,6811,8081,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_07,1.0,0.39033742331288346,0.7262440295337771,0.5077645207816686,,,,,6520,8021,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_08,1.0,0.14508801817149347,0.2143081150366808,0.17303213255262506,,,,,7044,8941,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_09,1.0,0.36527390900649953,0.5658180860811081,0.44394879379835783,,,,,5385,13033,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_10,1.0,0.22673031026252982,0.33744865518155465,0.27122541944896,,,,,5447,9184,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_01,1.0,0.41976950354609927,0.4900909482758366,0.4522127181495207,,,,,6768,17724,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_02,1.0,0.5016805494666082,0.3850580972845841,0.43570032389648317,,,,,6843,15841,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_03,1.0,0.8033280922431866,0.5532383385347216,0.6552305717358374,,,,,7632,22202,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_04,1.0,0.49473684210526314,0.5610037825020097,0.5257905839156446,,,,,5985,12349,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_05,1.0,0.6979308261591904,0.6527409541483034,0.6745799238645824,,,,,6621,25076,7,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_06,1.0,0.27264718837175156,0.8657046559121929,0.4146906627494073,,,,,6811,8081,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_07,1.0,0.39033742331288346,0.7262440295337771,0.5077645207816686,,,,,6520,8021,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_08,1.0,0.14508801817149347,0.2143081150366808,0.17303213255262506,,,,,7044,8941,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_09,1.0,0.3660897077982505,0.5658180860811081,0.44455080028011074,,,,,5373,13033,6,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_10,1.0,0.22673031026252982,0.33744865518155465,0.27122541944896,,,,,5447,9184,5,76.0,94.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_01,2.0,0.4733297891192628,0.491223586432844,0.48211071039893916,,,,,5643,17724,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_02,2.0,0.6239957150508838,0.30921532645235644,0.41351640761311087,,,,,3734,15841,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_03,2.0,0.8917064439140812,0.5716512197228195,0.6966787258235595,,,,,6704,22202,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_04,2.0,0.4819926676730645,0.4561848246764222,0.4687337787728831,,,,,4637,12349,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_05,2.0,0.6998011928429424,0.6328928363230318,0.6646674361474438,,,,,5533,25076,7,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_06,2.0,0.2921038100496963,0.8113278856997957,0.4295543938132452,,,,,5433,8081,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_07,2.0,0.45929266555898407,0.6450193957972261,0.5365379732288668,,,,,4213,8021,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_08,2.0,0.22385052207363987,0.2713883992649059,0.2453378853330579,,,,,5459,8941,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_09,2.0,0.4968944099378882,0.5631103567037633,0.5279342078513988,,,,,3381,13033,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_10,2.0,0.2662606047422232,0.3819756450519775,0.31379012286011376,,,,,4597,9184,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_01,2.0,0.4733297891192628,0.491223586432844,0.48211071039893916,,,,,5643,17724,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_02,2.0,0.6239957150508838,0.30921532645235644,0.41351640761311087,,,,,3734,15841,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_03,2.0,0.8917064439140812,0.5716512197228195,0.6966787258235595,,,,,6704,22202,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_04,2.0,0.4819926676730645,0.4561848246764222,0.4687337787728831,,,,,4637,12349,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_05,2.0,0.6998011928429424,0.6328928363230318,0.6646674361474438,,,,,5533,25076,7,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_06,2.0,0.2921038100496963,0.8113278856997957,0.4295543938132452,,,,,5433,8081,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_07,2.0,0.45929266555898407,0.6450193957972261,0.5365379732288668,,,,,4213,8021,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_08,2.0,0.22385052207363987,0.2713883992649059,0.2453378853330579,,,,,5459,8941,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_09,2.0,0.4968944099378882,0.5631103567037633,0.5279342078513988,,,,,3381,13033,6,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_10,2.0,0.2662606047422232,0.3819756450519775,0.31379012286011376,,,,,4597,9184,5,67.0,91.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_01,4.0,0.47479246811095366,0.4483787215023036,0.4612077200906511,,,,,4939,17724,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_02,4.0,0.6380453752181501,0.2551421680934115,0.3645198179843444,,,,,2865,15841,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_03,4.0,0.8355484671274145,0.454166702407497,0.5884683703058533,,,,,5643,22202,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_04,4.0,0.49799764428739696,0.4632166361552275,0.4799778743815826,,,,,4245,12349,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_05,4.0,0.5562452972159518,0.45283330177076103,0.49924038575534696,,,,,5316,25076,7,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_06,4.0,0.21668228678537957,0.5823223462261843,0.31584031530615414,,,,,5335,8081,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_07,4.0,0.3358873472768689,0.5321491364475495,0.41183098896842896,,,,,4829,8021,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_08,4.0,0.2976840519676144,0.36938343525318135,0.32968045910174576,,,,,5311,8941,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_09,4.0,0.648463227222832,0.665113707338239,0.6566829391564813,,,,,3644,13033,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_10,4.0,0.2664676245568203,0.36337310097313047,0.30746556424185373,,,,,5359,9184,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_01,4.0,0.47479246811095366,0.4483787215023036,0.4612077200906511,,,,,4939,17724,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_02,4.0,0.6380453752181501,0.2551421680934115,0.3645198179843444,,,,,2865,15841,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_03,4.0,0.8355484671274145,0.454166702407497,0.5884683703058533,,,,,5643,22202,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_04,4.0,0.49799764428739696,0.4632166361552275,0.4799778743815826,,,,,4245,12349,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_05,4.0,0.5562452972159518,0.45283330177076103,0.49924038575534696,,,,,5316,25076,7,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_06,4.0,0.21668228678537957,0.5823223462261843,0.31584031530615414,,,,,5335,8081,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_07,4.0,0.3358873472768689,0.5321491364475495,0.41183098896842896,,,,,4829,8021,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_08,4.0,0.2976840519676144,0.36938343525318135,0.32968045910174576,,,,,5311,8941,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_09,4.0,0.648463227222832,0.665113707338239,0.6566829391564813,,,,,3644,13033,6,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_10,4.0,0.2664676245568203,0.36337310097313047,0.30746556424185373,,,,,5359,9184,5,49.0,80.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_01,8.0,0.4085576259489303,0.3368276881053062,0.36924129840769954,,,,,4347,17724,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_02,8.0,0.6056295399515739,0.2730861783354978,0.3764335907318039,,,,,3304,15841,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_03,8.0,0.6957763721689452,0.35501554831004,0.4701433755421825,,,,,4901,22202,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_04,8.0,0.3526775711404885,0.35277615364824144,0.3527268554562371,,,,,4463,12349,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_05,8.0,0.3960223981463603,0.2656568761519814,0.31799718458294207,,,,,5179,25076,7,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_06,8.0,0.135,0.34194537496830296,0.19357615372246764,,,,,5200,8081,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_07,8.0,0.22548443922489725,0.37626121023806036,0.2819830872204211,,,,,5109,8021,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_08,8.0,0.32550077041602465,0.3981331182963368,0.35817182897910227,,,,,5192,8941,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_09,8.0,0.5086967481724225,0.4418749302831852,0.47293717076764924,,,,,3967,13033,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,edge_bsds,bsds_10,8.0,0.22643013753238989,0.25573217169708223,0.2401907809399469,,,,,5017,9184,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_01,8.0,0.4085576259489303,0.3368276881053062,0.36924129840769954,,,,,4347,17724,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_02,8.0,0.6056295399515739,0.2730861783354978,0.3764335907318039,,,,,3304,15841,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_03,8.0,0.6957763721689452,0.35501554831004,0.4701433755421825,,,,,4901,22202,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_04,8.0,0.3526775711404885,0.35277615364824144,0.3527268554562371,,,,,4463,12349,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_05,8.0,0.3960223981463603,0.2656568761519814,0.31799718458294207,,,,,5179,25076,7,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_06,8.0,0.135,0.34194537496830296,0.19357615372246764,,,,,5200,8081,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_07,8.0,0.22548443922489725,0.37626121023806036,0.2819830872204211,,,,,5109,8021,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_08,8.0,0.32550077041602465,0.3981331182963368,0.35817182897910227,,,,,5192,8941,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_09,8.0,0.5086967481724225,0.4418749302831852,0.47293717076764924,,,,,3967,13033,6,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+fiji,edge_bsds,bsds_10,8.0,0.22643013753238989,0.25573217169708223,0.2401907809399469,,,,,5017,9184,5,23.0,50.0,,,,,,,Euclidean 2px; precision any annotator; recall mean annotator
+python,ridge_drive,drive_01,multiscale,0.8142857142857143,0.27992818292232136,0.416630644083782,0.2631291571527847,5301,1209,13636,6510,18937,,,,0.05,,,,32,161276,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_02,multiscale,0.809004643650313,0.3301610843323858,0.4689429181661254,0.3062870246512517,8014,1892,16259,9906,24273,,,,0.05,,,,32,163075,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_03,multiscale,0.8665334221630024,0.22181797510090387,0.35321806825382457,0.21448988566402816,3902,601,13689,4503,17591,,,,0.05,,,,32,163492,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_04,multiscale,0.9226462522851919,0.2663346416438537,0.4133500550280259,0.26051748612724224,8075,677,22244,8752,30319,,,,0.05,,,,32,163106,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_05,multiscale,0.723531136963535,0.2906227911725438,0.41467992716066676,0.261574892203294,7401,2828,18065,10229,25466,,,,0.05,,,,32,162792,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_06,multiscale,0.6885890609874153,0.5968951591755389,0.639471835932013,0.47001734533740813,11381,5147,7686,16528,19067,,,,0.05,,,,32,160872,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_07,multiscale,0.777148366879595,0.2690253671562083,0.39969006663567336,0.2497579114536933,6448,1849,17520,8297,23968,,,,0.05,,,,32,163186,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_08,multiscale,0.8755157205861431,0.5067731708321325,0.6419611422610509,0.4727119099742674,12308,1750,11979,14058,24287,,,,0.05,,,,32,162753,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_09,multiscale,0.8530387634539127,0.47985614785815084,0.6142058035194033,0.44321574233696337,10541,1816,11426,12357,21967,,,,0.05,,,,32,162762,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,ridge_drive,drive_10,multiscale,0.7812788398154252,0.2794623909455317,0.41167071899965263,0.259184744576627,5926,1659,15279,7585,21205,,,,0.05,,,,32,162714,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_01,multiscale,0.8148840105869531,0.27639013571315413,0.41277602523659307,0.26006161184537413,5234,1189,13703,6423,18937,,,,0.05,,,,32,161276,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_02,multiscale,0.8153432588916459,0.3248877353437976,0.4646339667108558,0.30262097547872135,7886,1786,16387,9672,24273,,,,0.05,,,,32,163075,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_03,multiscale,0.8752584424534804,0.2165880279688477,0.34724753919066714,0.21010256975846475,3810,543,13781,4353,17591,,,,0.05,,,,32,163492,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_04,multiscale,0.9236836000927859,0.2626735710280682,0.40902904393826556,0.25709397294767083,7964,658,22355,8622,30319,,,,0.05,,,,32,163106,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_05,multiscale,0.7254220456802384,0.2868530589806016,0.4111323728050428,0.25875810279480005,7305,2765,18161,10070,25466,,,,0.05,,,,32,162792,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_06,multiscale,0.6932473910374463,0.5922798552472859,0.638798540600164,0.4692902260638298,11293,4997,7774,16290,19067,,,,0.05,,,,32,160872,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_07,multiscale,0.7783763928002939,0.26522863818424564,0.3956433794927649,0.24660563271006283,6357,1810,17611,8167,23968,,,,0.05,,,,32,163186,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_08,multiscale,0.8782351668949607,0.5015852101947544,0.6385030661984381,0.46897135817677854,12182,1689,12105,13871,24287,,,,0.05,,,,32,162753,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_09,multiscale,0.8553951553706876,0.4774434378840989,0.612831599859764,0.4417860151642797,10488,1773,11479,12261,21967,,,,0.05,,,,32,162762,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+fiji,ridge_drive,drive_10,multiscale,0.7828472036392828,0.27592548927139826,0.40803375292025523,0.256308042754512,5851,1623,15354,7474,21205,,,,0.05,,,,32,162714,dark; beta=.5; c=.5*max(S); common FOV intersection over all scales
+python,blob_log,blob_01,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,bright,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+python,blob_log,blob_02,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,dark,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+python,blob_log,blob_03,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,bright,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+python,blob_log,blob_04,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,dark,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+python,blob_log,blob_05,multiscale,0.4778156996587031,0.5072463768115942,0.492091388400703,,140,153,136,293,276,,,,5.0,bright,36,15,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+fiji,blob_log,blob_01,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,bright,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+fiji,blob_log,blob_02,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,dark,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+fiji,blob_log,blob_03,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,bright,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+fiji,blob_log,blob_04,multiscale,1.0,1.0,1.0,,4,0,0,4,4,,,,5.0,dark,0,0,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only
+fiji,blob_log,blob_05,multiscale,0.4711864406779661,0.5036231884057971,0.4868651488616462,,139,156,137,295,276,,,,5.0,bright,37,15,,,one-to-one maximum cardinality; center<=2px; radius<=20%; configured scales only

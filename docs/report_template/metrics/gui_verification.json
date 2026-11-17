@@ -1,0 +1,34 @@
+{
+  "gui_commands": 4,
+  "tiff_outputs": 6,
+  "capture_method": "PrintWindow on own Java HWND",
+  "interaction": "AWT-control-events",
+  "comparisons": [
+    {
+      "comparison": "Derivatives GUI versus API Lx",
+      "shape": [
+        321,
+        481
+      ],
+      "max_abs_error": 0.0,
+      "rmse": 0.0
+    },
+    {
+      "comparison": "Laplacian GUI versus API Lxx+Lyy",
+      "shape": [
+        256,
+        256
+      ],
+      "max_abs_error": 1.9073486328125e-06,
+      "rmse": 4.1861300487628764e-08
+    }
+  ],
+  "screenshots_in_report": [
+    "gui_01_derivatives_dialog.png",
+    "gui_02_hessian_dialog.png",
+    "gui_03_laplacian_dialog.png",
+    "gui_04_structure_dialog.png",
+    "gui_03_laplacian_result.png"
+  ],
+  "visual_review": "Only four fully rendered dialogs and the fully rendered Laplacian result retained; three incomplete result captures rejected."
+}

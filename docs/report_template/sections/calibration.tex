@@ -1,0 +1,114 @@
+\subsection{Thiết kế hiệu chuẩn bằng ảnh giải tích}
+Một bộ lọc có đầu ra trông hợp lý vẫn có thể sai dấu, sai hệ số tỷ lệ hoặc sai thứ tự trục. Vì vậy, trước khi đọc kết quả trên ảnh tự nhiên, cần kiểm tra bằng ảnh có đạo hàm biết trước. Phần này mô tả các phép kiểm soát phù hợp với quy ước của dự án; không thay thế các phép đo thực tế bằng giá trị kỳ vọng lý thuyết.
+
+\subsubsection{Ảnh hằng và kiểm tra thành phần DC}
+Với $I(x,y)=c$, Gaussian phải trả gần $c$ và mọi đạo hàm bậc dương phải gần 0 trong vùng lõi. Nếu kernel đạo hàm có tổng $\eta\neq0$, một nền hằng tạo sai lệch xấp xỉ $c\eta$. Khi $c$ lớn, sai lệch này có thể làm bản đồ bậc hai xuất hiện nền khác 0 dù ảnh không có cấu trúc.
+
+Kiểm tra ảnh hằng cũng giúp phát hiện một lỗi trao đổi dữ liệu: chuyển bản đồ có dấu sang uint8 có thể tạo clipping hoặc cuộn giá trị, làm thống kê sai lệch dù công thức lọc đúng. Cần kiểm tra dtype và miền giá trị trước khi quy sai số cho thuật toán.
+
+\subsubsection{Ảnh dốc và kiểm tra dấu}
+Với $I(x,y)=x$, kỳ vọng trong mô hình liên tục là $L_x=1$, $L_y=0$ và các đạo hàm bậc hai bằng 0. Nếu $L_x$ gần $-1$, một khả năng là tích chập đã được thực hiện như tương quan với kernel bậc lẻ. Nếu $L_x$ gần $\sigma$, cần kiểm tra chuẩn hóa theo tỷ lệ đã được áp dụng ở nguồn nào.
+
+Ảnh dốc không thích hợp để nghiệm thu sai số tương đối cho những toán tử có đáp ứng tham chiếu bằng 0: mẫu số chuẩn hóa gần 0 làm tỷ số rất nhạy. Do đó dự án dùng thêm ảnh tự nhiên bất đối xứng cho phép so khớp đầy đủ.
+
+\subsubsection{Ảnh parabol và kiểm tra bậc hai}
+Với $I=x^2/2$, kỳ vọng $L_{xx}=1$, $L_{yy}=L_{xy}=0$ và $\nabla^2L=1$. Phép đo trên nhiều $\sigma$ phân biệt đạo hàm thô với bản đồ đã nhân $\sigma^2$. Trên ảnh hữu hạn, đo ở giữa ảnh để tránh ảnh hưởng của kiểu đệm.
+
+Đặt gốc tọa độ ở tâm ảnh giúp giảm biên độ của đa thức so với dùng tọa độ luôn dương. Điều này giảm mất mát chữ số có nghĩa khi dữ liệu được ghi float32 rồi đưa qua các phép trừ trong tính vi phân. Tuy vậy, đây là cách giảm điều kiện số học bất lợi, không loại bỏ hoàn toàn sai số làm tròn.
+
+\subsubsection{Ảnh yên ngựa và kiểm tra trị riêng}
+Xét $I=x^2/2-y^2$. Hessian là $\operatorname{diag}(1,-2)$, nên thứ tự đại số cho $(1,-2)$, còn thứ tự theo độ lớn sẽ đặt trị riêng $-2$ trước trị riêng $1$. Ví dụ này phân biệt ba thao tác thường bị nhầm: sắp thứ tự đại số, sắp theo độ lớn nhưng giữ dấu, và thay trị riêng bằng trị tuyệt đối.
+
+Để kiểm tra phần tử ngoài đường chéo, thêm thành phần $bxy$. Khi đó $L_{xy}=b$ và hai vector riêng thay đổi hướng. Chỉ dùng ảnh có Hessian chéo sẽ không phát hiện được việc cài đặt $L_{xy}$ sai.
+
+\subsubsection{Ảnh xung và kiểm tra kernel}
+Với ảnh xung Dirac ở giữa, đáp ứng của toán tử tuyến tính chính là kernel hiệu dụng sau rời rạc hóa và cắt cụt. Từ đáp ứng có thể đọc đối xứng chẵn/lẻ, tổng trọng số, độ rộng hỗ trợ và dấu đạo hàm. Nếu hai kernel cùng dạng nhưng khác một hệ số, tương quan đầu ra có thể rất cao; kiểm tra moment và biên độ giúp nhận biết sai khác này.
+
+Ảnh xung nhỏ chỉ thích hợp với các $\sigma$ có vùng hỗ trợ nằm gọn trong ảnh. Không tăng $\sigma$ tới mức kernel gần bằng kích thước ảnh rồi coi đó là phép đo kernel trong miền vô hạn.
+
+\subsection{Moment rời rạc và hệ số của bộ lọc}
+Với tích chập một chiều $D_mI[x]=\sum_n h_m[n]I[x-n]$, khai triển
+\begin{equation}
+I[x-n]=\sum_{p=0}^{P}\frac{(-n)^p}{p!}I^{(p)}[x]+\text{phần dư}.
+\end{equation}
+Để chọn đạo hàm bậc $m$ trên các đa thức bậc không vượt quá $m$, các moment cần thỏa
+\begin{equation}
+\sum_n n^p h_m[n]=(-1)^m m!\,\delta_{pm},
+\quad p=0,\ldots,m.
+\label{eq:discrete_moments_detail}
+\end{equation}
+Với $m=1$, tổng kernel bằng 0 và moment bậc nhất bằng $-1$ theo quy ước tích chập này. Với $m=2$, tổng bằng 0, moment bậc nhất bằng 0 và moment bậc hai bằng 2. Kernel chẵn/lẻ giúp thỏa một số điều kiện tự động trong số học chính xác, nhưng cắt cụt và dấu chấm động vẫn cần được kiểm tra.
+
+Các điều kiện trên xác định những đáp ứng đa thức cục bộ cần bảo toàn, không khẳng định kernel lấy mẫu và kernel hiệu chỉnh moment có cùng hệ số ở mọi vị trí. Đây là lý do sai khác có hệ thống giữa hai bộ cài đặt có thể còn tồn tại khi cùng dùng công thức Gaussian liên tục.
+
+\subsection{Tích chập và tương quan}
+Hai phép toán có dạng gần giống nhau:
+\begin{equation}
+(I*h)[x]=\sum_n h[n]I[x-n],\qquad
+(I\star h)[x]=\sum_n h[n]I[x+n].
+\end{equation}
+Nếu $h$ chẵn như Gaussian hoặc đạo hàm bậc hai, đảo kernel không làm đổi dấu. Nếu $h$ lẻ như đạo hàm bậc nhất, đảo kernel đổi dấu đáp ứng. Vì vậy chỉ đối chiếu Gaussian smoothing là chưa đủ để xác nhận phép chập đúng.
+
+Với đạo hàm hỗn hợp $L_{xy}$, hai phép đạo hàm lẻ cùng đổi dấu có thể triệt tiêu nhau. Một bộ cài đặt sai dấu ở cả hai trục có thể vẫn cho $L_{xy}$ gần đúng trong khi $L_x,L_y$ sai dấu. Bộ kiểm tra cần bao gồm cả đạo hàm đơn trục và hỗn hợp.
+
+\subsection{Đệm biên và vùng lõi hợp lệ}
+Với tín hiệu có các giá trị $a,b,c,d$, hai quy tắc phản xạ cần phân biệt là
+\begin{align*}
+\text{lặp pixel biên: }&\cdots c\,b\,a\mid a\,b\,c\,d\mid d\,c\,b\cdots,\\
+\text{không lặp biên: }&\cdots d\,c\,b\mid a\,b\,c\,d\mid c\,b\,a\cdots.
+\end{align*}
+Tên reflect và mirror phụ thuộc API: NumPy pad reflect tương ứng quy tắc không lặp pixel biên, trong khi SciPy dùng tên mirror cho quy tắc đó. Không nên kết luận hai thư viện dùng cùng điều kiện biên chỉ vì cùng thấy từ reflect.
+
+Nếu kernel có bán kính $r$, pixel cách mép không quá $r$ có thể chịu ảnh hưởng từ phần đệm. Với tensor gồm hai giai đoạn lọc, hỗ trợ hiệu dụng cộng từ cả hai bước. Đối chiếu trong vùng lõi giúp tập trung vào toán tử; đánh giá riêng vùng biên vẫn cần thiết nếu mục tiêu là ứng dụng trên toàn ảnh.
+
+\subsection{Hợp đồng dữ liệu giữa các mô-đun}
+Một bản đồ không chỉ được nhận diện bởi tên toán tử. Bộ siêu dữ liệu tối thiểu gồm nguồn, ảnh, $\sigma$, bậc đạo hàm, chuẩn hóa, thứ tự trị riêng, đơn vị không gian, dtype và kiểu biên. Hai TIFF cùng tên nhưng thuộc hai phiên bản config khác nhau chưa phải một cặp đối chiếu hợp lệ.
+
+Nhân tính toán làm việc trên float64, còn trao đổi giữa hai môi trường dùng TIFF float32 không nén. Sai số sau xuất TIFF vì thế bao gồm cả làm tròn về float32. Không đem một kết quả float64 trong bộ nhớ so với một ảnh PNG 8-bit đã giãn tương phản rồi gọi đó là sai số thuật toán.
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}{0.94\textwidth}
+\begin{algorithmic}[1]
+\STATE Đọc config và dừng nếu còn tham số null.
+\STATE Đọc cùng ảnh xám uint8, chuyển bản sao làm việc sang float64.
+\FOR{mỗi $\sigma$ trong cấu hình}
+\STATE Sinh $g_0,g_1,g_2$ với bán kính theo từng bậc.
+\STATE Tính $L,L_x,L_y,L_{xx},L_{xy},L_{yy}$ bằng chập tách trục.
+\STATE Tạo gradient, Laplacian, Hessian và tensor theo nhu cầu.
+\STATE Giữ bản đồ thô để đối chiếu; tạo bản chuẩn hóa riêng cho bộ dò.
+\STATE Xuất TIFF float32, tên file và metadata nhất quán.
+\ENDFOR
+\end{algorithmic}
+\end{minipage}
+\caption{Mã giả luồng tính toán và kiểm soát quy ước dữ liệu}
+\end{figure*}
+
+\subsection{Mã giả phép đối chiếu và kiểm soát sai sót}
+\begin{figure*}[t]
+\centering
+\begin{minipage}{0.94\textwidth}
+\begin{algorithmic}[1]
+\FOR{mỗi cặp ảnh, toán tử và tỷ lệ được yêu cầu}
+\IF{thiếu một TIFF}
+\STATE Ghi trạng thái thiếu dữ liệu; không thay bằng ảnh 0.
+\ELSE
+\STATE Kiểm tra kích thước, float32 và giá trị hữu hạn.
+\STATE Xác định vùng crop từ config và hỗ trợ toán tử.
+\STATE Tính max error, MAE, RMSE, relative max error và Pearson.
+\STATE Xếp loại theo tiêu chí đã công bố; ghi cả trường hợp không đạt.
+\ENDIF
+\ENDFOR
+\STATE Tổng hợp số cặp đã đo, thiếu dữ liệu và số cặp theo từng trạng thái.
+\end{algorithmic}
+\end{minipage}
+\caption{Mã giả đối chiếu số học; số lượng cặp hợp lệ là một phần của kết quả}
+\end{figure*}
+Việc kiểm tra đủ số cặp quan trọng ngang việc báo cáo trung bình. Nếu các cặp khó hoặc file thiếu bị bỏ qua âm thầm, điểm trung bình có thể tăng mà không phản ánh chất lượng tốt hơn. Bản ghi CSV cần cho phép truy ngược từ một dòng tổng hợp về TIFF và cấu hình cụ thể.
+
+\subsection{Thiết kế kiểm tra độ nhạy có kiểm soát}
+Ngoài benchmark hiện có, có thể thiết kế một chuỗi thí nghiệm thay đổi từng yếu tố: giữ ảnh và ngưỡng để khảo sát $\sigma$; giữ $\sigma$ để khảo sát ngưỡng; giữ ảnh sạch làm tham chiếu rồi thêm các mức nhiễu đã biết. Các thí nghiệm này là hướng mở rộng cần chạy và ghi kết quả, chưa phải các kết quả đã đo trong báo cáo.
+
+Với biến đổi tương phản tuyến tính $I'=aI+b$, đạo hàm bậc dương trong vùng lõi đáp ứng $D(I')=aD(I)$; Hessian cũng nhân $a$, còn Structure Tensor nhân $a^2$. Kiểm tra quan hệ này có thể phát hiện việc đổi miền cường độ hoặc chuẩn hóa hiển thị bị đưa nhầm vào nhân tính toán. Khi $a<0$, dấu đạo hàm và cực tính ridge/blob đảo; độ lớn gradient và tensor không đổi dấu.
+
+Với nhiễu độc lập có phương sai $\sigma_n^2$, phương sai đầu ra của một bộ lọc tuyến tính rời rạc $h$ là $\sigma_n^2\sum h^2$ trong vùng không biên. Quan hệ này giải thích vì sao kernel và mức làm mịn ảnh hưởng độ nhạy với nhiễu. Nó không thay cho việc đo trên ảnh thực với nhiễu tương quan hoặc nhiễu phụ thuộc cường độ.

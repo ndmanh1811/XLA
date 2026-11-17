@@ -22,14 +22,14 @@
 
 \title{Phát Hiện Đặc Trưng Ảnh Đa Tỷ Lệ Bằng Đạo Hàm Gaussian: Cài Đặt Thuần NumPy và Thẩm Định Đối Chuẩn với FeatureJ / Fiji}
 
-\author{\IEEEauthorblockN{Nguyễn Đức Mạnh, Bùi Trung Đức, Phạm Bảo Lộc, Nguyễn Tiến Hưng}
+\author{\IEEEauthorblockN{Nguyễn Đức Mạnh, Bùi Trung Đức, Phạm Bảo Lộc, Nguyễn Đức Hưng}
 \IEEEauthorblockA{\textit{Khoa Công nghệ Thông tin - Môn Xử lý ảnh số (XLA)}}
 }
 
 \maketitle
 
 \begin{abstract}
-Báo cáo trình bày nghiên cứu, thiết kế, cài đặt và đánh giá toàn diện hệ thống phát hiện đặc trưng ảnh đa tỷ lệ (Multi-scale Feature Detection) sử dụng không gian tỷ lệ đạo hàm Gaussian (Gaussian Scale-Space). Hệ thống được lập trình thuần túy từ đầu (from scratch) bằng thư viện NumPy, hoàn toàn không sử dụng các hàm tích chập có sẵn trong OpenCV hay SciPy ndimage. Chúng tôi tiến hành quy trình thẩm định hai tầng (2-Tier Evaluation): Tầng 1 kiểm chứng đối chuẩn số học pixel-to-pixel với thư viện quốc tế FeatureJ (ImageScience) trên 5 ảnh đại diện; Tầng 2 đánh giá thực nghiệm định lượng trên 25 ảnh mẫu (10 BSDS500 + 10 DRIVE + 5 Blob) so với bộ nhãn Ground Truth (gồm nhãn gốc chuẩn của BSDS500/DRIVE và nhãn đốm tế bào \texttt{blob\_05} do nhóm tự xây dựng với sự hỗ trợ của phân ngưỡng/liên thông, đã được rà soát thủ công bởi reviewer Bùi Trung Đức). Kết quả Tầng 1 cho thấy độ tương quan Pearson rất cao ($r > 0.9999$ cho các bản đồ làm mịn và đạo hàm bậc 1) và sai số tương đối tăng theo bậc đạo hàm (Gauss $\sim 10^{-8}$, bậc 1 $\sim 5 \cdot 10^{-4}$, bậc 2 $\sim 4 \cdot 10^{-3}$) do khác biệt xấp xỉ rời rạc giữa Python Core và FeatureJ. Kết quả được đánh giá bằng sai số số học và nhãn đối chứng; các khác biệt được báo cáo theo từng protocol.
+Báo cáo trình bày cơ sở lý thuyết và hệ thống phát hiện đặc trưng đa tỷ lệ bằng đạo hàm Gaussian, với lõi tính toán NumPy và FeatureJ/Fiji làm nguồn đối chiếu. Tầng 1 đánh giá 220 bản đồ liên tục theo chuẩn gốc: 35 bản đồ đạt đồng thời relative error $<10^{-4}$ và Pearson $r>0.9999$; 185 bản đồ không đạt đầy đủ hai điều kiện. Tầng 2 sử dụng protocol \texttt{duc\_10\_11\_v1} trên 25 ảnh: BSDS tại $\sigma=2$ có macro-F1 Python/Fiji là 0.477886/0.477886; DRIVE có macro-F1 0.477382/0.473863 và micro-F1 0.486776/0.483343; Blob có macro-F1 0.898418/0.897373 và micro-F1 0.519135/0.514096. Đo thời gian gồm 357 trường hợp mỗi nguồn, một lần warm-up và năm lượt đo; median tỷ số thời gian từng case Python/ImageScience là 10.668. ImageScience được gọi qua API headless, không tính GUI hay I/O. Các ngưỡng được chọn trên cùng tập nội bộ dùng để báo cáo nên kết quả không phải điểm kiểm tra độc lập.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -153,7 +153,7 @@ Kiểu dữ liệu xử lý lõi & \texttt{float64} & \texttt{float64} nội suy
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/master_side_by_side_comparison.png}
-\caption{So sánh đối chuẩn pixel-to-pixel giữa Python Core (hàng trên) và FeatureJ/Fiji (hàng dưới) trên 5 ảnh chuẩn Tầng 1 tại tỷ lệ $\sigma=2.0$. Từ trái sang phải: Ảnh gốc, Làm mịn Gaussian, Gradient độ lớn, Laplacian và Trị riêng Hessian $\lambda_1$. Kết quả đạt độ tương quan Pearson $r > 0.9999$ và sự tương đồng thị giác tuyệt đối.}
+\caption{Các bản đồ minh họa Python Core (hàng trên) và FeatureJ/Fiji (hàng dưới) tại $\sigma=2.0$. Từ trái sang phải: ảnh gốc, Gaussian, gradient độ lớn, Laplacian và trị riêng Hessian $\lambda_1$. Hình ảnh trực quan không thay cho kiểm tra số học toàn bộ 220 bản đồ; theo chuẩn gốc, 35/220 cặp đạt và 185/220 cặp chưa đạt.}
 \label{fig:master_side_by_side}
 \end{figure*}
 
@@ -257,9 +257,9 @@ L_{xy} &= (I *_x g_1) *_y g_1 \label{eq:lxy}
 \begin{equation}
 \text{Speedup} = \frac{K^2 \cdot HW}{2K \cdot HW} = \frac{K}{2} = \frac{2\lceil k\sigma \rceil + 1}{2} \approx k\sigma
 \end{equation}
-Tại quy mô tỷ lệ lớn ($\sigma = 8.0, k = 4.0 \Rightarrow r = 32, K = 65$), phương pháp phân rã 1D giúp tăng tốc độ xử lý hơn \textbf{32.5 lần} so với phép chập 2D trực tiếp.
+Với kernel vuông $K=65$ ($r=32$), hệ số lý thuyết là $K/2=32.5$; các kernel chữ nhật có hệ số khác. Bảng dưới tổng hợp benchmark chập trực tiếp và chập tách rời trên ba ảnh mẫu.
 
-Bảng \ref{tab:optimization-benchmark} tóm tắt kết quả đo thực nghiệm trên 3 ảnh đại diện (bsds\_01, drive\_01, blob\_01) tại 4 tỷ lệ $\sigma \in \{1.0, 2.0, 4.0, 8.0\}$. Tốc độ tăng thực tế khớp sát hệ số lý thuyết $\frac{K_x \cdot K_y}{K_x + K_y}$, sai lệch nhỏ do chi phí đệm bộ nhớ, kernel chữ nhật ($L_x, L_{xx}$) và overhead cấp phát mảng trong NumPy.
+Bảng \ref{tab:optimization-benchmark} lấy trung bình theo ba ảnh (\texttt{bsds\_01}, \texttt{drive\_01}, \texttt{blob\_01}) từ \texttt{outputs/metrics/optimization\_benchmark.csv}; có 36 tổ hợp ảnh/toán tử/tỷ lệ và năm lượt đo mỗi tổ hợp. Đây là microbenchmark NumPy để so sánh hai cách chập, độc lập với phép đo Python--ImageScience gồm 357 case mỗi nguồn ở Chương 5.
 
 \begin{table}[htbp]
 \centering
@@ -412,16 +412,15 @@ LoG Extrema 3D ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot HW)$ & $\mat
 % BEGIN AUTO_CH5
 \section{Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích}
 \subsection{Dữ liệu và protocol có thể tái lập}
-Bộ dữ liệu gồm 25 ảnh xám uint8: 10 BSDS500 với 56 bộ nhãn đa annotator, 10 DRIVE có vessel mask/FOV, 4 ảnh blob tổng hợp và ảnh tế bào \texttt{blob\_05}. Ảnh tế bào có 276 đối tượng và 15 vùng loại trừ, được nhóm xây dựng và Đức rà soát; không coi là nhãn chuyên gia độc lập.
-Nguồn chính của chương này là \texttt{outputs/metrics/duc\_10\_11} và \texttt{outputs/analysis/duc\_task5\_10\_11}, kèm manifest SHA-256. Checksum xác minh toàn vẹn từng bộ, không chứng minh Python và Fiji có cùng byte hoặc cùng giá trị số.
+Bộ dữ liệu gồm 25 ảnh xám uint8: 10 BSDS500 với 56 bộ nhãn, 10 DRIVE có vessel mask/FOV, bốn ảnh blob tổng hợp và ảnh tế bào \texttt{blob\_05}. Ảnh tế bào có 276 đối tượng cùng 15 vùng ignore; nhãn do nhóm xây dựng và rà soát, không phải nhãn chuyên gia độc lập. Nguồn canonical là \texttt{outputs/metrics/duc\_10\_11}, theo protocol \texttt{duc\_10\_11\_v1}; dữ liệu phân tích và timing nằm trong \texttt{outputs/analysis/duc\_task5\_10\_11}. Bản sao các CSV, manifest và mẫu timing đi kèm trong thư mục \texttt{metrics/} của gói báo cáo.
 
 \subsection{Tầng 1: đối chuẩn bản đồ liên tục}
-Đối chiếu 220 cặp TIFF trên năm ảnh đại diện, crop theo support của từng toán tử. Ngưỡng gốc yêu cầu đồng thời relative max error $<10^{-4}$ và Pearson $r>0.9999$. Có 35 cặp đạt ngưỡng gốc và 185 cặp chưa đạt. Nếu nhóm dùng ngưỡng mở rộng $10^{-2}$, cần ghi rõ 185 cặp là RELAXED, không phải STRICT. PSNR với MAX=255 chỉ áp dụng Gaussian; đạo hàm có dấu dùng MAE/RMSE/relative error/Pearson. Tương quan cao không đủ chứng minh tương đương biên độ. Khác biệt rời rạc hóa là giả thuyết cần đối chiếu hồ sơ hiệu chuẩn.
+Đối chiếu 220 cặp TIFF trên năm ảnh đại diện, crop theo support của từng toán tử. Chuẩn gốc yêu cầu đồng thời relative max error $<10^{-4}$ và Pearson $r>0.9999$: có 35 cặp \texttt{PASS}, còn 185 cặp \texttt{FAIL} do không thỏa đầy đủ hai điều kiện. \texttt{FAIL} mô tả kết quả số học, không phải lỗi chạy. Một ngưỡng chẩn đoán rộng hơn, nếu được nêu, phải tách khỏi trạng thái canonical. PSNR với MAX=255 chỉ áp dụng cho Gaussian; tương quan cao không chứng minh sai số biên độ đạt chuẩn.
 
 \subsection{Tầng 2: biên BSDS500}
-Dung sai là đĩa Euclidean bán kính 2 px. Precision xét biên của ít nhất một annotator; recall trung bình các annotator. Ngưỡng phân vị tính trên NMS khác 0, chọn lưới thô/tinh riêng từng sigma trên Python rồi đóng băng cho Fiji. Ảnh NMS rỗng vẫn được tính vào mẫu số. FeatureJ Edges dùng Canny với NMS nội suy và hysteresis, là nhánh tham chiếu riêng, không phải zero-crossing Laplacian.
+Dung sai là đĩa Euclidean bán kính 2 px. Precision xét biên của ít nhất một annotator; recall trung bình các annotator. Ngưỡng được chọn trên Python theo từng tỷ lệ rồi giữ nguyên cho Fiji; tại $\sigma=2$, $(p_{\mathrm{low}},p_{\mathrm{high}})=(67,91)$. Ảnh NMS rỗng vẫn được tính vào mẫu số. FeatureJ Edges là nhánh tham chiếu Canny riêng, không trộn với cặp so sánh Canny công bằng.
 \begin{table}[htbp]\centering
-\caption{F1 trung bình trên 10 ảnh BSDS; cùng ngưỡng cho hai nguồn}\label{tab:duc10_bsds}
+\caption{Macro-F1 trên 10 ảnh BSDS; cùng ngưỡng cho hai nguồn}\label{tab:duc10_bsds}
 \begin{tabular}{rrrr}\toprule
 $\sigma$ & Python & Fiji & Fiji--Python \\\midrule
 1 & 0.455418 & 0.455478 & +0.00006020 \\
@@ -431,41 +430,42 @@ $\sigma$ & Python & Fiji & Fiji--Python \\\midrule
 \bottomrule\end{tabular}\end{table}
 
 \subsection{Tầng 2: ridge và blob}
-DRIVE lấy cực đại Frangi qua các scale đã chuẩn hóa. Vùng đánh giá là giao các FOV hợp lệ qua scale, với support lấy từ config (hiện 32 px); ngưỡng tuyệt đối được chọn trong lưới đã công bố trên Python và dùng chung cho Fiji. Vì khác vùng FOV/ngưỡng, không so trực tiếp điểm này với phiên cũ dùng FOV 8 px hoặc phân vị p85.
-Blob dùng đúng 7 sigma config cho cả hai nguồn, ghép một--một theo maximum cardinality với tâm lệch $\le2$ px và bán kính sai $\le20\%$. Bỏ dự đoán có tâm trong vùng ignore trước khi tính FP.
+DRIVE dùng Frangi dark với $\beta=0.5$ và $c=0.5\max(S)$. Vùng chấm là giao các FOV hợp lệ sau xói mòn theo support của tất cả scale; bán kính lớn nhất hiện tại là 32 px. Cùng ngưỡng tuyệt đối đã chọn trên Python được dùng cho Fiji. Macro-F1 Python/Fiji là 0.477382/0.473863; micro-F1 là 0.486776/0.483343. Không so trực tiếp với protocol cũ dùng p85 hoặc FOV 8 px.
+Blob dùng bảy scale $\{1,1.4,2,2.8,4,5.7,8\}$, ghép một-một theo maximum cardinality với tâm lệch không quá 2 px và sai số bán kính không quá 20\%. Các dự đoán có tâm trong vùng ignore được loại trước khi đếm FP.
 \begin{table}[htbp]\centering\small
 \caption{Macro Precision/Recall/F1 của ridge và blob}\label{tab:duc10_accuracy}
 \begin{tabular}{lrrr}\toprule
-Nguồn / bài toán & P & R & F1 \\\midrule
-python / ridge\_drive & 0.811157 & 0.352088 & 0.477382 \\
-python / blob\_log & 0.895563 & 0.901449 & 0.898418 \\
-fiji / ridge\_drive & 0.814269 & 0.347986 & 0.473863 \\
-fiji / blob\_log & 0.894237 & 0.900725 & 0.897373 \\
+Nguồn / bài toán & Precision & Recall & F1 \\\midrule
+Python / DRIVE & 0.811157 & 0.352088 & 0.477382 \\
+Python / Blob & 0.895563 & 0.901449 & 0.898418 \\
+Fiji / DRIVE & 0.814269 & 0.347986 & 0.473863 \\
+Fiji / Blob & 0.894237 & 0.900725 & 0.897373 \\
 \bottomrule\end{tabular}\end{table}
 \begin{table}[htbp]\centering
-\caption{Ảnh tế bào: GT=276; dự đoán sau ignore; số bỏ qua}\label{tab:duc10_cells}
+\caption{Ảnh tế bào \texttt{blob\_05}; dự đoán sau ignore}\label{tab:duc10_cells}
 \begin{tabular}{lrrrr}\toprule
-Nguồn & TP & Dự đoán & Ignore & F1 \\\midrule
-python & 140 & 293 & 36 & 0.492091 \\
-fiji & 139 & 295 & 37 & 0.486865 \\
+Nguồn & TP & Dự đoán & Bị ignore & F1 \\\midrule
+Python & 140 & 293 & 36 & 0.492091 \\
+Fiji & 139 & 295 & 37 & 0.486865 \\
 \bottomrule\end{tabular}\end{table}
-Macro đặt mỗi ảnh cùng trọng số; micro gộp số đối tượng. Bốn ảnh tổng hợp dễ có ảnh hưởng lớn đến macro nên cần báo cáo cả hai. python: macro F1=0.898418, micro F1=0.519135; fiji: macro F1=0.897373, micro F1=0.514096. Audit từng cặp được lưu đầy đủ trong CSV/JSON của phiên chạy.
+Micro-F1 Python/Fiji là 0.519135/0.514096 trên Blob. Bốn ảnh tổng hợp có ít đối tượng hơn ảnh tế bào, vì vậy cần đọc macro cùng micro và kết quả riêng \texttt{blob\_05}.
 
-\subsection{Biểu đồ và thời gian thực thi}
-357 trường hợp mỗi nguồn được đo một warm-up và năm lượt đo, lấy median, giữ mẫu thô và fingerprint code/config/raw. Java đo API ImageScience headless, không gồm GUI hay đọc/ghi TIFF; không tuyên bố hai engine có precision nội bộ giống nhau hoặc ưu thế tốc độ trên mọi máy.
-\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_04_f1_theo_sigma.png}\caption{F1 theo sigma trên cùng protocol.}\end{figure}
-\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_08_blob_macro_micro.png}\caption{Macro/micro F1 trên tập blob.}\end{figure}
-\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_09_thoi_gian_theo_lenh.png}\caption{Median thời gian theo lệnh; API headless, không gồm I/O.}\end{figure}
+\subsection{Thời gian thực thi}
+Đo 357 case mỗi nguồn; mỗi case có một warm-up và năm lần đo được giữ lại, tổng 2{,}142 mẫu mỗi nguồn và 4{,}284 mẫu. Median tỷ số thời gian từng case $T_{\mathrm{Python}}/T_{\mathrm{ImageScience}}$ là 10.668; tỷ số lớn hơn 1 nghĩa là Python mất nhiều thời gian hơn ở case đó. Java gọi API ImageJ 1.53k/ImageScience 3.0.0 headless; vùng đo loại trừ đọc ảnh, chuyển kiểu, sao chép input và ghi file. Đây không phải timing GUI hay toàn pipeline; đây là một máy và một phiên đo, không đại diện tốc độ phổ quát. IQR giữa các case không phải khoảng tin cậy.
+\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_04_f1_theo_sigma.png}\caption{Macro-F1 theo $\sigma$ trên BSDS500.}\end{figure}
+\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_08_blob_macro_micro.png}\caption{Macro và micro F1 trên tập Blob.}\end{figure}
+\begin{figure}[htbp]\centering\includegraphics[width=\linewidth]{figures/duc10_09_thoi_gian_theo_lenh.png}\caption{Timing theo lệnh; API headless, không gồm I/O.}\end{figure}
+
+\subsection{Demo web trong repo}
+Repo có demo Flask tại \texttt{src/web/} để xem và đối chiếu kết quả; demo không thay nguồn CSV canonical. Preset Canny dùng \texttt{bsds\_01}, $\sigma=2$, ngưỡng 67/91; Frangi dùng \texttt{drive\_08}, $\beta=0.5$, threshold 0.05, các scale $[1,2,4,8]$ và FOV; Blob dùng \texttt{blob\_05}, threshold 5.0, cực tính bright và bảy scale. Panel gradient Fiji hiển thị $|\nabla L|$ đã chuẩn hóa theo $\sigma$, không phải bản đồ Canny; Frangi kết hợp Hessian Fiji với bước Frangi Python; panel Blob hiển thị đáp ứng $|LoG|$ cực đại, không phải danh sách detection. Có thể chạy bằng \texttt{python -m src.web.app --port 5000} sau khi cài \texttt{requirements.txt}.
 
 \subsection{Giới hạn}
-Ngưỡng được chọn và đánh giá trên cùng tập nội bộ, không phải điểm test độc lập của benchmark chính thức. Chưa chạy biến thể nhiễu/kích thước; không kết luận độ bền với nhiễu. Nhãn tế bào do nhóm rà soát; trường hợp dính/cắt biên được loại theo vùng ignore. Detector LoG hiện bỏ hai đầu lưới scale, nên đối tượng ngoài dải vẫn có thể làm giảm recall.
+Ngưỡng được chọn và đánh giá trên cùng tập nội bộ, không phải điểm kiểm tra độc lập. Chưa có kết quả biến thể nhiễu/crop/kích thước nên không kết luận độ bền với các biến thể này. Nhãn tế bào do nhóm rà soát; vùng ignore và giới hạn dải scale ảnh hưởng recall. Timing chỉ mô tả cấu hình và máy đo đã ghi trong manifest.
 % END AUTO_CH5
 
 % BEGIN AUTO_CH6
 \section{Chương 6: Kết Luận và Hướng Phát Triển}
-Nhóm đã hiện thực Gaussian, đạo hàm bậc 1/2, gradient, Hessian, Canny, Frangi, LoG và Structure Tensor bằng NumPy; kiểm thử và đánh giá trên hai nguồn bản đồ cùng hậu xử lý. Kết quả số học chưa đạt ngưỡng gốc cho mọi cặp; giữ rõ STRICT và RELAXED. Đánh giá GT áp dụng matching một--một, ignore và cùng cấu hình cho hai nguồn. Công việc tiếp theo là kiểm chứng hiệu chuẩn, mở rộng dữ liệu/tập tách biệt và thực nghiệm nhiễu trước khi đưa ra kết luận khái quát.
-% END AUTO_CH6
-
+Nhóm đã hiện thực Gaussian, đạo hàm bậc 1/2, gradient, Hessian, Canny, Frangi, LoG và Structure Tensor bằng NumPy, rồi đối chiếu đầu ra với FeatureJ/Fiji và đánh giá trên 25 ảnh. Theo chuẩn số học gốc, 35/220 bản đồ đạt \texttt{PASS} và 185/220 chưa đạt; không gộp trạng thái mở rộng vào kết quả canonical. Trên protocol \texttt{duc\_10\_11\_v1}, BSDS tại $\sigma=2$ đạt macro-F1 Python/Fiji 0.477886/0.477886; DRIVE đạt macro/micro 0.477382/0.473863 và 0.486776/0.483343; Blob đạt macro/micro 0.898418/0.897373 và 0.519135/0.514096. Median tỷ số thời gian từng case Python/ImageScience là 10.668 trong phép đo headless đã mô tả, không phải kết luận tốc độ tổng quát. Hướng tiếp theo là hiệu chuẩn độc lập, dữ liệu kiểm tra tách biệt và thí nghiệm nhiễu/kích thước.
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
