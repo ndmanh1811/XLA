@@ -1,0 +1,78 @@
+{
+  "repository": "ndmanh1811/XLA",
+  "branch": "dev/NguyenDucManh",
+  "previous_report_snapshot": "39e4d02198ffd83b1770ef71b3d9ffae3815c283",
+  "head": "58bdfd8dde8b3ea443750a021852f2d0444b82a1",
+  "reviewed_at": "2026-11-10",
+  "canonical_metric_directory": "outputs/metrics",
+  "canonical_files": [
+    "PROTOCOL.md",
+    "tier2_results.csv",
+    "tier2_bsds_thresholds.csv",
+    "tier2_results_both.csv",
+    "optimization_benchmark.csv"
+  ],
+  "historical_metric_directory": {
+    "path": "outputs/metrics/duc_08_11",
+    "status": "ARCHIVED_HISTORICAL",
+    "reason": "pre-disk-fix snapshot; used a 5x5 square tolerance instead of the Euclidean radius-2 disk"
+  },
+  "protocol_updates": {
+    "edge_matching": "Euclidean disk radius 2 px (13 pixels)",
+    "empty_nms": "included with F1=0",
+    "evaluation_morphology": "pure NumPy; no SciPy in evaluator",
+    "threshold_selection": "selected on Python and frozen for Fiji; percentiles use nonzero NMS values"
+  },
+  "tier1": {
+    "maps": 220,
+    "strict_maps": 35,
+    "relaxed_maps": 185,
+    "failed_maps": 0
+  },
+  "bsds_f1_by_sigma": [
+    {"sigma": 1, "python": 0.455418, "fiji": 0.455478, "delta": 0.000060, "p_low": 76, "p_high": 94, "featurej_reference": 0.488766},
+    {"sigma": 2, "python": 0.477886, "fiji": 0.477886, "delta": 0.0, "p_low": 67, "p_high": 91, "featurej_reference": 0.500818},
+    {"sigma": 4, "python": 0.441491, "fiji": 0.441491, "delta": 0.0, "p_low": 49, "p_high": 80, "featurej_reference": 0.464873},
+    {"sigma": 8, "python": 0.343340, "fiji": 0.343340, "delta": 0.0, "p_low": 23, "p_high": 50, "featurej_reference": 0.354292}
+  ],
+  "drive_f1": {
+    "python_macro": 0.680633,
+    "fiji_macro": 0.681651,
+    "python_micro": 0.682895,
+    "fiji_micro": 0.683897,
+    "micro_method": "recomputed from summed gt_count, detected_count, and matched_count in canonical tier2_results_both.csv"
+  },
+  "blob_f1": {
+    "python_macro": 0.893023,
+    "fiji_macro": 0.891901,
+    "macro_comparison_grid": "7-scale common Python-Fiji grid from tier2_results_both.csv",
+    "python_micro": 0.492114,
+    "fiji_micro": 0.486656,
+    "blob_05_python_fair_7_scale": {"gt": 276, "detected": 326, "matched": 140, "f1": 0.4651},
+    "blob_05_python_official_8_scale": {"gt": 276, "detected": 329, "matched": 140, "f1": 0.4628},
+    "blob_05_fiji_fair_7_scale": {"gt": 276, "detected": 329, "matched": 139, "f1": 0.4595}
+  },
+  "optimization_benchmark": {
+    "cases": 36,
+    "repetitions_per_case": 5,
+    "speedup_range": [1.375738, 31.392971],
+    "max_absolute_difference": 1.279e-12
+  },
+  "branch_audit": {
+    "canonical_branch": "dev/NguyenDucManh",
+    "canonical_head": "58bdfd8dde8b3ea443750a021852f2d0444b82a1",
+    "remote_branches": [
+      {"name": "dev/NguyenDucManh", "relation": "identical", "ahead_by": 0, "behind_by": 0},
+      {"name": "main", "relation": "behind", "ahead_by": 0, "behind_by": 5},
+      {"name": "fiji/PhamBaoLoc", "relation": "behind", "ahead_by": 0, "behind_by": 9},
+      {"name": "thucnghiem/BuiTrungDuc", "relation": "diverged", "ahead_by": 2, "behind_by": 45, "metric_snapshot_superseded": true}
+    ],
+    "local_report_branch": {
+      "name": "report/ieee-gaussian-39e4d02",
+      "head": "a29b82e9f89f0e7e095b46e0fa29a97bca682950",
+      "remote_branch_exists": false
+    },
+    "newer_canonical_metric_updates_found": true
+  },
+  "report_pdf_compiled": false
+}

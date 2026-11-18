@@ -32,3 +32,22 @@ docs/*.zip
 
 # Local pre-migration backup
 backup_pre_p0/
+tmp_rerun/
+desktop.ini
+**/desktop.ini
+
+# Temporary / scratch scripts & test files
+test_web_demo.py
+export_slides_pdf.py
+generate_*.py
+bai_bao_cao_xla.html
+tailieu.md
+
+# Large slide binaries & temporary renders
+BTL_XLA_BaoCao_Chuan.pdf
+BTL_XLA_ThuyetTrinh_14_Slide.pdf
+docs/slides/print_slides.html
+docs/slides/figures/
+docs/slides/BTL_XLA_BaoCao_Chuan.pdf
+docs/slides/BTL_XLA_BaoCao_Chuan.pptx
+

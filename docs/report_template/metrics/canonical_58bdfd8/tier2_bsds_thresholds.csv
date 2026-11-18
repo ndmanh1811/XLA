@@ -1,0 +1,5 @@
+﻿sigma,p_low,p_high,mean_f1_python,mean_precision_python,mean_recall_python,n_images,selection_method,frozen_for_fiji,notes
+1.0,76.0000,94.0000,0.455418,0.431752,0.535166,10,grid_python_f1_coarse_to_fine,1,Chọn trên Python; áp nguyên vẹn cho Fiji
+2.0,67.0000,91.0000,0.477886,0.490923,0.513399,10,grid_python_f1_coarse_to_fine,1,Chọn trên Python; áp nguyên vẹn cho Fiji
+4.0,49.0000,80.0000,0.441491,0.476781,0.458608,10,grid_python_f1_coarse_to_fine,1,Chọn trên Python; áp nguyên vẹn cho Fiji
+8.0,23.0000,50.0000,0.343340,0.387978,0.339731,10,grid_python_f1_coarse_to_fine,1,Chọn trên Python; áp nguyên vẹn cho Fiji

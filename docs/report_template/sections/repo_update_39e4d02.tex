@@ -1,0 +1,126 @@
+\subsection{Cập nhật repo theo nhánh \texttt{dev/NguyenDucManh} tại commit \texttt{aadd7e9}}
+\label{sec:repo-update}
+Tại lần đối chiếu ngày 17/11/2026, nhánh \texttt{dev/NguyenDucManh} đứng ở
+\texttt{aadd7e96} (commit ngày 15/11 UTC), kế tiếp \texttt{3ca5f0c}. Bộ số liệu
+định lượng canonical hiện hành nằm trong \texttt{outputs/metrics/duc\_10\_11}
+(theo protocol \texttt{duc\_10\_11\_v1}); các file trong
+\texttt{metrics/duc\_08\_11} và snapshot \texttt{58bdfd8} là dữ liệu lịch sử.
+Commit mới nhất chủ yếu hoàn thiện demo web, không thay đổi các CSV canonical.
+
+\subsubsection{Rà soát các nhánh từ xa}
+GitHub liệt kê bảy nhánh. So sánh commit của mỗi nhánh với \texttt{dev} tại
+\texttt{aadd7e96} cho trạng thái sau:
+\begin{itemize}
+    \item \texttt{dev/NguyenDucManh}: nhánh chuẩn đang được báo cáo, HEAD \texttt{aadd7e96}.
+    \item \texttt{main}: đi sau \texttt{dev} 11 commit, không có commit riêng phía trước.
+    \item \texttt{fiji/PhamBaoLoc}: phân nhánh, có 1 commit riêng và thiếu 2 commit của \texttt{dev}.
+    \item \texttt{final}: phân nhánh, có 3 commit riêng và thiếu 1 commit của \texttt{dev}.
+    \item \texttt{thucnghiem/BuiTrungDuc}: có 2 commit riêng và thiếu 51 commit của \texttt{dev}.
+    \item \texttt{web/demo-canonical}: có 1 commit riêng và thiếu 5 commit của \texttt{dev}.
+    \item \texttt{docs/report}: HEAD \texttt{bcfda814}; không có tổ tiên chung với \texttt{dev}, nên đây là lịch sử độc lập.
+\end{itemize}
+Vì vậy, số liệu và mô tả tính năng dưới đây theo nhánh \texttt{dev}; các nhánh
+khác không được xem là nguồn thay thế protocol canonical nếu chưa hợp nhất.
+
+\subsubsection{Metric Tầng 1 và protocol Tầng 2 hiện hành}
+Protocol Tầng 1 chấm \texttt{PASS} chỉ khi sai số tương đối cực đại nhỏ hơn
+$10^{-4}$ và Pearson lớn hơn $0.9999$. Kết quả trên 220 bản đồ gồm 35
+\texttt{PASS} và 185 \texttt{FAIL}; các phép phân tích mẫu có thể nêu ngưỡng
+rộng hơn để minh họa nhưng không làm thay đổi trạng thái canonical.
+Tầng 2 gồm 10 ảnh BSDS, 10 DRIVE và 5 Blob. Bảng tổng hợp được trích từ
+\texttt{KET\_QUA\_METRIC.md} và các CSV trong snapshot \texttt{duc\_10\_11}.
+
+\begin{table*}[htbp]
+\centering
+\caption{F1 theo protocol canonical \texttt{duc\_10\_11\_v1}; micro-F1 được báo cáo riêng.}
+\label{tab:repo-canonical-f1}
+\begin{tabular}{lrrrr}
+\toprule
+Tác vụ & $N$ ảnh & Python & Fiji & $\Delta F_1$ (Fiji--Python)\\
+\midrule
+BSDS, Canny macro, $\sigma=1$ & 10 & 0.455418 & 0.455478 & $+0.000060$\\
+BSDS, Canny macro, $\sigma=2$ & 10 & 0.477886 & 0.477886 & $0.000000$\\
+BSDS, Canny macro, $\sigma=4$ & 10 & 0.441491 & 0.441491 & $0.000000$\\
+BSDS, Canny macro, $\sigma=8$ & 10 & 0.343340 & 0.343340 & $0.000000$\\
+DRIVE, Frangi macro & 10 & 0.477382 & 0.473863 & $-0.003519$\\
+DRIVE, Frangi micro & 10 & 0.486776 & 0.483343 & $-0.003433$\\
+Blob, LoG macro & 5 & 0.898418 & 0.897373 & $-0.001045$\\
+Blob, LoG micro & 5 & 0.519135 & 0.514096 & $-0.005039$\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+BSDS dùng dung sai đĩa Euclidean 2 pixel. Các cặp ngưỡng Python được chọn
+trên lưới đã công bố rồi giữ nguyên khi chấm Fiji; tại $\sigma=2$ là
+$(p_{low},p_{high})=(67,91)$. Đây là đánh giá trên tập đã dùng chọn ngưỡng,
+không phải phép đo test độc lập. DRIVE dùng Frangi tối màu, $\beta=0.5$,
+$c=0.5\max(S)$ và cùng ngưỡng tuyệt đối đã chọn trên Python; vùng chấm là
+giao FOV sau khi xói mòn theo support của các scale, bán kính lớn nhất hiện
+tại 32 pixel. Protocol này khác phiên bản cũ dùng percentile 85 hoặc FOV
+8 pixel nên không so trực tiếp các điểm giữa hai phiên bản.
+
+Blob dùng LoG chuẩn hóa và bảy scale đã cấu hình; lưới ngưỡng
+$[0.5,1,2,5]$ được chọn trên Python rồi giữ nguyên cho Fiji. Ghép một-một
+dòi hỏi tâm cách không quá 2 pixel và sai số bán kính không quá 20\%; 15
+vùng ignore được áp trước khi đếm FP. Trên \texttt{blob\_05} có 276 nhãn,
+Python có 140 TP, 153 FP, 136 FN ($F_1=0.492091$); Fiji có 139 TP, 156 FP,
+137 FN ($F_1=0.486865$). Bốn ảnh tổng hợp đạt F1 bằng 1 ở cả hai nguồn, vì
+vậy macro-F1 cao cần được đọc cùng micro-F1 và kết quả riêng ảnh tế bào.
+
+\subsubsection{Tập kiểm chứng FeatureJ/Fiji và Ground Truth}
+Các tài liệu workflow Fiji ghi nhận 435 TIFF float32, gồm 423 bản đồ thuộc
+phạm vi macro hiện hành và 12 file Edge legacy. Nhật ký có 369 dòng lệnh:
+303 lệnh một đầu ra và 66 lệnh hai đầu ra; sau khi loại 12 dòng legacy, phạm
+vi macro hiện hành gồm 357 lần gọi và 423 TIFF. Hessian có 14 ảnh, bốn bản
+đồ mỗi ảnh, tương ứng 56 lần gọi và 112 TIFF. Bộ kiểm tra bỏ qua file đã có;
+con số kiểm kê không khẳng định mọi TIFF được tạo mới trong cùng một lần chạy
+\cite{xlaUpdate950,xlaRepository}.
+
+Ground Truth BSDS gồm 5--7 bộ nhãn mỗi ảnh, tổng cộng 56 bộ nhãn ảnh; số này
+không đồng nghĩa 56 người gán nhãn. DRIVE có mask mạch và FOV riêng. Bốn ảnh
+Blob tổng hợp có bốn đối tượng mỗi ảnh. \texttt{blob\_05} có 276 đối tượng
+đã duyệt và 15 vùng ignore; nhãn tế bào do nhóm rà soát, không phải nhãn
+chuyên gia độc lập của nhà cung cấp \cite{xlaUpdate950,xlaRepository}.
+
+\subsubsection{Đo thời gian ImageScience headless}
+Bộ runtime mới đo 357 ca cho mỗi nguồn, mỗi ca có một warm-up và năm lần đo
+giữ lại: tổng cộng 2,142 mẫu mỗi nguồn và 4,284 mẫu. Python dùng NumPy;
+nguồn Fiji gọi API ImageJ 1.53k/ImageScience 3.0.0 trên JVM headless. Đọc ảnh,
+chuyển kiểu, sao chép input và ghi file nằm ngoài vùng đo; đây không phải thời
+gian chạy GUI hay toàn bộ pipeline chấm điểm. Median tỷ số
+$T_{Python}/T_{ImageScience}$ trên 357 ca là 10.668; tỷ số lớn hơn 1 nghĩa là
+Python mất nhiều thời gian hơn trong ca đó. IQR biểu đồ là phân bố giữa các
+median ca, không phải khoảng tin cậy. Không khái quát kết quả sang máy hoặc
+tác vụ khác. Bộ benchmark 36 ca cũ trong
+\texttt{canonical\_58bdfd8/optimization\_benchmark.csv} được giữ như dữ liệu
+lịch sử và không gộp với runtime mới.
+
+\subsubsection{Demo web bốn khung}
+Commit \texttt{aadd7e9} hoàn thiện demo Flask tại \texttt{src/web/}, hiển thị
+ảnh gốc, kết quả Python, bản đồ tham chiếu Fiji và Ground Truth/overlay sai số.
+Preset Canny dùng \texttt{bsds\_01}, $\sigma=2$, $(67,91)$; Frangi dùng
+\texttt{drive\_08}, $\beta=0.5$, ngưỡng 0.05, bốn scale $[1,2,4,8]$ và FOV;
+Blob dùng \texttt{blob\_05}, ngưỡng 5.0, cực tính bright và đủ bảy scale.
+
+Tên panel được phân biệt với detector để tránh hiểu nhầm: panel Canny của Fiji
+là gradient $|\nabla L|$ đã chuẩn hóa theo $\sigma$, không phải bản đồ Canny;
+nếu thiếu file gradient, ứng dụng dựng từ cặp $L_x,L_y$ của Fiji và không
+fallback sang file Edge. So sánh hướng dùng sai số góc quấn $2\pi$, không dùng
+Pearson tuyến tính. Ảnh Python và Fiji dùng chung dải hiển thị. Panel Frangi
+là chuỗi Fiji Hessian rồi Python Frangi (hybrid); panel Blob là đáp ứng cực
+đại $|LoG|$ của Fiji, không phải danh sách blob. Mã mới bổ sung kiểm tra đầu
+vào, bộ hủy request cũ và request ID tuần tự để tránh kết quả cũ ghi đè thao
+tác mới. Demo phục vụ xem và đối chiếu; các số benchmark vẫn lấy từ CSV
+canonical, không suy ra từ giao diện.
+
+Có thể chạy theo hướng dẫn \texttt{src/web/README.md} bằng
+\texttt{pip install -r requirements.txt}, sau đó
+\texttt{python -m src.web.app --port 5000}. Các phụ thuộc web mới là Flask và
+flask-cors.
+
+\subsubsection{Tiêu chí nghiệm thu Tầng 1}
+Kết quả canonical giữ nguyên chuẩn gốc: 35/220 bản đồ đạt đồng thời
+$\mathrm{rel\_err}<10^{-4}$ và Pearson $>0.9999$; 185/220 không đạt cả hai
+điều kiện. Nhãn \texttt{RELAXED} trong các bảng chạy mẫu chỉ mô tả ngưỡng
+chẩn đoán rộng hơn, không thay thế \texttt{FAIL} hoặc chứng nhận nghiệm thu.
+Tương quan cao không đủ để kết luận sai số biên độ đạt chuẩn.
