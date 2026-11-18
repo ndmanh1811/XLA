@@ -6,8 +6,15 @@
   \usepackage[vietnamese]{babel}
 \else
   \usepackage{fontspec}
-  \setmainfont{TeX Gyre Termes}
-  \setsansfont{TeX Gyre Heros}
+  \setmainfont{texgyretermes}[
+    Path=fonts/, Extension=.otf, UprightFont=*-regular,
+    BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
+  \setsansfont{texgyreheros}[
+    Path=fonts/, Extension=.otf, UprightFont=*-regular,
+    BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
+  \setmonofont{texgyrecursor}[
+    Path=fonts/, Extension=.otf, UprightFont=*-regular,
+    BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
 \fi
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -16,6 +23,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{hyperref}
 
 \begin{document}
@@ -76,44 +84,7 @@ Nội dung báo cáo được cấu trúc thành 6 chương:
     \item \textbf{Chương 6:} Kết luận, đánh giá mức độ hoàn thành và định hướng mở rộng hệ thống.
 \end{itemize}
 
-\section{Chương 2: Cơ Sở Lý Thuyết Scale-Space và Đạo Hàm Gaussian}
-\subsection{Phương trình truyền nhiệt và Không gian tỷ lệ tuyến tính}
-Không gian tỷ lệ tuyến tính $L(x, y; \sigma)$ của ảnh $I(x, y)$ theo lý thuyết Scale-space khởi xướng bởi Witkin \cite{witkin1983scale} được định nghĩa là nghiệm của phương trình truyền nhiệt:
-\begin{equation}
-\partial_s L = \frac{1}{2} \nabla^2 L = \frac{1}{2} (L_{xx} + L_{yy})
-\end{equation}
-với điều kiện ban đầu $L(x, y; 0) = I(x, y)$, tương đương với phép tích chập:
-\begin{equation}
-L(x, y; \sigma) = I(x, y) * G(x, y; \sigma)
-\end{equation}
-
-\subsection{Tính khả tách của Kernel Gaussian 2D}
-Hàm Gaussian 2D có tính chất khả tách (Separability), cho phép giảm độ phức tạp từ $O(K^2)$ xuống $O(2K)$:
-\begin{equation}
-G(x, y; \sigma) = g(x; \sigma) \cdot g(y; \sigma)
-\end{equation}
-
-\subsection{Chuẩn hóa tỷ lệ Lindeberg ($\gamma$-normalized derivatives)}
-Để so sánh đáp ứng của các toán tử vi phân qua các tỷ lệ $\sigma$ khác nhau mà không bị suy giảm biên độ theo tiên đề chuẩn hóa của Lindeberg \cite{lindeberg1994scale}:
-\begin{equation}
-\partial_{\xi} = \sigma^{\gamma} \partial_x, \quad \partial_{\xi\xi} = \sigma^{2\gamma} \partial_{xx}
-\end{equation}
-
-\subsection{Ma trận Hessian và Ý nghĩa hình học của trị riêng}
-Ma trận Hessian 2D được định nghĩa:
-\begin{equation}
-\mathcal{H} = \begin{bmatrix} L_{xx} & L_{xy} \\ L_{xy} & L_{yy} \end{bmatrix}
-\end{equation}
-Hai trị riêng $\lambda_1, \lambda_2$ được tính bằng nghiệm đóng giải tích:
-\begin{equation}
-\lambda_{1, 2} = \frac{(L_{xx} + L_{yy}) \pm \sqrt{(L_{xx} - L_{yy})^2 + 4 L_{xy}^2}}{2}
-\end{equation}
-
-\subsection{Bộ lọc hình ống Frangi Vesselness 2D}
-Dựa trên tỉ số dạng đốm $R_B = |\lambda_2 / \lambda_1|$ và độ tương phản $S = \sqrt{\lambda_1^2 + \lambda_2^2}$:
-\begin{equation}
-\mathcal{V}(\sigma) = \exp\left(-\frac{R_B^2}{2\beta^2}\right) \left[1 - \exp\left(-\frac{S^2}{2c^2}\right)\right]
-\end{equation}
+\input{sections/theory}
 
 \section{Chương 3: Khảo Sát Nền Tảng Tham Chiếu FeatureJ / Fiji}
 
@@ -131,7 +102,7 @@ Kiến trúc bên trong của ImageScience bao gồm các lớp đối tượng 
 \subsection{Dịch Ngược Bytecode và Giải Mã Tham Số Rời Rạc Hóa Ngầm}
 Do mã nguồn FeatureJ không cung cấp tài liệu chi tiết về kích thước hạt nhân cắt cụt và cơ chế padding biên trong giao diện người dùng, nhóm đã tiến hành dịch ngược bytecode file \texttt{imagescience.jar} (đặc biệt là lớp \texttt{Differentiator.class}) kết hợp thiết kế các bộ test đối chuẩn thực nghiệm vi sai. Kết quả giải mã đã làm sáng tỏ 4 quy ước ngầm:
 
-\begin{table}[htbp]
+\begin{table*}[t]
 \caption{Bảng ánh xạ tham số thực nghiệm giải mã từ FeatureJ}
 \centering
 \begin{tabular}{lll}
@@ -148,7 +119,7 @@ Kiểu dữ liệu xử lý lõi & \texttt{float64} & \texttt{float64} nội suy
 \bottomrule
 \end{tabular}
 \label{tab:featurej_mapping}
-\end{table}
+\end{table*}
 
 \begin{figure*}[t]
 \centering
@@ -171,9 +142,11 @@ Sự khác biệt về triết lý rời rạc hóa này giải thích tại sao
 \subsection{Quy Trình Tự Động Hóa Đối Chuẩn Tầng 1}
 Để phục vụ việc kiểm thử tự động 220 bản đồ, nhóm đã phát triển hai luồng xử lý độc lập:
 \begin{enumerate}
-    \item \textbf{Kịch bản ImageJ Macro (\texttt{src/fiji/batch_process.ijm}):} Tự động hóa qua ngôn ngữ macro của ImageJ, quét thư mục ảnh mẫu, gọi các lệnh \texttt{run("FeatureJ Derivatives", ...)} và ghi nhận nhật ký thời gian.
-    \item \textbf{Module Batch Java Exporter (\texttt{src/fiji/BatchTier1Fiji.java}):} Được biên dịch và thực thi trực tiếp bằng môi trường máy ảo Java nhúng của Fiji. Module này tương tác trực tiếp với API của \texttt{imagescience.jar}, tự động tính toán và lưu trữ 220 bản đồ TIFF 32-bit vào thư mục \texttt{outputs/fiji_java/} và xuất bảng thời gian chạy độc lập \texttt{outputs/metrics/fiji_runtime_java.csv}.
+    \item \textbf{Kịch bản ImageJ Macro} (\path{src/fiji/batch_process.ijm}): Tự động hóa qua ngôn ngữ macro của ImageJ, quét thư mục ảnh mẫu, gọi các lệnh \texttt{run("FeatureJ Derivatives", ...)} và ghi nhận nhật ký thời gian.
+    \item \textbf{Module Batch Java Exporter} (\path{src/fiji/BatchTier1Fiji.java}): Được biên dịch và thực thi trực tiếp bằng môi trường máy ảo Java nhúng của Fiji. Module này tương tác trực tiếp với API của \texttt{imagescience.jar}, tự động tính toán và lưu trữ 220 bản đồ TIFF 32-bit vào thư mục \path{outputs/fiji_java/} và xuất bảng thời gian chạy độc lập \path{outputs/metrics/fiji_runtime_java.csv}.
 \end{enumerate}
+
+\input{sections/workflow}
 
 \section{Chương 4: Thiết Kế và Cài Đặt Hệ Thống Python Core (From Scratch)}
 
@@ -261,7 +234,7 @@ Với kernel vuông $K=65$ ($r=32$), hệ số lý thuyết là $K/2=32.5$; các
 
 Bảng \ref{tab:optimization-benchmark} lấy trung bình theo ba ảnh (\texttt{bsds\_01}, \texttt{drive\_01}, \texttt{blob\_01}) từ \texttt{outputs/metrics/optimization\_benchmark.csv}; có 36 tổ hợp ảnh/toán tử/tỷ lệ và năm lượt đo mỗi tổ hợp. Đây là microbenchmark NumPy để so sánh hai cách chập, độc lập với phép đo Python--ImageScience gồm 357 case mỗi nguồn ở Chương 5.
 
-\begin{table}[htbp]
+\begin{table*}[t]
 \centering
 \caption{Thời gian chập Gaussian trực tiếp (naive) và tách chập 1D, trung bình trên 3 ảnh mẫu.}
 \label{tab:optimization-benchmark}
@@ -283,7 +256,7 @@ $L_{xx}$ & 4.0 & $33 \times 25$ & 421.18 & 36.41 & 11.29 & 14.22 \\
 $L_{xx}$ & 8.0 & $65 \times 49$ & 1691.01 & 62.54 & 26.56 & 27.94 \\
 \hline
 \end{tabular}
-\end{table}
+\end{table*}
 
 \subsubsection{Cơ chế xử lý biên phản xạ đối xứng (Mirror Reflection)}
 Khi thực hiện tích chập tại các điểm ảnh sát biên, cửa sổ lọc đòi hỏi dữ liệu vượt ra ngoài phạm vi biên một khoảng đúng bằng bán kính $r$. Hệ thống triển khai cơ chế phản xạ đối xứng qua biên không lặp điểm mép (\textit{mirror}):
@@ -388,7 +361,7 @@ Nhân tử $\sigma^2$ triệt tiêu hiện tượng suy giảm biên độ tự 
 Quá trình tính toán trung gian được duy trì ở kiểu số thực dấu chấm động độ chính xác kép \texttt{float64} (64-bit). Điều này ngăn ngừa sai số tích lũy từ các phép nhân dồn và phép trừ ma trận có độ lệch giá trị nhỏ. Chỉ tại bước cuối cùng khi xuất file ảnh lưu trữ đĩa (TIFF 32-bit), dữ liệu mới được ép kiểu an toàn sang \texttt{float32}.
 
 \subsubsection{Bảng tổng hợp độ phức tạp thuật toán}
-\begin{table}[htbp]
+\begin{table*}[t]
 \caption{Độ phức tạp thời gian và không gian của các mô-đun lõi}
 \centering
 \begin{tabular}{lcc}
@@ -405,14 +378,18 @@ LoG Extrema 3D ($|\Sigma|$ tỷ lệ) & $\mathcal{O}(|\Sigma| \cdot HW)$ & $\mat
 \bottomrule
 \end{tabular}
 \label{tab:complexity}
-\end{table}
+\end{table*}
 
 
+
+\input{sections/calibration}
 
 % BEGIN AUTO_CH5
 \section{Chương 5: Thực Nghiệm, Đánh Giá Định Lượng và Phân Tích}
 \subsection{Dữ liệu và protocol có thể tái lập}
 Bộ dữ liệu gồm 25 ảnh xám uint8: 10 BSDS500 với 56 bộ nhãn, 10 DRIVE có vessel mask/FOV, bốn ảnh blob tổng hợp và ảnh tế bào \texttt{blob\_05}. Ảnh tế bào có 276 đối tượng cùng 15 vùng ignore; nhãn do nhóm xây dựng và rà soát, không phải nhãn chuyên gia độc lập. Nguồn canonical là \texttt{outputs/metrics/duc\_10\_11}, theo protocol \texttt{duc\_10\_11\_v1}; dữ liệu phân tích và timing nằm trong \texttt{outputs/analysis/duc\_task5\_10\_11}. Bản sao các CSV, manifest và mẫu timing đi kèm trong thư mục \texttt{metrics/} của gói báo cáo.
+
+\input{sections/metrics}
 
 \subsection{Tầng 1: đối chuẩn bản đồ liên tục}
 Đối chiếu 220 cặp TIFF trên năm ảnh đại diện, crop theo support của từng toán tử. Chuẩn gốc yêu cầu đồng thời relative max error $<10^{-4}$ và Pearson $r>0.9999$: có 35 cặp \texttt{PASS}, còn 185 cặp \texttt{FAIL} do không thỏa đầy đủ hai điều kiện. \texttt{FAIL} mô tả kết quả số học, không phải lỗi chạy. Một ngưỡng chẩn đoán rộng hơn, nếu được nêu, phải tách khỏi trạng thái canonical. PSNR với MAX=255 chỉ áp dụng cho Gaussian; tương quan cao không chứng minh sai số biên độ đạt chuẩn.
@@ -461,11 +438,20 @@ Repo có demo Flask tại \texttt{src/web/} để xem và đối chiếu kết q
 
 \subsection{Giới hạn}
 Ngưỡng được chọn và đánh giá trên cùng tập nội bộ, không phải điểm kiểm tra độc lập. Chưa có kết quả biến thể nhiễu/crop/kích thước nên không kết luận độ bền với các biến thể này. Nhãn tế bào do nhóm rà soát; vùng ignore và giới hạn dải scale ảnh hưởng recall. Timing chỉ mô tả cấu hình và máy đo đã ghi trong manifest.
+\input{sections/sample_results}
+\input{sections/gui_evidence}
+\input{sections/discussion}
+\input{sections/repo_update_39e4d02}
+
 % END AUTO_CH5
 
 % BEGIN AUTO_CH6
 \section{Chương 6: Kết Luận và Hướng Phát Triển}
 Nhóm đã hiện thực Gaussian, đạo hàm bậc 1/2, gradient, Hessian, Canny, Frangi, LoG và Structure Tensor bằng NumPy, rồi đối chiếu đầu ra với FeatureJ/Fiji và đánh giá trên 25 ảnh. Theo chuẩn số học gốc, 35/220 bản đồ đạt \texttt{PASS} và 185/220 chưa đạt; không gộp trạng thái mở rộng vào kết quả canonical. Trên protocol \texttt{duc\_10\_11\_v1}, BSDS tại $\sigma=2$ đạt macro-F1 Python/Fiji 0.477886/0.477886; DRIVE đạt macro/micro 0.477382/0.473863 và 0.486776/0.483343; Blob đạt macro/micro 0.898418/0.897373 và 0.519135/0.514096. Median tỷ số thời gian từng case Python/ImageScience là 10.668 trong phép đo headless đã mô tả, không phải kết luận tốc độ tổng quát. Hướng tiếp theo là hiệu chuẩn độc lập, dữ liệu kiểm tra tách biệt và thí nghiệm nhiễu/kích thước.
+\clearpage
+\input{sections/reproduction}
+
+\clearpage
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
